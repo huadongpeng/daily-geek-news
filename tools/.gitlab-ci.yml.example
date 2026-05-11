@@ -16,6 +16,6 @@ wechat-draft:
   only:
     - main
   script:
-    - pip install -r tools/requirements_wechat.txt
+    - pip install -r tools/requirements_wechat.txt -i https://mirrors.aliyun.com/pypi/simple/
     - python tools/wechat_publisher.py
   when: manual  # 手动触发，方便审核后再发布

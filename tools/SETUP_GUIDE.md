@@ -97,7 +97,8 @@ chmod 600 /opt/daily-geek-news/tools/.env
 
 ```bash
 cd /opt/daily-geek-news
-pip install -r tools/requirements_wechat.txt
+# CentOS 7 用 pip3 + 阿里云镜像
+pip3 install -r tools/requirements_wechat.txt -i https://mirrors.aliyun.com/pypi/simple/
 
 # 加载环境变量并测试（预览模式）
 source tools/.env

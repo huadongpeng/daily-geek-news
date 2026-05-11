@@ -1,5 +1,6 @@
 # === 腾讯云服务器依赖 ===
-# 安装: pip install -r tools/requirements_wechat.txt
+# PyPI 镜像安装: pip3 install -r tools/requirements_wechat.txt -i https://mirrors.aliyun.com/pypi/simple/
+# 清华镜像备选:  -i https://pypi.tuna.tsinghua.edu.cn/simple/
 
-requests>=2.28
-Pillow>=9.0        # 图片裁切/处理（可选）
+requests>=2.20,<2.28
+# Pillow 可选（图片裁切），Python 3.6 安装: pip3 install Pillow==8.4.0 -i https://mirrors.aliyun.com/pypi/simple/
