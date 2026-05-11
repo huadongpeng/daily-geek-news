@@ -571,8 +571,8 @@ def fetch_and_augment(feeds):
     raw_articles = []
     top_title = ""
 
-    # 并行抓取所有 feed（8 worker 足够）
-    with concurrent.futures.ThreadPoolExecutor(max_workers=8) as pool:
+    # 并行抓取所有 feed（4 worker，避免 GitHub Actions 资源限制）
+    with concurrent.futures.ThreadPoolExecutor(max_workers=4) as pool:
         results = list(pool.map(_fetch_one_feed, feeds))
 
     for entries in results:
@@ -695,8 +695,16 @@ def _extract_json(text):
 
 
 def deep_dive_worker(category_name, config):
-    print(f"[{category_name}] 数据就绪，唤醒 DeepSeek V4 Pro 双轨引擎（快讯 + 深度长文）...")
+    print(f"[{category_name}] 抓取 {len(config['feeds'])} 个信息源...", flush=True)
+    t0 = time.time()
     context = fetch_and_augment(config['feeds'])
+    t1 = time.time()
+    entry_count = context.count("标题:")
+    print(f"[{category_name}] 获取 {entry_count} 条摘要 ({t1-t0:.0f}s)，唤醒 DeepSeek...", flush=True)
+
+    if entry_count == 0:
+        print(f"[{category_name}] 无有效数据，跳过", flush=True)
+        return category_name, None
 
     # 去重：读取近期已覆盖话题
     recent = get_recent_titles(category_name, days=3)
@@ -740,15 +748,20 @@ def deep_dive_worker(category_name, config):
     }
 
     try:
+        t_api_start = time.time()
         response = requests.post(url, headers=headers, json=payload, timeout=300)
         response.raise_for_status()
+        t_api = time.time()
 
         final_text = response.json()['choices'][0]['message']['content']
         result = _extract_json(final_text)
+        has_brief = bool(result.get("briefing"))
+        has_deep = bool(result.get("deep_dive") and result["deep_dive"].get("title"))
+        print(f"[{category_name}] API {t_api-t_api_start:.0f}s | 快讯:{has_brief} 深度:{has_deep}", flush=True)
         return category_name, result
 
     except Exception as e:
-        print(f"❌ [{category_name}] V4 Pro 推理失败: {e}")
+        print(f"❌ [{category_name}] V4 Pro 推理失败: {e}", flush=True)
         return category_name, None
 
 
@@ -906,7 +919,7 @@ if __name__ == "__main__":
     print("🚀 启动 Easton 满血外脑：双轨引擎（快讯汇总 + 深度长文）...")
     print(f"   📡 RSS 源总数: {sum(len(c['feeds']) for c in AGENTS.values())}")
     print(f"   🤖 模型: DeepSeek V4 Pro (deepseek-chat)")
-    print(f"   ⏱️  并行抓取: 6 引擎 × 8 worker")
+    print(f"   ⏱️  并行抓取: 6 引擎 × 4 worker")
     print()
 
     total_briefings = 0
