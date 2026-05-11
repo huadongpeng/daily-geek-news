@@ -47,7 +47,7 @@ CONTENT_DIR = GIT_REPO_DIR / "content" / "posts"
 STATIC_COVERS_DIR = GIT_REPO_DIR / "static" / "images" / "covers"
 SITE_URL = "https://radar.huadongpeng.com"
 
-WECHAT_DIGEST_MAX = 36
+WECHAT_DIGEST_MAX = 20
 COVER_SIZE = "1024*1024"
 WANX_MODEL = "wanx2.0-t2i-turbo"  # 通义万相极速版, 0.04 元/张, 免费 200 张/月
 
@@ -80,7 +80,7 @@ SENSITIVE_PATTERNS = [
     (r"泄露|黑市|漏洞.*利用|零日|0day", "安全漏洞类表述需谨慎处理"),
 ]
 
-WECHAT_TITLE_BYTES = 36  # 微信标题 API 字节限制（保守值，文档写 64 字符但实测按 UTF-8 字节算）
+WECHAT_TITLE_BYTES = 30  # 微信标题 API 字节限制（保守值，文档写 64 字符但实测按 UTF-8 字节算）
 
 def optimize_wechat_title(raw_title, category_name):
     """将文章标题优化为微信公众号格式——全局去 emoji + 字节级安全截断"""
@@ -529,9 +529,10 @@ def process_article(token, article, args):
     # ---- Markdown → 微信 HTML ----
     html_content = md_to_wechat_html(body, article_url)
 
-    # 提取摘要（字节级安全截断，避免 45004）
+    # 提取摘要（微信限制 64 字节，安全值 60 字节）
+    DIGEST_BYTES = 60
     plain_text = re.sub(r'<[^>]+>', '', html_content).strip()
-    b = plain_text.encode("utf-8")[:WECHAT_DIGEST_MAX * 3]
+    b = plain_text.encode("utf-8")[:DIGEST_BYTES]
     digest = b.decode("utf-8", errors="ignore").strip()
 
     # 构建文章数据
