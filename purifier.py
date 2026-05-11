@@ -45,7 +45,7 @@ AGENTS = {
 输出 JSON（不要代码块外壳）：
 {
   "briefing": {
-    "title": "当日快讯标题（15字以内）",
+    "title": "当日快讯标题（18字以内）",
     "items": [
       {
         "title": "信息标题",
@@ -77,7 +77,7 @@ AGENTS = {
 
 输出纯净 JSON（不要代码块外壳）：
 {
-  "title": "文章标题（15字以内）",
+  "title": "文章标题（18字以内）",
   "content_md": "完整 Markdown 正文",
   "tg_summary": "Telegram 精简推送（50字内，含核心数据点+行动引导动词）"
 }
@@ -121,7 +121,7 @@ content_md 严格按以下四章结构：
 输出 JSON（不要代码块外壳）：
 {
   "briefing": {
-    "title": "当日快讯标题（15字以内）",
+    "title": "当日快讯标题（18字以内）",
     "items": [
       {
         "title": "信息标题",
@@ -153,7 +153,7 @@ content_md 严格按以下四章结构：
 
 输出纯净 JSON：
 {
-  "title": "文章标题（15字以内）",
+  "title": "文章标题（18字以内）",
   "content_md": "完整 Markdown 正文",
   "tg_summary": "Telegram 精简推送（50字内，含核心数据点+行动引导动词）"
 }
@@ -195,7 +195,7 @@ content_md 严格按以下四章结构：
 输出 JSON（不要代码块外壳）：
 {
   "briefing": {
-    "title": "当日快讯标题（15字以内）",
+    "title": "当日快讯标题（18字以内）",
     "items": [
       {
         "title": "信息标题",
@@ -227,7 +227,7 @@ content_md 严格按以下四章结构：
 
 输出纯净 JSON：
 {
-  "title": "文章标题（15字以内）",
+  "title": "文章标题（18字以内）",
   "content_md": "完整 Markdown 正文",
   "tg_summary": "Telegram 精简推送（50字内，含核心数据点+行动引导动词）"
 }
@@ -269,7 +269,7 @@ content_md 严格按以下四章结构：
 输出 JSON（不要代码块外壳）：
 {
   "briefing": {
-    "title": "当日快讯标题（15字以内）",
+    "title": "当日快讯标题（18字以内）",
     "items": [
       {
         "title": "信息标题",
@@ -301,7 +301,7 @@ content_md 严格按以下四章结构：
 
 输出纯净 JSON：
 {
-  "title": "文章标题（15字以内）",
+  "title": "文章标题（18字以内）",
   "content_md": "完整 Markdown 正文",
   "tg_summary": "Telegram 精简推送（50字内，含核心数据点+行动引导动词）"
 }
@@ -476,7 +476,12 @@ def deep_dive_worker(category_name, config):
 
 你的输出必须是纯净 JSON 对象（不要代码块外壳），包含 briefing 和 deep_dive 字段。
 如果今天没有值得深度长文的话题，deep_dive 填 null。
-全文禁止使用 emoji 表情符号，语气严谨专业，数据驱动，避免口语化和感叹号。
+
+硬性约束：
+- 所有 title 字段严格不超过 18 个中文字（微信 API 字节限制 60 字节，1 中文=3 字节）
+- 全文零 emoji，零网络用语，语气严谨专业学术商业分析风格
+- 个人方案优先考虑零成本或低成本路径
+- tg_summary 不超过 50 字，tg_brief 不超过 200 字
 """
 
     payload = {
