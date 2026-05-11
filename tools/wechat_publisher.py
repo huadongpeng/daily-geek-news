@@ -41,7 +41,7 @@ CONTENT_DIR = GIT_REPO_DIR / "content" / "posts"
 WECHAT_DIGEST_MAX = 120
 
 # 封面图尺寸（公众号头图 900x383，通义万相输出 1024x1024 后续裁切）
-COVER_SIZE = "1024x1024"
+COVER_SIZE = "1024*1024"
 
 # 通义万相模型
 WANX_MODEL = "wanx2.0-t2i-turbo"  # 极速版，0.04 元/张，免费额度 200 张/月
@@ -315,9 +315,11 @@ def find_articles(date_str=None):
 
     articles = []
     for md_file in sorted(CONTENT_DIR.rglob(f"*{date_str}*.md")):
-        # 解析 category 和 type
+        # 仅处理分类子目录下的文章，跳过 posts/ 根目录的旧版文件
         relative = md_file.relative_to(CONTENT_DIR)
-        category = relative.parts[0] if len(relative.parts) > 1 else "Unknown"
+        if len(relative.parts) < 2:
+            continue
+        category = relative.parts[0]
         is_briefing = "briefing" in md_file.name
         is_deep = "deep-dive" in md_file.name
 
