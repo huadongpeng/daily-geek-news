@@ -1,0 +1,171 @@
+/* ============================================================
+   Easton 跨国智库 - 移动端深度优化
+   ============================================================ */
+
+/* --- 全局字体放大 --- */
+@media (max-width: 768px) {
+  body {
+    font-size: 17px;
+    line-height: 1.8;
+  }
+
+  .post-content {
+    font-size: 16px;
+  }
+
+  .post-content h1 { font-size: 22px; }
+  .post-content h2 { font-size: 20px; margin-top: 28px; }
+  .post-content h3 { font-size: 18px; }
+  .post-content h4 { font-size: 17px; }
+
+  .post-content p { margin: 12px 0; }
+
+  /* 代码块在小屏幕上缩小 */
+  .post-content pre {
+    font-size: 13px;
+    padding: 12px;
+  }
+
+  /* 表格横向滚动 */
+  .post-content table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+    font-size: 14px;
+  }
+}
+
+/* --- 文章列表卡片增强 --- */
+.post-entry {
+  border-bottom: 1px solid var(--border);
+  padding: 18px 0;
+  transition: background 0.2s;
+}
+
+.post-entry:active {
+  background: rgba(0,0,0,0.03);
+}
+
+.post-entry .entry-header h2 {
+  font-size: 18px;
+  line-height: 1.5;
+}
+
+/* --- 底部导航条（移动端快捷切换分类）--- */
+@media (max-width: 768px) {
+  .main {
+    padding-bottom: 70px; /* 为底部导航留空间 */
+  }
+
+  #mobile-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--theme);
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-around;
+    padding: 8px 0 10px;
+    z-index: 999;
+    box-shadow: 0 -2px 8px rgba(0,0,0,0.08);
+  }
+
+  #mobile-nav a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 11px;
+    color: var(--secondary);
+    text-decoration: none;
+    padding: 4px 8px;
+    min-width: 50px;
+  }
+
+  #mobile-nav a.active,
+  #mobile-nav a:hover {
+    color: var(--primary);
+  }
+
+  #mobile-nav a .nav-icon {
+    font-size: 20px;
+    margin-bottom: 2px;
+  }
+}
+
+/* 桌面端隐藏底部导航 */
+@media (min-width: 769px) {
+  #mobile-nav { display: none; }
+}
+
+/* --- 页面浏览量 --- */
+.busuanzi {
+  text-align: center;
+  font-size: 13px;
+  color: var(--secondary);
+  padding: 16px 0;
+}
+
+/* --- 文章切换按钮 --- */
+@media (max-width: 768px) {
+  .post-nav {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    margin: 24px 0;
+  }
+
+  .post-nav a {
+    flex: 1;
+    text-align: center;
+    padding: 10px 8px;
+    background: var(--code-bg);
+    border-radius: 8px;
+    font-size: 14px;
+    text-decoration: none;
+    color: var(--primary);
+  }
+
+  .post-nav a:active {
+    opacity: 0.7;
+  }
+}
+
+/* --- 首页简介卡片 --- */
+@media (max-width: 768px) {
+  .home-info {
+    padding: 20px 16px;
+  }
+
+  .home-info .entry-content {
+    font-size: 15px;
+  }
+
+  .profile img {
+    width: 80px;
+    height: 80px;
+  }
+}
+
+/* --- 目录优化 --- */
+@media (max-width: 768px) {
+  .toc {
+    font-size: 14px;
+    padding: 12px;
+  }
+
+  .toc details summary {
+    font-size: 15px;
+    padding: 8px 0;
+  }
+}
+
+/* --- 面包屑导航 --- */
+@media (max-width: 768px) {
+  .breadcrumbs {
+    font-size: 13px;
+    padding: 8px 0;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+}

@@ -20,7 +20,9 @@ THREAD_IDS = {
     "Arbitrage-Radar": os.environ.get("TG_THREAD_ARBITRAGE"),
     "AI-Frontier": os.environ.get("TG_THREAD_AI"),
     "Cross-Border-Insights": os.environ.get("TG_THREAD_CROSS"),
-    "Macro-Events": os.environ.get("TG_THREAD_MACRO")
+    "Macro-Events": os.environ.get("TG_THREAD_MACRO"),
+    "China-Going-Global": os.environ.get("TG_THREAD_CHINA"),
+    "Developer-Goldmine": os.environ.get("TG_THREAD_DEV")
 }
 
 # ============================================================
@@ -326,6 +328,160 @@ content_md 严格按以下四章结构：
 - 第 3 个月：复盘指标与调整节点
 
 硬性要求：必须引用具体数据、公司名称和时间线。所有行动清单必须考虑零成本或低成本。拒绝新闻摘抄。"""
+    },
+
+    "China-Going-Global": {
+        "title_cn": "中国出海录",
+        "emoji": "🌏",
+        "feeds": [
+            # 中国科技媒体（英文视角）
+            "https://pandaily.com/feed/",
+            "https://technode.com/feed/",
+            # 中文科技商业
+            "https://36kr.com/feed",
+            "https://www.huxiu.com/rss/0.xml",
+            # 亚洲权威媒体
+            "https://asia.nikkei.com/rss/feed/nar",
+            "https://www.scmp.com/rss/91/feed",
+            # 全球新兴市场
+            "https://restofworld.org/feed/",
+        ],
+        "briefing_prompt": """你是中国科技出海战略顾问。请扫描资料库，提炼今天最有价值的 3-5 条中国产品/技术/模式出海的逆向套利信息。
+
+输出 JSON（不要代码块外壳）：
+{
+  "briefing": {
+    "title": "当日快讯标题（10字以内）",
+    "items": [
+      {
+        "title": "信息标题",
+        "source": "来源平台名",
+        "one_liner": "一句话核心要点（30字内）",
+        "why_matters": "为什么值得关注（50字内）",
+        "zero_cost_angle": "零/低成本可执行角度（40字内，若无则填'待观察'）"
+      }
+    ],
+    "tg_brief": "Telegram 推送用汇总文案（200字内，按 1. 2. 3. 编号）"
+  },
+  "deep_dive": null
+}
+
+如果今天有值得深度拆解的出海话题（中国独有模式、海外稀缺机会），则 deep_dive 字段输出：
+{
+  "title": "深度长文标题",
+  "content_md": "完整 Markdown 正文（按四章结构：中国模式全景还原→海外缺口分析→出海落地路径→风险与合规，核心章节≥500字）",
+  "tg_summary": "Telegram 精简推送（50字内，含核心数据点+行动引导动词）"
+}
+
+硬性要求：所有方案必须零成本或低成本启动。必须标注来源平台。deep_dive 宁缺毋滥。""",
+
+        "deep_dive_prompt": """你是中国科技出海战略顾问。请从资料库中找到一个中国独有或领先、海外市场稀缺的商业模式/技术，输出出海落地方案。
+
+输出纯净 JSON：
+{
+  "title": "文章标题（10字以内）",
+  "content_md": "完整 Markdown 正文",
+  "tg_summary": "Telegram 精简推送（50字内，含核心数据点+行动引导动词）"
+}
+
+content_md 严格按以下四章结构：
+## 一、中国模式全景还原
+- 该模式在中国的起源、关键玩家、市场规模数据
+- 为什么在中国成功（文化/支付/物流/政策四维度分析）
+
+## 二、海外缺口分析（核心章节）
+- 目标市场的空白程度和真实需求验证
+- 为什么海外没有类似模式（技术/文化/监管差异）
+- ≥2 个具体目标国家/地区的市场画像
+
+## 三、出海落地路径（≥500 字）
+- 最小可行出海方案（MVP for overseas）
+- ≥30 行可运行代码或详细的落地执行步骤
+- 本地化适配清单（语言/支付/合规/运营）
+
+## 四、风险与合规
+- 3 大出海风险（政策/竞争/文化）
+- 零成本启动的具体步骤和资源需求
+
+硬性要求：所有方案必须是零成本或低成本启动。必须有具体市场数据。"""
+    },
+
+    "Developer-Goldmine": {
+        "title_cn": "开发者金矿",
+        "emoji": "⛏️",
+        "feeds": [
+            # 开发者社区
+            "https://news.ycombinator.com/rss",
+            "https://www.reddit.com/r/programming/top/.rss?t=day",
+            "https://www.reddit.com/r/webdev/top/.rss?t=day",
+            # 技术产品
+            "https://www.producthunt.com/feed",
+            "https://github.com/trending.atom",
+            # 技术媒体
+            "https://www.technologyreview.com/feed/",
+            "https://www.infoworld.com/index.rss",
+            # 独立开发者
+            "https://feed.indiehackers.com/forum/rss",
+        ],
+        "briefing_prompt": """你是独立开发者技术变现顾问。请扫描资料库，提炼今天最有价值的 3-5 条开发者变现/工具红利/技术创业信息。
+
+输出 JSON（不要代码块外壳）：
+{
+  "briefing": {
+    "title": "当日快讯标题（10字以内）",
+    "items": [
+      {
+        "title": "信息标题",
+        "source": "来源平台名",
+        "one_liner": "一句话核心要点（30字内）",
+        "why_matters": "为什么值得关注（50字内）",
+        "zero_cost_angle": "零/低成本可执行角度（40字内，若无则填'待观察'）"
+      }
+    ],
+    "tg_brief": "Telegram 推送用汇总文案（200字内，按 1. 2. 3. 编号）"
+  },
+  "deep_dive": null
+}
+
+如果今天有值得深度拆解的开发者工具/平台/变现话题，则 deep_dive 字段输出：
+{
+  "title": "深度长文标题",
+  "content_md": "完整 Markdown 正文（按四章结构：技术白盒拆解→变现路径分析→Easton实战接入→3个月红利窗口，核心章节≥500字，含≥40行可运行代码）",
+  "tg_summary": "Telegram 精简推送（50字内，含核心数据点+行动引导动词）"
+}
+
+硬性要求：所有变现方案必须零成本或低成本启动。代码必须可运行。deep_dive 宁缺毋滥。""",
+
+        "deep_dive_prompt": """你是独立开发者技术变现顾问。请从资料库中挑选最有变现价值的技术/工具/平台，输出实战接入方案。
+
+输出纯净 JSON：
+{
+  "title": "文章标题（10字以内）",
+  "content_md": "完整 Markdown 正文",
+  "tg_summary": "Telegram 精简推送（50字内，含核心数据点+行动引导动词）"
+}
+
+content_md 严格按以下四章结构：
+## 一、技术/工具白盒拆解
+- 核心原理、技术架构、关键 API
+- 与同类方案对比表（≥3 维度）
+
+## 二、变现路径分析（核心章节）
+- ≥3 种可落地的变现方式
+- 每种方式的收入预估、成本分析、时间投入
+- 适合独立开发者的最优路径推荐
+
+## 三、Easton 实战接入方案（≥500 字）
+- ≥40 行可直接运行的 Python/JS 代码
+- 从注册到首次收入的完整操作流程
+- 常见坑点和排错指南
+
+## 四、3 个月红利窗口
+- 该机会的时间窗口预估
+- 竞争者进入门槛分析
+- 3 个月内可达到的收入预期
+
+硬性要求：所有方案必须零成本或低成本启动。代码必须可运行。"""
     }
 }
 
@@ -694,7 +850,7 @@ if __name__ == "__main__":
     total_deep_dives = 0
     total_tg = 0
 
-    with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=6) as executor:
         future_to_category = {
             executor.submit(deep_dive_worker, cat, conf): cat
             for cat, conf in AGENTS.items()

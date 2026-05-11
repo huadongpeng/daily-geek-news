@@ -40,6 +40,8 @@ jobs:
         TG_THREAD_AI: ${{ secrets.TG_THREAD_AI }}
         TG_THREAD_CROSS: ${{ secrets.TG_THREAD_CROSS }}
         TG_THREAD_MACRO: ${{ secrets.TG_THREAD_MACRO }}
+        TG_THREAD_CHINA: ${{ secrets.TG_THREAD_CHINA }}
+        TG_THREAD_DEV: ${{ secrets.TG_THREAD_DEV }}
       run: python purifier.py
 
     - name: 5. 提交最新生成的文章到代码库

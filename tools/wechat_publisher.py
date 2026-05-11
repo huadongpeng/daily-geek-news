@@ -57,14 +57,17 @@ EMOJI_MAP = {
     "AI-Frontier": "🤖",
     "Cross-Border-Insights": "🌍",
     "Macro-Events": "📉",
+    "China-Going-Global": "🌏",
+    "Developer-Goldmine": "⛏️",
 }
 
-# 引擎中文名映射
 TITLE_MAP = {
     "Arbitrage-Radar": "零库存套利雷达",
     "AI-Frontier": "AI 生产力前沿",
     "Cross-Border-Insights": "跨国商业脑洞",
     "Macro-Events": "宏观局势风向标",
+    "China-Going-Global": "中国出海录",
+    "Developer-Goldmine": "开发者金矿",
 }
 
 # 微信公众号内容适配：需要人工审核的表达模式
