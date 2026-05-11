@@ -420,21 +420,29 @@ def md_to_wechat_html(md_text, article_url=""):
 # ============================================================
 # 主流程
 # ============================================================
+PUBLISHED_LOG = GIT_REPO_DIR / "tools" / ".published"
+
+def _load_published():
+    """读取已推送文章列表，防止重复推送"""
+    if PUBLISHED_LOG.exists():
+        return set(PUBLISHED_LOG.read_text(encoding="utf-8").strip().split("\n"))
+    return set()
+
+
+def _mark_published(file_path):
+    """记录文章为已推送"""
+    PUBLISHED_LOG.parent.mkdir(parents=True, exist_ok=True)
+    published = _load_published()
+    published.add(str(file_path.relative_to(GIT_REPO_DIR)))
+    PUBLISHED_LOG.write_text("\n".join(sorted(published)), encoding="utf-8")
+
+
 def find_articles(date_str=None):
-    """在 content/posts/ 下查找今日文章，无则回溯昨日"""
+    """在 content/posts/ 下查找今日文章，跳过已推送的"""
     if date_str is None:
-        from datetime import timedelta
-        for offset in (0, 1):
-            d = datetime.now() - timedelta(days=offset)
-            date_str = d.strftime("%Y-%m-%d")
-            articles = _scan_date(date_str)
-            if articles:
-                return articles
-        return []
-    return _scan_date(date_str)
+        date_str = datetime.now().strftime("%Y-%m-%d")
 
-
-def _scan_date(date_str):
+    published = _load_published()
     articles = []
     for md_file in sorted(CONTENT_DIR.rglob(f"*{date_str}*.md")):
         # 仅处理分类子目录下的文章，跳过 posts/ 根目录的旧版文件
@@ -465,6 +473,11 @@ def _scan_date(date_str):
         # 全局去 emoji + 特殊符号，仅保留中英文数字和基本标点
         title = re.sub(r"[^一-鿿a-zA-Z0-9\s\.\,\;\:\!\?\-\+\#\&\(\)\[\]\{\}]", "", raw_title.strip("'\""))
         title = re.sub(r"\s+", " ", title).strip()
+
+        # 跳过已推送的文章
+        rel_path = str(md_file.relative_to(GIT_REPO_DIR))
+        if rel_path in published:
+            continue
 
         articles.append({
             "file": md_file,
@@ -579,6 +592,7 @@ def process_article(token, article, args):
 
     try:
         add_draft(token, article_data)
+        _mark_published(md_file)
         return True
     except Exception as e:
         print(f"   ❌ 草稿创建失败: {e}")
