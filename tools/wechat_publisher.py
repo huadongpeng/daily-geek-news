@@ -25,6 +25,7 @@
   07:00 crontab → git pull（从本地 GitLab） → 本脚本 → 公众号草稿箱
 """
 import os
+import re
 import sys
 import json
 import time
