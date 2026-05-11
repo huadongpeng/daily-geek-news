@@ -117,43 +117,44 @@ def send_to_telegram(deep_dives):
         print(f"❌ Telegram 推送失败: {e}")
 
 def send_to_halo(markdown_content):
-    """Halo 端：长文资产沉淀，添加了详细的 Debug 探针以排查错误"""
+    """Halo 端：长文资产沉淀，采用标准 CRD API 发送"""
     if not HALO_TOKEN or not HALO_URL:
-        print("⚠️ 未配置 Halo 参数，跳过博客发布。")
+        print("⚠️ 未配置 Halo 环境变量 (HALO_TOKEN 或 HALO_URL)，跳过博客发布。")
         return
         
-    endpoint = f"{HALO_URL.rstrip('/')}/apis/api.console.halo.run/v1alpha1/posts"
+    # 【修复1】切换到 Halo 2.x 更底层的 Content API，专为自动化设计
+    endpoint = f"{HALO_URL.rstrip('/')}/apis/content.halo.run/v1alpha1/posts"
     headers = {
         "Authorization": f"Bearer {HALO_TOKEN}",
         "Content-Type": "application/json"
     }
     
+    from datetime import datetime
     today = datetime.now().strftime("%Y-%m-%d")
     
+    # 【修复2】剥离外层的 "post" 字典，将 apiVersion 和 kind 直接顶格暴露 (K8s 规范)
     payload = {
-        "post": {
-            "apiVersion": "content.halo.run/v1alpha1",
-            "kind": "Post",
-            "metadata": {
-                "generateName": "post-"  # 【新增】Halo 2.x 必需的底层命名生成器
+        "apiVersion": "content.halo.run/v1alpha1",
+        "kind": "Post",
+        "metadata": {
+            "generateName": "post-" # 必须保留，交由系统生成唯一后缀
+        },
+        "spec": {
+            "title": f"全球极客商业智库与套利沙盘 ({today})",
+            "slug": f"arbitrage-deep-dive-{today}",
+            "baseSnapshot": {
+                "raw": markdown_content,
+                "isAutoSave": False
             },
-            "spec": {
-                "title": f"全球极客商业智库与套利沙盘 ({today})",
-                "slug": f"arbitrage-deep-dive-{today}",
-                "baseSnapshot": {
-                    "raw": markdown_content,
-                    "isAutoSave": False
-                },
-                "owner": "hdop",  # 【极其重要】务必将 "admin" 替换为你在 Halo 系统后台实际的英文/拼音用户名！
-                "publish": False   # 建议先设为 False（存为草稿）。方便你在手机上预览排版，确认完美后再手动点击发布。
-            }
+            "owner": "hdop",  # ⚠️ 最后一次提醒：必须是你 Halo 后台的纯英文登录名
+            "publish": False   # 先存为草稿，供你午休时预览排版
         }
     }
     
     try:
         res = requests.post(endpoint, headers=headers, json=payload)
         res.raise_for_status()
-        print("✅ 成功沉淀万字分析长文至 Halo 博客！")
+        print("✅ 成功沉淀万字分析长文至 Halo 博客草稿箱！")
     except requests.exceptions.RequestException as e:
         print(f"❌ Halo 发布失败，HTTP 状态码: {e.response.status_code if e.response else 'Unknown'}")
         print(f"❌ 详细错误信息: {e.response.text if e.response else e}")
