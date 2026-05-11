@@ -425,7 +425,8 @@ PUBLISHED_LOG = GIT_REPO_DIR / "tools" / ".published"
 def _load_published():
     """读取已推送文章列表，防止重复推送"""
     if PUBLISHED_LOG.exists():
-        return set(PUBLISHED_LOG.read_text(encoding="utf-8").strip().split("\n"))
+        lines = PUBLISHED_LOG.read_text(encoding="utf-8").strip()
+        return set(lines.split("\n")) if lines else set()
     return set()
 
 
