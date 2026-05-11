@@ -604,9 +604,14 @@ def main():
     parser.add_argument("--date", help="处理指定日期文章 (YYYY-MM-DD)")
     parser.add_argument("--dry-run", action="store_true", help="预览模式，不实际创建草稿")
     parser.add_argument("--no-image", action="store_true", help="跳过封面图生成")
+    parser.add_argument("--yesterday", action="store_true", help="推送前一天的文章")
     parser.add_argument("--include-briefings", action="store_true",
                         help="同时推送每日快讯（默认仅推送精品深度长文）")
     args = parser.parse_args()
+
+    if args.yesterday and args.date:
+        print("❌ --yesterday 和 --date 不能同时使用")
+        sys.exit(1)
 
     # 参数校验
     if not WECHAT_APPID or not WECHAT_APPSECRET:
@@ -620,10 +625,16 @@ def main():
         print("   智谱 CogView: https://open.bigmodel.cn/ (100 张/月免费)")
         args.no_image = True
 
+    # 确定目标日期
+    if args.yesterday:
+        from datetime import timedelta
+        args.date = (datetime.now() - timedelta(days=1)).strftime("%Y-%m-%d")
+
     # 查找文章
     articles = find_articles(args.date)
     if not articles:
-        print(f"❌ 未找到日期为 {args.date or datetime.now().strftime('%Y-%m-%d')} 的文章")
+        date_label = args.date or datetime.now().strftime("%Y-%m-%d")
+        print(f"❌ 未找到日期为 {date_label} 的文章")
         sys.exit(1)
 
     # 精品筛选：默认仅 deep-dive（质量已由模型把关）

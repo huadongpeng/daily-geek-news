@@ -4,9 +4,10 @@
 # 每天 GitHub Actions 推送文章到 GitLab 后，运行此脚本
 #
 # 用法:
-#   bash tools/publish_wechat.sh           # 推送今日精品深度长文
-#   bash tools/publish_wechat.sh --dry-run # 预览模式
-#   bash tools/publish_wechat.sh --all     # 含快讯
+#   bash tools/publish_wechat.sh               # 推送今日精品深度长文
+#   bash tools/publish_wechat.sh --yesterday   # 推送昨日文章
+#   bash tools/publish_wechat.sh --dry-run     # 预览模式
+#   bash tools/publish_wechat.sh --date 2026-05-11  # 指定日期
 # ============================================================
 set -e
 
