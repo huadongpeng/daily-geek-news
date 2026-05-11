@@ -80,7 +80,7 @@ SENSITIVE_PATTERNS = [
     (r"泄露|黑市|漏洞.*利用|零日|0day", "安全漏洞类表述需谨慎处理"),
 ]
 
-WECHAT_TITLE_BYTES = 50  # 微信标题 API 字节限制（保守值，文档写 64 字符但实测按 UTF-8 字节算）
+WECHAT_TITLE_BYTES = 42  # 微信标题 API 字节限制（保守值，文档写 64 字符但实测按 UTF-8 字节算）
 
 def optimize_wechat_title(raw_title, category_name):
     """将文章标题优化为微信公众号格式——全局去 emoji + 字节级安全截断"""
