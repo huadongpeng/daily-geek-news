@@ -63,7 +63,8 @@ jobs:
         fi
         GITLAB_REMOTE="https://${GITLAB_USERNAME}:${GITLAB_ACCESS_TOKEN}@${GITLAB_HOST}/${GITLAB_USERNAME}/daily-geek-news.git"
         git remote add gitlab "$GITLAB_REMOTE" 2>/dev/null || git remote set-url gitlab "$GITLAB_REMOTE"
-        git push gitlab main 2>&1 || echo "⚠️ GitLab 推送失败，检查参数是否正确"
+        # 镜像模式：GitHub 为源，GitLab 为镜像，强制同步
+        git push gitlab +main:main 2>&1 || echo "⚠️ GitLab 推送失败，检查参数是否正确"
 
     - name: 6. 在云端安装 Hugo 编译器
       uses: peaceiris/actions-hugo@v3
