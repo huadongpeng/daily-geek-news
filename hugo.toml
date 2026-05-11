@@ -1,5 +1,6 @@
 baseURL = 'https://radar.huadongpeng.com/'
 languageCode = 'zh-cn'
+timeZone = 'Asia/Shanghai'
 title = 'Easton 跨国智库'
 theme = 'PaperMod'
 

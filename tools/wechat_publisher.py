@@ -47,7 +47,6 @@ CONTENT_DIR = GIT_REPO_DIR / "content" / "posts"
 STATIC_COVERS_DIR = GIT_REPO_DIR / "static" / "images" / "covers"
 SITE_URL = "https://radar.huadongpeng.com"
 
-WECHAT_DIGEST_MAX = 20
 COVER_SIZE = "1024*1024"
 WANX_MODEL = "wanx2.0-t2i-turbo"  # 通义万相极速版, 0.04 元/张, 免费 200 张/月
 
