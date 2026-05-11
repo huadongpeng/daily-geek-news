@@ -2,15 +2,8 @@ name: Easton Radar Auto Deploy
 
 on:
   schedule:
-    - cron: '0 22 * * *'  # 06:00 北京时间 (早间)
-    - cron: '0 4 * * *'   # 12:00 北京时间 (午间)
-    - cron: '0 10 * * *'  # 18:00 北京时间 (晚间)
+    - cron: '0 22 * * *' # 北京时间早上 6 点
   workflow_dispatch:
-    inputs:
-      slot:
-        description: '时段 (morning/noon/evening)'
-        required: false
-        default: 'morning'
 
 # 赋予 GitHub Action 推送代码和部署页面的最高权限
 permissions:
@@ -49,7 +42,7 @@ jobs:
         TG_THREAD_MACRO: ${{ secrets.TG_THREAD_MACRO }}
         TG_THREAD_CHINA: ${{ secrets.TG_THREAD_CHINA }}
         TG_THREAD_DEV: ${{ secrets.TG_THREAD_DEV }}
-        BRIEFING_SLOT: ${{ github.event.inputs.slot || 'auto' }}
+        TG_THREAD_BRIEFING: ${{ secrets.TG_THREAD_BRIEFING }}
       run: python purifier.py
 
     - name: 5. 提交最新生成的文章到代码库

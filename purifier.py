@@ -16,11 +16,6 @@ DEEPSEEK_API_KEY = os.environ.get("DEEPSEEK_API_KEY")
 TG_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
 TG_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID")
 SITE_URL = "https://radar.huadongpeng.com"
-SLOT = os.environ.get("BRIEFING_SLOT", "")
-if not SLOT:
-    h = datetime.now().hour
-    SLOT = "morning" if h < 10 else ("noon" if h < 15 else "evening")
-SLOT_CN = {"morning": "早间", "noon": "午间", "evening": "晚间"}.get(SLOT, SLOT)
 
 THREAD_IDS = {
     "Arbitrage-Radar": os.environ.get("TG_THREAD_ARBITRAGE"),
@@ -28,7 +23,8 @@ THREAD_IDS = {
     "Cross-Border-Insights": os.environ.get("TG_THREAD_CROSS"),
     "Macro-Events": os.environ.get("TG_THREAD_MACRO"),
     "China-Going-Global": os.environ.get("TG_THREAD_CHINA"),
-    "Developer-Goldmine": os.environ.get("TG_THREAD_DEV")
+    "Developer-Goldmine": os.environ.get("TG_THREAD_DEV"),
+    "_briefing": os.environ.get("TG_THREAD_BRIEFING")
 }
 
 # ============================================================
@@ -75,10 +71,10 @@ AGENTS = {
   "deep_dive": null
 }
 
-如果今天资料库中有一条信息具备深度拆解价值（数据充分、案例具体、可落地），则 deep_dive 字段输出：
+优先深度拆解——只要资料库中有话题具备分析价值（数据充分、案例具体、可落地），则 deep_dive 字段输出：
 {
   "title": "深度长文标题",
-  "content_md": "完整 Markdown 正文（按四章结构：商业模型拆解→本土化映射→MVP落地方案→风险天花板，核心章节≥500字，含≥30行可运行Python代码片段）",
+  "content_md": "完整 Markdown 正文（按四章结构：商业模型拆解→本土化映射→MVP落地方案→风险天花板，核心章节≥800字，含≥30行可运行Python代码片段）",
   "tg_summary": "Telegram 精简推送（50字内，包含一个核心数据点+行动引导动词）"
 }
 
@@ -107,7 +103,7 @@ content_md 严格按以下四章结构：
 - ≥2 个具体套利切入点（信息差/平台差/汇率差）
 
 ## 三、MVP 落地执行方案（核心章节，≥500 字）
-- ≥30 行可直接运行的 Python 代码
+- ≥50 行可直接运行的 Python 代码
 - Day1 / Day2 / Day3 分步清单（每步 30 分钟内可完成）
 
 ## 四、风险与天花板
@@ -161,10 +157,10 @@ content_md 严格按以下四章结构：
   "deep_dive": null
 }
 
-如果今天资料库中有一条信息具备深度拆解价值（技术突破性足够、有接入可能），则 deep_dive 字段输出：
+优先深度拆解——只要资料库中有话题具备分析价值（技术突破性足够、有接入可能），则 deep_dive 字段输出：
 {
   "title": "深度长文标题",
-  "content_md": "完整 Markdown 正文（按四章结构：技术原理白盒拆解→替代人工量化分析→实战接入方案→3个月演进预测，核心章节≥500字，含≥40行可运行Python代码）",
+  "content_md": "完整 Markdown 正文（按四章结构：技术原理白盒拆解→替代人工量化分析→实战接入方案→3个月演进预测，核心章节≥800字，含≥40行可运行Python代码）",
   "tg_summary": "Telegram 精简推送（50字内，含核心数据点+行动引导动词）"
 }
 
@@ -193,7 +189,7 @@ content_md 严格按以下四章结构：
 - 每个场景的时间/成本节省量化估算
 
 ## 三、Easton 实战接入方案（核心章节，≥500 字）
-- ≥40 行可运行 Python 代码（含错误处理+日志）
+- ≥50 行可运行 Python 代码（含错误处理+日志）
 - API 关键参数、费用预估、常见坑点
 
 ## 四、未来 3 个月演进预测
@@ -237,10 +233,10 @@ content_md 严格按以下四章结构：
   "deep_dive": null
 }
 
-如果今天资料库中有一条信息具备深度拆解价值（模式独特、有本土化套利空间），则 deep_dive 字段输出：
+优先深度拆解——只要资料库中有话题具备分析价值（模式独特、有本土化套利空间），则 deep_dive 字段输出：
 {
   "title": "深度长文标题",
-  "content_md": "完整 Markdown 正文（按四章结构：海外模式全景还原→中国缺席底层原因→本土化降维打击方案→窗口期与风险预案，核心章节≥500字，含冷启动策略）",
+  "content_md": "完整 Markdown 正文（按四章结构：海外模式全景还原→中国缺席底层原因→本土化降维打击方案→窗口期与风险预案，核心章节≥800字，含冷启动策略）",
   "tg_summary": "Telegram 精简推送（50字内，含核心数据点+行动引导动词）"
 }
 
@@ -314,10 +310,10 @@ content_md 严格按以下四章结构：
   "deep_dive": null
 }
 
-如果今天资料库中有一条信息具备深度拆解价值（影响深远、需要决策级分析），则 deep_dive 字段输出：
+优先深度拆解——只要资料库中有话题具备分析价值（影响深远、需要决策级分析），则 deep_dive 字段输出：
 {
   "title": "深度长文标题",
-  "content_md": "完整 Markdown 正文（按四章结构：事件本质与噪音剥离→巨头博弈棋局→独立开发者冲击链→3个月对冲行动清单，核心章节≥500字）",
+  "content_md": "完整 Markdown 正文（按四章结构：事件本质与噪音剥离→巨头博弈棋局→独立开发者冲击链→3个月对冲行动清单，核心章节≥800字）",
   "tg_summary": "Telegram 精简推送（50字内，含核心数据点+行动引导动词）"
 }
 
@@ -401,7 +397,7 @@ content_md 严格按以下四章结构：
 如果今天有值得深度拆解的出海话题（中国独有模式、海外稀缺机会），则 deep_dive 字段输出：
 {
   "title": "深度长文标题",
-  "content_md": "完整 Markdown 正文（按四章结构：中国模式全景还原→海外缺口分析→出海落地路径→风险与合规，核心章节≥500字）",
+  "content_md": "完整 Markdown 正文（按四章结构：中国模式全景还原→海外缺口分析→出海落地路径→风险与合规，核心章节≥800字）",
   "tg_summary": "Telegram 精简推送（50字内，含核心数据点+行动引导动词）"
 }
 
@@ -478,7 +474,7 @@ content_md 严格按以下四章结构：
 如果今天有值得深度拆解的开发者工具/平台/变现话题，则 deep_dive 字段输出：
 {
   "title": "深度长文标题",
-  "content_md": "完整 Markdown 正文（按四章结构：技术白盒拆解→变现路径分析→Easton实战接入→3个月红利窗口，核心章节≥500字，含≥40行可运行代码）",
+  "content_md": "完整 Markdown 正文（按四章结构：技术白盒拆解→变现路径分析→Easton实战接入→3个月红利窗口，核心章节≥800字，含≥40行可运行代码）",
   "tg_summary": "Telegram 精简推送（50字内，含核心数据点+行动引导动词）"
 }
 
@@ -737,11 +733,13 @@ def deep_dive_worker(category_name, config):
 {config['deep_dive_prompt']}
 
 你的输出必须是纯净 JSON 对象（不要代码块外壳），包含 briefing 和 deep_dive 字段。
-如果今天没有值得深度长文的话题，deep_dive 填 null。
+优先输出深度长文——只要话题有足够的分析价值就值得撰写，不要过于保守。仅当资料库确实没有任何值得展开的话题时才将 deep_dive 设为 null。
 
 硬性约束：
 - 所有 title 字段严格不超过 10 个中文字（微信标题 32 字节限制，1 中文≈3 字节）
 - 全文零 emoji，零网络用语，严谨专业学术商业分析风格
+- 深度长文核心章节不少于 800 字，代码不少于 50 行
+- 深度长文必须包含对独立开发者的具体影响与可执行方案
 - 个人方案优先考虑零成本或低成本路径
 - tg_summary 不超过 50 字，tg_brief 不超过 200 字
 """
@@ -804,7 +802,7 @@ def save_deep_dive(category_name, config, data):
     return file_name
 
 
-def save_aggregated_briefing(briefings_by_cat, slot, slot_cn):
+def save_aggregated_briefing(briefings_by_cat):
     """聚合所有引擎的快讯为一篇，按 topic 分组"""
     if not briefings_by_cat:
         return None
@@ -814,15 +812,15 @@ def save_aggregated_briefing(briefings_by_cat, slot, slot_cn):
     posts_dir = os.path.join("content", "posts", "daily-briefing")
     os.makedirs(posts_dir, exist_ok=True)
 
-    file_name = os.path.join(posts_dir, f"briefing-{date_slug}-{slot}.md")
+    file_name = os.path.join(posts_dir, f"briefing-{date_slug}.md")
     md = f"---\n"
-    md += f"title: '每日快讯 · {slot_cn}版'\n"
+    md += f"title: '每日快讯'\n"
     md += f"date: {now.strftime('%Y-%m-%dT%H:%M:%S%z')}\n"
     md += f"categories: ['daily-briefing']\n"
-    md += f"tags: ['快讯', '{slot_cn}', '每日汇总']\n"
+    md += f"tags: ['快讯', '每日汇总']\n"
     md += f"draft: false\n"
     md += f"---\n\n"
-    md += f"> {now.strftime('%Y年%m月%d日')} · {slot_cn}版 · {sum(len(v) for v in briefings_by_cat.values())} 条情报\n\n"
+    md += f"> {now.strftime('%Y年%m月%d日')} · {sum(len(v) for v in briefings_by_cat.values())} 条情报\n\n"
 
     for cat_name, items in briefings_by_cat.items():
         config = AGENTS.get(cat_name, {})
@@ -877,13 +875,13 @@ def _tg_post(category_name, msg):
         return False
 
 
-def send_aggregated_briefing_tg(briefings_by_cat, slot_cn):
-    """推送聚合快讯到 Telegram 主频道"""
+def send_aggregated_briefing_tg(briefings_by_cat):
+    """推送聚合快讯到 Telegram 独立 Topic"""
     total_items = sum(len(v) for v in briefings_by_cat.values())
     if total_items == 0:
         return 0
 
-    msg = f"📋 **每日快讯 · {slot_cn}版**\n"
+    msg = f"📋 **每日快讯**\n"
     msg += f"{datetime.now().strftime('%Y.%m.%d')} | {total_items} 条情报\n"
     msg += "━━━━━━━━━━━━━━\n\n"
 
@@ -901,7 +899,7 @@ def send_aggregated_briefing_tg(briefings_by_cat, slot_cn):
 
     msg += "━━━━━━━━━━━━━━\n"
     msg += f"详情: {SITE_URL}"
-    return 1 if _tg_post("", msg) else 0
+    return 1 if _tg_post("_briefing", msg) else 0
 
 
 def send_deep_dive_tg(category_name, config, data):
@@ -921,7 +919,7 @@ def send_deep_dive_tg(category_name, config, data):
 # 主流程
 # ============================================================
 if __name__ == "__main__":
-    print(f"🚀 启动 Easton 满血外脑 · {SLOT_CN}版")
+    print(f"🚀 启动 Easton 满血外脑")
     print(f"   📡 RSS 源: {sum(len(c['feeds']) for c in AGENTS.values())}")
     print(f"   🤖 模型: DeepSeek V4 Pro (deepseek-chat)")
     print()
@@ -964,10 +962,10 @@ if __name__ == "__main__":
     # 聚合所有快讯为一篇
     total_briefings = 1 if all_briefings else 0
     if all_briefings:
-        save_aggregated_briefing(all_briefings, SLOT, SLOT_CN)
-        total_tg += send_aggregated_briefing_tg(all_briefings, SLOT_CN)
+        save_aggregated_briefing(all_briefings)
+        total_tg += send_aggregated_briefing_tg(all_briefings)
 
     print()
-    print(f"🏁 {SLOT_CN}版执行完毕。")
+    print(f"🏁 执行完毕。")
     print(f"   📊 聚合快讯: {total_briefings} | 深度长文: {total_deep_dives} | TG推送: {total_tg}")
     print(f"   📡 Feed: {_FEED_OK} 成功 / {_FEED_FAIL} 失败")
