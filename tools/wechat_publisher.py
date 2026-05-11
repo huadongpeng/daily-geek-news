@@ -240,7 +240,6 @@ def md_to_wechat_html(md_text, article_url=""):
     微信支持的标签：section, p, br, strong, em, h1-h6,
     ul, ol, li, blockquote, pre, code, a, img, table 系列
     """
-    import re
 
     html = md_text
 
@@ -339,10 +338,10 @@ def md_to_wechat_html(md_text, article_url=""):
         f'<section style="background:linear-gradient(135deg,#1a1a2e 0%,#16213e 100%);'
         f'padding:20px 16px;margin-bottom:24px;border-radius:8px;text-align:center;">'
         f'<p style="color:#e0e0e0;font-size:12px;margin:0 0 6px;">'
-        f'📡 Easton 跨国智库 · 每日海外情报深度解读</p>'
+        f'Easton 跨国智库 · 每日海外情报深度解读</p>'
         f'<p style="margin:0;">'
         f'<a href="{SITE_URL}" style="color:#4fc3f7;font-size:13px;text-decoration:none;">'
-        f'🌐 {SITE_URL.replace("https://", "")}</a>'
+        f'{SITE_URL.replace("https://", "")}</a>'
         f'</p></section>'
     )
     html = header + html
@@ -352,19 +351,19 @@ def md_to_wechat_html(md_text, article_url=""):
         f'<hr style="border:none;border-top:1px solid #e8e8e8;margin:32px 0 16px;">'
         f'<section style="background:#f8f9fa;padding:16px;border-radius:8px;text-align:center;">'
         f'<p style="margin:0 0 8px;font-size:13px;color:#666;">'
-        f'📡 本文由 DeepSeek V4 Pro 自动生成 · Easton 跨国智库</p>'
+        f'本文由 DeepSeek V4 Pro 自动生成 · Easton 跨国智库</p>'
         f'<p style="margin:0 0 4px;font-size:14px;">'
-        f'💰 套利雷达 · 🤖 AI 前沿 · 🌍 跨国脑洞 · 📉 宏观风向</p>'
+        f'套利雷达 | AI 前沿 | 跨国脑洞 | 宏观风向</p>'
     )
     if article_url:
         footer += (
             f'<p style="margin:8px 0 0;">'
             f'<a href="{article_url}" style="color:#1890ff;font-size:14px;text-decoration:none;font-weight:bold;">'
-            f'🔗 在网站上阅读完整文章（含代码高亮和目录导航）</a></p>'
+            f'在网站上阅读完整文章（含代码高亮和目录导航）</a></p>'
         )
     footer += (
         f'<p style="margin:8px 0 0;font-size:12px;color:#999;">'
-        f'📧 hdop1993@gmail.com | 每日自动更新，欢迎收藏</p>'
+        f'hdop1993@gmail.com | 每日自动更新</p>'
         f'</section>'
     )
     html += footer
@@ -478,13 +477,12 @@ def process_article(token, article, args):
     html_content = md_to_wechat_html(body, article_url)
 
     # 提取摘要
-    import re as regex_lib
-    plain_text = regex_lib.sub(r'<[^>]+>', '', html_content)
+    plain_text = re.sub(r'<[^>]+>', '', html_content)
     digest = plain_text[:WECHAT_DIGEST_MAX].strip()
 
     # 构建文章数据
     article_data = {
-        "title": title[:50],
+        "title": title,
         "author": WECHAT_AUTHOR,
         "digest": digest,
         "content": html_content,
@@ -579,12 +577,18 @@ def push_covers_to_git():
     try:
         import subprocess
         repo_dir = str(GIT_REPO_DIR)
-        covers_glob = str(STATIC_COVERS_DIR / "*.png")
-        # 检查是否有新封面图
-        result = subprocess.run(
+        subprocess.run(
             ["git", "-C", repo_dir, "add", "static/images/covers/"],
             capture_output=True, text=True
         )
+        # 仅在有变更时才提交和推送
+        diff_check = subprocess.run(
+            ["git", "-C", repo_dir, "diff", "--cached", "--quiet"],
+            capture_output=True
+        )
+        if diff_check.returncode == 0:
+            print("   ⏭️ 无新封面图，跳过推送")
+            return
         subprocess.run(
             ["git", "-C", repo_dir, "commit", "-m", "Auto-generated cover images"],
             capture_output=True, text=True

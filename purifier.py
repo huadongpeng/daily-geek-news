@@ -1,4 +1,5 @@
 import os
+import glob
 import json
 import feedparser
 import requests
@@ -374,22 +375,28 @@ def fetch_and_augment(feeds):
 # 核心：快讯 + 可选深度长文双轨引擎
 # ============================================================
 def get_recent_titles(category_name, days=3):
-    """读取近 N 天已生成的文章标题，用于去重"""
-    import glob as glob_mod
+    """读取近 N 天文章标题用于去重（仅解析 frontmatter 前 32 行）"""
     titles = []
     posts_dir = os.path.join("content", "posts", category_name)
-    if os.path.isdir(posts_dir):
-        for md_file in sorted(glob_mod.glob(os.path.join(posts_dir, "*.md")), reverse=True):
-            try:
-                with open(md_file, "r", encoding="utf-8") as f:
-                    for line in f:
+    if not os.path.isdir(posts_dir):
+        return titles
+    for md_file in sorted(glob.glob(os.path.join(posts_dir, "*.md")), reverse=True):
+        try:
+            with open(md_file, "r", encoding="utf-8") as f:
+                frontmatter = "".join(f.readline() for _ in range(32))
+            if frontmatter.startswith("---"):
+                parts = frontmatter.split("---", 2)
+                if len(parts) >= 2:
+                    for line in parts[1].split("\n"):
                         if line.startswith("title:"):
-                            titles.append(line.split("title:", 1)[1].strip().strip("'\""))
+                            raw = line.split("title:", 1)[1].strip().strip("'\"")
+                            raw = re.sub(r"^[^a-zA-Z0-9一-鿿#]+\s*", "", raw)
+                            titles.append(raw)
                             break
-            except Exception:
-                pass
-            if len(titles) >= days * 5:  # 每天最多 5 篇（快讯+长文），3 天最多 15 篇
-                break
+        except Exception:
+            pass
+        if len(titles) >= days * 5:
+            break
     return titles
 
 
@@ -420,14 +427,15 @@ def deep_dive_worker(category_name, config):
 【深度长文任务——仅在资料库有足够深度的话题时生成】
 {config['deep_dive_prompt']}
 
-你的输出必须是纯净 JSON 对象（不要 ```json 外壳），包含 briefing 和 deep_dive 两个字段。
-如果今天没有值得深度长文的话题，deep_dive 字段填 null。
+你的输出必须是纯净 JSON 对象（不要代码块外壳），包含 briefing 和 deep_dive 字段。
+如果今天没有值得深度长文的话题，deep_dive 填 null。
+全文禁止使用 emoji 表情符号，语气严谨专业，数据驱动，避免口语化和感叹号。
 """
 
     payload = {
         "model": "deepseek-chat",
         "messages": [
-            {"role": "system", "content": "你是一个严格输出标准 JSON 格式的跨国智库分析引擎。所有个人方案必须优先考虑零成本或低成本路径。"},
+            {"role": "system", "content": "你是严谨专业的跨国商业智库分析引擎，严格输出标准 JSON。所有输出必须：零 emoji 表情符号、零网络用语、数据驱动、学术商业分析风格。个人方案必须优先考虑零成本或低成本路径。"},
             {"role": "user", "content": full_prompt + dedup_hint + "\n\n【资料库】\n" + context}
         ]
     }
@@ -469,7 +477,7 @@ def save_to_hugo(category_name, config, data):
     if briefing:
         file_name = os.path.join(posts_dir, f"briefing-{date_slug}.md")
         md = f"---\n"
-        md += f"title: '{config['emoji']} {briefing.get('title', '当日快讯')}'\n"
+        md += f"title: '{briefing.get('title', '当日快讯')}'\n"
         md += f"date: {hugo_date}\n"
         md += f"categories: ['{cat_lower}']\n"
         md += f"tags: ['快讯', '每日汇总']\n"
@@ -500,7 +508,7 @@ def save_to_hugo(category_name, config, data):
     if deep_dive and deep_dive.get("title") and deep_dive.get("content_md"):
         file_name = os.path.join(posts_dir, f"deep-dive-{date_slug}.md")
         md = f"---\n"
-        md += f"title: '{config['emoji']} {deep_dive['title']}'\n"
+        md += f"title: '{deep_dive['title']}'\n"
         md += f"date: {hugo_date}\n"
         md += f"categories: ['{cat_lower}']\n"
         md += f"tags: ['深度长文', '深度分析']\n"
@@ -522,25 +530,47 @@ def save_to_hugo(category_name, config, data):
 # ============================================================
 # Telegram 推送 —— 内容丰满版
 # ============================================================
+def _tg_post(category_name, msg):
+    """发送单条 Telegram 消息到指定 Topic"""
+    try:
+        chat_id_int = int(TG_CHAT_ID.strip())
+    except ValueError:
+        chat_id_int = TG_CHAT_ID.strip()
+
+    payload = {"chat_id": chat_id_int, "text": msg, "parse_mode": "Markdown",
+                "disable_web_page_preview": False}
+    thread_id = THREAD_IDS.get(category_name)
+    if thread_id and thread_id.strip():
+        payload["message_thread_id"] = int(thread_id.strip())
+
+    try:
+        resp = requests.post(
+            f"https://api.telegram.org/bot{TG_BOT_TOKEN}/sendMessage",
+            json=payload, timeout=15
+        )
+        if resp.status_code == 200:
+            print(f"   ✅ [{category_name}] Telegram 推送成功")
+            return True
+        else:
+            err_text = resp.text[:200] if resp.text else "无返回"
+            print(f"   ❌ [{category_name}] Telegram 推送失败: {resp.status_code} {err_text}")
+            return False
+    except Exception as e:
+        print(f"   ❌ [{category_name}] Telegram 推送异常: {e}")
+        return False
+
+
 def send_to_telegram(category_name, config, data):
     """推送到 Telegram 群组指定 Topic"""
-    chat_id = TG_CHAT_ID.strip()
-    try:
-        chat_id_int = int(chat_id)
-    except ValueError:
-        chat_id_int = chat_id
-
     briefing = data.get("briefing")
     deep_dive = data.get("deep_dive")
     has_deep = deep_dive and deep_dive.get("title") and deep_dive.get("content_md")
     sent_count = 0
 
-    # --- 推送快讯 ---
     if briefing:
         items = briefing.get("items", [])
-        # 构建丰满的快讯消息
-        msg = f"{config['emoji']} **{config['title_cn']}** · 每日快讯\n"
-        msg += f"📅 {datetime.now().strftime('%Y.%m.%d')}\n"
+        msg = f"**{config['title_cn']}** 每日快讯\n"
+        msg += f"{datetime.now().strftime('%Y.%m.%d')}\n"
         msg += "━━━━━━━━━━━━━━\n\n"
 
         for i, item in enumerate(items, 1):
@@ -551,61 +581,25 @@ def send_to_telegram(category_name, config, data):
             za = item.get('zero_cost_angle', '')
 
             msg += f"**{i}. {title}**\n"
-            msg += f"📎 {source}\n"
-            msg += f"📌 {one_liner}\n"
+            msg += f"  {source} | {one_liner}\n"
             if why:
-                msg += f"🔍 {why}\n"
+                msg += f"  {why}\n"
             if za and za not in ('暂无可执行角度', '待观察', '持续关注'):
-                msg += f"💡 {za}\n"
+                msg += f"  > {za}\n"
             msg += "\n"
 
         msg += "━━━━━━━━━━━━━━\n"
-        msg += f"🌐 详情: {SITE_URL}"
+        msg += f"详情: {SITE_URL}"
+        if _tg_post(category_name, msg):
+            sent_count += 1
 
-        payload = {"chat_id": chat_id_int, "text": msg, "parse_mode": "Markdown",
-                    "disable_web_page_preview": False}
-
-        thread_id = THREAD_IDS.get(category_name)
-        if thread_id and thread_id.strip():
-            payload["message_thread_id"] = int(thread_id.strip())
-
-        tgt_url = f"https://api.telegram.org/bot{TG_BOT_TOKEN}/sendMessage"
-        try:
-            resp = requests.post(tgt_url, json=payload, timeout=15)
-            if resp.status_code == 200:
-                print(f"   ✅ [{category_name}] 快讯推送成功")
-                sent_count += 1
-            else:
-                err_text = resp.text[:200] if resp.text else "无返回"
-                print(f"   ❌ [{category_name}] 快讯推送失败: {resp.status_code} {err_text}")
-        except Exception as e:
-            print(f"   ❌ [{category_name}] 快讯推送异常: {e}")
-
-    # --- 推送深度长文（单独一条消息） ---
     if has_deep:
-        msg = f"{config['emoji']} **[{config['title_cn']}] 深度长文**\n\n"
-        msg += f"🔥 **{deep_dive['title']}**\n\n"
-        msg += f"🧠 {deep_dive.get('tg_summary', '深度分析已发布')}\n\n"
-        msg += f"🌐 阅读全文: {SITE_URL}/categories/{category_name.lower()}/"
-
-        payload = {"chat_id": chat_id_int, "text": msg, "parse_mode": "Markdown",
-                    "disable_web_page_preview": False}
-
-        thread_id = THREAD_IDS.get(category_name)
-        if thread_id and thread_id.strip():
-            payload["message_thread_id"] = int(thread_id.strip())
-
-        tgt_url = f"https://api.telegram.org/bot{TG_BOT_TOKEN}/sendMessage"
-        try:
-            resp = requests.post(tgt_url, json=payload, timeout=15)
-            if resp.status_code == 200:
-                print(f"   ✅ [{category_name}] 深度长文推送成功")
-                sent_count += 1
-            else:
-                err_text = resp.text[:200] if resp.text else "无返回"
-                print(f"   ❌ [{category_name}] 深度长文推送失败: {resp.status_code} {err_text}")
-        except Exception as e:
-            print(f"   ❌ [{category_name}] 深度长文推送异常: {e}")
+        msg = f"**[{config['title_cn']}] 深度长文**\n\n"
+        msg += f"**{deep_dive['title']}**\n\n"
+        msg += f"{deep_dive.get('tg_summary', '深度分析已发布')}\n\n"
+        msg += f"阅读全文: {SITE_URL}/categories/{category_name.lower()}/"
+        if _tg_post(category_name, msg):
+            sent_count += 1
 
     return sent_count
 
