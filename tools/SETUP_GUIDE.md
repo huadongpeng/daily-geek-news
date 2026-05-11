@@ -78,15 +78,15 @@ cd daily-geek-news
 # 创建 .env 文件（不会被 Git 提交）
 cat > /opt/daily-geek-news/tools/.env << 'EOF'
 # === 微信公众号 ===
-WECHAT_APPID=wx你的AppID
-WECHAT_APPSECRET=你的AppSecret
-WECHAT_AUTHOR=Easton Hua
+export WECHAT_APPID="wx你的AppID"
+export WECHAT_APPSECRET="你的AppSecret"
+export WECHAT_AUTHOR="Easton Hua"
 
 # === 通义万相封面图 ===
-DASHSCOPE_API_KEY=sk-你的百炼APIKey
+export DASHSCOPE_API_KEY="sk-你的百炼APIKey"
 
 # === Git 仓库路径（一般不用改） ===
-GIT_REPO_DIR=/opt/daily-geek-news
+export GIT_REPO_DIR="/opt/daily-geek-news"
 EOF
 
 # 设置权限（保护密钥）
