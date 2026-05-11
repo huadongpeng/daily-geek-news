@@ -5,94 +5,83 @@ import requests
 import re
 from datetime import datetime
 import concurrent.futures
+from duckduckgo_search import DDGS # 引入免费且免梯子的搜索引擎
 
 # 1. 环境变量加载
 DEEPSEEK_API_KEY = os.environ.get("DEEPSEEK_API_KEY")
 TG_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
 TG_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID")
-# 如果你在 TG 开启了 Topics，可以在环境变量里配置对应的 Thread ID，目前默认发到主频道
-# TG_THREAD_ARBITRAGE = os.environ.get("TG_THREAD_ARBITRAGE", "") 
 
-# 2. 四大引擎的独立配置 (数据源 + 专家 Prompt)
+THREAD_IDS = {
+    "Arbitrage-Radar": os.environ.get("TG_THREAD_ARBITRAGE"),
+    "AI-Frontier": os.environ.get("TG_THREAD_AI"),
+    "Cross-Border-Insights": os.environ.get("TG_THREAD_CROSS"),
+    "Macro-Events": os.environ.get("TG_THREAD_MACRO")
+}
+
+# 2. 四大引擎独立配置
 AGENTS = {
     "Arbitrage-Radar": {
         "title_cn": "零库存套利雷达",
         "emoji": "💰",
-        "feeds": [
-            "https://www.reddit.com/r/SaaS/top/.rss?t=day",
-            "https://feed.indiehackers.com/forum/rss"
-        ],
-        "prompt": """你是一位年入千万的硅谷黑客增长专家。请深度阅读以下最新资讯。
-挑选出 1 个最具有'低成本、零库存、自动化'套利潜力的项目或商业模式。
-输出深度长文：
-1. 拆解其底层搞钱逻辑（流量从哪来？凭什么收费？）。
-2. 分析其在中国的平替或时间差套利空间。
-3. 为 Easton（精通全栈的独立开发者）写一份详尽的、能在本周末跑通的 MVP 代码/业务落地测试清单。"""
+        "feeds": ["https://www.reddit.com/r/SaaS/top/.rss?t=day", "https://feed.indiehackers.com/forum/rss"],
+        "prompt": "你是一位顶级商业架构师。请拆解一个低成本、零库存的自动化套利项目。必须包含：底层逻辑、中国市场映射（如微信/小红书/闲鱼）、以及一份具体的 Easton 午休期 MVP 落地代码测试方案。"
     },
-    
     "AI-Frontier": {
         "title_cn": "AI 生产力前沿",
         "emoji": "🤖",
-        "feeds": [
-            "https://news.ycombinator.com/rss", # 提取 HN 中的 AI 趋势
-            "https://www.technologyreview.com/topic/artificial-intelligence/feed/"
-        ],
-        "prompt": """你是一位顶级的 AI 架构师。请从以下资讯中挑选 1 个最具突破性的 AI 模型、API 工具或自动化 Agent 工作流。
-输出深度长文：
-1. 用极客视角的底层硬核原理解释这个技术突破。
-2. 它能如何替代目前繁琐的人工操作？
-3. Easton（全栈开发者）应该如何通过 Python 或 Node.js 接入该技术来提升自己每天的研发效率或构建新的 SaaS？"""
+        "feeds": ["https://news.ycombinator.com/rss"],
+        "prompt": "你是顶级 AI 架构师。请分析一个最新突破性的 AI 工具或 Agent 工作流。必须包含：硬核原理解释、能替代哪些人工操作、以及 Easton 如何用 Python 接入该技术的实战指南。"
     },
-    
     "Cross-Border-Insights": {
         "title_cn": "跨国商业脑洞",
         "emoji": "🌍",
-        "feeds": [
-            "https://www.reddit.com/r/Entrepreneur/top/.rss?t=day",
-            "https://www.wired.com/feed/rss"
-        ],
-        "prompt": """你是一位深谙中美商业文化差异的战略观察家。请挑选 1 个国外极其火爆、脑洞大开，但在国内鲜为人知的商业实践或现象。
-输出深度长文：
-1. 深度还原这个商业脑洞的兴起背景。
-2. 国内外行情的根本差异在哪里？为什么国内没人做？
-3. Easton 能否利用信息差，在小红书、闲鱼或微信生态做一个降维打击的本土化版本？"""
+        "feeds": ["https://www.reddit.com/r/Entrepreneur/top/.rss?t=day", "https://www.wired.com/feed/rss"],
+        "prompt": "你是跨国商业观察家。请深挖一个国外火爆但国内少见的商业脑洞。必须包含：背景还原、为什么国内没有（文化/生态差异）、Easton 如何在国内做本土化降维打击套利。"
     },
-    
     "Macro-Events": {
         "title_cn": "宏观局势风向标",
         "emoji": "📉",
-        "feeds": [
-            "https://techcrunch.com/feed/"
-        ],
-        "prompt": """你是一位冷酷的全球宏观对冲基金经理。请从资讯中挑选 1 个可能对全球科技产业链、经济周期或互联网格局产生重大影响的事件。
-输出深度长文：
-1. 剥离媒体噪音，直击事件背后的真实资金流向或大厂战略意图。
-2. 这件事对底层的独立开发者或小微创业者是利好还是毁灭性打击？
-3. Easton 在未来 3-6 个月内应该采取什么风险对冲动作？"""
+        "feeds": ["https://techcrunch.com/feed/"],
+        "prompt": "你是宏观对冲基金经理。请分析一个重大全球科技或经济事件。必须包含：剥离噪音的巨头战略/资金流向真相、对底层独立开发者的冲击分析、Easton 未来3个月的风险对冲动作。"
     }
 }
 
-def fetch_category_feeds(feeds):
-    """提取单个分类下的 RSS 资讯"""
-    articles = []
+def auto_search_context(query):
+    """【新功能】主动出击：调用 DuckDuckGo 搜索补充深度背景"""
+    try:
+        print(f"   🔍 正在全网主动检索深度背景: {query}...")
+        results = DDGS().text(query, max_results=3)
+        context = ""
+        for r in results:
+            context += f"-[外网检索] {r['title']}: {r['body']}\n"
+        return context
+    except Exception as e:
+        print(f"   ⚠️ 检索失败，退回纯 RSS 模式: {e}")
+        return ""
+
+def fetch_and_augment(feeds):
+    """抓取 RSS 并触发主动搜索"""
+    raw_articles = []
+    top_title = ""
     for url in feeds:
         try:
             feed = feedparser.parse(url)
-            for entry in feed.entries[:5]: # 增加上下文深度
-                desc = re.sub('<[^<]+>', '', entry.description if hasattr(entry, 'description') else "")[:300]
-                articles.append(f"标题: {entry.title}\n链接: {entry.link}\n摘要: {desc}")
+            for entry in feed.entries[:3]:
+                desc = re.sub('<[^<]+>', '', entry.description if hasattr(entry, 'description') else "")[:200]
+                raw_articles.append(f"标题: {entry.title}\n摘要: {desc}")
+                if not top_title: top_title = entry.title # 拿最火的一条去外网深度搜索
         except Exception:
-            pass
-    return "\n\n".join(articles)
+            continue
+            
+    base_context = "\n".join(raw_articles)
+    deep_context = auto_search_context(top_title) if top_title else ""
+    return base_context + "\n\n【主动全网检索扩充资料】:\n" + deep_context
 
 def deep_dive_worker(category_name, config):
-    """【核心】单线程工作节点：抓取 -> 深度思考 -> 结构化返回"""
-    print(f"[{category_name}] 正在池化数据并启动 DeepSeek 推理专线...")
-    raw_content = fetch_category_feeds(config['feeds'])
+    print(f"[{category_name}] 数据就绪，唤醒 DeepSeek-Reasoner (R1) 进行深度思考...")
+    context = fetch_and_augment(config['feeds'])
     
-    if not raw_content.strip():
-        return category_name, None
-
     url = "https://api.deepseek.com/chat/completions"
     headers = {
         "Content-Type": "application/json",
@@ -103,79 +92,82 @@ def deep_dive_worker(category_name, config):
     当前时间是 {datetime.now().strftime("%Y年%m月%d日")}。
     {config['prompt']}
     
-    请严格输出 JSON 格式，包含：
-    - 'title': 文章标题（极客风，引人入胜）
-    - 'content_md': 深度长文的正文（纯 Markdown 格式，至少 800 字，按你角色要求的分点详细展开，包含代码思路或深入分析）
-    - 'tg_summary': 用于 Telegram 推送的 100 字极简导读。
+    你的输出必须是纯净的 JSON 对象，千万不要加 ```json 代码块外壳。必须包含以下字段：
+    - "title": 文章标题
+    - "content_md": 深度长文正文（严格 Markdown，层层递进，必须包含代码思路或深入分析）
+    - "tg_summary": 用于 Telegram 的 100 字一句话极简导读。
     """
     
     payload = {
-        "model": "deepseek-chat",
+        "model": "deepseek-reasoner", # 启用最强的 R1 推理模型
         "messages": [
-            {"role": "system", "content": "你是一个严格输出标准 JSON 格式的资深商业与技术极客。"},
-            {"role": "user", "content": full_prompt + "\n\n资料库：\n" + raw_content}
-        ],
-        "response_format": {"type": "json_object"},
-        "temperature": 0.7 # 稍微调高温度，获取更有创造力的深度思考
+            {"role": "system", "content": "你是一个严格输出标准 JSON 格式的战略分析机。"},
+            {"role": "user", "content": full_prompt + "\n\n【资料库】\n" + context}
+        ]
+        # 注意：DeepSeek-Reasoner 有时不支持 response_format，我们依靠强力 Prompt 和正则解析
     }
     
     try:
-        response = requests.post(url, headers=headers, json=payload, timeout=120)
+        response = requests.post(url, headers=headers, json=payload, timeout=200) # R1 思考需要时间，放宽至200秒
         response.raise_for_status()
-        raw_json = response.json()['choices'][0]['message']['content']
-        clean_json = re.sub(r'^```json\n|```$', '', raw_json.strip(), flags=re.MULTILINE)
-        return category_name, json.loads(clean_json)
+        
+        # DeepSeek-Reasoner 的返回包含思维过程 (reasoning_content) 和 最终结果 (content)
+        final_text = response.json()['choices'][0]['message']['content']
+        
+        # 强力洗脱 Markdown 标记，提取纯 JSON
+        json_match = re.search(r'\{.*\}', final_text, re.DOTALL)
+        if json_match:
+            return category_name, json.loads(json_match.group(0))
+        else:
+            raise ValueError("大模型未返回有效的 JSON 结构")
+            
     except Exception as e:
-        print(f"[{category_name}] 推理失败: {e}")
+        print(f"[{category_name}] R1 推理失败: {e}")
         return category_name, None
 
 def save_to_hugo(category_name, config, data):
-    """将单篇深度长文落盘为独立的 Hugo Markdown 文件"""
+    """落盘至 Hugo"""
     now = datetime.now()
     hugo_date = now.strftime('%Y-%m-%dT%H:%M:%S%z')
     date_slug = now.strftime("%Y-%m-%d")
     
     os.makedirs(os.path.join("content", "posts", category_name), exist_ok=True)
     file_name = os.path.join("content", "posts", category_name, f"deep-dive-{date_slug}.md")
+    cat_lower = category_name.lower()
     
     md = f"---\n"
     md += f"title: '{config['emoji']} {data['title']}'\n"
     md += f"date: {hugo_date}\n"
-    md += f"categories: ['{category_name}']\n" # 自动打上 Hugo 标签
+    md += f"categories: ['{cat_lower}']\n"
     md += f"draft: false\n"
     md += f"---\n\n"
     md += data['content_md']
     
     with open(file_name, "w", encoding="utf-8") as f:
         f.write(md)
-    print(f"✅ {category_name} 深度文章已生成: {file_name}")
 
 def send_to_telegram(category_name, config, data):
-    """向 Telegram 发送独立的导读卡片"""
+    """投递到特定的 Topic 房间"""
     msg = f"{config['emoji']} **[{config['title_cn']}]**\n\n"
     msg += f"🔥 **{data['title']}**\n\n"
-    msg += f"🧠 **核心导读**: {data['tg_summary']}\n\n"
-    msg += f"🌐 详情请移步雷达站深度阅读。"
+    msg += f"🧠 **深度思考引擎导读**: {data['tg_summary']}\n\n"
+    msg += f"🌐 详情已同步至 Easton 雷达站。"
     
-    payload = {
-        "chat_id": TG_CHAT_ID, 
-        "text": msg, 
-        "parse_mode": "Markdown"
-    }
-    # 如果配置了 thread_id，就定向发送到特定 Topic
-    # thread_id = os.environ.get(f"TG_THREAD_{category_name.replace('-', '_').upper()}")
-    # if thread_id: payload["message_thread_id"] = thread_id
+    payload = {"chat_id": TG_CHAT_ID, "text": msg, "parse_mode": "Markdown"}
+    
+    # 投递至特定房间
+    thread_id = THREAD_IDS.get(category_name)
+    if thread_id:
+        payload["message_thread_id"] = int(thread_id)
         
-    url = f"https://api.telegram.org/bot{TG_BOT_TOKEN}/sendMessage"
+    url = f"[https://api.telegram.org/bot](https://api.telegram.org/bot){TG_BOT_TOKEN}/sendMessage"
     requests.post(url, json=payload)
 
 if __name__ == "__main__":
-    print("🚀 启动 Easton 多线程并发智库引擎...")
+    print("🚀 启动 Easton 满血外脑：RAG主动检索 + R1 深度推理并发引擎...")
     
-    # 核心：使用多线程并发执行四大领域的深度拉取与推理
     with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:
         future_to_category = {executor.submit(deep_dive_worker, cat, conf): cat for cat, conf in AGENTS.items()}
-        
         for future in concurrent.futures.as_completed(future_to_category):
             cat = future_to_category[future]
             try:
@@ -186,4 +178,4 @@ if __name__ == "__main__":
             except Exception as exc:
                 print(f"❌ {cat} 引擎崩溃: {exc}")
                 
-    print("🏁 今日全领域深度流水线执行完毕。数据已落盘，随时准备触发 Hugo 编译。")
+    print("🏁 今日流水线执行完毕。")
