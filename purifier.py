@@ -433,32 +433,37 @@ def _extract_json(text):
 
     # 逐个尝试解析 + 递增修复
     errors = []
-    for cand in candidates[-3:]:  # 只试最后 3 个（最大的）候选
-        for attempt in range(5):
+    for cand in candidates[-3:]:
+        for attempt in range(7):
             try:
                 return json.loads(cand)
             except json.JSONDecodeError as e:
                 errors.append(str(e))
-                # 递增修复
                 if attempt == 0:
-                    cand = re.sub(r',\s*}', '}', cand)  # 尾随逗号 }
-                    cand = re.sub(r',\s*]', ']', cand)  # 尾随逗号 ]
+                    # 尾随逗号
+                    cand = re.sub(r',\s*([}\]])', r'\1', cand)
                 elif attempt == 1:
-                    # 修复缺失的逗号: "xxx"\s*\n\s*"yyy" -> "xxx",\n"yyy"
-                    cand = re.sub(r'"\s*\n\s*"', '",\n"', cand)
+                    # 无引号属性名: {word: -> {“word”:
+                    cand = re.sub(r'([\{\s,])([a-zA-Z_][a-zA-Z0-9_]*)\s*:', r'\1”\2”:', cand)
                 elif attempt == 2:
-                    # 修复缺失的逗号: }\s*\n\s*" -> },\n"
-                    cand = re.sub(r'\}\s*\n\s*"', '},\n"', cand)
-                    cand = re.sub(r'\]\s*\n\s*"', '],\n"', cand)
+                    # 缺失逗号: “x”\n”y” -> “x”,\n”y”
+                    cand = re.sub(r'”\s*\n\s*”', '”,\n”', cand)
                 elif attempt == 3:
-                    # 修复缺失的逗号: 数字}\s*\n\s*" -> 数字},\n"
-                    cand = re.sub(r'(\d)\s*\n\s*"', r'\1,\n"', cand)
+                    # 缺失逗号: }\n” -> },\n”
+                    cand = re.sub(r'([}\]\d])\s*\n\s*”', r'\1,\n”', cand)
                 elif attempt == 4:
-                    # 最后手段：尝试修复中文引号等
-                    cand = cand.replace('“', '"').replace('”', '"')
-                    cand = cand.replace("'", '"')
+                    # 中文引号替换
+                    cand = cand.replace('“', '”').replace('”', '”')
+                    cand = cand.replace('‘', “'”).replace('’', “'”)
+                elif attempt == 5:
+                    # 单引号属性名/值
+                    cand = re.sub(r”'([^']*)':”, r'”\1”:', cand)
+                    cand = re.sub(r”:\s*'([^']*)'”, r': “\1”', cand)
+                elif attempt == 6:
+                    # 极端情况：删除所有换行符尝试
+                    cand = re.sub(r'\n\s*', ' ', cand)
 
-    raise ValueError(f"JSON 提取失败: {'; '.join(errors[-3:])}")
+    raise ValueError(f”JSON 提取失败: {'; '.join(errors[-3:])}”)
 
 
 def deep_dive_worker(category_name, config):
