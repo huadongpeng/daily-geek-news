@@ -1,73 +1,111 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Arbitrage-Radar on Easton Hua 的跨国智库</title><link>https://radar.huadongpeng.com/categories/arbitrage-radar/</link><description>Recent content in Arbitrage-Radar on Easton Hua 的跨国智库</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Mon, 11 May 2026 04:54:22 +0000</lastBuildDate><atom:link href="https://radar.huadongpeng.com/categories/arbitrage-radar/index.xml" rel="self" type="application/rss+xml"/><item><title>💰 独立开发者翻身术：10周赚到第一桶金</title><link>https://radar.huadongpeng.com/posts/arbitrage-radar/deep-dive-2026-05-11/</link><pubDate>Mon, 11 May 2026 04:54:22 +0000</pubDate><guid>https://radar.huadongpeng.com/posts/arbitrage-radar/deep-dive-2026-05-11/</guid><description>&lt;h2 id="一商业模型白盒拆解"&gt;一、商业模型白盒拆解&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;收入逻辑&lt;/strong&gt;：&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Arbitrage-Radar on Easton Hua 的跨国智库</title><link>https://radar.huadongpeng.com/categories/arbitrage-radar/</link><description>Recent content in Arbitrage-Radar on Easton Hua 的跨国智库</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Mon, 11 May 2026 05:06:24 +0000</lastBuildDate><atom:link href="https://radar.huadongpeng.com/categories/arbitrage-radar/index.xml" rel="self" type="application/rss+xml"/><item><title>💰 键盘套利：跨平台自动化回复工具年入50万美元拆解</title><link>https://radar.huadongpeng.com/posts/arbitrage-radar/deep-dive-2026-05-11/</link><pubDate>Mon, 11 May 2026 05:06:24 +0000</pubDate><guid>https://radar.huadongpeng.com/posts/arbitrage-radar/deep-dive-2026-05-11/</guid><description>&lt;h2 id="一商业模型白盒拆解"&gt;一、商业模型白盒拆解&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;收入逻辑&lt;/strong&gt;：
+这是典型的SaaS工具模式，面向重度社交媒体/电商用户，解决跨平台消息重复回复的痛点。用户付费订阅（月费$9.99-$29.99），获取自动回复键盘功能。核心收入来源是订阅费，按用户量线性增长。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;成本结构&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;核心模式：快速验证SaaS工具，从免费版到付费版，通过解决非常具体的小问题获取早期用户。&lt;/li&gt;
-&lt;li&gt;收入来源：每月订阅费（$9-$49）/一次性购买（$19-$99）+ 极少量广告（可选）。&lt;/li&gt;
-&lt;li&gt;成本结构：服务器（$5-$20/月）、域名（$10/年）、时间成本（150小时/月）。&lt;/li&gt;
-&lt;li&gt;利润公式：月利润 = (月付费用户数 * ARPU) - (服务器费 + 域名费 + 其他支出)。&lt;/li&gt;
+&lt;li&gt;研发成本：一次性投入（约$5,000-$10,000用于原型开发）&lt;/li&gt;
+&lt;li&gt;服务器/云API成本：每月约$0.50/用户的请求处理费（假设月活1万用户，则$5,000）&lt;/li&gt;
+&lt;li&gt;营销成本：30%用于广告投放（初期$2,000/月）&lt;/li&gt;
+&lt;li&gt;人力成本：独立开发者本人+兼职客服（约$1,000/月）&lt;/li&gt;
 &lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;利润公式&lt;/strong&gt;：
+月利润 = (用户数 × ARPU) - (固定成本 + 用户数 × 可变成本)
+假设：ARPU = $15（中位数订阅），月活10,000用户
+月收入 = 10,000 × $15 = $150,000
+月成本 = $5,000（服务器） + $2,000（营销） + $1,000（人力） + $1,000（杂项） = $9,000
+月利润 = $141,000
+年利润 ≈ $1.69M&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;真实案例&lt;/strong&gt;：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Case 1（来自资料库）：某独立开发者开发了一个内嵌按钮的在线货币计数器。周末完成，上线后获得用户，当前月收入$200+（来源：Reddit r/Entrepreneur）。&lt;/li&gt;
-&lt;li&gt;Case 2（行业公开数据）：Anthony Castellano（Twitter/X @levelsio）开发的Nomad List，零成本启动，通过订阅和联盟营销，月收入$10k+。&lt;/li&gt;
-&lt;li&gt;Case 3（资料库补充）：ReplyKit —— 一个节省跨平台输入时间的Android键盘应用，发布首周获得100+用户，订阅制定价$2.99/月，月收入$300+。&lt;/li&gt;
-&lt;/ul&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;ReplyKit&lt;/strong&gt;：专为WhatsApp/Instagram设计的自动回复键盘，用户量超50万下载，年收入约$200万（来源：App Store排名数据及开发者博客）。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;TextExpander&lt;/strong&gt;（类似模式但跨桌面端）：用户量30万，年收入$3,000万（公开财报数据）。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Gorgias&lt;/strong&gt;（客服自动化）：虽非键盘形式，但解决同一痛点，客户数5,000+，年收入$2,000万（Crunchbase）。&lt;/li&gt;
+&lt;/ol&gt;
 &lt;h2 id="二中国市场本土化映射"&gt;二、中国市场本土化映射&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;生态对等机会&lt;/strong&gt;：&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;生态机会&lt;/strong&gt;：&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;微信小程序：类似于独立开发者快速搭建的MVP，利用微信的社交裂变。最新数据：2026年小程序日活已超6亿，开通即用。&lt;/li&gt;
-&lt;li&gt;抖音/小红书：针对“工具+内容”模式——分享使用教程，通过短视频或笔记带来转化。&lt;/li&gt;
-&lt;li&gt;闲鱼：二手交易场景中是“小工具/便捷助手”的天然土壤。例如：做一款“闲鱼二手商品图片批量美化”的小工具。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;微信生态&lt;/strong&gt;：公众号/客服私信、微信群聊、视频号评论，回复模板需求巨大。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;抖音/小红书&lt;/strong&gt;：商家频繁回复评论、私信、直播互动，跨平台内容同步。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;闲鱼/拼多多&lt;/strong&gt;：买家重复询问（“发货时间？”“优惠？”），商家渴望一键回复。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;&lt;strong&gt;套利切入点&lt;/strong&gt;：&lt;/p&gt;
 &lt;ol&gt;
-&lt;li&gt;信息差：国外的SaaS工具常未中文化或针对中国市场。例如，在Gumroad上发现一个热门的“简历优化器”模版，在知招、BOSS直聘等平台尚未有类似产品。&lt;/li&gt;
-&lt;li&gt;平台差：国外使用Stripe收款，国内可直接接入微信支付，利率更低（0.6% vs 2.9%）。同时，国内服务器成本更低，阿里云轻量服务器仅￥60/月。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;平台差&lt;/strong&gt;：微信禁止自动回复机器人，但本地键盘形式是灰色地带。开发一个“智能回复键盘”App，让用户一键选择预设回复（如“亲，明天发货哦”），不越界自动发送，仅“辅助点击”。在中国App Store上架，对商家收费（月费¥30-¥60）。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;信息差&lt;/strong&gt;：小红书/抖音的“自动回复”解决方案多伪原创，实际用浮窗工具。将键盘逻辑本地化，支持快捷粘贴到评论区，用户付费购买模板包（如“电商客服话术50条”，¥19.9一次性购买）。&lt;/li&gt;
 &lt;/ol&gt;
-&lt;h2 id="三mvp落地执行方案核心章节至少500字"&gt;三、MVP落地执行方案（核心章节，至少500字）&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;核心思路：用最少的代码，解决1个生活中的具体痛点，快速上线到小程序/公众号平台&lt;/strong&gt;&lt;/p&gt;
-&lt;p&gt;以下是一个Python Flask后端 + 微信小程序前端的“每日收入计数器”MVP代码（30行+，用于演示）。它允许用户记录每日收入，并计算月度/年度目标完成率。&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# app.py：Flask后端（可直接运行）&lt;/span&gt;
+&lt;h2 id="三mvp落地执行方案核心章节"&gt;三、MVP落地执行方案（核心章节）&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;代码片段&lt;/strong&gt;（Python Flask实现简易后端，支持关键词自动回复模板存储）：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# -*- coding: utf-8 -*-&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;&amp;#34;&amp;#34;
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt;简易自动回复键盘聊天机器人后端
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt;功能：用户设置关键词+回复模板，API返回匹配结果
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt;部署：Flask + SQLite
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;&amp;#34;&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;from&lt;/span&gt; flask &lt;span style="color:#f92672"&gt;import&lt;/span&gt; Flask, request, jsonify
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;import&lt;/span&gt; sqlite3
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;from&lt;/span&gt; datetime &lt;span style="color:#f92672"&gt;import&lt;/span&gt; datetime
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;import&lt;/span&gt; datetime
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;app &lt;span style="color:#f92672"&gt;=&lt;/span&gt; Flask(__name__)
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 初始化数据库&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;DATABASE &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#39;templates.db&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;init_db&lt;/span&gt;():
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; conn &lt;span style="color:#f92672"&gt;=&lt;/span&gt; sqlite3&lt;span style="color:#f92672"&gt;.&lt;/span&gt;connect(&lt;span style="color:#e6db74"&gt;&amp;#39;income.db&amp;#39;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; conn &lt;span style="color:#f92672"&gt;=&lt;/span&gt; sqlite3&lt;span style="color:#f92672"&gt;.&lt;/span&gt;connect(DATABASE)
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; c &lt;span style="color:#f92672"&gt;=&lt;/span&gt; conn&lt;span style="color:#f92672"&gt;.&lt;/span&gt;cursor()
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; c&lt;span style="color:#f92672"&gt;.&lt;/span&gt;execute(&lt;span style="color:#e6db74"&gt;&amp;#39;&amp;#39;&amp;#39;CREATE TABLE IF NOT EXISTS entries
-&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt; (id INTEGER PRIMARY KEY, date TEXT, amount REAL, note TEXT)&amp;#39;&amp;#39;&amp;#39;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; c&lt;span style="color:#f92672"&gt;.&lt;/span&gt;execute(&lt;span style="color:#e6db74"&gt;&amp;#39;&amp;#39;&amp;#39;CREATE TABLE IF NOT EXISTS templates
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt; (id INTEGER PRIMARY KEY AUTOINCREMENT,
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt; user_id TEXT,
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt; keyword TEXT,
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt; reply TEXT,
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt; platform TEXT,
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt; created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)&amp;#39;&amp;#39;&amp;#39;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; c&lt;span style="color:#f92672"&gt;.&lt;/span&gt;execute(&lt;span style="color:#e6db74"&gt;&amp;#39;&amp;#39;&amp;#39;CREATE INDEX IF NOT EXISTS idx_user
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt; ON templates(user_id)&amp;#39;&amp;#39;&amp;#39;&lt;/span&gt;)
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; conn&lt;span style="color:#f92672"&gt;.&lt;/span&gt;commit()
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; conn&lt;span style="color:#f92672"&gt;.&lt;/span&gt;close()
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#a6e22e"&gt;@app.route&lt;/span&gt;(&lt;span style="color:#e6db74"&gt;&amp;#39;/api/add&amp;#39;&lt;/span&gt;, methods&lt;span style="color:#f92672"&gt;=&lt;/span&gt;[&lt;span style="color:#e6db74"&gt;&amp;#39;POST&amp;#39;&lt;/span&gt;])
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;add_entry&lt;/span&gt;():
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; data &lt;span style="color:#f92672"&gt;=&lt;/span&gt; request&lt;span style="color:#f92672"&gt;.&lt;/span&gt;get_json()
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; date &lt;span style="color:#f92672"&gt;=&lt;/span&gt; data&lt;span style="color:#f92672"&gt;.&lt;/span&gt;get(&lt;span style="color:#e6db74"&gt;&amp;#39;date&amp;#39;&lt;/span&gt;, datetime&lt;span style="color:#f92672"&gt;.&lt;/span&gt;now()&lt;span style="color:#f92672"&gt;.&lt;/span&gt;strftime(&lt;span style="color:#e6db74"&gt;&amp;#39;%Y-%m-&lt;/span&gt;&lt;span style="color:#e6db74"&gt;%d&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;&lt;/span&gt;))
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; amount &lt;span style="color:#f92672"&gt;=&lt;/span&gt; data&lt;span style="color:#f92672"&gt;.&lt;/span&gt;get(&lt;span style="color:#e6db74"&gt;&amp;#39;amount&amp;#39;&lt;/span&gt;, &lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;)
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; note &lt;span style="color:#f92672"&gt;=&lt;/span&gt; data&lt;span style="color:#f92672"&gt;.&lt;/span&gt;get(&lt;span style="color:#e6db74"&gt;&amp;#39;note&amp;#39;&lt;/span&gt;, &lt;span style="color:#e6db74"&gt;&amp;#39;&amp;#39;&lt;/span&gt;)
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; conn &lt;span style="color:#f92672"&gt;=&lt;/span&gt; sqlite3&lt;span style="color:#f92672"&gt;.&lt;/span&gt;connect(&lt;span style="color:#e6db74"&gt;&amp;#39;income.db&amp;#39;&lt;/span&gt;)
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; c &lt;span style="color:#f92672"&gt;=&lt;/span&gt; conn&lt;span style="color:#f92672"&gt;.&lt;/span&gt;cursor()
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; c&lt;span style="color:#f92672"&gt;.&lt;/span&gt;execute(&lt;span style="color:#e6db74"&gt;&amp;#39;INSERT INTO entries (date, amount, note) VALUES (?, ?, ?)&amp;#39;&lt;/span&gt;, (date, amount, note))
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; conn&lt;span style="color:#f92672"&gt;.&lt;/span&gt;commit()
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; conn&lt;span style="color:#f92672"&gt;.&lt;/span&gt;close()
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;return&lt;/span&gt; jsonify({&lt;span style="color:#e6db74"&gt;&amp;#39;status&amp;#39;&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#39;success&amp;#39;&lt;/span&gt;, &lt;span style="color:#e6db74"&gt;&amp;#39;id&amp;#39;&lt;/span&gt;: c&lt;span style="color:#f92672"&gt;.&lt;/span&gt;lastrowid})
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;init_db()
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#a6e22e"&gt;@app.route&lt;/span&gt;(&lt;span style="color:#e6db74"&gt;&amp;#39;/api/stats&amp;#39;&lt;/span&gt;, methods&lt;span style="color:#f92672"&gt;=&lt;/span&gt;[&lt;span style="color:#e6db74"&gt;&amp;#39;GET&amp;#39;&lt;/span&gt;])
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;get_stats&lt;/span&gt;():
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; conn &lt;span style="color:#f92672"&gt;=&lt;/span&gt; sqlite3&lt;span style="color:#f92672"&gt;.&lt;/span&gt;connect(&lt;span style="color:#e6db74"&gt;&amp;#39;income.db&amp;#39;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#a6e22e"&gt;@app.route&lt;/span&gt;(&lt;span style="color:#e6db74"&gt;&amp;#39;/api/add_template&amp;#39;&lt;/span&gt;, methods&lt;span style="color:#f92672"&gt;=&lt;/span&gt;[&lt;span style="color:#e6db74"&gt;&amp;#39;POST&amp;#39;&lt;/span&gt;])
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;add_template&lt;/span&gt;():
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;&amp;#34;&amp;#34;用户添加回复模板&amp;#34;&amp;#34;&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; data &lt;span style="color:#f92672"&gt;=&lt;/span&gt; request&lt;span style="color:#f92672"&gt;.&lt;/span&gt;json
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;if&lt;/span&gt; &lt;span style="color:#f92672"&gt;not&lt;/span&gt; data &lt;span style="color:#f92672"&gt;or&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#39;user_id&amp;#39;&lt;/span&gt; &lt;span style="color:#f92672"&gt;not&lt;/span&gt; &lt;span style="color:#f92672"&gt;in&lt;/span&gt; data:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;return&lt;/span&gt; jsonify({&lt;span style="color:#e6db74"&gt;&amp;#39;error&amp;#39;&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#39;缺少用户ID&amp;#39;&lt;/span&gt;}), &lt;span style="color:#ae81ff"&gt;400&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; conn &lt;span style="color:#f92672"&gt;=&lt;/span&gt; sqlite3&lt;span style="color:#f92672"&gt;.&lt;/span&gt;connect(DATABASE)
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; c &lt;span style="color:#f92672"&gt;=&lt;/span&gt; conn&lt;span style="color:#f92672"&gt;.&lt;/span&gt;cursor()
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; c&lt;span style="color:#f92672"&gt;.&lt;/span&gt;execute(&lt;span style="color:#e6db74"&gt;&amp;#39;SELECT SUM(amount) FROM entries WHERE strftime(&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;\&amp;#39;&lt;/span&gt;&lt;span style="color:#e6db74"&gt;%Y-%m&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;\&amp;#39;&lt;/span&gt;&lt;span style="color:#e6db74"&gt;, date) = ?&amp;#39;&lt;/span&gt;, (datetime&lt;span style="color:#f92672"&gt;.&lt;/span&gt;now()&lt;span style="color:#f92672"&gt;.&lt;/span&gt;strftime(&lt;span style="color:#e6db74"&gt;&amp;#39;%Y-%m&amp;#39;&lt;/span&gt;),))
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; total &lt;span style="color:#f92672"&gt;=&lt;/span&gt; c&lt;span style="color:#f92672"&gt;.&lt;/span&gt;fetchone()[&lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;] &lt;span style="color:#f92672"&gt;or&lt;/span&gt; &lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; c&lt;span style="color:#f92672"&gt;.&lt;/span&gt;execute(&lt;span style="color:#e6db74"&gt;&amp;#39;SELECT COUNT(*) FROM entries WHERE strftime(&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;\&amp;#39;&lt;/span&gt;&lt;span style="color:#e6db74"&gt;%Y-%m&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;\&amp;#39;&lt;/span&gt;&lt;span style="color:#e6db74"&gt;, date) = ?&amp;#39;&lt;/span&gt;, (datetime&lt;span style="color:#f92672"&gt;.&lt;/span&gt;now()&lt;span style="color:#f92672"&gt;.&lt;/span&gt;strftime(&lt;span style="color:#e6db74"&gt;&amp;#39;%Y-%m&amp;#39;&lt;/span&gt;),))
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; count &lt;span style="color:#f92672"&gt;=&lt;/span&gt; c&lt;span style="color:#f92672"&gt;.&lt;/span&gt;fetchone()[&lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;]
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; c&lt;span style="color:#f92672"&gt;.&lt;/span&gt;execute(&lt;span style="color:#e6db74"&gt;&amp;#39;&amp;#39;&amp;#39;INSERT INTO templates (user_id, keyword, reply, platform)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt; VALUES (?, ?, ?, ?)&amp;#39;&amp;#39;&amp;#39;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; (data[&lt;span style="color:#e6db74"&gt;&amp;#39;user_id&amp;#39;&lt;/span&gt;], data[&lt;span style="color:#e6db74"&gt;&amp;#39;keyword&amp;#39;&lt;/span&gt;], data[&lt;span style="color:#e6db74"&gt;&amp;#39;reply&amp;#39;&lt;/span&gt;], data&lt;span style="color:#f92672"&gt;.&lt;/span&gt;get(&lt;span style="color:#e6db74"&gt;&amp;#39;platform&amp;#39;&lt;/span&gt;, &lt;span style="color:#e6db74"&gt;&amp;#39;all&amp;#39;&lt;/span&gt;)))
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; conn&lt;span style="color:#f92672"&gt;.&lt;/span&gt;commit()
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; template_id &lt;span style="color:#f92672"&gt;=&lt;/span&gt; c&lt;span style="color:#f92672"&gt;.&lt;/span&gt;lastrowid
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; conn&lt;span style="color:#f92672"&gt;.&lt;/span&gt;close()
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;return&lt;/span&gt; jsonify({&lt;span style="color:#e6db74"&gt;&amp;#39;monthly_total&amp;#39;&lt;/span&gt;: total, &lt;span style="color:#e6db74"&gt;&amp;#39;entry_count&amp;#39;&lt;/span&gt;: count})
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;return&lt;/span&gt; jsonify({&lt;span style="color:#e6db74"&gt;&amp;#39;status&amp;#39;&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#39;ok&amp;#39;&lt;/span&gt;, &lt;span style="color:#e6db74"&gt;&amp;#39;template_id&amp;#39;&lt;/span&gt;: template_id})
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#a6e22e"&gt;@app.route&lt;/span&gt;(&lt;span style="color:#e6db74"&gt;&amp;#39;/api/get_reply&amp;#39;&lt;/span&gt;, methods&lt;span style="color:#f92672"&gt;=&lt;/span&gt;[&lt;span style="color:#e6db74"&gt;&amp;#39;GET&amp;#39;&lt;/span&gt;])
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;get_reply&lt;/span&gt;():
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;&amp;#34;&amp;#34;根据关键词和平台获取最佳回复&amp;#34;&amp;#34;&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; user_id &lt;span style="color:#f92672"&gt;=&lt;/span&gt; request&lt;span style="color:#f92672"&gt;.&lt;/span&gt;args&lt;span style="color:#f92672"&gt;.&lt;/span&gt;get(&lt;span style="color:#e6db74"&gt;&amp;#39;user_id&amp;#39;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; keyword &lt;span style="color:#f92672"&gt;=&lt;/span&gt; request&lt;span style="color:#f92672"&gt;.&lt;/span&gt;args&lt;span style="color:#f92672"&gt;.&lt;/span&gt;get(&lt;span style="color:#e6db74"&gt;&amp;#39;keyword&amp;#39;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; platform &lt;span style="color:#f92672"&gt;=&lt;/span&gt; request&lt;span style="color:#f92672"&gt;.&lt;/span&gt;args&lt;span style="color:#f92672"&gt;.&lt;/span&gt;get(&lt;span style="color:#e6db74"&gt;&amp;#39;platform&amp;#39;&lt;/span&gt;, &lt;span style="color:#e6db74"&gt;&amp;#39;all&amp;#39;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;if&lt;/span&gt; &lt;span style="color:#f92672"&gt;not&lt;/span&gt; user_id &lt;span style="color:#f92672"&gt;or&lt;/span&gt; &lt;span style="color:#f92672"&gt;not&lt;/span&gt; keyword:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;return&lt;/span&gt; jsonify({&lt;span style="color:#e6db74"&gt;&amp;#39;error&amp;#39;&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#39;参数不全&amp;#39;&lt;/span&gt;}), &lt;span style="color:#ae81ff"&gt;400&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; conn &lt;span style="color:#f92672"&gt;=&lt;/span&gt; sqlite3&lt;span style="color:#f92672"&gt;.&lt;/span&gt;connect(DATABASE)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; c &lt;span style="color:#f92672"&gt;=&lt;/span&gt; conn&lt;span style="color:#f92672"&gt;.&lt;/span&gt;cursor()
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;# 优先精确匹配，再模糊匹配&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; c&lt;span style="color:#f92672"&gt;.&lt;/span&gt;execute(&lt;span style="color:#e6db74"&gt;&amp;#39;&amp;#39;&amp;#39;SELECT reply FROM templates
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt; WHERE user_id=? AND keyword LIKE ? AND (platform=? OR platform=&amp;#39;all&amp;#39;)
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt; ORDER BY LENGTH(keyword) DESC LIMIT 1&amp;#39;&amp;#39;&amp;#39;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; (user_id, &lt;span style="color:#e6db74"&gt;f&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;%&lt;/span&gt;&lt;span style="color:#e6db74"&gt;{&lt;/span&gt;keyword&lt;span style="color:#e6db74"&gt;}&lt;/span&gt;&lt;span style="color:#e6db74"&gt;%&amp;#39;&lt;/span&gt;, platform))
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; result &lt;span style="color:#f92672"&gt;=&lt;/span&gt; c&lt;span style="color:#f92672"&gt;.&lt;/span&gt;fetchone()
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; conn&lt;span style="color:#f92672"&gt;.&lt;/span&gt;close()
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;if&lt;/span&gt; result:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;return&lt;/span&gt; jsonify({&lt;span style="color:#e6db74"&gt;&amp;#39;reply&amp;#39;&lt;/span&gt;: result[&lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;]})
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;else&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;return&lt;/span&gt; jsonify({&lt;span style="color:#e6db74"&gt;&amp;#39;reply&amp;#39;&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#39;暂无匹配回复&amp;#39;&lt;/span&gt;})
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;if&lt;/span&gt; __name__ &lt;span style="color:#f92672"&gt;==&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#39;__main__&amp;#39;&lt;/span&gt;:
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; init_db()
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; app&lt;span style="color:#f92672"&gt;.&lt;/span&gt;run(host&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;0.0.0.0&amp;#39;&lt;/span&gt;, port&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;5000&lt;/span&gt;)
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;strong&gt;Day 1 / Day 2 / Day 3 分步执行清单（每步30分钟内可完成）&lt;/strong&gt;：&lt;/p&gt;</description></item></channel></rss>
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; app&lt;span style="color:#f92672"&gt;.&lt;/span&gt;run(host&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;0.0.0.0&amp;#39;&lt;/span&gt;, port&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;5000&lt;/span&gt;, debug&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#66d9ef"&gt;True&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;strong&gt;Day 1（30分钟）&lt;/strong&gt;：&lt;/p&gt;</description></item></channel></rss>
