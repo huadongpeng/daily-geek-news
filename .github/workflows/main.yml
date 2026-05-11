@@ -1,33 +1,62 @@
-name: Global Arbitrage Deep Dive (2026 Edition)
+name: Easton Radar Auto Deploy
 
 on:
   schedule:
-    - cron: '0 22 * * *' # 每天北京时间早上 6 点运行
-  workflow_dispatch: # 支持手动点击运行测试
+    - cron: '0 22 * * *' # 北京时间早上 6 点
+  workflow_dispatch:
+
+# 赋予 GitHub Action 推送代码和部署页面的最高权限
+permissions:
+  contents: write
+  pages: write
+  id-token: write
 
 jobs:
-  run-radar:
+  build-and-deploy:
     runs-on: ubuntu-latest
-
     steps:
-    - name: 1. 检出代码
+    - name: 1. 检出代码 (包含 Hugo 主题)
       uses: actions/checkout@v4
+      with:
+        submodules: true
+        fetch-depth: 0
 
     - name: 2. 配置 Python 环境
       uses: actions/setup-python@v5
       with:
         python-version: '3.10'
 
-    - name: 3. 安装核心依赖库
+    - name: 3. 安装依赖包
       run: |
         python -m pip install --upgrade pip
         pip install feedparser requests
 
-    - name: 4. 启动跨国深度智库引擎
+    - name: 4. 运行情报引擎：生成长文 Markdown
       env:
         DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
         TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
         TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-        HALO_TOKEN: ${{ secrets.HALO_TOKEN }}
-        HALO_URL: ${{ secrets.HALO_URL }}
       run: python purifier.py
+
+    - name: 5. 提交最新生成的文章到代码库
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add content/posts/
+        # 如果有新文章则提交，没有则跳过，防止报错强杀流水线
+        git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-generated Easton daily insight" && git push)
+
+    - name: 6. 在云端安装 Hugo 编译器
+      uses: peaceiris/actions-hugo@v3
+      with:
+        hugo-version: 'latest'
+        extended: true
+
+    - name: 7. 执行 Hugo 网页极速渲染
+      run: hugo --minify
+
+    - name: 8. 无服务器部署至 GitHub Pages 分支
+      uses: peaceiris/actions-gh-pages@v4
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./public

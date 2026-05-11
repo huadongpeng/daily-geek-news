@@ -1,0 +1,10 @@
+baseURL = 'https://radar.huadongpeng.com/'
+languageCode = 'zh-cn'
+title = 'Easton Hua 的跨国套利智库'
+theme = 'PaperMod'
+
+[params]
+  defaultTheme = "auto"
+  ShowReadingTime = true
+  ShowToc = true
+  author = "Easton Hua"
