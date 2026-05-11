@@ -1,72 +1,80 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides guidance to Claude Code (claude.ai/code) when working with this repository.
 
 ## Project overview
 
-Automated pipeline that scans 20+ overseas RSS feeds daily, uses DeepSeek V4 Pro to generate Chinese-language intelligence briefings + optional deep-dive articles, deploys via Hugo to GitHub Pages, and pushes enriched Telegram notifications per category topic.
+Automated pipeline: 70+ global RSS feeds → DeepSeek V4 Pro → Chinese-language intelligence briefings + deep-dive articles → Hugo static site → GitHub Pages + Telegram + WeChat Official Account drafts.
 
 ## Commands
 
 ```bash
 pip install feedparser requests duckduckgo-search  # dependencies
-python purifier.py    # Run pipeline → generates content/posts/
-hugo serve            # Local preview
-hugo --minify         # Production build → public/
+python purifier.py        # Run pipeline → content/posts/
+hugo serve                # Local preview
+hugo --minify             # Production build
+bash tools/publish_wechat.sh              # Push deep dives to WeChat drafts
+bash tools/publish_wechat.sh --yesterday  # Push yesterday's articles
+bash tools/publish_wechat.sh --dry-run    # Preview
 ```
-
-No test suite or linting.
 
 ## Architecture
 
-`purifier.py` — single-file core engine with a **dual-track output model**:
+### `purifier.py` — main pipeline engine
 
-### Track 1: Daily Briefing (always)
-Each of 4 agents produces a briefing with 3-5 info items. Each item includes: title, source, one-liner, why-matters, and a zero-cost angle. Briefings are always saved to Hugo and pushed to Telegram.
+**6 engines** in `AGENTS` dict: Arbitrage-Radar, Cross-Border-Insights, China-Going-Global, AI-Frontier, Developer-Goldmine, Macro-Events. Each has feeds (9-17 URLs), briefing_prompt, deep_dive_prompt.
 
-### Track 2: Deep Dive (quality-gated)
-Each agent evaluates whether its top article warrants deep analysis. The model decides — returns `null` if nothing is worth it. Deep dives follow a 4-chapter structure specific to each agent, with code requirements (30-40+ lines), word counts (500+), and data-driven analysis.
+**Flow per engine:**
+1. `fetch_and_augment()` — parallel RSS fetch (4 workers) + DuckDuckGo RAG (5 results). Feed caching via `_FEED_CACHE` (5min TTL) prevents cross-engine URL re-fetch.
+2. `deep_dive_worker()` — one DeepSeek API call generates both `briefing` and optional `deep_dive` JSON. Uses `_extract_json()` with balanced-brace matching + multi-level repair.
+3. `save_deep_dive()` / `save_aggregated_briefing()` — write Hugo Markdown via `_write_hugo_post()` helper.
+4. `send_deep_dive_tg()` / `send_aggregated_briefing_tg()` — Telegram push via `_tg_post()`.
 
-### Agent config (`AGENTS` dict)
-Each agent has: `feeds` (list), `briefing_prompt` (for daily summary), `deep_dive_prompt` (for optional long-form). Both prompts instruct the model to output a single JSON with `briefing` and `deep_dive` fields.
+**Key design decisions:**
+- All datetimes use `bj_now()` (UTC+8) for Beijing time consistency
+- Deep dive filenames include HHMM timestamp to avoid multi-run overwrites
+- Deep dives: quality-gated (宁缺毋滥), core chapters ≥1200 words, code optional
+- Briefings: 6 engines aggregated into ONE file per day under `daily-briefing/`
+- Feed fetching: `feedparser.parse(url)` preferred for RSS compatibility, `requests.get()` as fallback
 
-### Flow
-1. `fetch_and_augment()` — RSS parsing + DuckDuckGo RAG (5 results per query)
-2. `deep_dive_worker()` — Single API call to DeepSeek generates both briefing + optional deep dive
-3. `save_to_hugo()` — Writes `briefing-YYYY-MM-DD.md` and optionally `deep-dive-YYYY-MM-DD.md`
-4. `send_to_telegram()` — Pushes enriched briefing + separate deep dive message to group topics
-5. All 4 agents run concurrently via `ThreadPoolExecutor(max_workers=4)`
+### `tools/wechat_publisher.py` — WeChat Official Account draft publisher
 
-### Content output
-- `content/posts/<Category>/briefing-YYYY-MM-DD.md` — always
-- `content/posts/<Category>/deep-dive-YYYY-MM-DD.md` — quality-gated
-- `content/about.md` — personal/about page
+Runs on Tencent Cloud server (not GitHub Actions). Flow:
+1. `find_articles()` — scan `content/posts/` for today's deep dives, skip already-published (tracked in `tools/.published`)
+2. Dual-engine cover image generation (通义万相 primary, 智谱 CogView fallback)
+3. `md_to_wechat_html()` — Markdown to WeChat-compatible HTML with branded header/footer
+4. `optimize_wechat_title()` — byte-level truncation (30B title, 60B digest) for WeChat API limits
+5. `sanitize_for_wechat()` — sensitive content pattern scanning with review warnings
+
+### `tools/publish_wechat.sh` — server-side convenience script
+
+Wraps git fetch + source .env + python3 wechat_publisher.py.
 
 ### Site config
-`hugo.toml` uses PaperMod theme with profile mode on homepage. Custom domain via `static/CNAME`.
 
-`.github/workflows/main.yml` — daily at 22:00 UTC. Steps: checkout (with submodules), Python deps, run purifier.py (with 7 env vars), commit generated posts, Hugo build, deploy to gh-pages.
+- `hugo.toml` — PaperMod theme, 9 nav items (首页→每日快讯→6 engines→关于), logo.svg favicon, Asia/Shanghai timezone
+- `static/css/custom.css` — mobile-first responsive (44px touch targets, bottom nav bar, safe-area)
+- `layouts/_partials/` — extend_head.html (SEO/JSON-LD/AI crawler hints), extend_footer.html (mobile nav + Busuanzi page counter)
+- `static/robots.txt` — allow all AI crawlers, block SEO tools
 
-PaperMod theme at `themes/PaperMod` (git submodule).
+### GitHub Actions (`.github/workflows/main.yml`)
+
+Daily at UTC 22:00 (06:00 BJT). Steps: checkout (with PaperMod submodule) → pip install → purifier.py (10 env vars) → git commit + push → mirror push to self-hosted GitLab → fetch covers from GitLab → Hugo build → deploy to gh-pages via peaceiris/actions-gh-pages.
 
 ## Environment variables
 
-All 7 must be set in GitHub Secrets AND injected in the workflow `env` block:
+**pipeline (10 vars):** DEEPSEEK_API_KEY, TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID, TG_THREAD_ARBITRAGE, TG_THREAD_AI, TG_THREAD_CROSS, TG_THREAD_MACRO, TG_THREAD_CHINA, TG_THREAD_DEV, TG_THREAD_BRIEFING
 
-- `DEEPSEEK_API_KEY` — DeepSeek API key
-- `TELEGRAM_BOT_TOKEN` — Telegram bot token
-- `TELEGRAM_CHAT_ID` — Supergroup ID (format: `-100xxxxxxxxx`)
-- `TG_THREAD_ARBITRAGE` — Arbitrage topic ID
-- `TG_THREAD_AI` — AI topic ID
-- `TG_THREAD_CROSS` — Cross-border topic ID
-- `TG_THREAD_MACRO` — Macro topic ID
+**GitLab mirror (3 vars):** GITLAB_HOST, GITLAB_USERNAME, GITLAB_ACCESS_TOKEN
+
+**WeChat publisher (5 vars, on Tencent server):** WECHAT_APPID, WECHAT_APPSECRET, WECHAT_AUTHOR, DASHSCOPE_API_KEY, ZHIPU_API_KEY
 
 ## Critical bugs to avoid
 
-- **Telegram URL corruption**: The API URL must be `f"https://api.telegram.org/bot{TOKEN}/sendMessage"` — never a Markdown link format `[https://...](https://...)`. Verify after any edit to the Telegram function.
-- **Missing workflow env vars**: All 7 env vars must be injected in the workflow YAML `env:` block. If TG_THREAD_* vars are missing, messages go to the main chat instead of topics.
-- **DeepSeek model**: Use `deepseek-chat` (V4 Pro). Model parameters like `thinking` or `tools` may not be supported — keep the payload clean (`model` + `messages` only) unless confirmed supported by the API.
-
-## Zero-cost principle
-
-All prompts enforce a hard requirement: personal opportunities must assume zero-cost or low-cost (< 500 RMB) startup. This is a core editorial stance across all 4 agents.
+- **Telegram URL**: Must be `f"https://api.telegram.org/bot{TOKEN}/sendMessage"` — never Markdown link format
+- **Workflow env injection**: All 10 TG vars must be in the workflow `env:` block. Missing TG_THREAD_* = messages go to main chat instead of topics
+- **TOML syntax**: Use `[params.section]` notation, NOT YAML-style indentation
+- **Curly quotes**: The Edit tool sometimes corrupts Unicode quotes. Use PowerShell byte-level fix if `"` or `"` appear in Python source
+- **WeChat title limit**: 32 bytes (≈10 Chinese chars). Use `optimize_wechat_title()` with byte-level truncation
+- **WeChat digest limit**: 64 bytes. Use `DIGEST_BYTES = 60` for safe margin
+- **Time zone**: Always use `bj_now()` (UTC+8) in purifier.py. Server-side datetime is CST natively
