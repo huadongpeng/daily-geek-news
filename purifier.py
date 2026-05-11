@@ -532,23 +532,28 @@ def auto_search_context(query):
 
 _FEED_CACHE = {}  # URL → (timestamp, parsed_feed) 防止同一次运行中重复抓取
 
+_FEED_OK = 0
+_FEED_FAIL = 0
+
 def _fetch_one_feed(url):
-    """抓取单个 RSS feed，带超时和缓存"""
+    """抓取单个 RSS feed，带缓存去重"""
+    global _FEED_OK, _FEED_FAIL
     if url in _FEED_CACHE:
         ts, cached = _FEED_CACHE[url]
-        if time.time() - ts < 300:  # 5 分钟内复用
+        if time.time() - ts < 300:
             return cached
-    try:
-        resp = requests.get(url, timeout=15, headers={"User-Agent": "EastonRadar/1.0"})
-        resp.raise_for_status()
-        feed = feedparser.parse(resp.content)
-    except Exception:
+    feed = feedparser.parse(url)  # feedparser 自带 HTTP，兼容性最好
+    if feed.bozo and not feed.entries:
+        # feedparser 解析失败，尝试 requests 获取
         try:
-            feed = feedparser.parse(url)  # fallback: 直接解析（某些源可能不支持 requests）
+            resp = requests.get(url, timeout=15, headers={"User-Agent": "EastonRadar/1.0"})
+            feed = feedparser.parse(resp.content)
         except Exception:
-            return []
+            pass
     if not feed.entries:
+        _FEED_FAIL += 1
         return []
+    _FEED_OK += 1
     entries = []
     for entry in feed.entries[:3]:
         desc = ""
@@ -901,6 +906,7 @@ if __name__ == "__main__":
     print("🚀 启动 Easton 满血外脑：双轨引擎（快讯汇总 + 深度长文）...")
     print(f"   📡 RSS 源总数: {sum(len(c['feeds']) for c in AGENTS.values())}")
     print(f"   🤖 模型: DeepSeek V4 Pro (deepseek-chat)")
+    print(f"   ⏱️  并行抓取: 6 引擎 × 8 worker")
     print()
 
     total_briefings = 0
@@ -934,3 +940,4 @@ if __name__ == "__main__":
     print()
     print(f"🏁 今日流水线执行完毕。")
     print(f"   📊 快讯: {total_briefings} | 深度长文: {total_deep_dives} | Telegram 推送: {total_tg}")
+    print(f"   📡 Feed 抓取: {_FEED_OK} 成功 / {_FEED_FAIL} 失败")
