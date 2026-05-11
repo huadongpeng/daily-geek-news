@@ -801,10 +801,12 @@ def save_deep_dive(category_name, config, data):
         print(f"   ⏭️ [{category_name}] 今日无值得深度长文的话题，跳过")
         return None
 
-    date_slug = bj_now().strftime("%Y-%m-%d")
+    now = bj_now()
+    date_slug = now.strftime("%Y-%m-%d")
+    time_slug = now.strftime("%H%M")
     cat_lower = category_name.lower()
     file_path = _write_hugo_post(
-        category_name, f"deep-dive-{date_slug}.md",
+        category_name, f"deep-dive-{date_slug}-{time_slug}.md",
         deep_dive['title'], [cat_lower], ["深度长文", "深度分析"],
         deep_dive['content_md']
     )
