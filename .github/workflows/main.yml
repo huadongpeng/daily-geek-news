@@ -50,6 +50,14 @@ jobs:
         # 如果有新文章则提交，没有则跳过，防止报错强杀流水线
         git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-generated Easton daily insight" && git push)
 
+    - name: 5.5 镜像推送到腾讯云 GitLab（触发公众号草稿箱发布）
+      if: ${{ secrets.GITLAB_HOST != '' }}
+      continue-on-error: true
+      run: |
+        GITLAB_REMOTE="https://${{ secrets.GITLAB_USERNAME }}:${{ secrets.GITLAB_ACCESS_TOKEN }}@${{ secrets.GITLAB_HOST }}/${{ secrets.GITLAB_USERNAME }}/daily-geek-news.git"
+        git remote add gitlab "$GITLAB_REMOTE" 2>/dev/null || git remote set-url gitlab "$GITLAB_REMOTE"
+        git push gitlab main 2>&1 || echo "⚠️ GitLab 推送失败，检查 HOST/USERNAME/ACCESS_TOKEN 是否正确，以及 GitLab 是否可从外网访问"
+
     - name: 6. 在云端安装 Hugo 编译器
       uses: peaceiris/actions-hugo@v3
       with:
