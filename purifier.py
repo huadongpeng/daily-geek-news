@@ -1,6 +1,7 @@
 import os
 import glob
 import json
+import time
 import feedparser
 import requests
 import re
@@ -562,7 +563,6 @@ def _fetch_one_feed(url):
 
 def fetch_and_augment(feeds):
     """并行抓取 RSS + 触发全网主动搜索"""
-    import time as time_mod
     raw_articles = []
     top_title = ""
 
