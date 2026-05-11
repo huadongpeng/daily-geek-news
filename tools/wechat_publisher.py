@@ -42,10 +42,13 @@ WECHAT_APPSECRET = os.environ.get("WECHAT_APPSECRET")
 WECHAT_AUTHOR = os.environ.get("WECHAT_AUTHOR", "Easton Hua")
 DASHSCOPE_API_KEY = os.environ.get("DASHSCOPE_API_KEY")
 ZHIPU_API_KEY = os.environ.get("ZHIPU_API_KEY")
+DEEPSEEK_KEY = os.environ.get("DEEPSEEK_API_KEY", "")
 GIT_REPO_DIR = Path(os.environ.get("GIT_REPO_DIR", "/ws/web/daily-geek-news"))
 CONTENT_DIR = GIT_REPO_DIR / "content" / "posts"
 STATIC_COVERS_DIR = GIT_REPO_DIR / "static" / "images" / "covers"
 SITE_URL = "https://radar.huadongpeng.com"
+WECHAT_ACCOUNT = "老花有话说"
+WECHAT_ID = "lanrenleyou"
 
 COVER_SIZE = "1024*1024"
 WANX_MODEL = "wanx2.0-t2i-turbo"  # 通义万相极速版, 0.04 元/张, 免费 200 张/月
@@ -174,13 +177,12 @@ def add_draft(token, article):
 # 封面图生成 —— 双引擎：通义万相（主）+ 智谱 CogView（备）
 # ============================================================
 def _build_cover_prompt(title, category_name):
-    emoji = EMOJI_MAP.get(category_name, "📰")
     cat_title = TITLE_MAP.get(category_name, category_name)
     return (
-        f"微信公众号封面图，科技商业风格，主题：{title}。"
-        f"简洁现代设计，适合{cat_title}类文章。"
-        f"深色背景配亮色几何图形点缀，专业极简风格，"
-        f"不要出现文字，不要出现人物面孔，16:9 比例，高清"
+        f"微信公众号封面图，16:9比例，高清。"
+        f"根据标题'{title}'生成与主题直接相关的视觉画面。"
+        f"风格：专业商务科技风格，画面干净有质感，适合{cat_title}栏目。"
+        f"不要出现文字，不要出现人物面孔，避免抽象几何图形。"
     )
 
 
@@ -494,6 +496,57 @@ def find_articles(date_str=None):
     return articles
 
 
+def polish_for_wechat(title, body, category_name):
+    """调用 DeepSeek 优化文章为微信公众号版本：敏感词改写、表格适配、品牌首尾"""
+    if not DEEPSEEK_KEY:
+        print("   ⚠️ 未配置 DEEPSEEK_API_KEY，跳过微信文章润色")
+        return body
+
+    cat_cn = TITLE_MAP.get(category_name, category_name)
+    prompt = f"""你是微信公众号资深编辑。请将以下 Markdown 文章优化为适合微信公众号发布的版本。
+
+优化要求：
+1. 表格转为适合手机阅读的文本列表格式（微信不支持 Markdown 表格）
+2. 涉及敏感表述（如翻墙、政治、加密货币等）用中性词汇替换或删除整句
+3. 开头加入 2-3 句引人入胜的导读，含"老花有话说"品牌名
+4. 结尾加入公众号引导：关注「老花有话说」、网站 radar.huadongpeng.com、邮箱 hdop1993@gmail.com
+5. 保持专业严谨的分析风格，零 emoji，零网络用语
+6. 不要改变原文的核心观点和数据，不要添加原文没有的实质性新内容
+
+原文标题：{title}
+所属栏目：{cat_cn}
+原文正文：
+{body[:6000]}
+
+请直接输出优化后的完整 Markdown 正文。"""
+
+    try:
+        resp = requests.post(
+            "https://api.deepseek.com/chat/completions",
+            headers={"Authorization": f"Bearer {DEEPSEEK_KEY}", "Content-Type": "application/json"},
+            json={
+                "model": "deepseek-chat",
+                "messages": [
+                    {"role": "system", "content": "你是微信公众号资深编辑，输出纯净 Markdown，不添加代码块外壳。"},
+                    {"role": "user", "content": prompt}
+                ]
+            },
+            timeout=120
+        )
+        if resp.status_code == 200:
+            polished = resp.json()["choices"][0]["message"]["content"].strip()
+            if polished.startswith("```"):
+                polished = re.sub(r"^```\w*\n?|\n?```$", "", polished)
+            print(f"   ✨ 微信润色完成 ({len(polished)} 字)")
+            return polished
+        else:
+            print(f"   ⚠️ 微信润色失败: {resp.status_code}，使用原文")
+            return body
+    except Exception as e:
+        print(f"   ⚠️ 微信润色异常: {e}，使用原文")
+        return body
+
+
 def process_article(token, article, args):
     """处理单篇文章：生图 + 转换 HTML + 存入草稿箱 + 回写封面到 Hugo"""
     cat = article["category"]
@@ -555,6 +608,10 @@ def process_article(token, article, args):
     if not thumb_media_id:
         print(f"   ⚠️ 无封面图，请在公众号后台手动添加封面")
 
+    # ---- 微信文章润色（敏感词改写 + 表格适配 + 品牌首尾）----
+    if not args.no_polish:
+        body = polish_for_wechat(title, body, cat)
+
     # ---- Markdown → 微信 HTML ----
     html_content = md_to_wechat_html(body, article_url)
 
@@ -607,6 +664,7 @@ def main():
     parser.add_argument("--date", help="处理指定日期文章 (YYYY-MM-DD)")
     parser.add_argument("--dry-run", action="store_true", help="预览模式，不实际创建草稿")
     parser.add_argument("--no-image", action="store_true", help="跳过封面图生成")
+    parser.add_argument("--no-polish", action="store_true", help="跳过微信文章润色")
     parser.add_argument("--yesterday", action="store_true", help="推送前一天的文章")
     parser.add_argument("--include-briefings", action="store_true",
                         help="同时推送每日快讯（默认仅推送精品深度长文）")
