@@ -405,12 +405,18 @@ def find_articles(date_str=None):
                         frontmatter[key.strip()] = val.strip().strip("'\"")
                 body = parts[2]
 
+        raw_title = frontmatter.get("title", md_file.stem)
+        # 去掉 Hugo frontmatter 的 emoji 前缀（如 "💰 "）和单引号
+        title = raw_title.strip("'\"")
+        if title and title[0] in "💰🤖🌍📉📰":
+            title = title[1:].strip()
+
         articles.append({
             "file": md_file,
             "category": category,
             "is_briefing": is_briefing,
             "is_deep": is_deep,
-            "title": frontmatter.get("title", md_file.stem),
+            "title": title,
             "body": body.strip(),
         })
 
@@ -478,7 +484,7 @@ def process_article(token, article, args):
 
     # 构建文章数据
     article_data = {
-        "title": title[:64],
+        "title": title[:50],
         "author": WECHAT_AUTHOR,
         "digest": digest,
         "content": html_content,
