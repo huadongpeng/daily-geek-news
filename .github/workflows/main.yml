@@ -1,4 +1,4 @@
-name: Global Arbitrage Radar
+name: Global Arbitrage Deep Dive (2026 Edition)
 
 on:
   schedule:
@@ -21,9 +21,9 @@ jobs:
     - name: 3. 安装核心依赖库
       run: |
         python -m pip install --upgrade pip
-        pip install feedparser requests edge-tts
+        pip install feedparser requests
 
-    - name: 4. 启动跨国套利分析引擎
+    - name: 4. 启动跨国深度智库引擎
       env:
         DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
         TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
