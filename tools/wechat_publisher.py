@@ -564,6 +564,32 @@ def main():
     else:
         print(f"   📱 请前往微信公众号后台 → 草稿箱 审核并发布")
         print(f"   🌐 网站同步显示封面图: {SITE_URL}")
+        # 将封面图推送回 GitLab，供 GitHub Actions 拉取用于网站
+        push_covers_to_git()
+
+
+def push_covers_to_git():
+    """将生成的封面图推送到 GitLab，供 GitHub Actions 拉取用于网站"""
+    try:
+        import subprocess
+        repo_dir = str(GIT_REPO_DIR)
+        covers_glob = str(STATIC_COVERS_DIR / "*.png")
+        # 检查是否有新封面图
+        result = subprocess.run(
+            ["git", "-C", repo_dir, "add", "static/images/covers/"],
+            capture_output=True, text=True
+        )
+        subprocess.run(
+            ["git", "-C", repo_dir, "commit", "-m", "Auto-generated cover images"],
+            capture_output=True, text=True
+        )
+        subprocess.run(
+            ["git", "-C", repo_dir, "push", "origin", "main"],
+            capture_output=True, text=True, timeout=30
+        )
+        print("   📤 封面图已推送到 GitLab")
+    except Exception as e:
+        print(f"   ⚠️ 封面图推送失败: {e}")
 
 
 if __name__ == "__main__":
