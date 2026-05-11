@@ -26,7 +26,7 @@ THREAD_IDS = {
 }
 
 # ============================================================
-# 四大引擎配置 —— 快讯 + 深度长文双轨
+# 六大引擎配置 — 快讯 + 可选深度长文，并行抓取 + 缓存去重
 # ============================================================
 AGENTS = {
     "Arbitrage-Radar": {
@@ -513,7 +513,7 @@ content_md 严格按以下四章结构：
 
 
 # ============================================================
-# DuckDuckGo 主动检索
+# RAG 检索层
 # ============================================================
 def auto_search_context(query):
     """全网主动检索补充深度背景"""
@@ -529,24 +529,55 @@ def auto_search_context(query):
         return ""
 
 
+_FEED_CACHE = {}  # URL → (timestamp, parsed_feed) 防止同一次运行中重复抓取
+
+def _fetch_one_feed(url):
+    """抓取单个 RSS feed，带超时和缓存"""
+    if url in _FEED_CACHE:
+        ts, cached = _FEED_CACHE[url]
+        if time.time() - ts < 300:  # 5 分钟内复用
+            return cached
+    try:
+        resp = requests.get(url, timeout=15, headers={"User-Agent": "EastonRadar/1.0"})
+        resp.raise_for_status()
+        feed = feedparser.parse(resp.content)
+    except Exception:
+        try:
+            feed = feedparser.parse(url)  # fallback: 直接解析（某些源可能不支持 requests）
+        except Exception:
+            return []
+    if not feed.entries:
+        return []
+    entries = []
+    for entry in feed.entries[:3]:
+        desc = ""
+        if hasattr(entry, 'description') and entry.description:
+            desc = re.sub('<[^<]+>', '', entry.description)[:200]
+        elif hasattr(entry, 'summary') and entry.summary:
+            desc = re.sub('<[^<]+>', '', entry.summary)[:200]
+        entries.append(f"标题: {entry.title}\n摘要: {desc}")
+    _FEED_CACHE[url] = (time.time(), entries)
+    return entries
+
+
 def fetch_and_augment(feeds):
-    """抓取 RSS 并触发全网主动搜索"""
+    """并行抓取 RSS + 触发全网主动搜索"""
+    import time as time_mod
     raw_articles = []
     top_title = ""
-    for url in feeds:
-        try:
-            feed = feedparser.parse(url)
-            for entry in feed.entries[:3]:
-                desc = ""
-                if hasattr(entry, 'description') and entry.description:
-                    desc = re.sub('<[^<]+>', '', entry.description)[:200]
-                elif hasattr(entry, 'summary') and entry.summary:
-                    desc = re.sub('<[^<]+>', '', entry.summary)[:200]
-                raw_articles.append(f"标题: {entry.title}\n摘要: {desc}")
-                if not top_title:
-                    top_title = entry.title
-        except Exception:
-            continue
+
+    # 并行抓取所有 feed（8 worker 足够）
+    with concurrent.futures.ThreadPoolExecutor(max_workers=8) as pool:
+        results = list(pool.map(_fetch_one_feed, feeds))
+
+    for entries in results:
+        for text in entries:
+            raw_articles.append(text)
+            if not top_title:
+                # 从第一条摘要中提取标题用于 DuckDuckGo 搜索
+                m = re.search(r'标题:\s*(.+)', text)
+                if m:
+                    top_title = m.group(1)[:80]
 
     base_context = "\n".join(raw_articles)
     deep_context = auto_search_context(top_title) if top_title else ""
@@ -554,7 +585,7 @@ def fetch_and_augment(feeds):
 
 
 # ============================================================
-# 核心：快讯 + 可选深度长文双轨引擎
+# JSON 提取 + DeepSeek API 调用
 # ============================================================
 def get_recent_titles(category_name, days=3):
     """读取近 N 天文章标题用于去重（仅解析 frontmatter 前 32 行）"""
@@ -689,8 +720,8 @@ def deep_dive_worker(category_name, config):
 如果今天没有值得深度长文的话题，deep_dive 填 null。
 
 硬性约束：
-- 所有 title 字段严格不超过 10 个中文字（微信 API 标题限制 32 字节，1 中文=3 字节）（微信 API 字节限制 60 字节，1 中文=3 字节）
-- 全文零 emoji，零网络用语，语气严谨专业学术商业分析风格
+- 所有 title 字段严格不超过 10 个中文字（微信标题 32 字节限制，1 中文≈3 字节）
+- 全文零 emoji，零网络用语，严谨专业学术商业分析风格
 - 个人方案优先考虑零成本或低成本路径
 - tg_summary 不超过 50 字，tg_brief 不超过 200 字
 """
