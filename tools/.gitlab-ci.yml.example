@@ -1,0 +1,21 @@
+# GitLab CI 配置文件（部署在腾讯云 GitLab 上）
+# 当 GitHub Actions 推送新文章到 GitLab 后，自动触发微信公众号发布
+#
+# 使用方法：
+# 1. 将此文件复制到仓库根目录，重命名为 .gitlab-ci.yml
+# 2. 在 GitLab → Settings → CI/CD → Variables 中添加：
+#    WECHAT_APPID, WECHAT_APPSECRET, DASHSCOPE_API_KEY
+#    WECHAT_AUTHOR (可选), GIT_REPO_DIR (可选)
+
+stages:
+  - publish
+
+wechat-draft:
+  stage: publish
+  image: python:3.10
+  only:
+    - main
+  script:
+    - pip install -r tools/requirements_wechat.txt
+    - python tools/wechat_publisher.py
+  when: manual  # 手动触发，方便审核后再发布

@@ -3,9 +3,7 @@ languageCode = 'zh-cn'
 title = 'Easton 跨国智库'
 theme = 'PaperMod'
 
-# ---- 首页 Profile 模式 ----
 [params]
-  # 个人简介展示
   author = "Easton Hua"
   defaultTheme = "auto"
   ShowReadingTime = true
@@ -15,79 +13,65 @@ theme = 'PaperMod'
   ShowCodeCopyButtons = true
   ShowShareButtons = false
   ShowFullTextinRSS = true
+  dateFormat = "2006-01-02"
 
-  # Profile 模式：首页展示个人信息
-  profileMode:
-    enabled = true
-    title = "Easton Hua"
-    subtitle = "独立开发者 · 跨国商业套利 · AI 生产力探索"
-    imageUrl = ""
-    imageTitle = ""
-
-  # 首页个人信息区
-  homeInfoParams:
-    Title = "🌐 Easton 跨国智库"
+  [params.homeInfoParams]
+    Title = "Easton 跨国智库"
     Content = """
-    **每日自动化扫描海外权威信息源，DeepSeek V4 Pro 深度推理，输出中文可执行情报。**
+    每日自动化扫描海外权威信息源，DeepSeek V4 Pro 深度推理，输出中文可执行情报。
 
-    > 💰 套利雷达 · 🤖 AI 前沿 · 🌍 跨国脑洞 · 📉 宏观风向
+    💰 套利雷达 · 🤖 AI 前沿 · 🌍 跨国脑洞 · 📉 宏观风向
 
     📧 hdop1993@gmail.com
     """
 
-  # 社交链接（显示在首页）
-  socialIcons:
-    - name: "email"
-      url: "mailto:hdop1993@gmail.com"
-    - name: "github"
-      url: "https://github.com/huadongpeng"
+  [[params.socialIcons]]
+    name = "email"
+    url = "mailto:hdop1993@gmail.com"
 
-  # 日期格式
-  dateFormat: "2006-01-02"
+  [[params.socialIcons]]
+    name = "github"
+    url = "https://github.com/huadongpeng"
 
-# ---- 顶部导航 ----
-[menu]
-  [[menu.main]]
-    identifier = "home"
-    name = "🏠 首页"
-    url = "/"
-    weight = 5
+[[menu.main]]
+  identifier = "home"
+  name = "🏠 首页"
+  url = "/"
+  weight = 5
 
-  [[menu.main]]
-    identifier = "arbitrage"
-    name = "💰 套利雷达"
-    url = "/categories/arbitrage-radar/"
-    weight = 10
+[[menu.main]]
+  identifier = "arbitrage"
+  name = "💰 套利雷达"
+  url = "/categories/arbitrage-radar/"
+  weight = 10
 
-  [[menu.main]]
-    identifier = "ai"
-    name = "🤖 AI 前沿"
-    url = "/categories/ai-frontier/"
-    weight = 20
+[[menu.main]]
+  identifier = "ai"
+  name = "🤖 AI 前沿"
+  url = "/categories/ai-frontier/"
+  weight = 20
 
-  [[menu.main]]
-    identifier = "cross"
-    name = "🌍 跨国脑洞"
-    url = "/categories/cross-border-insights/"
-    weight = 30
+[[menu.main]]
+  identifier = "cross"
+  name = "🌍 跨国脑洞"
+  url = "/categories/cross-border-insights/"
+  weight = 30
 
-  [[menu.main]]
-    identifier = "macro"
-    name = "📉 宏观风向"
-    url = "/categories/macro-events/"
-    weight = 40
+[[menu.main]]
+  identifier = "macro"
+  name = "📉 宏观风向"
+  url = "/categories/macro-events/"
+  weight = 40
 
-  [[menu.main]]
-    identifier = "about"
-    name = "👤 关于"
-    url = "/about/"
-    weight = 50
+[[menu.main]]
+  identifier = "about"
+  name = "👤 关于"
+  url = "/about/"
+  weight = 50
 
-# ---- 分类页面显示全部文章 ----
 [taxonomies]
   category = "categories"
   tag = "tags"
 
-# ---- 输出配置 ----
 [outputs]
   home = ["HTML", "RSS", "JSON"]

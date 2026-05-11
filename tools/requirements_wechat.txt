@@ -1,0 +1,5 @@
+# === 腾讯云服务器依赖 ===
+# 安装: pip install -r tools/requirements_wechat.txt
+
+requests>=2.28
+Pillow>=9.0        # 图片裁切/处理（可选）
