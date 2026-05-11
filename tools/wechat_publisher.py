@@ -159,7 +159,10 @@ def add_draft(token, article):
     """
     url = "https://api.weixin.qq.com/cgi-bin/draft/add"
     payload = {"articles": [article]}
-    resp = requests.post(url, params={"access_token": token}, json=payload, timeout=15)
+    # ensure_ascii=False 防止中文被转义为 \uXXXX 导致乱码
+    resp = requests.post(url, params={"access_token": token},
+                         data=json.dumps(payload, ensure_ascii=False).encode("utf-8"),
+                         headers={"Content-Type": "application/json"}, timeout=15)
     data = resp.json()
     if "media_id" in data:
         print(f"   ✅ 草稿创建成功, draft_media_id: {data['media_id']}")
