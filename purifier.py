@@ -658,38 +658,40 @@ def _extract_json(text):
     # 通用修复函数
     def _repair(raw):
         """逐步修复常见 LLM JSON 格式错误"""
-        # 尾随逗号
-        raw = re.sub(r',\s*([}\]])', r'\1', raw)
-        # 无引号属性名（含行首和花括号后）
-        raw = re.sub(r'(^|[{,\s\n])([a-zA-Z_][a-zA-Z0-9_]*)\s*:', r'\1"\2":', raw)
-        # 单引号键值
-        raw = re.sub(r"'([^']*)':", r'"\1":', raw)
-        raw = re.sub(r":\s*'([^']*)'", r': "\1"', raw)
-        # 中文引号
-        raw = raw.replace('“', '"').replace('”', '"')
-        raw = raw.replace('‘', "'").replace('’', "'")
-        # 缺失逗号
-        raw = re.sub(r'"\s*\n\s*"', '", "', raw)
-        raw = re.sub(r'([}\]\d])\s*\n\s*"', r'\1,\n"', raw)
+        raw = re.sub(r',\s*([}\]])', r'\1', raw)                         # 尾随逗号
+        raw = re.sub(r'(^|[{\[,:\s\n])([a-zA-Z_][a-zA-Z0-9_]*)\s*:', r'\1"\2":', raw)  # 无引号键
+        raw = re.sub(r"'([^']*)':", r'"\1":', raw)                     # 单引号键
+        raw = re.sub(r":\s*'([^']*)'", r': "\1"', raw)                 # 单引号值
+        raw = raw.replace('"', '"').replace('"', '"')                 # 中文双引号
+        raw = raw.replace(''', "'").replace(''', "'")                 # 中文单引号
+        raw = re.sub(r'"\s*\n\s*"', '", "', raw)                       # 缺失逗号
+        raw = re.sub(r'([}\]\d])\s*\n\s*"', r'\1,\n"', raw)            # 缺失逗号(续)
         return raw
 
+    # 对每个候选尝试解析，优先返回含 briefing+deep_dive 的有效 JSON
     errors = []
-    for cand in candidates[-4:]:
-        try:
-            return json.loads(cand)
-        except json.JSONDecodeError as e:
-            errors.append(str(e))
-            fixed = _repair(cand)
+    for cand in reversed(candidates):  # 后面的候选更有可能是真正的输出
+        for attempt in range(3):
             try:
-                return json.loads(fixed)
-            except json.JSONDecodeError as e2:
-                errors.append(str(e2))
-                # 最后手段：压缩空白
-                compact = re.sub(r'\n\s*', ' ', fixed)
-                try:
-                    return json.loads(compact)
-                except json.JSONDecodeError as e3:
-                    errors.append(str(e3))
+                obj = json.loads(cand)
+            except json.JSONDecodeError as e:
+                if attempt == 0:
+                    cand = _repair(cand)
+                    continue
+                elif attempt == 1:
+                    cand = re.sub(r'\n\s*', ' ', cand)
+                    continue
+                else:
+                    errors.append(str(e))
+                    break
+            else:
+                # 验证结构：必须有 briefing 键（deep_dive 可为 null）
+                if isinstance(obj, dict) and "briefing" in obj:
+                    return obj
+                else:
+                    # 解析成功但缺少 briefing，可能是 prompt 中的模板 JSON
+                    errors.append(f"跳过(缺briefing键): {list(obj.keys())[:3]}")
+                    break
 
     raise ValueError(f"JSON 提取失败: {'; '.join(errors[-3:])}")
 
