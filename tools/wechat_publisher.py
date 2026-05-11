@@ -551,6 +551,11 @@ def process_article(token, article, args):
     if thumb_media_id:
         article_data["thumb_media_id"] = thumb_media_id
 
+    # 诊断：打印实际发送字节
+    t_bytes = wechat_title.encode("utf-8")
+    d_bytes = digest.encode("utf-8")
+    print(f"   [诊断] title={len(t_bytes)}B digest={len(d_bytes)}B author={len(WECHAT_AUTHOR)}C")
+
     if args.dry_run:
         print(f"   🔍 [DRY RUN] 将创建草稿: {title}")
         print(f"   HTML 长度: {len(html_content)} 字符")
