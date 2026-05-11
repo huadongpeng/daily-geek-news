@@ -400,6 +400,53 @@ def get_recent_titles(category_name, days=3):
     return titles
 
 
+def _extract_json(text):
+    """从 LLM 输出中稳健提取 JSON 对象（平衡括号匹配）"""
+    # 策略 1: 提取 ```json ... ``` 代码块
+    m = re.search(r'```(?:json)?\s*(\{.*?\})\s*```', text, re.DOTALL)
+    candidates = [m.group(1)] if m else []
+
+    # 策略 2: 平衡括号提取最外层 JSON
+    start = text.find('{')
+    if start >= 0:
+        depth = 0
+        in_str = False
+        esc = False
+        for i, ch in enumerate(text[start:], start):
+            if esc:
+                esc = False; continue
+            if ch == '\\' and in_str:
+                esc = True; continue
+            if ch == '"':
+                in_str = not in_str; continue
+            if in_str:
+                continue
+            if ch == '{':
+                depth += 1
+            elif ch == '}':
+                depth -= 1
+                if depth == 0:
+                    candidates.append(text[start:i + 1])
+                    break
+
+    # 逐个尝试解析
+    errors = []
+    for cand in candidates:
+        try:
+            return json.loads(cand)
+        except json.JSONDecodeError as e:
+            errors.append(str(e))
+            # 尝试修复常见问题后重试
+            try:
+                fixed = re.sub(r',\s*}', '}', cand)  # 尾随逗号
+                fixed = re.sub(r',\s*]', ']', fixed)
+                return json.loads(fixed)
+            except Exception:
+                pass
+
+    raise ValueError(f"JSON 提取失败: {'; '.join(errors[-2:])}")
+
+
 def deep_dive_worker(category_name, config):
     print(f"[{category_name}] 数据就绪，唤醒 DeepSeek V4 Pro 双轨引擎（快讯 + 深度长文）...")
     context = fetch_and_augment(config['feeds'])
@@ -445,12 +492,8 @@ def deep_dive_worker(category_name, config):
         response.raise_for_status()
 
         final_text = response.json()['choices'][0]['message']['content']
-
-        json_match = re.search(r'\{.*\}', final_text, re.DOTALL)
-        if json_match:
-            return category_name, json.loads(json_match.group(0))
-        else:
-            raise ValueError("大模型未返回有效的 JSON 结构")
+        result = _extract_json(final_text)
+        return category_name, result
 
     except Exception as e:
         print(f"❌ [{category_name}] V4 Pro 推理失败: {e}")
