@@ -23,9 +23,9 @@ THREAD_IDS = {
     "Cross-Border-Insights": os.environ.get("TG_THREAD_CROSS"),
     "Macro-Events": os.environ.get("TG_THREAD_MACRO"),
     "China-Going-Global": os.environ.get("TG_THREAD_CHINA"),
-    "Developer-Goldmine": os.environ.get("TG_THREAD_DEV"),
-    "_briefing": os.environ.get("TG_THREAD_BRIEFING")
+    "Developer-Goldmine": os.environ.get("TG_THREAD_DEV")
 }
+BRIEFING_THREAD = os.environ.get("TG_THREAD_BRIEFING")
 
 # ============================================================
 # 六大引擎配置 — 快讯 + 可选深度长文，并行抓取 + 缓存去重
@@ -102,7 +102,7 @@ content_md 严格按以下四章结构：
 - 微信/小红书/闲鱼/拼多多/抖音生态中的对等机会
 - ≥2 个具体套利切入点（信息差/平台差/汇率差）
 
-## 三、MVP 落地执行方案（核心章节，≥500 字）
+## 三、MVP 落地执行方案（核心章节，≥800 字）
 - ≥50 行可直接运行的 Python 代码
 - Day1 / Day2 / Day3 分步清单（每步 30 分钟内可完成）
 
@@ -188,7 +188,7 @@ content_md 严格按以下四章结构：
 - 3-5 种可被替代的人工操作场景
 - 每个场景的时间/成本节省量化估算
 
-## 三、Easton 实战接入方案（核心章节，≥500 字）
+## 三、Easton 实战接入方案（核心章节，≥800 字）
 - ≥50 行可运行 Python 代码（含错误处理+日志）
 - API 关键参数、费用预估、常见坑点
 
@@ -401,7 +401,7 @@ content_md 严格按以下四章结构：
   "tg_summary": "Telegram 精简推送（50字内，含核心数据点+行动引导动词）"
 }
 
-硬性要求：所有方案必须零成本或低成本启动。必须标注来源平台。deep_dive 宁缺毋滥。""",
+硬性要求：所有方案必须零成本或低成本启动。必须标注来源平台。deep_dive 优先输出。""",
 
         "deep_dive_prompt": """你是中国科技出海战略顾问。请从资料库中找到一个中国独有或领先、海外市场稀缺的商业模式/技术，输出出海落地方案。
 
@@ -422,7 +422,7 @@ content_md 严格按以下四章结构：
 - 为什么海外没有类似模式（技术/文化/监管差异）
 - ≥2 个具体目标国家/地区的市场画像
 
-## 三、出海落地路径（≥500 字）
+## 三、出海落地路径（≥800 字）
 - 最小可行出海方案（MVP for overseas）
 - ≥30 行可运行代码或详细的落地执行步骤
 - 本地化适配清单（语言/支付/合规/运营）
@@ -478,7 +478,7 @@ content_md 严格按以下四章结构：
   "tg_summary": "Telegram 精简推送（50字内，含核心数据点+行动引导动词）"
 }
 
-硬性要求：所有变现方案必须零成本或低成本启动。代码必须可运行。deep_dive 宁缺毋滥。""",
+硬性要求：所有变现方案必须零成本或低成本启动。代码必须可运行。deep_dive 优先输出。""",
 
         "deep_dive_prompt": """你是独立开发者技术变现顾问。请从资料库中挑选最有变现价值的技术/工具/平台，输出实战接入方案。
 
@@ -499,7 +499,7 @@ content_md 严格按以下四章结构：
 - 每种方式的收入预估、成本分析、时间投入
 - 适合独立开发者的最优路径推荐
 
-## 三、Easton 实战接入方案（≥500 字）
+## 三、Easton 实战接入方案（≥800 字）
 - ≥40 行可直接运行的 Python/JS 代码
 - 从注册到首次收入的完整操作流程
 - 常见坑点和排错指南
@@ -773,33 +773,35 @@ def deep_dive_worker(category_name, config):
 # ============================================================
 # Hugo 落盘
 # ============================================================
+def _write_hugo_post(dir_name, file_name, title, categories, tags, body):
+    """写入 Hugo Markdown 文件，返回文件路径"""
+    posts_dir = os.path.join("content", "posts", dir_name)
+    os.makedirs(posts_dir, exist_ok=True)
+    file_path = os.path.join(posts_dir, file_name)
+    fm = f"---\ntitle: '{title}'\ndate: {datetime.now().strftime('%Y-%m-%dT%H:%M:%S%z')}\n"
+    fm += f"categories: {json.dumps(categories)}\ntags: {json.dumps(tags)}\n"
+    fm += f"draft: false\n---\n\n"
+    with open(file_path, "w", encoding="utf-8") as f:
+        f.write(fm + body)
+    return file_path
+
+
 def save_deep_dive(category_name, config, data):
-    """落盘单篇深度长文（快讯已改聚合模式）"""
+    """落盘单篇深度长文"""
     deep_dive = data.get("deep_dive")
     if not (deep_dive and deep_dive.get("title") and deep_dive.get("content_md")):
         print(f"   ⏭️ [{category_name}] 今日无值得深度长文的话题，跳过")
         return None
 
-    now = datetime.now()
-    date_slug = now.strftime("%Y-%m-%d")
+    date_slug = datetime.now().strftime("%Y-%m-%d")
     cat_lower = category_name.lower()
-    posts_dir = os.path.join("content", "posts", category_name)
-    os.makedirs(posts_dir, exist_ok=True)
-
-    file_name = os.path.join(posts_dir, f"deep-dive-{date_slug}.md")
-    md = f"---\n"
-    md += f"title: '{deep_dive['title']}'\n"
-    md += f"date: {now.strftime('%Y-%m-%dT%H:%M:%S%z')}\n"
-    md += f"categories: ['{cat_lower}']\n"
-    md += f"tags: ['深度长文', '深度分析']\n"
-    md += f"draft: false\n"
-    md += f"---\n\n"
-    md += deep_dive['content_md']
-
-    with open(file_name, "w", encoding="utf-8") as f:
-        f.write(md)
-    print(f"   📄 深度长文已落盘: {file_name}")
-    return file_name
+    file_path = _write_hugo_post(
+        category_name, f"deep-dive-{date_slug}.md",
+        deep_dive['title'], [cat_lower], ["深度长文", "深度分析"],
+        deep_dive['content_md']
+    )
+    print(f"   📄 深度长文已落盘: {file_path}")
+    return file_path
 
 
 def save_aggregated_briefing(briefings_by_cat):
@@ -845,7 +847,7 @@ def save_aggregated_briefing(briefings_by_cat):
 # ============================================================
 # Telegram 推送 —— 内容丰满版
 # ============================================================
-def _tg_post(category_name, msg):
+def _tg_post(category_name, msg, thread_id=None):
     """发送单条 Telegram 消息到指定 Topic"""
     try:
         chat_id_int = int(TG_CHAT_ID.strip())
@@ -854,9 +856,10 @@ def _tg_post(category_name, msg):
 
     payload = {"chat_id": chat_id_int, "text": msg, "parse_mode": "Markdown",
                 "disable_web_page_preview": False}
-    thread_id = THREAD_IDS.get(category_name)
-    if thread_id and thread_id.strip():
-        payload["message_thread_id"] = int(thread_id.strip())
+    if thread_id is None:
+        thread_id = THREAD_IDS.get(category_name)
+    if thread_id and str(thread_id).strip():
+        payload["message_thread_id"] = int(str(thread_id).strip())
 
     try:
         resp = requests.post(
@@ -899,16 +902,17 @@ def send_aggregated_briefing_tg(briefings_by_cat):
 
     msg += "━━━━━━━━━━━━━━\n"
     msg += f"详情: {SITE_URL}"
-    return 1 if _tg_post("_briefing", msg) else 0
+    return 1 if _tg_post("_briefing", msg, thread_id=BRIEFING_THREAD) else 0
 
 
-def send_deep_dive_tg(category_name, config, data):
+def send_deep_dive_tg(category_name, data):
     """推送单篇深度长文到其 Topic"""
     deep_dive = data.get("deep_dive")
     if not (deep_dive and deep_dive.get("title") and deep_dive.get("content_md")):
         return 0
 
-    msg = f"**[{config['title_cn']}] 深度长文**\n\n"
+    title_cn = AGENTS.get(category_name, {}).get("title_cn", category_name)
+    msg = f"**[{title_cn}] 深度长文**\n\n"
     msg += f"**{deep_dive['title']}**\n\n"
     msg += f"{deep_dive.get('tg_summary', '深度分析已发布')}\n\n"
     msg += f"阅读全文: {SITE_URL}/categories/{category_name.lower()}/"
@@ -953,7 +957,7 @@ if __name__ == "__main__":
                         total_deep_dives += 1
 
                     # 深度长文推送各自 Topic
-                    total_tg += send_deep_dive_tg(category_name, AGENTS[category_name], result)
+                    total_tg += send_deep_dive_tg(category_name, result)
                 else:
                     print(f"   ⚠️ [{cat}] 未获取有效结果")
             except Exception as exc:
