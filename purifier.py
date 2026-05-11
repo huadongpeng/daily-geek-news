@@ -132,14 +132,21 @@ def send_to_halo(markdown_content):
     
     payload = {
         "post": {
+            "apiVersion": "content.halo.run/v1alpha1",
+            "kind": "Post",
+            "metadata": {
+                "generateName": "post-"  # 【新增】Halo 2.x 必需的底层命名生成器
+            },
             "spec": {
                 "title": f"全球极客商业智库与套利沙盘 ({today})",
                 "slug": f"arbitrage-deep-dive-{today}",
-                "baseSnapshot": {"raw": markdown_content},
-                "owner": "你的用户名"  # 【重要】务必在这里替换为你在 Halo 后台登录的真实用户名！！！
-            },
-            "apiVersion": "content.halo.run/v1alpha1",
-            "kind": "Post"
+                "baseSnapshot": {
+                    "raw": markdown_content,
+                    "isAutoSave": False
+                },
+                "owner": "hdop",  # 【极其重要】务必将 "admin" 替换为你在 Halo 系统后台实际的英文/拼音用户名！
+                "publish": False   # 建议先设为 False（存为草稿）。方便你在手机上预览排版，确认完美后再手动点击发布。
+            }
         }
     }
     
