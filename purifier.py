@@ -373,9 +373,36 @@ def fetch_and_augment(feeds):
 # ============================================================
 # 核心：快讯 + 可选深度长文双轨引擎
 # ============================================================
+def get_recent_titles(category_name, days=3):
+    """读取近 N 天已生成的文章标题，用于去重"""
+    import glob as glob_mod
+    titles = []
+    posts_dir = os.path.join("content", "posts", category_name)
+    if os.path.isdir(posts_dir):
+        for md_file in sorted(glob_mod.glob(os.path.join(posts_dir, "*.md")), reverse=True):
+            try:
+                with open(md_file, "r", encoding="utf-8") as f:
+                    for line in f:
+                        if line.startswith("title:"):
+                            titles.append(line.split("title:", 1)[1].strip().strip("'\""))
+                            break
+            except Exception:
+                pass
+            if len(titles) >= days * 5:  # 每天最多 5 篇（快讯+长文），3 天最多 15 篇
+                break
+    return titles
+
+
 def deep_dive_worker(category_name, config):
     print(f"[{category_name}] 数据就绪，唤醒 DeepSeek V4 Pro 双轨引擎（快讯 + 深度长文）...")
     context = fetch_and_augment(config['feeds'])
+
+    # 去重：读取近期已覆盖话题
+    recent = get_recent_titles(category_name, days=3)
+    dedup_hint = ""
+    if recent:
+        dedup_hint = f"\n\n【重要：去重规则】以下话题最近 3 天已覆盖，请严格避免重复选择相同或高度相似的话题：\n" + \
+                     "\n".join(f"- {t}" for t in recent[:15])
 
     url = "https://api.deepseek.com/chat/completions"
     headers = {
@@ -401,7 +428,7 @@ def deep_dive_worker(category_name, config):
         "model": "deepseek-chat",
         "messages": [
             {"role": "system", "content": "你是一个严格输出标准 JSON 格式的跨国智库分析引擎。所有个人方案必须优先考虑零成本或低成本路径。"},
-            {"role": "user", "content": full_prompt + "\n\n【资料库】\n" + context}
+            {"role": "user", "content": full_prompt + dedup_hint + "\n\n【资料库】\n" + context}
         ]
     }
 

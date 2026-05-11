@@ -406,10 +406,9 @@ def find_articles(date_str=None):
                 body = parts[2]
 
         raw_title = frontmatter.get("title", md_file.stem)
-        # 去掉 Hugo frontmatter 的 emoji 前缀（如 "💰 "）和单引号
-        title = raw_title.strip("'\"")
-        if title and title[0] in "💰🤖🌍📉📰":
-            title = title[1:].strip()
+        # 去掉 Hugo frontmatter 的 emoji 前缀+单引号（用正则，兼容各种 emoji）
+        title = re.sub(r"^[^a-zA-Z0-9一-鿿#]+\s*", "", raw_title.strip("'\""))
+        title = title[:40]  # 微信标题 64 字限制，留足安全边界
 
         articles.append({
             "file": md_file,
