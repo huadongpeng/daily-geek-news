@@ -211,15 +211,16 @@ def generate_cover_image(title, category_name, date_slug=""):
     # 保存到 tools/covers/（用于公众号上传）
     local_dir = GIT_REPO_DIR / "tools" / "covers"
     local_dir.mkdir(parents=True, exist_ok=True)
-    local_path = local_dir / f"cover_{datetime.now().strftime('%Y%m%d_%H%M%S')}.png"
+    cat_slug = category_name.lower().replace(" ", "-")
+    local_path = local_dir / f"cover_{cat_slug}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.png"
     with open(local_path, "wb") as f:
         f.write(img_resp.content)
     print(f"   🖼️ 封面图已保存: {local_path}")
 
-    # 同步保存到 static/images/covers/（Hugo 直接引用）
+    # 同步保存到 static/images/covers/（Hugo 直接引用，按分类+日期命名避免覆盖）
     static_dir = STATIC_COVERS_DIR
     static_dir.mkdir(parents=True, exist_ok=True)
-    static_name = f"{date_slug}_{engine}.png" if date_slug else f"cover_{datetime.now().strftime('%Y%m%d')}_{engine}.png"
+    static_name = f"{date_slug}_{cat_slug}_{engine}.png" if date_slug else f"{cat_slug}_{datetime.now().strftime('%Y%m%d')}_{engine}.png"
     static_path = static_dir / static_name
     with open(static_path, "wb") as f:
         f.write(img_resp.content)
