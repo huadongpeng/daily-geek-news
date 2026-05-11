@@ -67,6 +67,48 @@ TITLE_MAP = {
     "Macro-Events": "宏观局势风向标",
 }
 
+# 微信公众号内容适配：需要人工审核的表达模式
+SENSITIVE_PATTERNS = [
+    (r"台湾", "需核实表述是否符合一个中国原则"),
+    (r"香港|澳门", "注意港澳地区表述规范"),
+    (r"翻墙|VPN|梯子|科学上网|代理工具|绕过防火墙", "工具类表述需替换为'跨境网络方案'等中性词汇"),
+    (r"暗网|黑产|灰产|洗钱", "高风险话题，建议删除或大幅改写"),
+    (r"加密货币|比特币|以太币|虚拟货币交易", "加密资产表述需符合国内监管口径"),
+    (r"政治|体制|政党|民主运动|人权", "政治敏感词，建议删除相关段落"),
+    (r"独立.*国家|分裂|革命", "需严格审核上下文语境"),
+    (r"新冠|疫情|病毒来源|实验室泄露", "疫情相关表述需符合官方口径"),
+    (r"泄露|黑市|漏洞.*利用|零日|0day", "安全漏洞类表述需谨慎处理"),
+]
+
+WECHAT_TITLE_MAX = 64  # 微信标题硬限制
+
+def optimize_wechat_title(raw_title, category_name):
+    """将文章标题优化为微信公众号格式"""
+    cat = TITLE_MAP.get(category_name, "")
+    # 去掉已有 emoji 和引号
+    title = raw_title.strip("'\" \t\n")
+    title = re.sub(r"^[^a-zA-Z0-9一-鿿]+\s*", "", title)
+
+    # 去美元符号和其他可能引起不适的符号
+    title = title.replace("$", "美元").replace("€", "欧元")
+
+    # 如标题已超限，智能截断
+    if len(title) > WECHAT_TITLE_MAX - 2:
+        title = title[:WECHAT_TITLE_MAX - 5] + "..."
+
+    return title
+
+
+def sanitize_for_wechat(text):
+    """扫描文章内容，标记风险表述，返回 (sanitized_text, warnings)"""
+    warnings = []
+    for pattern, advice in SENSITIVE_PATTERNS:
+        matches = re.findall(pattern, text)
+        if matches:
+            # 用 【】 包裹敏感词作为警示（草稿箱中人工可见）
+            warnings.append(f"⚠️ 发现敏感表述: {', '.join(set(matches))[:80]} — {advice}")
+    return text, warnings
+
 
 # ============================================================
 # 微信 API
@@ -433,6 +475,16 @@ def process_article(token, article, args):
     print(f"📝 处理: [{cat}] {title}")
     print(f"{'='*60}")
 
+    # ---- 微信标题优化 ----
+    wechat_title = optimize_wechat_title(title, cat)
+    print(f"   ✏️ 微信标题: {wechat_title}")
+
+    # ---- 敏感内容审查 ----
+    _, warnings = sanitize_for_wechat(body)
+    if warnings:
+        for w in warnings:
+            print(f"   {w}")
+
     # 确定原文链接
     article_type = "deep-dive" if article["is_deep"] else "briefing"
     date_slug = datetime.now().strftime("%Y-%m-%d")
@@ -481,8 +533,13 @@ def process_article(token, article, args):
     digest = plain_text[:WECHAT_DIGEST_MAX].strip()
 
     # 构建文章数据
+    if warnings:
+        review_note = '<p style="color:red;font-weight:bold;border:2px solid red;padding:12px;margin:16px 0;">[审核提示] 以下内容含需人工审核的表述，请在发布前检查：<br>' + \
+                      '<br>'.join(w.replace('⚠️ ', '') for w in warnings) + '</p>'
+        html_content = review_note + html_content
+
     article_data = {
-        "title": title,
+        "title": wechat_title,
         "author": WECHAT_AUTHOR,
         "digest": digest,
         "content": html_content,
