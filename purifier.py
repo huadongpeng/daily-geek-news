@@ -115,12 +115,19 @@ content_md 严格按以下四章结构：
         "title_cn": "AI 生产力前沿",
         "emoji": "🤖",
         "feeds": [
+            # 大模型厂商官方
+            "https://openai.com/blog/rss.xml",
+            "https://www.anthropic.com/feed/",
+            "https://blog.google/technology/ai/rss/",
+            "https://deepmind.google/blog/feed.xml",
+            "https://ai.meta.com/blog/feed/",
+            "https://mistral.ai/feed/",
+            # AI 前沿媒体
             "https://tldr.tech/ai/rss",
             "https://therundown.ai/feed",
             "https://huggingface.co/blog/feed.xml",
             "https://www.technologyreview.com/feed/",
             "https://dev.to/feed/tag/ai",
-            "https://openai.com/blog/rss.xml",
             "https://www.reddit.com/r/MachineLearning/top/.rss?t=day",
             "https://aivalley.ai/feed",
             "https://venturebeat.com/category/ai/feed/",
