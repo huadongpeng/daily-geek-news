@@ -192,26 +192,21 @@ html { scroll-behavior: smooth; }
   }
 
   #mobile-nav a {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    font-size: 11px;
+    font-size: 13px;
+    font-weight: 500;
     color: var(--secondary);
     text-decoration: none;
-    padding: 6px 6px;
-    min-width: 52px;
-    min-height: 48px;
+    padding: 12px 4px;
+    min-width: 44px;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
     justify-content: center;
   }
 
   #mobile-nav a:active {
     color: var(--primary);
     transform: scale(0.95);
-  }
-
-  #mobile-nav a .nav-icon {
-    font-size: 22px;
-    margin-bottom: 1px;
   }
 
   /* ========= 文章切换 ========= */
