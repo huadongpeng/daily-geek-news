@@ -443,27 +443,26 @@ def _extract_json(text):
                     # 尾随逗号
                     cand = re.sub(r',\s*([}\]])', r'\1', cand)
                 elif attempt == 1:
-                    # 无引号属性名: {word: -> {“word”:
-                    cand = re.sub(r'([\{\s,])([a-zA-Z_][a-zA-Z0-9_]*)\s*:', r'\1”\2”:', cand)
+                    # 无引号属性名: {word: -> {"word":
+                    cand = re.sub(r'([\{\s,])([a-zA-Z_][a-zA-Z0-9_]*)\s*:', r'\1"\2":', cand)
                 elif attempt == 2:
-                    # 缺失逗号: “x”\n”y” -> “x”,\n”y”
-                    cand = re.sub(r'”\s*\n\s*”', '”,\n”', cand)
+                    # 缺失逗号: "x"\n"y" -> "x",\n"y"
+                    cand = re.sub(r'"\s*\n\s*"', '",\n"', cand)
                 elif attempt == 3:
-                    # 缺失逗号: }\n” -> },\n”
-                    cand = re.sub(r'([}\]\d])\s*\n\s*”', r'\1,\n”', cand)
+                    # 缺失逗号: }\n" -> },\n"
+                    cand = re.sub(r'([}\]\d])\s*\n\s*"', r'\1,\n"', cand)
                 elif attempt == 4:
-                    # 中文引号替换
-                    cand = cand.replace('“', '”').replace('”', '”')
-                    cand = cand.replace('‘', “'”).replace('’', “'”)
+                    cand = cand.replace('"', '"').replace('"', '"')
+                    cand = cand.replace(''', "'").replace(''', "'")
                 elif attempt == 5:
                     # 单引号属性名/值
-                    cand = re.sub(r”'([^']*)':”, r'”\1”:', cand)
-                    cand = re.sub(r”:\s*'([^']*)'”, r': “\1”', cand)
+                    cand = re.sub(r"'([^']*)':", r'"\1":', cand)
+                    cand = re.sub(r":\s*'([^']*)'", r': "\1"', cand)
                 elif attempt == 6:
                     # 极端情况：删除所有换行符尝试
                     cand = re.sub(r'\n\s*', ' ', cand)
 
-    raise ValueError(f”JSON 提取失败: {'; '.join(errors[-3:])}”)
+    raise ValueError(f"JSON 提取失败: {'; '.join(errors[-3:])}")
 
 
 def deep_dive_worker(category_name, config):
