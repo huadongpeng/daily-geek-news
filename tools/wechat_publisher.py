@@ -42,13 +42,10 @@ WECHAT_APPSECRET = os.environ.get("WECHAT_APPSECRET")
 WECHAT_AUTHOR = os.environ.get("WECHAT_AUTHOR", "Easton Hua")
 DASHSCOPE_API_KEY = os.environ.get("DASHSCOPE_API_KEY")
 ZHIPU_API_KEY = os.environ.get("ZHIPU_API_KEY")
-DEEPSEEK_KEY = os.environ.get("DEEPSEEK_API_KEY", "")
 GIT_REPO_DIR = Path(os.environ.get("GIT_REPO_DIR", "/ws/web/daily-geek-news"))
 CONTENT_DIR = GIT_REPO_DIR / "content" / "posts"
 STATIC_COVERS_DIR = GIT_REPO_DIR / "static" / "images" / "covers"
 SITE_URL = "https://radar.huadongpeng.com"
-WECHAT_ACCOUNT = "老花有话说"
-WECHAT_ID = "lanrenleyou"
 
 COVER_SIZE = "1024*1024"
 WANX_MODEL = "wanx2.0-t2i-turbo"  # 通义万相极速版, 0.04 元/张, 免费 200 张/月
@@ -511,70 +508,6 @@ def find_articles(date_str=None):
     return articles
 
 
-def polish_for_wechat(title, body, category_name, warnings=None):
-    """调用 DeepSeek 输出微信 HTML：敏感词改写 + 格式美化 + 品牌首尾"""
-    if not DEEPSEEK_KEY:
-        print("   ⚠️ 未配置 DEEPSEEK_API_KEY，跳过微信文章润色")
-        return body
-
-    cat_cn = TITLE_MAP.get(category_name, category_name)
-    sensitive_hint = ""
-    if warnings:
-        sensitive_hint = f"\n\n【敏感内容修正——严格按要求改写，不可忽略】以下表述在微信公众号发布时需处理：\n" + \
-                          "\n".join(f"- {w}" for w in warnings) + \
-                          "\n请用中性、合规的表述替换上述内容，绝不能将警告信息作为正文输出。"
-
-    prompt = f"""你是微信公众号资深编辑。请将以下 Markdown 文章转为适合微信公众号发布的 HTML 格式。
-
-格式要求：
-1. 表格转为文本列表（微信不支持 Markdown 表格）
-2. 代码块保持原样，用 <pre><code> 包裹
-3. 标题用 <h2>，加左边框样式，子标题用 <h3>
-4. 段落用 <p style="margin:12px 0;line-height:1.85;"> 包裹
-5. 重点语句用 <strong> 强调
-{sensitive_hint}
-
-重要约束：
-- 保持原文核心观点、数据和逻辑不变
-- 零 emoji，零网络用语
-- 专业严谨的学术商业分析风格
-- 不要输出代码块外壳（不要 ```html ``` 包裹）
-- 只输出文章正文 HTML，不要包含 <!DOCTYPE> 或 <html><head><body> 标签
-
-原文标题：{title}
-所属栏目：{cat_cn}
-原文正文：
-{body[:6000]}
-
-输出文章正文 HTML："""
-
-    try:
-        resp = requests.post(
-            "https://api.deepseek.com/chat/completions",
-            headers={"Authorization": f"Bearer {DEEPSEEK_KEY}", "Content-Type": "application/json"},
-            json={
-                "model": "deepseek-chat",
-                "messages": [
-                    {"role": "system", "content": "你是微信公众号资深编辑。只输出文章正文 HTML 片段，不包含代码块标记。"},
-                    {"role": "user", "content": prompt}
-                ]
-            },
-            timeout=120
-        )
-        if resp.status_code == 200:
-            polished = resp.json()["choices"][0]["message"]["content"].strip()
-            if polished.startswith("```"):
-                polished = re.sub(r"^```\w*\n?|\n?```$", "", polished)
-            print(f"   ✨ 微信润色完成 ({len(polished)} 字)")
-            return polished
-        else:
-            print(f"   ⚠️ 微信润色失败: {resp.status_code}，使用原文")
-            return body
-    except Exception as e:
-        print(f"   ⚠️ 微信润色异常: {e}，使用原文")
-        return body
-
-
 WECHAT_HEADER = f"""<section style="background:linear-gradient(135deg,#1a1a2e 0%,#16213e 100%);padding:18px 16px;margin-bottom:24px;border-radius:8px;text-align:center;">
 <p style="color:#e0e0e0;font-size:12px;margin:0 0 4px;">Easton 跨国智库 · 每日海外情报深度解读</p>
 <p style="margin:0;"><a href="{SITE_URL}" style="color:#4fc3f7;font-size:13px;text-decoration:none;">{SITE_URL.replace('https://', '')}</a></p>
@@ -624,13 +557,9 @@ def process_article(token, article, args):
     date_slug = datetime.now().strftime("%Y-%m-%d")
     article_url = f"{SITE_URL}/posts/{cat.lower()}/"
 
-    # ---- 微信文章润色（敏感词改写 + HTML 格式化）----
-    if not args.no_polish:
-        polished_html = polish_for_wechat(title, body, cat, warnings)
-        # 包裹固定的品牌首尾
-        html_content = wrap_wechat_html(polished_html)
-    else:
-        html_content = md_to_wechat_html(body, article_url)
+    # ---- Markdown → 微信 HTML + 品牌首尾模板 ----
+    html_content = md_to_wechat_html(body, article_url)
+    html_content = wrap_wechat_html(html_content)
 
     # ---- 封面图生成（双引擎）----
     cover_path = None
@@ -718,7 +647,6 @@ def main():
     parser.add_argument("--date", help="处理指定日期文章 (YYYY-MM-DD)")
     parser.add_argument("--dry-run", action="store_true", help="预览模式，不实际创建草稿")
     parser.add_argument("--no-image", action="store_true", help="跳过封面图生成")
-    parser.add_argument("--no-polish", action="store_true", help="跳过微信文章润色")
     parser.add_argument("--yesterday", action="store_true", help="推送前一天的文章")
     parser.add_argument("--include-briefings", action="store_true",
                         help="同时推送每日快讯（默认仅推送精品深度长文）")

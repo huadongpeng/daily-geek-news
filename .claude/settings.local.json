@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(Get-ChildItem -Recurse -Depth 2 -File)",
+      "Bash(Select-Object FullName)",
+      "PowerShell(Get-ChildItem -Recurse -File | ForEach-Object { $_.FullName.Replace\\(\"$pwd\\\\\", \"\"\\) })",
+      "PowerShell(git add *)",
+      "PowerShell(git push *)",
+      "PowerShell(git pull *)",
+      "PowerShell(gh auth *)",
+      "Bash(cat)",
+      "Bash(python /tmp/fix_quotes.py \"D:\\\\MyProject\\\\10 热点文章\\\\daily-geek-news\\\\purifier.py\")",
+      "Bash(python \"D:\\\\MyProject\\\\10 热点文章\\\\daily-geek-news\\\\purifier.py\")",
+      "PowerShell(git *)",
+      "PowerShell(python -c \"compile\\(open\\(r'D:\\\\MyProject\\\\10 热点文章\\\\daily-geek-news\\\\purifier.py', encoding='utf-8'\\).read\\(\\), 'purifier.py', 'exec'\\); print\\('Syntax OK'\\)\")",
+      "Bash(python *)"
+    ]
+  }
+}

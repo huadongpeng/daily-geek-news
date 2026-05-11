@@ -24,13 +24,7 @@ theme = 'PaperMod'
 
   [params.homeInfoParams]
     Title = "Easton 跨国智库"
-    Content = """
-    每日自动化扫描 <strong>72 个全球权威信息源</strong>，DeepSeek V4 Pro 深度推理，输出中文可执行商业情报。
-
-    <strong>六大情报线</strong>：套利雷达 · 跨国脑洞 · 中国出海 · AI 前沿 · 开发者金矿 · 宏观风向
-
-    关注公众号「<strong>老花有话说</strong>」获取每日推送 · hdop1993@gmail.com
-    """
+    Content = "每日自动化扫描 72 个全球权威信息源，DeepSeek V4 Pro 深度推理，输出中文可执行商业情报。\n\n六大情报线：套利雷达 · 跨国脑洞 · 中国出海 · AI 前沿 · 开发者金矿 · 宏观风向\n\n关注公众号「老花有话说」获取每日推送 · hdop1993@gmail.com"
 
   [[params.socialIcons]]
     name = "email"
