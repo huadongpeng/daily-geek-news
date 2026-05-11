@@ -434,11 +434,27 @@ def _load_published():
     return set()
 
 
-def _mark_published(file_path):
-    """记录文章为已推送"""
+def _published_key(md_file):
+    """生成去重键：分类/类型-日期，同一天同分类同类型只推一次"""
+    rel = md_file.relative_to(GIT_REPO_DIR)
+    parts = rel.parts
+    category = parts[1] if len(parts) > 1 else "unknown"
+    # 提取日期和类型：deep-dive-2026-05-12-1430.md → deep-dive-2026-05-12
+    name = md_file.stem
+    if "deep-dive" in name:
+        type_date = "-".join(name.split("-")[:3])  # deep-dive-2026-05-12
+    elif "briefing" in name:
+        type_date = name  # briefing-2026-05-12
+    else:
+        type_date = name
+    return f"{category}/{type_date}"
+
+
+def _mark_published(md_file):
+    """记录文章为已推送（按分类/类型/日期去重）"""
     PUBLISHED_LOG.parent.mkdir(parents=True, exist_ok=True)
     published = _load_published()
-    published.add(str(file_path.relative_to(GIT_REPO_DIR)))
+    published.add(_published_key(md_file))
     PUBLISHED_LOG.write_text("\n".join(sorted(published)), encoding="utf-8")
 
 
@@ -479,9 +495,8 @@ def find_articles(date_str=None):
         title = re.sub(r"[^一-鿿a-zA-Z0-9\s\.\,\;\:\!\?\-\+\#\&\(\)\[\]\{\}]", "", raw_title.strip("'\""))
         title = re.sub(r"\s+", " ", title).strip()
 
-        # 跳过已推送的文章
-        rel_path = str(md_file.relative_to(GIT_REPO_DIR))
-        if rel_path in published:
+        # 跳过已推送的文章（按分类/日期去重，同一天多次运行不重复推送）
+        if _published_key(md_file) in published:
             continue
 
         articles.append({
