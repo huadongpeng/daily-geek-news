@@ -1,144 +1,121 @@
 # 腾讯云服务器初始化指南
 
-## 架构总览
+## 每日自动化流程
 
 ```
-海外（无墙）                          中国（腾讯云）
-───────────                         ────────────
-GitHub Actions                       Docker: GitLab
-  │ 生成文章                            │
-  ├─ git push → GitHub                │← GitHub Actions 推送到此
-  └─ git push → GitLab ─────────────→ GitLab 收到推送
-                                        │
-                                        ├─ GitLab CI 自动触发
-                                        │     │
-                                        │     └─ python wechat_publisher.py
-                                        │           ├─ 通义万相 生成封面图
-                                        │           ├─ Markdown→微信HTML
-                                        │           └─ 微信公众号草稿箱
-                                        │
-                                        └─ （可选）部署国内 Hugo 镜像
+北京时间 06:00  GitHub Actions 自动运行
+  ├─ purifier.py: 4 引擎 × 双轨（快讯 + 可选深度长文）
+  ├─ 生成 content/posts/<分类>/briefing-YYYY-MM-DD.md
+  ├─ 生成 content/posts/<分类>/deep-dive-YYYY-MM-DD.md（质量门控）
+  ├─ Telegram 推送（快讯丰满格式 + 深度长文单独推送）
+  ├─ git commit & push → GitHub
+  └─ git push → 你的 GitLab（腾讯云 Docker）
+
+北京时间 07:00  腾讯云服务器 crontab
+  ├─ git pull（从本地 Docker GitLab 拉取，秒级完成）
+  ├─ python3 tools/wechat_publisher.py（默认仅精品深度长文）
+  │   ├─ 双引擎封面图生成（通义万相 主 + 智谱 CogView 备）
+  │   ├─ 封面保存到 static/images/covers/（网站可用）
+  │   ├─ Markdown → 微信 HTML（含品牌栏 + 引流链接）
+  │   └─ 存入公众号草稿箱
+  └─ 你醒来后 → 公众号后台审核 → 发布
+
+月均生图量：~4篇深度长文/天 × 30天 = ~120张
+通义万相免费 200张/月 + 智谱 CogView 100张/月备选 → 完全够用
 ```
 
-## 前置准备：获取 4 个 Key
+## 前置准备：获取 API Key
 
 ### 1. 微信公众号 AppID + AppSecret
 1. 登录 [mp.weixin.qq.com](https://mp.weixin.qq.com)
-2. 左侧菜单 → 设置与开发 → 基本配置
-3. 复制 **AppID**（开发者ID）
-4. 点击 **AppSecret** 旁的「重置」获取密钥（需管理员扫码）
-5. **重要**：将服务器公网 IP 加入 IP 白名单（基本配置页面下方）
+2. 设置与开发 → 基本配置
+3. 复制 AppID，点击「重置」获取 AppSecret（需管理员扫码）
+4. 将服务器公网 IP 加入 IP 白名单（基本配置页下方）
 
-### 2. 阿里百炼 API Key（通义万相生图，200张/月免费）
-1. 打开 [dashscope.console.aliyun.com](https://dashscope.console.aliyun.com)
-2. 支付宝扫码登录
-3. 左侧 → API-KEY 管理 → 创建新的 API Key
-4. 复制保存（只显示一次）
+### 2. 通义万相 API Key（主引擎，200张/月免费）
+1. [dashscope.console.aliyun.com](https://dashscope.console.aliyun.com) → 支付宝登录
+2. 左侧 API-KEY 管理 → 创建 → 复制
 
-### 3. GitLab Personal Access Token
-1. 登录你的 GitLab（Docker 实例）
-2. 右上角头像 → Settings → Access Tokens
-3. Token name: `github-action-push`
-4. Scopes: 勾选 `write_repository`
-5. 创建并复制 Token（只显示一次）
+### 3. 智谱 CogView API Key（备引擎，100张/月免费）
+1. [open.bigmodel.cn](https://open.bigmodel.cn) → 手机号注册
+2. API Keys → 创建 → 复制
 
-## 服务器初始化步骤
+### 4. GitLab Personal Access Token
+1. 登录你的 GitLab Docker 实例
+2. Settings → Access Tokens
+3. Token name: `github-push`，Scope: `write_repository` → 复制
 
-### 第一步：确保 GitLab Docker 可从外网访问
+## 服务器配置
 
-```bash
-# 查看 GitLab Docker 端口映射
-docker ps | grep gitlab
-
-# 腾讯云安全组放行 GitLab 端口（通常 80/443 或 8080/8443）
-# 控制台 → 云服务器 → 安全组 → 添加入站规则
-#   协议: TCP  端口: 你的GitLab端口  来源: 0.0.0.0/0
-```
-
-验证外网可访问：
-```bash
-# 在你本地电脑浏览器访问
-http://<腾讯云公网IP>:<端口>
-```
-
-### 第二步：克隆仓库到服务器
+### 第一步：创建 .env
 
 ```bash
-# 在腾讯云服务器上执行
-cd /opt
-git clone https://github.com/huadongpeng/daily-geek-news.git
-cd daily-geek-news
-```
-
-> 如果服务器无法访问 GitHub，先在本地下载 zip 再 SCP 上传，或使用镜像站。
-
-### 第三步：创建环境变量文件
-
-```bash
-# 创建 .env 文件（不会被 Git 提交）
-cat > /opt/daily-geek-news/tools/.env << 'EOF'
-# === 微信公众号 ===
+cat > /ws/web/daily-geek-news/tools/.env << 'EOF'
 export WECHAT_APPID="wx你的AppID"
 export WECHAT_APPSECRET="你的AppSecret"
 export WECHAT_AUTHOR="Easton Hua"
-
-# === 通义万相封面图 ===
-export DASHSCOPE_API_KEY="sk-你的百炼APIKey"
-
-# === Git 仓库路径（一般不用改） ===
-export GIT_REPO_DIR="/opt/daily-geek-news"
+export DASHSCOPE_API_KEY="sk-你的百炼Key"
+export ZHIPU_API_KEY="你的智谱Key"
+export GIT_REPO_DIR="/ws/web/daily-geek-news"
 EOF
-
-# 设置权限（保护密钥）
-chmod 600 /opt/daily-geek-news/tools/.env
+chmod 600 /ws/web/daily-geek-news/tools/.env
 ```
 
-### 第四步：安装 Python 依赖并测试
+### 第二步：配置 Git 从本地 GitLab 拉取
 
 ```bash
-cd /opt/daily-geek-news
-# CentOS 7 用 pip3 + 阿里云镜像
-pip3 install -r tools/requirements_wechat.txt -i https://mirrors.aliyun.com/pypi/simple/
+cd /ws/web/daily-geek-news
 
-# 加载环境变量并测试（预览模式）
+# 如果之前从 GitHub clone，改 remote 指向本地 GitLab
+git remote set-url origin http://localhost:<GitLab端口>/<用户名>/daily-geek-news.git
+
+# 测试拉取
+git pull origin main
+```
+
+### 第三步：设置 crontab 定时任务
+
+```bash
+# 编辑 crontab
+crontab -e
+
+# 添加（每天早上 7 点执行）：
+0 7 * * * cd /ws/web/daily-geek-news && git pull origin main && source tools/.env && /usr/bin/python3 tools/wechat_publisher.py >> /var/log/wechat_publisher.log 2>&1
+```
+
+### 第四步：手动测试
+
+```bash
+cd /ws/web/daily-geek-news
 source tools/.env
-python tools/wechat_publisher.py --dry-run
 
-# 如果预览正常，去掉 --dry-run 正式运行
-python tools/wechat_publisher.py
+# 预览模式
+python3 tools/wechat_publisher.py --dry-run
+
+# 如果快讯也想要推送
+python3 tools/wechat_publisher.py --dry-run --include-briefings
+
+# 正式运行
+python3 tools/wechat_publisher.py
 ```
 
-### 第五步：配置 GitLab CI 自动触发
+## GitHub Secrets（在 GitHub 仓库配置）
 
-```bash
-# 将示例文件重命名为正式 CI 配置
-cp tools/.gitlab-ci.yml.example .gitlab-ci.yml
+| Secret | 值 |
+|--------|-----|
+| `GITLAB_HOST` | `你的公网IP:GitLab端口` |
+| `GITLAB_USERNAME` | GitLab 用户名 |
+| `GITLAB_ACCESS_TOKEN` | 上面创建的 Access Token |
 
-# 在 GitLab Settings → CI/CD → Variables 中添加以下变量：
-#   WECHAT_APPID       = wx你的AppID
-#   WECHAT_APPSECRET   = 你的AppSecret
-#   DASHSCOPE_API_KEY  = sk-你的百炼Key
-#   WECHAT_AUTHOR      = Easton Hua
-```
+配置后 GitHub Actions 会自动推送文章到你的 GitLab。
 
-### 第六步：在 GitHub Actions 中添加 GitLab 推送
+## 生图额度监控
 
-给仓库添加 3 个 GitHub Secrets（Settings → Secrets and variables → Actions）：
+| 引擎 | 免费额度 | 单价 | 月用量预估 |
+|------|---------|------|-----------|
+| 通义万相 | 200张/月 | ¥0.04/张 | ~120张（主） |
+| 智谱 CogView | 100张/月 | ¥0.10/张 | 0-30张（备） |
 
-| Secret 名称 | 值 |
-|-------------|-----|
-| `GITLAB_HOST` | `你的腾讯云公网IP:端口`（如 `42.193.xxx.xxx:8080`）|
-| `GITLAB_USERNAME` | GitLab 登录用户名 |
-| `GITLAB_ACCESS_TOKEN` | 上面创建的 Personal Access Token |
-
-配置完成后，告诉我，我会更新 `.github/workflows/main.yml` 添加推送到 GitLab 的步骤。
-
-## 日常使用
-
-全部配置完成后，完全自动化：
-
-1. **每天 06:00（北京时间）** GitHub Actions 运行
-2. 生成文章 → 推送 GitHub + GitLab
-3. GitLab CI 自动触发 → 公众号草稿箱
-4. **你醒来后**：打开公众号后台 → 草稿箱 → 审核 → 发布
-5. 同步 Telegram 已推送快讯和深度长文摘要
+额度用完会自动切换备选引擎。如需增加备选：
+- 百度文心一格：https://yige.baidu.com/ （免费额度不定）
+- 腾讯混元：https://hunyuan.tencentcloudapi.com/ （腾讯云用户可能有优惠）

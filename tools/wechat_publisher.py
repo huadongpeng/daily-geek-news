@@ -1,22 +1,28 @@
 """
-微信公众号草稿箱发布工具 + 国内大模型封面图生成
+微信公众号草稿箱发布工具 + 国内大模型封面图生成（双引擎：通义万相 + 智谱 CogView）
 
-部署位置：腾讯云服务器
-触发方式：GitLab CI / 手动执行 / crontab 定时任务
-依赖安装：pip install -r tools/requirements_wechat.txt
+部署位置：腾讯云服务器（与 GitLab Docker 同机）
+触发方式：crontab 定时任务（推荐 07:00 执行）
+依赖安装：pip3 install -r tools/requirements_wechat.txt -i https://mirrors.aliyun.com/pypi/simple/
 
-环境变量（在腾讯云服务器上设置）：
+环境变量（在 tools/.env 中设置）：
   WECHAT_APPID          — 公众号 AppID
   WECHAT_APPSECRET      — 公众号 AppSecret
-  WECHAT_AUTHOR         — 作者名（可选，默认用公众号名称）
-  DASHSCOPE_API_KEY     — 阿里百炼 API Key（通义万相生图,免费额度 200 张/月）
-  GIT_REPO_DIR          — Git 仓库路径（默认 /opt/daily-geek-news）
+  WECHAT_AUTHOR         — 作者名
+  DASHSCOPE_API_KEY     — 阿里百炼 API Key（通义万相, 免费 200 张/月）
+  ZHIPU_API_KEY         — 智谱 API Key（CogView 备选, 免费 100 张/月）
+  GIT_REPO_DIR          — 仓库路径（默认 /ws/web/daily-geek-news）
 
 使用方法：
-  python tools/wechat_publisher.py                    # 处理今天的文章
-  python tools/wechat_publisher.py --date 2026-05-12  # 处理指定日期
-  python tools/wechat_publisher.py --dry-run          # 预览模式,不实际推送
-  python tools/wechat_publisher.py --no-image         # 跳过生图,用默认封面
+  python3 tools/wechat_publisher.py                       # 仅精品深度长文（推荐）
+  python3 tools/wechat_publisher.py --include-briefings   # 包含每日快讯
+  python3 tools/wechat_publisher.py --date 2026-05-12     # 指定日期
+  python3 tools/wechat_publisher.py --dry-run             # 预览不实际推送
+  python3 tools/wechat_publisher.py --no-image            # 跳过生图
+
+每日流程：
+  06:00 GitHub Actions → purifier.py 生成文章 → 推送 GitHub + GitLab
+  07:00 crontab → git pull（从本地 GitLab） → 本脚本 → 公众号草稿箱
 """
 import os
 import sys
@@ -34,17 +40,15 @@ WECHAT_APPID = os.environ.get("WECHAT_APPID")
 WECHAT_APPSECRET = os.environ.get("WECHAT_APPSECRET")
 WECHAT_AUTHOR = os.environ.get("WECHAT_AUTHOR", "Easton Hua")
 DASHSCOPE_API_KEY = os.environ.get("DASHSCOPE_API_KEY")
-GIT_REPO_DIR = Path(os.environ.get("GIT_REPO_DIR", "/opt/daily-geek-news"))
+ZHIPU_API_KEY = os.environ.get("ZHIPU_API_KEY")
+GIT_REPO_DIR = Path(os.environ.get("GIT_REPO_DIR", "/ws/web/daily-geek-news"))
 CONTENT_DIR = GIT_REPO_DIR / "content" / "posts"
+STATIC_COVERS_DIR = GIT_REPO_DIR / "static" / "images" / "covers"
+SITE_URL = "https://radar.huadongpeng.com"
 
-# 公众号文章摘要字数上限
 WECHAT_DIGEST_MAX = 120
-
-# 封面图尺寸（公众号头图 900x383，通义万相输出 1024x1024 后续裁切）
 COVER_SIZE = "1024*1024"
-
-# 通义万相模型
-WANX_MODEL = "wanx2.0-t2i-turbo"  # 极速版，0.04 元/张，免费额度 200 张/月
+WANX_MODEL = "wanx2.0-t2i-turbo"  # 通义万相极速版, 0.04 元/张, 免费 200 张/月
 
 # 引擎 emoji 映射
 EMOJI_MAP = {
@@ -118,74 +122,111 @@ def add_draft(token, article):
 
 
 # ============================================================
-# 通义万相 —— 国内大模型封面图生成（免费额度 200 张/月）
+# 封面图生成 —— 双引擎：通义万相（主）+ 智谱 CogView（备）
 # ============================================================
-def generate_cover_image(title, category_name):
-    """调用通义万相生成微信公众号封面图"""
-    if not DASHSCOPE_API_KEY:
-        print("   ⚠️ 未配置 DASHSCOPE_API_KEY，跳过封面图生成")
-        return None
-
+def _build_cover_prompt(title, category_name):
     emoji = EMOJI_MAP.get(category_name, "📰")
     cat_title = TITLE_MAP.get(category_name, category_name)
-
-    # 精心构造 prompt，风格统一
-    prompt = (
+    return (
         f"微信公众号封面图，科技商业风格，主题：{title}。"
         f"简洁现代设计，适合{cat_title}类文章。"
         f"深色背景配亮色几何图形点缀，专业极简风格，"
-        f"不要出现文字，不要出现人物面孔，"
-        f"16:9 比例，高清，适合 900x383 裁切"
+        f"不要出现文字，不要出现人物面孔，16:9 比例，高清"
     )
 
+
+def generate_cover_wanx(prompt):
+    """通义万相（阿里百炼）—— 免费 200 张/月"""
+    if not DASHSCOPE_API_KEY:
+        return None
     url = "https://dashscope.aliyuncs.com/api/v1/services/aigc/text2image/image-synthesis"
-    headers = {
-        "Authorization": f"Bearer {DASHSCOPE_API_KEY}",
-        "Content-Type": "application/json",
-        "X-DashScope-Async": "enable",  # 异步模式
-    }
-    payload = {
-        "model": WANX_MODEL,
-        "input": {"prompt": prompt},
-        "parameters": {"size": COVER_SIZE, "n": 1},
-    }
+    headers = {"Authorization": f"Bearer {DASHSCOPE_API_KEY}", "Content-Type": "application/json",
+               "X-DashScope-Async": "enable"}
+    payload = {"model": WANX_MODEL, "input": {"prompt": prompt}, "parameters": {"size": COVER_SIZE, "n": 1}}
 
-    print(f"   🎨 正在调用通义万相生成封面图...")
-    try:
-        # 提交任务
-        resp = requests.post(url, headers=headers, json=payload, timeout=30)
-        task_data = resp.json()
-        task_id = task_data.get("output", {}).get("task_id")
-        if not task_id:
-            print(f"   ⚠️ 生图任务提交失败: {task_data}")
+    print(f"   🎨 通义万相 生图中...")
+    resp = requests.post(url, headers=headers, json=payload, timeout=30)
+    task_data = resp.json()
+    task_id = task_data.get("output", {}).get("task_id")
+    if not task_id:
+        print(f"   ⚠️ 通义万相提交失败: {task_data}")
+        return None
+
+    task_url = f"https://dashscope.aliyuncs.com/api/v1/tasks/{task_id}"
+    for _ in range(12):
+        time.sleep(5)
+        status = requests.get(task_url, headers=headers, timeout=10).json()
+        ts = status.get("output", {}).get("task_status")
+        if ts == "SUCCEEDED":
+            return status["output"]["results"][0]["url"]
+        elif ts == "FAILED":
+            print(f"   ⚠️ 通义万相失败: {status}")
             return None
+        print(f"   ⏳ {ts}...")
+    print(f"   ⚠️ 通义万相超时")
+    return None
 
-        # 轮询任务状态（最多等待 60 秒）
-        task_url = f"https://dashscope.aliyuncs.com/api/v1/tasks/{task_id}"
-        for _ in range(12):
-            time.sleep(5)
-            status_resp = requests.get(task_url, headers=headers, timeout=10)
-            status_data = status_resp.json()
-            task_status = status_data.get("output", {}).get("task_status")
-            if task_status == "SUCCEEDED":
-                image_url = status_data["output"]["results"][0]["url"]
-                print(f"   🎨 封面图生成成功，下载中...")
-                img_resp = requests.get(image_url, timeout=30)
-                local_path = GIT_REPO_DIR / "tools" / "covers" / f"cover_{datetime.now().strftime('%Y%m%d_%H%M%S')}.png"
-                local_path.parent.mkdir(parents=True, exist_ok=True)
-                with open(local_path, "wb") as f:
-                    f.write(img_resp.content)
-                print(f"   🖼️ 封面图已保存: {local_path}")
-                return str(local_path)
-            elif task_status == "FAILED":
-                print(f"   ⚠️ 生图任务失败: {status_data}")
-                return None
-            print(f"   ⏳ 生图中... ({task_status})")
-        print(f"   ⚠️ 生图超时")
+
+def generate_cover_zhipu(prompt):
+    """智谱 CogView-3 — 免费 100 张/月，备选引擎"""
+    if not ZHIPU_API_KEY:
+        return None
+    url = "https://open.bigmodel.cn/api/paas/v4/images/generations"
+    headers = {"Authorization": f"Bearer {ZHIPU_API_KEY}", "Content-Type": "application/json"}
+    payload = {"model": "cogview-3", "prompt": prompt, "size": COVER_SIZE}
+
+    print(f"   🎨 智谱 CogView 生图中...")
+    try:
+        resp = requests.post(url, headers=headers, json=payload, timeout=60)
+        data = resp.json()
+        if "data" in data and len(data["data"]) > 0:
+            return data["data"][0]["url"]
+        print(f"   ⚠️ 智谱 CogView 失败: {data}")
         return None
     except Exception as e:
-        print(f"   ⚠️ 封面图生成异常: {e}")
+        print(f"   ⚠️ 智谱 CogView 异常: {e}")
         return None
+
+
+def generate_cover_image(title, category_name, date_slug=""):
+    """双引擎封面图生成 + 保存到 static/ 供网站使用"""
+    prompt = _build_cover_prompt(title, category_name)
+
+    # 引擎 1: 通义万相（主）
+    image_url = generate_cover_wanx(prompt)
+    engine = "wanx"
+
+    # 引擎 2: 智谱 CogView（备）
+    if not image_url:
+        image_url = generate_cover_zhipu(prompt)
+        engine = "cogview"
+
+    if not image_url:
+        print(f"   ⚠️ 所有生图引擎均失败，请检查 API Key 和额度")
+        return None, None
+
+    print(f"   🎨 [{engine}] 封面图生成成功，下载中...")
+    img_resp = requests.get(image_url, timeout=30)
+
+    # 保存到 tools/covers/（用于公众号上传）
+    local_dir = GIT_REPO_DIR / "tools" / "covers"
+    local_dir.mkdir(parents=True, exist_ok=True)
+    local_path = local_dir / f"cover_{datetime.now().strftime('%Y%m%d_%H%M%S')}.png"
+    with open(local_path, "wb") as f:
+        f.write(img_resp.content)
+    print(f"   🖼️ 封面图已保存: {local_path}")
+
+    # 同步保存到 static/images/covers/（Hugo 直接引用）
+    static_dir = STATIC_COVERS_DIR
+    static_dir.mkdir(parents=True, exist_ok=True)
+    static_name = f"{date_slug}_{engine}.png" if date_slug else f"cover_{datetime.now().strftime('%Y%m%d')}_{engine}.png"
+    static_path = static_dir / static_name
+    with open(static_path, "wb") as f:
+        f.write(img_resp.content)
+    static_url = f"{SITE_URL}/images/covers/{static_name}"
+    print(f"   🌐 网站可用: {static_url}")
+
+    return str(local_path), static_url
 
 
 # ============================================================
@@ -291,16 +332,40 @@ def md_to_wechat_html(md_text, article_url=""):
     # 清理多余空行
     html = re.sub(r'\n{3,}', '\n\n', html)
 
-    # 在末尾添加原文链接
+    # ---- 顶部品牌栏 ----
+    header = (
+        f'<section style="background:linear-gradient(135deg,#1a1a2e 0%,#16213e 100%);'
+        f'padding:20px 16px;margin-bottom:24px;border-radius:8px;text-align:center;">'
+        f'<p style="color:#e0e0e0;font-size:12px;margin:0 0 6px;">'
+        f'📡 Easton 跨国智库 · 每日海外情报深度解读</p>'
+        f'<p style="margin:0;">'
+        f'<a href="{SITE_URL}" style="color:#4fc3f7;font-size:13px;text-decoration:none;">'
+        f'🌐 {SITE_URL.replace("https://", "")}</a>'
+        f'</p></section>'
+    )
+    html = header + html
+
+    # ---- 底部引流 + 原文链接 ----
+    footer = (
+        f'<hr style="border:none;border-top:1px solid #e8e8e8;margin:32px 0 16px;">'
+        f'<section style="background:#f8f9fa;padding:16px;border-radius:8px;text-align:center;">'
+        f'<p style="margin:0 0 8px;font-size:13px;color:#666;">'
+        f'📡 本文由 DeepSeek V4 Pro 自动生成 · Easton 跨国智库</p>'
+        f'<p style="margin:0 0 4px;font-size:14px;">'
+        f'💰 套利雷达 · 🤖 AI 前沿 · 🌍 跨国脑洞 · 📉 宏观风向</p>'
+    )
     if article_url:
-        html += (
-            f'<hr style="border:none;border-top:1px solid #e8e8e8;margin:32px 0 16px;">'
-            f'<p style="text-align:center;color:#999;font-size:13px;">'
-            f'📡 本文由 DeepSeek V4 Pro 自动生成 · Easton 跨国智库'
-            f'<br>'
-            f'<a href="{article_url}" style="color:#1890ff;">🌐 查看原文</a>'
-            f'</p>'
+        footer += (
+            f'<p style="margin:8px 0 0;">'
+            f'<a href="{article_url}" style="color:#1890ff;font-size:14px;text-decoration:none;font-weight:bold;">'
+            f'🔗 在网站上阅读完整文章（含代码高亮和目录导航）</a></p>'
         )
+    footer += (
+        f'<p style="margin:8px 0 0;font-size:12px;color:#999;">'
+        f'📧 hdop1993@gmail.com | 每日自动更新，欢迎收藏</p>'
+        f'</section>'
+    )
+    html += footer
 
     return html
 
@@ -351,28 +416,46 @@ def find_articles(date_str=None):
     return articles
 
 
-def process_article(token, article, args, site_url="https://radar.huadongpeng.com"):
-    """处理单篇文章：生图 + 转换 HTML + 存入草稿箱"""
+def process_article(token, article, args):
+    """处理单篇文章：生图 + 转换 HTML + 存入草稿箱 + 回写封面到 Hugo"""
     cat = article["category"]
     title = article["title"]
     body = article["body"]
+    md_file = article["file"]
 
     print(f"\n{'='*60}")
     print(f"📝 处理: [{cat}] {title}")
     print(f"{'='*60}")
 
     # 确定原文链接
-    cat_slug = cat.lower()
     article_type = "deep-dive" if article["is_deep"] else "briefing"
     date_slug = datetime.now().strftime("%Y-%m-%d")
-    article_url = f"{site_url}/posts/{cat.lower()}/{article_type}-{date_slug}/"
+    article_url = f"{SITE_URL}/posts/{cat.lower()}/{article_type}-{date_slug}/"
 
-    # 生成封面图
+    # ---- 封面图生成（双引擎）----
     cover_path = None
+    cover_static_url = None
     if not args.no_image:
-        cover_path = generate_cover_image(title, cat)
+        cover_path, cover_static_url = generate_cover_image(title, cat, date_slug)
 
-    # 上传封面图到公众号素材库
+    # ---- 回写封面图到 Hugo 文章 frontmatter ----
+    if cover_static_url and md_file:
+        try:
+            with open(md_file, "r", encoding="utf-8") as f:
+                raw = f.read()
+            if raw.startswith("---"):
+                parts = raw.split("---", 2)
+                if len(parts) >= 3 and "cover:" not in parts[1]:
+                    # 在第二个 --- 前插入 cover 字段
+                    fm = parts[1].rstrip() + f'\ncover: "{cover_static_url}"\n'
+                    new_raw = f"---{fm}---{parts[2]}"
+                    with open(md_file, "w", encoding="utf-8") as f:
+                        f.write(new_raw)
+                    print(f"   ✏️ 封面图已回写到 Hugo frontmatter")
+        except Exception as e:
+            print(f"   ⚠️ 回写封面失败: {e}")
+
+    # ---- 上传封面图到公众号素材库 ----
     thumb_media_id = None
     if cover_path:
         try:
@@ -381,21 +464,20 @@ def process_article(token, article, args, site_url="https://radar.huadongpeng.co
             print(f"   ⚠️ 封面上传失败: {e}，将使用默认封面")
             cover_path = None
 
-    # 如果没有封面图，使用一个默认的（需要提前上传到素材库）
     if not thumb_media_id:
         print(f"   ⚠️ 无封面图，请在公众号后台手动添加封面")
 
-    # Markdown → 微信 HTML
+    # ---- Markdown → 微信 HTML ----
     html_content = md_to_wechat_html(body, article_url)
 
-    # 提取摘要（取正文前 120 字纯文本）
+    # 提取摘要
     import re as regex_lib
     plain_text = regex_lib.sub(r'<[^>]+>', '', html_content)
     digest = plain_text[:WECHAT_DIGEST_MAX].strip()
 
     # 构建文章数据
     article_data = {
-        "title": title[:64],  # 微信标题限制 64 字
+        "title": title[:64],
         "author": WECHAT_AUTHOR,
         "digest": digest,
         "content": html_content,
@@ -408,6 +490,8 @@ def process_article(token, article, args, site_url="https://radar.huadongpeng.co
     if args.dry_run:
         print(f"   🔍 [DRY RUN] 将创建草稿: {title}")
         print(f"   HTML 长度: {len(html_content)} 字符")
+        if cover_static_url:
+            print(f"   🌐 网站封面: {cover_static_url}")
         return True
 
     try:
@@ -423,8 +507,8 @@ def main():
     parser.add_argument("--date", help="处理指定日期文章 (YYYY-MM-DD)")
     parser.add_argument("--dry-run", action="store_true", help="预览模式，不实际创建草稿")
     parser.add_argument("--no-image", action="store_true", help="跳过封面图生成")
-    parser.add_argument("--type", choices=["all", "briefing", "deep-dive"],
-                        default="all", help="仅处理指定类型")
+    parser.add_argument("--include-briefings", action="store_true",
+                        help="同时推送每日快讯（默认仅推送精品深度长文）")
     args = parser.parse_args()
 
     # 参数校验
@@ -433,30 +517,36 @@ def main():
         print("   在微信公众号后台 → 开发 → 基本配置 获取")
         sys.exit(1)
 
-    if not args.no_image and not DASHSCOPE_API_KEY:
-        print("⚠️ 未设置 DASHSCOPE_API_KEY，将跳过封面图生成")
-        print("   免费获取: https://dashscope.console.aliyun.com/ (200 张/月免费)")
+    if not args.no_image and not DASHSCOPE_API_KEY and not ZHIPU_API_KEY:
+        print("⚠️ 未设置任何生图引擎 API Key，将跳过封面图生成")
+        print("   通义万相: https://dashscope.console.aliyun.com/ (200 张/月免费)")
+        print("   智谱 CogView: https://open.bigmodel.cn/ (100 张/月免费)")
         args.no_image = True
 
     # 查找文章
     articles = find_articles(args.date)
     if not articles:
         print(f"❌ 未找到日期为 {args.date or datetime.now().strftime('%Y-%m-%d')} 的文章")
-        print(f"   请确保已运行 purifier.py 生成文章")
         sys.exit(1)
 
-    # 按类型过滤
-    if args.type == "briefing":
-        articles = [a for a in articles if a["is_briefing"]]
-    elif args.type == "deep-dive":
+    # 精品筛选：默认仅 deep-dive（质量已由模型把关）
+    if not args.include_briefings:
         articles = [a for a in articles if a["is_deep"]]
 
-    print(f"📋 找到 {len(articles)} 篇待处理文章")
+    if not articles:
+        print("✅ 今日无精品深度长文需要推送（快讯可通过 --include-briefings 开启）")
+        sys.exit(0)
+
+    # 生图数量预估
+    if not args.no_image:
+        print(f"📊 今日预计生图: {len(articles)} 张（通义万相免费 200/月 + 智谱 100/月备选）")
+
+    print(f"📋 找到 {len(articles)} 篇精品文章")
     for a in articles:
-        t = "快讯" if a["is_briefing"] else "深度长文"
+        t = "深度长文" if a["is_deep"] else "快讯"
         print(f"   [{a['category']}] {t}: {a['title'][:40]}...")
 
-    # 获取 access_token（一次性，可复用）
+    # 获取 access_token
     print(f"\n🔑 获取微信公众号 access_token...")
     token = get_access_token()
     print(f"   ✅ Token 获取成功")
@@ -470,6 +560,9 @@ def main():
     print(f"\n🏁 处理完毕: {success}/{len(articles)} 篇成功")
     if args.dry_run:
         print("   🔍 预览模式，未实际创建草稿。去掉 --dry-run 正式运行。")
+    else:
+        print(f"   📱 请前往微信公众号后台 → 草稿箱 审核并发布")
+        print(f"   🌐 网站同步显示封面图: {SITE_URL}")
 
 
 if __name__ == "__main__":
