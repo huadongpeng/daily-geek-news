@@ -401,14 +401,16 @@ def get_recent_titles(category_name, days=3):
 
 
 def _extract_json(text):
-    """从 LLM 输出中稳健提取 JSON 对象（平衡括号匹配）"""
-    # 策略 1: 提取 ```json ... ``` 代码块
-    m = re.search(r'```(?:json)?\s*(\{.*?\})\s*```', text, re.DOTALL)
-    candidates = [m.group(1)] if m else []
+    """从 LLM 输出中稳健提取 JSON 对象（平衡括号匹配 + 多层修复）"""
+    candidates = []
 
-    # 策略 2: 平衡括号提取最外层 JSON
-    start = text.find('{')
-    if start >= 0:
+    # 策略 1: 提取 ```json ... ``` 代码块
+    for m in re.finditer(r'```(?:json)?\s*(\{.*?\})\s*```', text, re.DOTALL):
+        candidates.append(m.group(1))
+
+    # 策略 2: 平衡括号提取所有顶层 JSON 对象
+    for start_m in re.finditer(r'\{', text):
+        start = start_m.start()
         depth = 0
         in_str = False
         esc = False
@@ -417,7 +419,7 @@ def _extract_json(text):
                 esc = False; continue
             if ch == '\\' and in_str:
                 esc = True; continue
-            if ch == '"':
+            if ch == '"' and not esc:
                 in_str = not in_str; continue
             if in_str:
                 continue
@@ -429,22 +431,34 @@ def _extract_json(text):
                     candidates.append(text[start:i + 1])
                     break
 
-    # 逐个尝试解析
+    # 逐个尝试解析 + 递增修复
     errors = []
-    for cand in candidates:
-        try:
-            return json.loads(cand)
-        except json.JSONDecodeError as e:
-            errors.append(str(e))
-            # 尝试修复常见问题后重试
+    for cand in candidates[-3:]:  # 只试最后 3 个（最大的）候选
+        for attempt in range(5):
             try:
-                fixed = re.sub(r',\s*}', '}', cand)  # 尾随逗号
-                fixed = re.sub(r',\s*]', ']', fixed)
-                return json.loads(fixed)
-            except Exception:
-                pass
+                return json.loads(cand)
+            except json.JSONDecodeError as e:
+                errors.append(str(e))
+                # 递增修复
+                if attempt == 0:
+                    cand = re.sub(r',\s*}', '}', cand)  # 尾随逗号 }
+                    cand = re.sub(r',\s*]', ']', cand)  # 尾随逗号 ]
+                elif attempt == 1:
+                    # 修复缺失的逗号: "xxx"\s*\n\s*"yyy" -> "xxx",\n"yyy"
+                    cand = re.sub(r'"\s*\n\s*"', '",\n"', cand)
+                elif attempt == 2:
+                    # 修复缺失的逗号: }\s*\n\s*" -> },\n"
+                    cand = re.sub(r'\}\s*\n\s*"', '},\n"', cand)
+                    cand = re.sub(r'\]\s*\n\s*"', '],\n"', cand)
+                elif attempt == 3:
+                    # 修复缺失的逗号: 数字}\s*\n\s*" -> 数字},\n"
+                    cand = re.sub(r'(\d)\s*\n\s*"', r'\1,\n"', cand)
+                elif attempt == 4:
+                    # 最后手段：尝试修复中文引号等
+                    cand = cand.replace('“', '"').replace('”', '"')
+                    cand = cand.replace("'", '"')
 
-    raise ValueError(f"JSON 提取失败: {'; '.join(errors[-2:])}")
+    raise ValueError(f"JSON 提取失败: {'; '.join(errors[-3:])}")
 
 
 def deep_dive_worker(category_name, config):
