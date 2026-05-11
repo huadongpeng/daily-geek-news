@@ -715,12 +715,12 @@ def deep_dive_worker(category_name, config):
         print(f"[{category_name}] 无有效数据，跳过", flush=True)
         return category_name, None
 
-    # 去重：读取近期已覆盖话题
-    recent = get_recent_titles(category_name, days=3)
+    # 去重：读取近 7 天已覆盖话题，强约束避免选题重复
+    recent = get_recent_titles(category_name, days=7)
     dedup_hint = ""
     if recent:
-        dedup_hint = f"\n\n【重要：去重规则】以下话题最近 3 天已覆盖，请严格避免重复选择相同或高度相似的话题：\n" + \
-                     "\n".join(f"- {t}" for t in recent[:15])
+        dedup_hint = f"\n\n【去重硬约束——违反将导致输出无效】以下话题已在近 7 天内深度覆盖。你必须选择一个与以下所有话题明显不同的新话题。如果资料库中所有话题都与以下列表高度相似，则 deep_dive 必须填 null。\n" + \
+                     "\n".join(f"- {t}" for t in recent[:30])
 
     url = "https://api.deepseek.com/chat/completions"
     headers = {

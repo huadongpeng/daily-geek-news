@@ -511,29 +511,42 @@ def find_articles(date_str=None):
     return articles
 
 
-def polish_for_wechat(title, body, category_name):
-    """调用 DeepSeek 优化文章为微信公众号版本：敏感词改写、表格适配、品牌首尾"""
+def polish_for_wechat(title, body, category_name, warnings=None):
+    """调用 DeepSeek 输出微信 HTML：敏感词改写 + 格式美化 + 品牌首尾"""
     if not DEEPSEEK_KEY:
         print("   ⚠️ 未配置 DEEPSEEK_API_KEY，跳过微信文章润色")
         return body
 
     cat_cn = TITLE_MAP.get(category_name, category_name)
-    prompt = f"""你是微信公众号资深编辑。请将以下 Markdown 文章优化为适合微信公众号发布的版本。
+    sensitive_hint = ""
+    if warnings:
+        sensitive_hint = f"\n\n【敏感内容修正——严格按要求改写，不可忽略】以下表述在微信公众号发布时需处理：\n" + \
+                          "\n".join(f"- {w}" for w in warnings) + \
+                          "\n请用中性、合规的表述替换上述内容，绝不能将警告信息作为正文输出。"
 
-优化要求：
-1. 表格转为适合手机阅读的文本列表格式（微信不支持 Markdown 表格）
-2. 涉及敏感表述（如翻墙、政治、加密货币等）用中性词汇替换或删除整句
-3. 开头加入 2-3 句引人入胜的导读，含"老花有话说"品牌名
-4. 结尾加入公众号引导：关注「老花有话说」、网站 radar.huadongpeng.com、邮箱 hdop1993@gmail.com
-5. 保持专业严谨的分析风格，零 emoji，零网络用语
-6. 不要改变原文的核心观点和数据，不要添加原文没有的实质性新内容
+    prompt = f"""你是微信公众号资深编辑。请将以下 Markdown 文章转为适合微信公众号发布的 HTML 格式。
+
+格式要求：
+1. 表格转为文本列表（微信不支持 Markdown 表格）
+2. 代码块保持原样，用 <pre><code> 包裹
+3. 标题用 <h2>，加左边框样式，子标题用 <h3>
+4. 段落用 <p style="margin:12px 0;line-height:1.85;"> 包裹
+5. 重点语句用 <strong> 强调
+{sensitive_hint}
+
+重要约束：
+- 保持原文核心观点、数据和逻辑不变
+- 零 emoji，零网络用语
+- 专业严谨的学术商业分析风格
+- 不要输出代码块外壳（不要 ```html ``` 包裹）
+- 只输出文章正文 HTML，不要包含 <!DOCTYPE> 或 <html><head><body> 标签
 
 原文标题：{title}
 所属栏目：{cat_cn}
 原文正文：
 {body[:6000]}
 
-请直接输出优化后的完整 Markdown 正文。"""
+输出文章正文 HTML："""
 
     try:
         resp = requests.post(
@@ -542,7 +555,7 @@ def polish_for_wechat(title, body, category_name):
             json={
                 "model": "deepseek-chat",
                 "messages": [
-                    {"role": "system", "content": "你是微信公众号资深编辑，输出纯净 Markdown，不添加代码块外壳。"},
+                    {"role": "system", "content": "你是微信公众号资深编辑。只输出文章正文 HTML 片段，不包含代码块标记。"},
                     {"role": "user", "content": prompt}
                 ]
             },
@@ -562,6 +575,30 @@ def polish_for_wechat(title, body, category_name):
         return body
 
 
+WECHAT_HEADER = f"""<section style="background:linear-gradient(135deg,#1a1a2e 0%,#16213e 100%);padding:18px 16px;margin-bottom:24px;border-radius:8px;text-align:center;">
+<p style="color:#e0e0e0;font-size:12px;margin:0 0 4px;">Easton 跨国智库 · 每日海外情报深度解读</p>
+<p style="margin:0;"><a href="{SITE_URL}" style="color:#4fc3f7;font-size:13px;text-decoration:none;">{SITE_URL.replace('https://', '')}</a></p>
+</section>"""
+
+WECHAT_FOOTER = f"""<hr style="border:none;border-top:1px solid #e8e8e8;margin:32px 0 16px;">
+<section style="background:#f8f9fa;padding:16px;border-radius:8px;text-align:center;">
+<p style="margin:0 0 8px;font-size:14px;font-weight:bold;">感谢阅读 · 老花有话说</p>
+<p style="margin:0 0 4px;font-size:13px;color:#666;">独立开发者 · 跨国商业套利 · AI 生产力探索</p>
+<p style="margin:4px 0;font-size:13px;color:#666;">套利雷达 | 跨国脑洞 | 中国出海 | AI 前沿 | 开发者金矿 | 宏观风向</p>
+<p style="margin:8px 0 0;font-size:13px;">
+<a href="{SITE_URL}" style="color:#1890ff;text-decoration:none;">🌐 {SITE_URL.replace('https://', '')}</a>
+<span style="color:#999;"> | </span>
+<span style="color:#666;">hdop1993@gmail.com</span>
+</p>
+<p style="margin:6px 0 0;font-size:12px;color:#999;">关注「老花有话说」获取每日海外情报推送</p>
+</section>"""
+
+
+def wrap_wechat_html(body_html):
+    """用固定的品牌首尾包裹微信文章正文"""
+    return WECHAT_HEADER + body_html + WECHAT_FOOTER
+
+
 def process_article(token, article, args):
     """处理单篇文章：生图 + 转换 HTML + 存入草稿箱 + 回写封面到 Hugo"""
     cat = article["category"]
@@ -577,16 +614,23 @@ def process_article(token, article, args):
     wechat_title = optimize_wechat_title(title, cat)
     print(f"   ✏️ 微信标题: {wechat_title}")
 
-    # ---- 敏感内容审查 ----
+    # ---- 敏感内容审查（提取警告供 DeepSeek 改写）----
     _, warnings = sanitize_for_wechat(body)
     if warnings:
         for w in warnings:
             print(f"   {w}")
 
     # 确定原文链接
-    article_type = "deep-dive" if article["is_deep"] else "briefing"
     date_slug = datetime.now().strftime("%Y-%m-%d")
-    article_url = f"{SITE_URL}/posts/{cat.lower()}/{article_type}-{date_slug}/"
+    article_url = f"{SITE_URL}/posts/{cat.lower()}/"
+
+    # ---- 微信文章润色（敏感词改写 + HTML 格式化）----
+    if not args.no_polish:
+        polished_html = polish_for_wechat(title, body, cat, warnings)
+        # 包裹固定的品牌首尾
+        html_content = wrap_wechat_html(polished_html)
+    else:
+        html_content = md_to_wechat_html(body, article_url)
 
     # ---- 封面图生成（双引擎）----
     cover_path = None
@@ -637,11 +681,6 @@ def process_article(token, article, args):
     digest = b.decode("utf-8", errors="ignore").strip()
 
     # 构建文章数据
-    if warnings:
-        review_note = '<p style="color:red;font-weight:bold;border:2px solid red;padding:12px;margin:16px 0;">[审核提示] 以下内容含需人工审核的表述，请在发布前检查：<br>' + \
-                      '<br>'.join(w.replace('⚠️ ', '') for w in warnings) + '</p>'
-        html_content = review_note + html_content
-
     article_data = {
         "title": wechat_title,
         "author": WECHAT_AUTHOR,
