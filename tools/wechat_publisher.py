@@ -80,22 +80,23 @@ SENSITIVE_PATTERNS = [
     (r"泄露|黑市|漏洞.*利用|零日|0day", "安全漏洞类表述需谨慎处理"),
 ]
 
-WECHAT_TITLE_MAX = 64  # 微信标题硬限制
+WECHAT_TITLE_BYTES = 60  # 微信标题 API 字节限制（保守值，文档写 64 字符但实测按 UTF-8 字节算）
 
 def optimize_wechat_title(raw_title, category_name):
-    """将文章标题优化为微信公众号格式"""
-    cat = TITLE_MAP.get(category_name, "")
-    # 去掉已有 emoji 和引号
-    title = raw_title.strip("'\" \t\n")
-    title = re.sub(r"^[^a-zA-Z0-9一-鿿]+\s*", "", title)
-
-    # 去美元符号和其他可能引起不适的符号
-    title = title.replace("$", "美元").replace("€", "欧元")
-
-    # 如标题已超限，智能截断
-    if len(title) > WECHAT_TITLE_MAX - 2:
-        title = title[:WECHAT_TITLE_MAX - 5] + "..."
-
+    """将文章标题优化为微信公众号格式——全局去 emoji + 字节级安全截断"""
+    title = raw_title.strip("'\" \t\n\r")
+    # 全局去掉所有 emoji 和特殊符号，仅保留中英文数字和基本标点
+    title = re.sub(r"[^一-鿿　-〿＀-￯a-zA-Z0-9\s\.\,\;\:\!\?\-\+\#\&\(\)\[\]\{\}]", "", title)
+    # 去首尾空白和多余空格
+    title = re.sub(r"\s+", " ", title).strip()
+    # 替换货币符号
+    title = title.replace("$", "美元").replace("€", "欧元").replace("¥", "元")
+    # 按 UTF-8 字节安全截断（中文每个字 3 字节）
+    b = title.encode("utf-8")
+    if len(b) > WECHAT_TITLE_BYTES:
+        # 在字节边界截断，避免切断多字节字符
+        b = b[:WECHAT_TITLE_BYTES - 3]
+        title = b.decode("utf-8", errors="ignore").rstrip() + "..."
     return title
 
 
@@ -448,9 +449,9 @@ def find_articles(date_str=None):
                 body = parts[2]
 
         raw_title = frontmatter.get("title", md_file.stem)
-        # 去掉 Hugo frontmatter 的 emoji 前缀+单引号（用正则，兼容各种 emoji）
-        title = re.sub(r"^[^a-zA-Z0-9一-鿿#]+\s*", "", raw_title.strip("'\""))
-        title = title[:40]  # 微信标题 64 字限制，留足安全边界
+        # 全局去 emoji + 特殊符号，仅保留中英文数字和基本标点
+        title = re.sub(r"[^一-鿿a-zA-Z0-9\s\.\,\;\:\!\?\-\+\#\&\(\)\[\]\{\}]", "", raw_title.strip("'\""))
+        title = re.sub(r"\s+", " ", title).strip()
 
         articles.append({
             "file": md_file,
