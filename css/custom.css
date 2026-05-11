@@ -1,0 +1,380 @@
+/* ============================================================
+   Easton 跨国智库 - 移动端深度优化
+   ============================================================ */
+
+/* --- 全局 --- */
+html { scroll-behavior: smooth; }
+
+/* ============================================================
+   移动端 (< 768px)
+   ============================================================ */
+@media (max-width: 768px) {
+
+  /* 基础字体 */
+  body {
+    font-size: 17px;
+    line-height: 1.85;
+  }
+
+  .main {
+    padding: 0 12px 75px 12px; /* 左右留白 + 底部分页导航空间 */
+  }
+
+  /* 文章正文 */
+  .post-content {
+    font-size: 16.5px;
+    line-height: 1.9;
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
+
+  .post-content h1 { font-size: 24px; margin: 24px 0 16px; }
+  .post-content h2 {
+    font-size: 21px;
+    margin: 28px 0 14px;
+    padding-left: 10px;
+    border-left: 3px solid var(--primary);
+  }
+  .post-content h3 { font-size: 19px; margin: 22px 0 10px; }
+  .post-content h4 { font-size: 17px; }
+
+  .post-content p { margin: 14px 0; }
+
+  /* 图片响应式 */
+  .post-content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 6px;
+  }
+
+  /* 视频容器 */
+  .post-content iframe,
+  .post-content video {
+    max-width: 100%;
+    height: auto;
+  }
+
+  /* 代码块 */
+  .post-content pre {
+    font-size: 13px;
+    padding: 14px;
+    border-radius: 8px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    max-width: calc(100vw - 24px);
+  }
+
+  .post-content code {
+    font-size: 14px;
+    word-break: break-all;
+  }
+
+  /* 表格横向滚动 */
+  .post-content table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    font-size: 14px;
+    max-width: calc(100vw - 24px);
+  }
+
+  .post-content table th,
+  .post-content table td {
+    padding: 8px 10px;
+    white-space: nowrap;
+  }
+
+  /* 引用块 */
+  .post-content blockquote {
+    margin: 16px 0;
+    padding: 12px 16px;
+    font-size: 15px;
+  }
+
+  /* 列表 */
+  .post-content ul,
+  .post-content ol {
+    padding-left: 22px;
+  }
+
+  .post-content li {
+    margin: 8px 0;
+    line-height: 1.8;
+  }
+
+  /* 分隔线 */
+  .post-content hr {
+    margin: 24px 0;
+  }
+
+  /* ========= 导航栏 ========= */
+  .nav {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 2px;
+  }
+
+  .nav a,
+  #menu a {
+    font-size: 14px;
+    padding: 8px 10px;
+    min-height: 44px; /* 触控最小尺寸 */
+    display: inline-flex;
+    align-items: center;
+  }
+
+  /* Logo 区域 */
+  .header {
+    padding: 16px 12px 8px;
+  }
+
+  .logo a {
+    font-size: 20px;
+  }
+
+  /* ========= 文章列表 ========= */
+  .post-entry {
+    padding: 20px 0;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .post-entry .entry-header h2 {
+    font-size: 18px;
+    line-height: 1.45;
+    margin-bottom: 6px;
+  }
+
+  .post-entry .entry-content {
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  .post-meta {
+    font-size: 13px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  /* ========= 分页 ========= */
+  .pagination {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    padding: 20px 0;
+  }
+
+  .pagination a {
+    font-size: 16px;
+    padding: 10px 18px;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    background: var(--code-bg);
+    border-radius: 8px;
+    text-decoration: none;
+  }
+
+  /* ========= 底部导航 ========= */
+  #mobile-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--theme);
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-around;
+    padding: 6px 0 env(safe-area-inset-bottom, 8px);
+    z-index: 999;
+    box-shadow: 0 -2px 12px rgba(0,0,0,0.06);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+
+  #mobile-nav a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 11px;
+    color: var(--secondary);
+    text-decoration: none;
+    padding: 6px 6px;
+    min-width: 52px;
+    min-height: 48px;
+    justify-content: center;
+  }
+
+  #mobile-nav a:active {
+    color: var(--primary);
+    transform: scale(0.95);
+  }
+
+  #mobile-nav a .nav-icon {
+    font-size: 22px;
+    margin-bottom: 1px;
+  }
+
+  /* ========= 文章切换 ========= */
+  .post-nav {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin: 28px 0;
+  }
+
+  .post-nav a {
+    flex: 1;
+    text-align: center;
+    padding: 14px 10px;
+    background: var(--code-bg);
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 500;
+    text-decoration: none;
+    color: var(--primary);
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .post-nav a:active {
+    opacity: 0.7;
+    transform: scale(0.97);
+  }
+
+  /* ========= 首页 ========= */
+  .home-info {
+    padding: 24px 16px;
+  }
+
+  .home-info .entry-content {
+    font-size: 16px;
+    line-height: 1.8;
+  }
+
+  .profile img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+  }
+
+  /* ========= 目录 (TOC) ========= */
+  .toc {
+    font-size: 14px;
+    padding: 14px;
+    margin: 16px 0;
+    background: var(--code-bg);
+    border-radius: 8px;
+  }
+
+  .toc details summary {
+    font-size: 16px;
+    padding: 8px 0;
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+  }
+
+  .toc li {
+    padding: 6px 0;
+    line-height: 1.6;
+  }
+
+  .toc a {
+    display: block;
+    padding: 4px 0;
+    min-height: 36px;
+  }
+
+  /* ========= 面包屑 ========= */
+  .breadcrumbs {
+    font-size: 13px;
+    padding: 10px 0;
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* ========= 页脚 ========= */
+  footer {
+    padding: 20px 12px 80px;
+    font-size: 13px;
+    text-align: center;
+  }
+
+  .busuanzi {
+    text-align: center;
+    font-size: 13px;
+    padding: 16px 0;
+  }
+
+  /* ========= 搜索 ========= */
+  #searchbox input {
+    font-size: 16px;
+    padding: 12px;
+    min-height: 44px;
+    width: 100%;
+    border-radius: 8px;
+  }
+
+  /* ========= 分类/标签页 ========= */
+  .terms-tags li {
+    margin: 6px;
+  }
+
+  .terms-tags a {
+    font-size: 14px;
+    padding: 8px 14px;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    border-radius: 8px;
+  }
+
+  /* ========= 分类列表页 ========= */
+  .archive-entry {
+    padding: 16px 0;
+  }
+}
+
+/* ============================================================
+   桌面端 (>= 769px)
+   ============================================================ */
+@media (min-width: 769px) {
+  #mobile-nav { display: none; }
+
+  .main {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 20px 40px;
+  }
+}
+
+/* ============================================================
+   大屏幕优化 (>= 1200px)
+   ============================================================ */
+@media (min-width: 1200px) {
+  .main {
+    max-width: 860px;
+  }
+}
+
+/* ============================================================
+   打印样式
+   ============================================================ */
+@media print {
+  #mobile-nav, .post-nav, .pagination, .toc, .header nav {
+    display: none !important;
+  }
+
+  body {
+    font-size: 12pt;
+    line-height: 1.6;
+  }
+
+  .main {
+    max-width: 100%;
+    padding: 0;
+  }
+}
