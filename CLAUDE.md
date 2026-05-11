@@ -4,50 +4,69 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project overview
 
-Automated pipeline that fetches overseas RSS feeds daily, uses DeepSeek's flagship model + DuckDuckGo RAG to generate Chinese-language deep-dive articles, deploys them as a Hugo static site to GitHub Pages, and pushes Telegram notifications per category topic.
+Automated pipeline that scans 20+ overseas RSS feeds daily, uses DeepSeek V4 Pro to generate Chinese-language intelligence briefings + optional deep-dive articles, deploys via Hugo to GitHub Pages, and pushes enriched Telegram notifications per category topic.
 
 ## Commands
 
 ```bash
-# Run the intelligence pipeline (generates Markdown under content/posts/)
-python purifier.py
-
-# Local Hugo preview
-hugo serve
-
-# Build for production
-hugo --minify
+pip install feedparser requests duckduckgo-search  # dependencies
+python purifier.py    # Run pipeline → generates content/posts/
+hugo serve            # Local preview
+hugo --minify         # Production build → public/
 ```
 
-No test suite or linting is configured.
+No test suite or linting.
 
 ## Architecture
 
-`purifier.py` is the single-file core engine. It defines 4 independent "agents" in the `AGENTS` dict — each with RSS feeds, a persona prompt, and a Telegram topic. On each run:
+`purifier.py` — single-file core engine with a **dual-track output model**:
 
-1. **RSS Fetch + RAG** (`fetch_and_augment`): Pulls top 3 entries per feed, strips HTML, then calls DuckDuckGo (`duckduckgo_search`) for supplemental context on the top-ranked article.
-2. **DeepSeek API** (`deep_dive_worker`): Sends the augmented context + persona prompt to `deepseek-chat` (V4 Pro). Parses the response for a JSON object with `title`, `content_md`, and `tg_summary` fields. All 4 agents run concurrently via `ThreadPoolExecutor`.
-3. **Hugo output** (`save_to_hugo`): Writes frontmatter + body Markdown to `content/posts/<CategoryName>/deep-dive-YYYY-MM-DD.md`.
-4. **Telegram push** (`send_to_telegram`): Sends a summary to the configured chat, optionally routing to a topic thread via `message_thread_id`.
+### Track 1: Daily Briefing (always)
+Each of 4 agents produces a briefing with 3-5 info items. Each item includes: title, source, one-liner, why-matters, and a zero-cost angle. Briefings are always saved to Hugo and pushed to Telegram.
 
-`hugo.toml` configures the PaperMod theme and 4 category-based nav menu entries.
+### Track 2: Deep Dive (quality-gated)
+Each agent evaluates whether its top article warrants deep analysis. The model decides — returns `null` if nothing is worth it. Deep dives follow a 4-chapter structure specific to each agent, with code requirements (30-40+ lines), word counts (500+), and data-driven analysis.
 
-`.github/workflows/main.yml` runs daily at 22:00 UTC (06:00 Beijing). Steps: checkout (with submodules), install Python deps, run `purifier.py`, commit generated posts, build Hugo, deploy to `gh-pages` branch via `peaceiris/actions-gh-pages`.
+### Agent config (`AGENTS` dict)
+Each agent has: `feeds` (list), `briefing_prompt` (for daily summary), `deep_dive_prompt` (for optional long-form). Both prompts instruct the model to output a single JSON with `briefing` and `deep_dive` fields.
 
-The PaperMod theme is a git submodule at `themes/PaperMod`.
+### Flow
+1. `fetch_and_augment()` — RSS parsing + DuckDuckGo RAG (5 results per query)
+2. `deep_dive_worker()` — Single API call to DeepSeek generates both briefing + optional deep dive
+3. `save_to_hugo()` — Writes `briefing-YYYY-MM-DD.md` and optionally `deep-dive-YYYY-MM-DD.md`
+4. `send_to_telegram()` — Pushes enriched briefing + separate deep dive message to group topics
+5. All 4 agents run concurrently via `ThreadPoolExecutor(max_workers=4)`
+
+### Content output
+- `content/posts/<Category>/briefing-YYYY-MM-DD.md` — always
+- `content/posts/<Category>/deep-dive-YYYY-MM-DD.md` — quality-gated
+- `content/about.md` — personal/about page
+
+### Site config
+`hugo.toml` uses PaperMod theme with profile mode on homepage. Custom domain via `static/CNAME`.
+
+`.github/workflows/main.yml` — daily at 22:00 UTC. Steps: checkout (with submodules), Python deps, run purifier.py (with 7 env vars), commit generated posts, Hugo build, deploy to gh-pages.
+
+PaperMod theme at `themes/PaperMod` (git submodule).
 
 ## Environment variables
 
-All secrets are injected via GitHub Actions. Local runs need these set:
+All 7 must be set in GitHub Secrets AND injected in the workflow `env` block:
 
 - `DEEPSEEK_API_KEY` — DeepSeek API key
 - `TELEGRAM_BOT_TOKEN` — Telegram bot token
-- `TELEGRAM_CHAT_ID` — Target chat/group ID
-- `TG_THREAD_ARBITRAGE`, `TG_THREAD_AI`, `TG_THREAD_CROSS`, `TG_THREAD_MACRO` — optional per-category Telegram topic IDs
+- `TELEGRAM_CHAT_ID` — Supergroup ID (format: `-100xxxxxxxxx`)
+- `TG_THREAD_ARBITRAGE` — Arbitrage topic ID
+- `TG_THREAD_AI` — AI topic ID
+- `TG_THREAD_CROSS` — Cross-border topic ID
+- `TG_THREAD_MACRO` — Macro topic ID
 
-## Important notes
+## Critical bugs to avoid
 
-- **Telegram URL bug**: The Telegram API URL must be a plain string `f"https://api.telegram.org/bot{TOKEN}/sendMessage"`. A known corruption rewrites it as a Markdown link `[https://...](https://...)` which causes `requests` to fail with "No connection adapters were found". Always verify this line after editing.
-- **DeepSeek model**: Uses `deepseek-chat` (DeepSeek V4 Pro). The older `deepseek-reasoner` model name should not be reintroduced. If the API evolves, check the latest model ID at https://api-docs.deepseek.com.
-- **No `response_format`**: The code relies on regex extraction (`re.search(r'\{.*\}', ...)`) to pull JSON from the model response rather than Structured Outputs, because reasoning-oriented models may not consistently support `response_format: json_object`.
-- **DuckDuckGo search**: Used for zero-cost, no-proxy external context retrieval. If `duckduckgo-search` breaks (rate limits, API changes), the pipeline falls back to RSS-only mode.
+- **Telegram URL corruption**: The API URL must be `f"https://api.telegram.org/bot{TOKEN}/sendMessage"` — never a Markdown link format `[https://...](https://...)`. Verify after any edit to the Telegram function.
+- **Missing workflow env vars**: All 7 env vars must be injected in the workflow YAML `env:` block. If TG_THREAD_* vars are missing, messages go to the main chat instead of topics.
+- **DeepSeek model**: Use `deepseek-chat` (V4 Pro). Model parameters like `thinking` or `tools` may not be supported — keep the payload clean (`model` + `messages` only) unless confirmed supported by the API.
+
+## Zero-cost principle
+
+All prompts enforce a hard requirement: personal opportunities must assume zero-cost or low-cost (< 500 RMB) startup. This is a core editorial stance across all 4 agents.
