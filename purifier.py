@@ -16,6 +16,11 @@ DEEPSEEK_API_KEY = os.environ.get("DEEPSEEK_API_KEY")
 TG_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
 TG_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID")
 SITE_URL = "https://radar.huadongpeng.com"
+SLOT = os.environ.get("BRIEFING_SLOT", "")
+if not SLOT:
+    h = datetime.now().hour
+    SLOT = "morning" if h < 10 else ("noon" if h < 15 else "evening")
+SLOT_CN = {"morning": "早间", "noon": "午间", "evening": "晚间"}.get(SLOT, SLOT)
 
 THREAD_IDS = {
     "Arbitrage-Radar": os.environ.get("TG_THREAD_ARBITRAGE"),
@@ -768,73 +773,75 @@ def deep_dive_worker(category_name, config):
 
 
 # ============================================================
-# Hugo 落盘 —— 快讯 + 可选深度长文
+# Hugo 落盘
 # ============================================================
-def save_to_hugo(category_name, config, data):
-    """落盘快讯和深度长文至 Hugo"""
+def save_deep_dive(category_name, config, data):
+    """落盘单篇深度长文（快讯已改聚合模式）"""
+    deep_dive = data.get("deep_dive")
+    if not (deep_dive and deep_dive.get("title") and deep_dive.get("content_md")):
+        print(f"   ⏭️ [{category_name}] 今日无值得深度长文的话题，跳过")
+        return None
+
     now = datetime.now()
-    hugo_date = now.strftime('%Y-%m-%dT%H:%M:%S%z')
     date_slug = now.strftime("%Y-%m-%d")
     cat_lower = category_name.lower()
     posts_dir = os.path.join("content", "posts", category_name)
     os.makedirs(posts_dir, exist_ok=True)
 
-    briefing = data.get("briefing")
-    deep_dive = data.get("deep_dive")
-    saved_files = []
+    file_name = os.path.join(posts_dir, f"deep-dive-{date_slug}.md")
+    md = f"---\n"
+    md += f"title: '{deep_dive['title']}'\n"
+    md += f"date: {now.strftime('%Y-%m-%dT%H:%M:%S%z')}\n"
+    md += f"categories: ['{cat_lower}']\n"
+    md += f"tags: ['深度长文', '深度分析']\n"
+    md += f"draft: false\n"
+    md += f"---\n\n"
+    md += deep_dive['content_md']
 
-    # --- 快讯 ---
-    if briefing:
-        file_name = os.path.join(posts_dir, f"briefing-{date_slug}.md")
-        md = f"---\n"
-        md += f"title: '{briefing.get('title', '当日快讯')}'\n"
-        md += f"date: {hugo_date}\n"
-        md += f"categories: ['{cat_lower}']\n"
-        md += f"tags: ['快讯', '每日汇总']\n"
-        md += f"draft: false\n"
-        md += f"type: briefing\n"
-        md += f"---\n\n"
-        md += f"> 📋 每日海外情报快讯 | {now.strftime('%Y年%m月%d日')}\n\n"
+    with open(file_name, "w", encoding="utf-8") as f:
+        f.write(md)
+    print(f"   📄 深度长文已落盘: {file_name}")
+    return file_name
 
-        items = briefing.get("items", [])
-        for i, item in enumerate(items, 1):
-            md += f"## {i}. {item.get('title', '无标题')}\n\n"
-            md += f"**来源**：{item.get('source', '未知')}\n\n"
-            md += f"**核心要点**：{item.get('one_liner', '')}\n\n"
-            md += f"**为什么值得关注**：{item.get('why_matters', '')}\n\n"
+
+def save_aggregated_briefing(briefings_by_cat, slot, slot_cn):
+    """聚合所有引擎的快讯为一篇，按 topic 分组"""
+    if not briefings_by_cat:
+        return None
+
+    now = datetime.now()
+    date_slug = now.strftime("%Y-%m-%d")
+    posts_dir = os.path.join("content", "posts", "daily-briefing")
+    os.makedirs(posts_dir, exist_ok=True)
+
+    file_name = os.path.join(posts_dir, f"briefing-{date_slug}-{slot}.md")
+    md = f"---\n"
+    md += f"title: '每日快讯 · {slot_cn}版'\n"
+    md += f"date: {now.strftime('%Y-%m-%dT%H:%M:%S%z')}\n"
+    md += f"categories: ['daily-briefing']\n"
+    md += f"tags: ['快讯', '{slot_cn}', '每日汇总']\n"
+    md += f"draft: false\n"
+    md += f"---\n\n"
+    md += f"> {now.strftime('%Y年%m月%d日')} · {slot_cn}版 · {sum(len(v) for v in briefings_by_cat.values())} 条情报\n\n"
+
+    for cat_name, items in briefings_by_cat.items():
+        config = AGENTS.get(cat_name, {})
+        md += f"## {config.get('title_cn', cat_name)}\n\n"
+        for item in items:
+            md += f"### {item.get('title', '无标题')}\n\n"
+            md += f"**来源**：{item.get('source', '未知')} | {item.get('one_liner', '')}\n\n"
+            why = item.get('why_matters', '')
+            if why:
+                md += f"{why}\n\n"
             za = item.get('zero_cost_angle', '')
             if za and za not in ('暂无可执行角度', '待观察', '持续关注'):
-                md += f"**💡 零成本切入点**：{za}\n\n"
-            elif za:
-                md += f"**💡**：{za}\n\n"
-            md += "---\n\n"
+                md += f"> 零成本切入点：{za}\n\n"
+        md += "---\n\n"
 
-        with open(file_name, "w", encoding="utf-8") as f:
-            f.write(md)
-        saved_files.append(("briefing", file_name))
-        print(f"   📄 快讯已落盘: {file_name}")
-
-    # --- 深度长文（仅在有内容时写入） ---
-    if deep_dive and deep_dive.get("title") and deep_dive.get("content_md"):
-        file_name = os.path.join(posts_dir, f"deep-dive-{date_slug}.md")
-        md = f"---\n"
-        md += f"title: '{deep_dive['title']}'\n"
-        md += f"date: {hugo_date}\n"
-        md += f"categories: ['{cat_lower}']\n"
-        md += f"tags: ['深度长文', '深度分析']\n"
-        md += f"draft: false\n"
-        md += f"type: deep_dive\n"
-        md += f"---\n\n"
-        md += deep_dive['content_md']
-
-        with open(file_name, "w", encoding="utf-8") as f:
-            f.write(md)
-        saved_files.append(("deep_dive", file_name))
-        print(f"   📄 深度长文已落盘: {file_name}")
-    else:
-        print(f"   ⏭️ [{category_name}] 今日无值得深度长文的话题，跳过")
-
-    return saved_files
+    with open(file_name, "w", encoding="utf-8") as f:
+        f.write(md)
+    print(f"   📋 聚合快讯已落盘: {file_name}")
+    return file_name
 
 
 # ============================================================
@@ -870,61 +877,57 @@ def _tg_post(category_name, msg):
         return False
 
 
-def send_to_telegram(category_name, config, data):
-    """推送到 Telegram 群组指定 Topic"""
-    briefing = data.get("briefing")
-    deep_dive = data.get("deep_dive")
-    has_deep = deep_dive and deep_dive.get("title") and deep_dive.get("content_md")
-    sent_count = 0
+def send_aggregated_briefing_tg(briefings_by_cat, slot_cn):
+    """推送聚合快讯到 Telegram 主频道"""
+    total_items = sum(len(v) for v in briefings_by_cat.values())
+    if total_items == 0:
+        return 0
 
-    if briefing:
-        items = briefing.get("items", [])
-        msg = f"**{config['title_cn']}** 每日快讯\n"
-        msg += f"{datetime.now().strftime('%Y.%m.%d')}\n"
-        msg += "━━━━━━━━━━━━━━\n\n"
+    msg = f"📋 **每日快讯 · {slot_cn}版**\n"
+    msg += f"{datetime.now().strftime('%Y.%m.%d')} | {total_items} 条情报\n"
+    msg += "━━━━━━━━━━━━━━\n\n"
 
-        for i, item in enumerate(items, 1):
-            title = item.get('title', '无标题')
-            source = item.get('source', '未知')
+    for cat_name, items in briefings_by_cat.items():
+        config = AGENTS.get(cat_name, {})
+        msg += f"**▸ {config.get('title_cn', cat_name)}**\n"
+        for item in items:
+            title = item.get('title', '')
+            source = item.get('source', '')
             one_liner = item.get('one_liner', '')
-            why = item.get('why_matters', '')
-            za = item.get('zero_cost_angle', '')
+            msg += f"  · {title} ({source})\n"
+            if one_liner:
+                msg += f"    {one_liner}\n"
+        msg += "\n"
 
-            msg += f"**{i}. {title}**\n"
-            msg += f"  {source} | {one_liner}\n"
-            if why:
-                msg += f"  {why}\n"
-            if za and za not in ('暂无可执行角度', '待观察', '持续关注'):
-                msg += f"  > {za}\n"
-            msg += "\n"
+    msg += "━━━━━━━━━━━━━━\n"
+    msg += f"详情: {SITE_URL}"
+    return 1 if _tg_post("", msg) else 0
 
-        msg += "━━━━━━━━━━━━━━\n"
-        msg += f"详情: {SITE_URL}"
-        if _tg_post(category_name, msg):
-            sent_count += 1
 
-    if has_deep:
-        msg = f"**[{config['title_cn']}] 深度长文**\n\n"
-        msg += f"**{deep_dive['title']}**\n\n"
-        msg += f"{deep_dive.get('tg_summary', '深度分析已发布')}\n\n"
-        msg += f"阅读全文: {SITE_URL}/categories/{category_name.lower()}/"
-        if _tg_post(category_name, msg):
-            sent_count += 1
+def send_deep_dive_tg(category_name, config, data):
+    """推送单篇深度长文到其 Topic"""
+    deep_dive = data.get("deep_dive")
+    if not (deep_dive and deep_dive.get("title") and deep_dive.get("content_md")):
+        return 0
 
-    return sent_count
+    msg = f"**[{config['title_cn']}] 深度长文**\n\n"
+    msg += f"**{deep_dive['title']}**\n\n"
+    msg += f"{deep_dive.get('tg_summary', '深度分析已发布')}\n\n"
+    msg += f"阅读全文: {SITE_URL}/categories/{category_name.lower()}/"
+    return 1 if _tg_post(category_name, msg) else 0
 
 
 # ============================================================
 # 主流程
 # ============================================================
 if __name__ == "__main__":
-    print("🚀 启动 Easton 满血外脑：双轨引擎（快讯汇总 + 深度长文）...")
-    print(f"   📡 RSS 源总数: {sum(len(c['feeds']) for c in AGENTS.values())}")
+    print(f"🚀 启动 Easton 满血外脑 · {SLOT_CN}版")
+    print(f"   📡 RSS 源: {sum(len(c['feeds']) for c in AGENTS.values())}")
     print(f"   🤖 模型: DeepSeek V4 Pro (deepseek-chat)")
-    print(f"   ⏱️  并行抓取: 6 引擎 × 4 worker")
     print()
 
-    total_briefings = 0
+    # 收集所有引擎结果
+    all_briefings = {}  # category_name → [items]
     total_deep_dives = 0
     total_tg = 0
 
@@ -938,21 +941,33 @@ if __name__ == "__main__":
             try:
                 category_name, result = future.result()
                 if result:
-                    saved = save_to_hugo(category_name, AGENTS[category_name], result)
-                    for stype, _ in saved:
-                        if stype == "briefing":
-                            total_briefings += 1
-                        elif stype == "deep_dive":
-                            total_deep_dives += 1
+                    # 收集快讯 items 用于聚合
+                    briefing = result.get("briefing")
+                    if briefing:
+                        items = briefing.get("items", [])
+                        if items:
+                            all_briefings[category_name] = items
+                            print(f"   📋 [{category_name}] 快讯 {len(items)} 条")
 
-                    pushed = send_to_telegram(category_name, AGENTS[category_name], result)
-                    total_tg += pushed
+                    # 深度长文独立落盘
+                    saved = save_deep_dive(category_name, AGENTS[category_name], result)
+                    if saved:
+                        total_deep_dives += 1
+
+                    # 深度长文推送各自 Topic
+                    total_tg += send_deep_dive_tg(category_name, AGENTS[category_name], result)
                 else:
                     print(f"   ⚠️ [{cat}] 未获取有效结果")
             except Exception as exc:
                 print(f"❌ {cat} 引擎崩溃: {exc}")
 
+    # 聚合所有快讯为一篇
+    total_briefings = 1 if all_briefings else 0
+    if all_briefings:
+        save_aggregated_briefing(all_briefings, SLOT, SLOT_CN)
+        total_tg += send_aggregated_briefing_tg(all_briefings, SLOT_CN)
+
     print()
-    print(f"🏁 今日流水线执行完毕。")
-    print(f"   📊 快讯: {total_briefings} | 深度长文: {total_deep_dives} | Telegram 推送: {total_tg}")
-    print(f"   📡 Feed 抓取: {_FEED_OK} 成功 / {_FEED_FAIL} 失败")
+    print(f"🏁 {SLOT_CN}版执行完毕。")
+    print(f"   📊 聚合快讯: {total_briefings} | 深度长文: {total_deep_dives} | TG推送: {total_tg}")
+    print(f"   📡 Feed: {_FEED_OK} 成功 / {_FEED_FAIL} 失败")
