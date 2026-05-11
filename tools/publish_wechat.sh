@@ -15,7 +15,7 @@ REPO_DIR="${GIT_REPO_DIR:-/ws/web/daily-geek-news}"
 cd "$REPO_DIR"
 
 echo "=== 1. 拉取最新文章 ==="
-git pull origin main
+git fetch origin main && git reset --hard FETCH_HEAD
 
 echo ""
 echo "=== 2. 加载环境变量 ==="
