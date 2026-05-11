@@ -33,14 +33,21 @@ AGENTS = {
         "title_cn": "零库存套利雷达",
         "emoji": "💰",
         "feeds": [
-            # 论坛/社区
+            "https://news.ycombinator.com/rss",
+            "https://www.producthunt.com/feed",
+            "https://feed.indiehackers.com/forum/rss",
             "https://www.reddit.com/r/SaaS/top/.rss?t=day",
             "https://www.reddit.com/r/SideProject/top/.rss?t=day",
+            "https://www.reddit.com/r/Entrepreneur/top/.rss?t=day",
             "https://www.reddit.com/r/juststart/top/.rss?t=day",
-            "https://www.reddit.com/r/startups/top/.rss?t=day",
-            "https://feed.indiehackers.com/forum/rss",
-            # 权威平台
-            "https://news.ycombinator.com/rss",
+            "https://acquire.com/blog/feed/",
+            "https://starterstory.com/rss",
+            "https://betalist.com/feed",
+            "https://saasclub.co/feed/",
+            "https://v2ex.com/feed/create.xml",
+            "https://sspai.com/feed",
+            "https://www.geekpark.net/rss",
+            "https://www.oschina.net/news/rss",
         ],
         "briefing_prompt": """你是独立开发者商业情报官。请扫描资料库，提炼今天最有价值的 3-5 条商业/套利/副业信息。
 
@@ -108,15 +115,18 @@ content_md 严格按以下四章结构：
         "title_cn": "AI 生产力前沿",
         "emoji": "🤖",
         "feeds": [
-            # 权威科技媒体
-            "https://news.ycombinator.com/rss",
+            "https://tldr.tech/ai/rss",
+            "https://therundown.ai/feed",
+            "https://huggingface.co/blog/feed.xml",
             "https://www.technologyreview.com/feed/",
-            "https://www.theverge.com/ai-artificial-intelligence/rss/index.xml",
-            "https://venturebeat.com/category/ai/feed/",
-            # 学术前沿
-            "http://arxiv.org/rss/cs.AI",
-            # 官方博客
+            "https://dev.to/feed/tag/ai",
             "https://openai.com/blog/rss.xml",
+            "https://www.reddit.com/r/MachineLearning/top/.rss?t=day",
+            "https://aivalley.ai/feed",
+            "https://venturebeat.com/category/ai/feed/",
+            "https://news.ycombinator.com/rss",
+            "http://arxiv.org/rss/cs.AI",
+            "https://jiqizhixin.com/rss",
         ],
         "briefing_prompt": """你是 AI 技术情报官。请扫描资料库，提炼今天最有价值的 3-5 条 AI/技术前沿信息。
 
@@ -184,13 +194,15 @@ content_md 严格按以下四章结构：
         "title_cn": "跨国商业脑洞",
         "emoji": "🌍",
         "feeds": [
-            # 论坛/社区
             "https://www.reddit.com/r/Entrepreneur/top/.rss?t=day",
-            # 权威媒体
             "https://www.wired.com/feed/rss",
             "https://restofworld.org/feed/",
-            "https://www.theguardian.com/technology/rss",
+            "https://www.theguardian.com/world/rss",
             "https://www.semafor.com/feed/technology/rss",
+            "https://pragmaticengineer.com/feed",
+            "https://stratechery.com/feed/",
+            "https://lennysnewsletter.com/feed",
+            "https://review.firstround.com/feed.xml",
         ],
         "briefing_prompt": """你是跨国商业观察家。请扫描资料库，提炼今天最有价值的 3-5 条跨国商业/海外模式信息。
 
@@ -258,12 +270,15 @@ content_md 严格按以下四章结构：
         "title_cn": "宏观局势风向标",
         "emoji": "📉",
         "feeds": [
-            # 权威科技财经媒体
             "https://techcrunch.com/feed/",
+            "https://feeds.bloomberg.com/technology/news.rss",
             "https://www.theverge.com/rss/index.xml",
             "https://feeds.arstechnica.com/arstechnica/index",
             "http://feeds.bbci.co.uk/news/technology/rss.xml",
             "https://www.cnbc.com/id/100003114/device/rss/rss.html",
+            "https://sifted.eu/feed",
+            "https://ycombinator.com/blog/rss",
+            "https://a16z.com/feed/",
             "https://www.theguardian.com/technology/rss",
         ],
         "briefing_prompt": """你是宏观对冲策略分析师。请扫描资料库，提炼今天 3-5 条对独立开发者影响最大的全球科技/经济事件。
@@ -334,17 +349,21 @@ content_md 严格按以下四章结构：
         "title_cn": "中国出海录",
         "emoji": "🌏",
         "feeds": [
-            # 中国科技媒体（英文视角）
             "https://pandaily.com/feed/",
             "https://technode.com/feed/",
-            # 中文科技商业
             "https://36kr.com/feed",
             "https://www.huxiu.com/rss/0.xml",
-            # 亚洲权威媒体
             "https://asia.nikkei.com/rss/feed/nar",
             "https://www.scmp.com/rss/91/feed",
-            # 全球新兴市场
             "https://restofworld.org/feed/",
+            "https://techinasia.com/feed",
+            "https://e27.co/feed",
+            "https://yourstory.com/feed",
+            "https://inc42.com/feed",
+            "https://entrackr.com/feed/",
+            "https://latamlist.com/feed",
+            "https://contxto.com/feed",
+            "https://disrupt-africa.com/feed",
         ],
         "briefing_prompt": """你是中国科技出海战略顾问。请扫描资料库，提炼今天最有价值的 3-5 条中国产品/技术/模式出海的逆向套利信息。
 
