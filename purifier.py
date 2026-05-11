@@ -5,9 +5,15 @@ import time
 import feedparser
 import requests
 import re
-from datetime import datetime
+from datetime import datetime, timezone, timedelta
 import concurrent.futures
 from duckduckgo_search import DDGS
+
+# GitHub Actions 使用 UTC，统一转为北京时间
+BJT = timezone(timedelta(hours=8))
+
+def bj_now():
+    return datetime.now(BJT)
 
 # ============================================================
 # 环境变量
@@ -723,7 +729,7 @@ def deep_dive_worker(category_name, config):
     }
 
     full_prompt = f"""
-当前时间是 {datetime.now().strftime("%Y年%m月%d日")}。
+当前时间是 {bj_now().strftime("%Y年%m月%d日")}。
 请根据资料库内容，同时生成"快讯汇总（briefing）"和"深度长文（deep_dive，可选）"。
 
 【快讯任务】
@@ -780,7 +786,7 @@ def _write_hugo_post(dir_name, file_name, title, categories, tags, body):
     posts_dir = os.path.join("content", "posts", dir_name)
     os.makedirs(posts_dir, exist_ok=True)
     file_path = os.path.join(posts_dir, file_name)
-    fm = f"---\ntitle: '{title}'\ndate: {datetime.now().strftime('%Y-%m-%dT%H:%M:%S%z')}\n"
+    fm = f"---\ntitle: '{title}'\ndate: {bj_now().strftime('%Y-%m-%dT%H:%M:%S%z')}\n"
     fm += f"categories: {json.dumps(categories)}\ntags: {json.dumps(tags)}\n"
     fm += f"draft: false\n---\n\n"
     with open(file_path, "w", encoding="utf-8") as f:
@@ -795,7 +801,7 @@ def save_deep_dive(category_name, config, data):
         print(f"   ⏭️ [{category_name}] 今日无值得深度长文的话题，跳过")
         return None
 
-    date_slug = datetime.now().strftime("%Y-%m-%d")
+    date_slug = bj_now().strftime("%Y-%m-%d")
     cat_lower = category_name.lower()
     file_path = _write_hugo_post(
         category_name, f"deep-dive-{date_slug}.md",
@@ -811,7 +817,7 @@ def save_aggregated_briefing(briefings_by_cat):
     if not briefings_by_cat:
         return None
 
-    now = datetime.now()
+    now = bj_now()
     date_slug = now.strftime("%Y-%m-%d")
     posts_dir = os.path.join("content", "posts", "daily-briefing")
     os.makedirs(posts_dir, exist_ok=True)
@@ -887,7 +893,7 @@ def send_aggregated_briefing_tg(briefings_by_cat):
         return 0
 
     msg = f"📋 **每日快讯**\n"
-    msg += f"{datetime.now().strftime('%Y.%m.%d')} | {total_items} 条情报\n"
+    msg += f"{bj_now().strftime('%Y.%m.%d')} | {total_items} 条情报\n"
     msg += "━━━━━━━━━━━━━━\n\n"
 
     for cat_name, items in briefings_by_cat.items():

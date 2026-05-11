@@ -421,10 +421,20 @@ def md_to_wechat_html(md_text, article_url=""):
 # 主流程
 # ============================================================
 def find_articles(date_str=None):
-    """在 content/posts/ 下查找今日文章"""
+    """在 content/posts/ 下查找今日文章，无则回溯昨日"""
     if date_str is None:
-        date_str = datetime.now().strftime("%Y-%m-%d")
+        from datetime import timedelta
+        for offset in (0, 1):
+            d = datetime.now() - timedelta(days=offset)
+            date_str = d.strftime("%Y-%m-%d")
+            articles = _scan_date(date_str)
+            if articles:
+                return articles
+        return []
+    return _scan_date(date_str)
 
+
+def _scan_date(date_str):
     articles = []
     for md_file in sorted(CONTENT_DIR.rglob(f"*{date_str}*.md")):
         # 仅处理分类子目录下的文章，跳过 posts/ 根目录的旧版文件
