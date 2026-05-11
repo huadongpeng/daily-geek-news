@@ -33,11 +33,11 @@ ShowToc: false
 ### 联系方式
 
 - 邮箱：**hdop1993@gmail.com**
-- 微信公众号：**[请提供公众号名称]**
+- 微信公众号：**老花有话说**（微信号：lanrenleyou）
 - GitHub：[github.com/huadongpeng](https://github.com/huadongpeng)
 
 ---
 
-> 扫码关注微信公众号，获取每日海外情报推送
+> 扫码关注「老花有话说」，获取每日海外情报推送
 
-{{< figure src="/images/wechat-qr.png" alt="微信公众号二维码" width="200" >}}
+{{< figure src="/images/wechat-qr.jpg" alt="老花有话说 公众号二维码" width="200" >}}
