@@ -45,7 +45,7 @@ AGENTS = {
 输出 JSON（不要代码块外壳）：
 {
   "briefing": {
-    "title": "当日快讯标题（18字以内）",
+    "title": "当日快讯标题（12字以内）",
     "items": [
       {
         "title": "信息标题",
@@ -77,7 +77,7 @@ AGENTS = {
 
 输出纯净 JSON（不要代码块外壳）：
 {
-  "title": "文章标题（18字以内）",
+  "title": "文章标题（12字以内）",
   "content_md": "完整 Markdown 正文",
   "tg_summary": "Telegram 精简推送（50字内，含核心数据点+行动引导动词）"
 }
@@ -121,7 +121,7 @@ content_md 严格按以下四章结构：
 输出 JSON（不要代码块外壳）：
 {
   "briefing": {
-    "title": "当日快讯标题（18字以内）",
+    "title": "当日快讯标题（12字以内）",
     "items": [
       {
         "title": "信息标题",
@@ -153,7 +153,7 @@ content_md 严格按以下四章结构：
 
 输出纯净 JSON：
 {
-  "title": "文章标题（18字以内）",
+  "title": "文章标题（12字以内）",
   "content_md": "完整 Markdown 正文",
   "tg_summary": "Telegram 精简推送（50字内，含核心数据点+行动引导动词）"
 }
@@ -195,7 +195,7 @@ content_md 严格按以下四章结构：
 输出 JSON（不要代码块外壳）：
 {
   "briefing": {
-    "title": "当日快讯标题（18字以内）",
+    "title": "当日快讯标题（12字以内）",
     "items": [
       {
         "title": "信息标题",
@@ -227,7 +227,7 @@ content_md 严格按以下四章结构：
 
 输出纯净 JSON：
 {
-  "title": "文章标题（18字以内）",
+  "title": "文章标题（12字以内）",
   "content_md": "完整 Markdown 正文",
   "tg_summary": "Telegram 精简推送（50字内，含核心数据点+行动引导动词）"
 }
@@ -269,7 +269,7 @@ content_md 严格按以下四章结构：
 输出 JSON（不要代码块外壳）：
 {
   "briefing": {
-    "title": "当日快讯标题（18字以内）",
+    "title": "当日快讯标题（12字以内）",
     "items": [
       {
         "title": "信息标题",
@@ -301,7 +301,7 @@ content_md 严格按以下四章结构：
 
 输出纯净 JSON：
 {
-  "title": "文章标题（18字以内）",
+  "title": "文章标题（12字以内）",
   "content_md": "完整 Markdown 正文",
   "tg_summary": "Telegram 精简推送（50字内，含核心数据点+行动引导动词）"
 }
@@ -401,66 +401,77 @@ def get_recent_titles(category_name, days=3):
 
 
 def _extract_json(text):
-    """从 LLM 输出中稳健提取 JSON 对象（平衡括号匹配 + 多层修复）"""
+    """从 LLM 输出中稳健提取 JSON 对象"""
     candidates = []
 
     # 策略 1: 提取 ```json ... ``` 代码块
     for m in re.finditer(r'```(?:json)?\s*(\{.*?\})\s*```', text, re.DOTALL):
         candidates.append(m.group(1))
 
-    # 策略 2: 平衡括号提取所有顶层 JSON 对象
+    # 策略 2: 平衡括号提取所有顶层 {...} 对象
     for start_m in re.finditer(r'\{', text):
         start = start_m.start()
-        depth = 0
-        in_str = False
-        esc = False
+        depth, in_s, esc = 0, False, False
         for i, ch in enumerate(text[start:], start):
-            if esc:
-                esc = False; continue
-            if ch == '\\' and in_str:
-                esc = True; continue
-            if ch == '"' and not esc:
-                in_str = not in_str; continue
-            if in_str:
-                continue
-            if ch == '{':
-                depth += 1
+            if esc: esc = False; continue
+            if ch == '\\' and in_s: esc = True; continue
+            if ch == '"' and not esc: in_s = not in_s; continue
+            if in_s: continue
+            if ch == '{': depth += 1
             elif ch == '}':
                 depth -= 1
                 if depth == 0:
                     candidates.append(text[start:i + 1])
                     break
 
-    # 逐个尝试解析 + 递增修复
+    # 策略 3: 无外层花括号时，尝试找 briefing/deep_dive 模式并包裹
+    if not candidates:
+        m = re.search(r'(briefing|deep_dive)\s*:', text)
+        if m:
+            wrapped = text[m.start():].strip()
+            if not wrapped.startswith('{'):
+                # 如果以 key: 开头，在首尾加花括号
+                wrapped = '{' + wrapped + '}'
+                # 在最后一个 } 处截断（可能是多余文本）
+                last_brace = wrapped.rfind('}')
+                wrapped = wrapped[:last_brace + 1]
+                candidates.append(wrapped)
+
+    # 通用修复函数
+    def _repair(raw):
+        """逐步修复常见 LLM JSON 格式错误"""
+        # 尾随逗号
+        raw = re.sub(r',\s*([}\]])', r'\1', raw)
+        # 无引号属性名（含行首和花括号后）
+        raw = re.sub(r'(^|[{,\s\n])([a-zA-Z_][a-zA-Z0-9_]*)\s*:', r'\1"\2":', raw)
+        # 单引号键值
+        raw = re.sub(r"'([^']*)':", r'"\1":', raw)
+        raw = re.sub(r":\s*'([^']*)'", r': "\1"', raw)
+        # 中文引号
+        raw = raw.replace('“', '"').replace('”', '"')
+        raw = raw.replace('‘', "'").replace('’', "'")
+        # 缺失逗号
+        raw = re.sub(r'"\s*\n\s*"', '", "', raw)
+        raw = re.sub(r'([}\]\d])\s*\n\s*"', r'\1,\n"', raw)
+        return raw
+
     errors = []
-    for cand in candidates[-3:]:
-        for attempt in range(7):
+    for cand in candidates[-4:]:
+        try:
+            return json.loads(cand)
+        except json.JSONDecodeError as e:
+            errors.append(str(e))
+            fixed = _repair(cand)
             try:
-                return json.loads(cand)
-            except json.JSONDecodeError as e:
-                errors.append(str(e))
-                if attempt == 0:
-                    # 尾随逗号
-                    cand = re.sub(r',\s*([}\]])', r'\1', cand)
-                elif attempt == 1:
-                    # 无引号属性名: {word: -> {"word":
-                    cand = re.sub(r'([\{\s,])([a-zA-Z_][a-zA-Z0-9_]*)\s*:', r'\1"\2":', cand)
-                elif attempt == 2:
-                    # 缺失逗号: "x"\n"y" -> "x",\n"y"
-                    cand = re.sub(r'"\s*\n\s*"', '",\n"', cand)
-                elif attempt == 3:
-                    # 缺失逗号: }\n" -> },\n"
-                    cand = re.sub(r'([}\]\d])\s*\n\s*"', r'\1,\n"', cand)
-                elif attempt == 4:
-                    cand = cand.replace('"', '"').replace('"', '"')
-                    cand = cand.replace(''', "'").replace(''', "'")
-                elif attempt == 5:
-                    # 单引号属性名/值
-                    cand = re.sub(r"'([^']*)':", r'"\1":', cand)
-                    cand = re.sub(r":\s*'([^']*)'", r': "\1"', cand)
-                elif attempt == 6:
-                    # 极端情况：删除所有换行符尝试
-                    cand = re.sub(r'\n\s*', ' ', cand)
+                return json.loads(fixed)
+            except json.JSONDecodeError as e2:
+                errors.append(str(e2))
+                # 最后手段：压缩空白
+                compact = re.sub(r'\n\s*', ' ', fixed)
+                try:
+                    return json.loads(compact)
+                except json.JSONDecodeError as e3:
+                    errors.append(str(e3))
 
     raise ValueError(f"JSON 提取失败: {'; '.join(errors[-3:])}")
 
@@ -496,7 +507,7 @@ def deep_dive_worker(category_name, config):
 如果今天没有值得深度长文的话题，deep_dive 填 null。
 
 硬性约束：
-- 所有 title 字段严格不超过 18 个中文字（微信 API 字节限制 60 字节，1 中文=3 字节）
+- 所有 title 字段严格不超过 12 个中文字（微信 API 字节限制 60 字节，1 中文=3 字节）
 - 全文零 emoji，零网络用语，语气严谨专业学术商业分析风格
 - 个人方案优先考虑零成本或低成本路径
 - tg_summary 不超过 50 字，tg_brief 不超过 200 字
