@@ -36,6 +36,10 @@ jobs:
         DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
         TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
         TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        TG_THREAD_ARBITRAGE: ${{ secrets.TG_THREAD_ARBITRAGE }}
+        TG_THREAD_AI: ${{ secrets.TG_THREAD_AI }}
+        TG_THREAD_CROSS: ${{ secrets.TG_THREAD_CROSS }}
+        TG_THREAD_MACRO: ${{ secrets.TG_THREAD_MACRO }}
       run: python purifier.py
 
     - name: 5. 提交最新生成的文章到代码库
@@ -60,3 +64,4 @@ jobs:
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
         publish_dir: ./public
+        cname: radar.huadongpeng.com

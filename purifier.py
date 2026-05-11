@@ -242,21 +242,36 @@ def save_to_hugo(category_name, config, data):
         f.write(md)
 
 def send_to_telegram(category_name, config, data):
-    """投递到特定的 Topic 房间"""
+    """推送到 Telegram 群组指定 Topic"""
     msg = f"{config['emoji']} **[{config['title_cn']}]**\n\n"
     msg += f"🔥 **{data['title']}**\n\n"
-    msg += f"🧠 **深度思考引擎导读**: {data['tg_summary']}\n\n"
-    msg += f"🌐 详情已同步至 Easton 雷达站。"
-    
-    payload = {"chat_id": TG_CHAT_ID, "text": msg, "parse_mode": "Markdown"}
-    
-    # 投递至特定房间
+    msg += f"🧠 {data['tg_summary']}"
+
+    chat_id = TG_CHAT_ID.strip()
+    # 确保 chat_id 为正确的数字格式（群组 ID 以 -100 开头）
+    try:
+        chat_id_int = int(chat_id)
+    except ValueError:
+        chat_id_int = chat_id
+
+    payload = {"chat_id": chat_id_int, "text": msg, "parse_mode": "Markdown"}
+
     thread_id = THREAD_IDS.get(category_name)
-    if thread_id:
-        payload["message_thread_id"] = int(thread_id)
-        
+    if thread_id and thread_id.strip():
+        payload["message_thread_id"] = int(thread_id.strip())
+        print(f"   📨 推送到群组 {chat_id} → Topic {thread_id.strip()}")
+    else:
+        print(f"   ⚠️ [{category_name}] 未配置 Topic ID，消息将发送到群组主聊天")
+
     url = f"https://api.telegram.org/bot{TG_BOT_TOKEN}/sendMessage"
-    requests.post(url, json=payload)
+    try:
+        resp = requests.post(url, json=payload, timeout=15)
+        if resp.status_code == 200:
+            print(f"   ✅ [{category_name}] Telegram 推送成功")
+        else:
+            print(f"   ❌ [{category_name}] Telegram 推送失败: {resp.status_code} {resp.text[:200]}")
+    except Exception as e:
+        print(f"   ❌ [{category_name}] Telegram 推送异常: {e}")
 
 if __name__ == "__main__":
     print("🚀 启动 Easton 满血外脑：RAG主动检索 + V4 Pro深度推理 + 联网搜索并发引擎...")
