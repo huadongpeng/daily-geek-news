@@ -6,6 +6,8 @@ theme = 'PaperMod'
 [params]
   author = "Easton Hua"
   defaultTheme = "auto"
+  description = "每日自动化扫描海外权威信息源，DeepSeek V4 Pro 深度推理，输出中文可执行情报。覆盖套利雷达、AI 前沿、跨国脑洞、宏观风向。"
+  keywords = ["跨国商业", "套利", "AI", "独立开发者", "海外情报", "商业分析", "零成本创业"]
   ShowReadingTime = true
   ShowToc = true
   ShowBreadCrumbs = true
@@ -14,6 +16,10 @@ theme = 'PaperMod'
   ShowShareButtons = false
   ShowFullTextinRSS = true
   dateFormat = "2006-01-02"
+  assets.favicon = "/logo.svg"
+  assets.favicon16x16 = "/logo.svg"
+  assets.favicon32x32 = "/logo.svg"
+  assets.apple_touch_icon = "/logo.svg"
 
   [params.homeInfoParams]
     Title = "Easton 跨国智库"

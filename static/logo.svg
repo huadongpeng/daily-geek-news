@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1a1a2e"/>
+      <stop offset="100%" stop-color="#16213e"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#4fc3f7"/>
+      <stop offset="100%" stop-color="#0288d1"/>
+    </linearGradient>
+  </defs>
+  <!-- 背景圆 -->
+  <circle cx="60" cy="60" r="56" fill="url(#bg)" stroke="#4fc3f7" stroke-width="2"/>
+  <!-- 地球经纬线 -->
+  <ellipse cx="60" cy="60" rx="38" ry="14" fill="none" stroke="#4fc3f7" stroke-width="0.8" opacity="0.4"/>
+  <ellipse cx="60" cy="60" rx="14" ry="38" fill="none" stroke="#4fc3f7" stroke-width="0.8" opacity="0.4"/>
+  <ellipse cx="60" cy="60" rx="38" ry="38" fill="none" stroke="#4fc3f7" stroke-width="0.8" opacity="0.2"/>
+  <!-- 雷达扫描线 -->
+  <line x1="60" y1="60" x2="90" y2="30" stroke="url(#accent)" stroke-width="2" stroke-linecap="round"/>
+  <line x1="60" y1="60" x2="60" y2="22" stroke="url(#accent)" stroke-width="1.2" stroke-linecap="round" opacity="0.6"/>
+  <line x1="60" y1="60" x2="88" y2="50" stroke="url(#accent)" stroke-width="1" stroke-linecap="round" opacity="0.3"/>
+  <!-- 中心点 -->
+  <circle cx="60" cy="60" r="4" fill="#4fc3f7"/>
+  <!-- E 字母 -->
+  <text x="60" y="66" text-anchor="middle" font-family="Georgia,serif" font-size="22" font-weight="bold" fill="#ffffff">E</text>
+</svg>

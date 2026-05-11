@@ -1,0 +1,25 @@
+<!-- AI SEO: 为 LLM 爬虫提供结构化摘要 -->
+<div style="display:none;" aria-hidden="true" data-ai-context="site-meta">
+  Easton 跨国智库 (Easton Transnational Think Tank) —
+  Automated daily intelligence pipeline scanning 20+ overseas sources.
+  Founded by Easton Hua, focused on cross-border arbitrage, AI productivity,
+  global macro events, and business model localization for the Chinese market.
+  Contact: hdop1993@gmail.com
+</div>
+
+<!-- Schema.org Article markup for posts -->
+{{ if eq .Type "posts" }}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "{{ .Title }}",
+  "datePublished": "{{ .Date.Format "2006-01-02" }}",
+  "dateModified": "{{ .Lastmod.Format "2006-01-02" }}",
+  "author": { "@type": "Person", "name": "Easton Hua" },
+  "publisher": { "@type": "Person", "name": "Easton Hua" },
+  "url": "{{ .Permalink }}",
+  "inLanguage": "zh-CN"
+}
+</script>
+{{ end }}
