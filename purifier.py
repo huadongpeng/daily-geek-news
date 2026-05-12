@@ -736,6 +736,14 @@ def _extract_json(text):
                 wrapped = wrapped[:last_brace + 1]
                 candidates.append(wrapped)
 
+    # DEBUG: 打印候选数量和每个候选是否包含 deep_dive
+    print(f"   [DEBUG-EXTRACT] 候选数={len(candidates)}", flush=True)
+    for idx, c in enumerate(candidates):
+        has_dd = '"deep_dive"' in c
+        dd_pos = c.find('"deep_dive"')
+        dd_val = c[dd_pos:dd_pos+50] if dd_pos >= 0 else "N/A"
+        print(f"   [DEBUG-EXTRACT] 候选{idx}: len={len(c)} has_deep_dive={has_dd} dd_context={dd_val}", flush=True)
+
     # 通用修复函数
     def _repair(raw):
         """逐步修复常见 LLM JSON 格式错误（启发式，不保证处理嵌套字符串）"""
@@ -899,22 +907,21 @@ def deep_dive_worker(category_name, config):
         t_api = time.time()
 
         final_text = response.json()['choices'][0]['message']['content']
+        # DEBUG: 直接尝试 json.loads 原始响应
+        try:
+            direct = json.loads(final_text)
+            print(f"   [DEBUG-DIRECT] json.loads 成功! keys={list(direct.keys())} deep_dive={'present' if 'deep_dive' in direct else 'MISSING'}", flush=True)
+            if 'deep_dive' in direct:
+                dd_val = direct['deep_dive']
+                print(f"   [DEBUG-DIRECT] deep_dive={type(dd_val).__name__} = {str(dd_val)[:200]}", flush=True)
+        except json.JSONDecodeError as de:
+            print(f"   [DEBUG-DIRECT] json.loads 失败: {de}", flush=True)
         result = _extract_json(final_text)
         has_brief = bool(result.get("briefing"))
         dd = result.get("deep_dive")
         has_deep = bool(dd and dd.get("title"))
         dd_preview = str(dd)[:200] if dd else "null/None"
         print(f"[{category_name}] API {t_api-t_api_start:.0f}s | 快讯:{has_brief} 深度:{has_deep} | deep_dive={dd_preview} (type={type(dd).__name__}) | 原始响应长度={len(final_text)}chars", flush=True)
-        # DEBUG: 搜索 "deep_dive" 在原始响应中的位置
-        dd_pos = final_text.find('"deep_dive"')
-        if dd_pos >= 0:
-            ctx_start = max(0, dd_pos - 50)
-            ctx_end = min(len(final_text), dd_pos + 200)
-            print(f"   [DEBUG] 'deep_dive' 出现在位置 {dd_pos}: ...{final_text[ctx_start:ctx_end]}...", flush=True)
-        # DEBUG: 如果深度为 False，打印原始响应的首尾各200字符
-        if not has_deep:
-            print(f"   [DEBUG] 响应头200chars: {final_text[:200]}", flush=True)
-            print(f"   [DEBUG] 响应尾200chars: {final_text[-200:]}", flush=True)
         return category_name, result
 
     except Exception as e:
