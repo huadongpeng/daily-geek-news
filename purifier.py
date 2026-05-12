@@ -125,7 +125,7 @@ AGENTS = {
     ],
     "tg_brief": "Telegram 推送用（200字内，编号列表，每条含核心操作指引）"
   },
-  "deep_dive": null
+  "deep_dive": "⚠️请生成完整deep_dive对象（含title/tg_summary/content_md），不要填null。如确实无话题可写才填null。"
 }
 
 优先选择有具体操作路径的话题，写出读者能直接照做的步骤。
@@ -216,7 +216,7 @@ content_md 自由结构，但必须包含以下内容（不用固定章节标题
     ],
     "tg_brief": "Telegram 推送用（200字内，编号列表）"
   },
-  "deep_dive": null
+  "deep_dive": "⚠️请生成完整deep_dive对象（含title/tg_summary/content_md），不要填null。如确实无话题可写才填null。"
 }
 
 优先选择有实用价值的话题，写出读者能跟着做的教程或测评。""",
@@ -292,7 +292,7 @@ content_md 自由结构，二选一：
     ],
     "tg_brief": "Telegram 推送用（200字内，编号列表）"
   },
-  "deep_dive": null
+  "deep_dive": "⚠️请生成完整deep_dive对象（含title/tg_summary/content_md），不要填null。如确实无话题可写才填null。"
 }
 
 优先选择有国内可行性或可模仿的角度，写出具体操作方案。""",
@@ -416,7 +416,7 @@ content_md 自由结构，必须包含：
     ],
     "tg_brief": "Telegram 推送用（200字内，编号列表）"
   },
-  "deep_dive": null
+  "deep_dive": "⚠️请生成完整deep_dive对象（含title/tg_summary/content_md），不要填null。如确实无话题可写才填null。"
 }
 
 优先选择有实操价值的出海工具或平台，写出详细上手指南。""",
@@ -491,7 +491,7 @@ content_md 自由结构，必须包含：
     ],
     "tg_brief": "Telegram 推送用（200字内，编号列表）"
   },
-  "deep_dive": null
+  "deep_dive": "⚠️请生成完整deep_dive对象（含title/tg_summary/content_md），不要填null。如确实无话题可写才填null。"
 }
 
 优先选择有教学价值的工具或方案，写出读者能快速上手的指南。""",
