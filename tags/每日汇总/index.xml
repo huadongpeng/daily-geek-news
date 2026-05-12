@@ -1,174 +1,134 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>每日汇总 on Easton 跨国智库</title><link>https://radar.huadongpeng.com/tags/%E6%AF%8F%E6%97%A5%E6%B1%87%E6%80%BB/</link><description>Recent content in 每日汇总 on Easton 跨国智库</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Tue, 12 May 2026 12:58:21 +0800</lastBuildDate><atom:link href="https://radar.huadongpeng.com/tags/%E6%AF%8F%E6%97%A5%E6%B1%87%E6%80%BB/index.xml" rel="self" type="application/rss+xml"/><item><title>每日快讯</title><link>https://radar.huadongpeng.com/posts/daily-briefing/briefing-2026-05-12/</link><pubDate>Tue, 12 May 2026 12:58:21 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/daily-briefing/briefing-2026-05-12/</guid><description>&lt;blockquote&gt;
-&lt;p&gt;2026年05月12日 · 18 条情报&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>每日汇总 on Easton 跨国智库</title><link>https://radar.huadongpeng.com/tags/%E6%AF%8F%E6%97%A5%E6%B1%87%E6%80%BB/</link><description>Recent content in 每日汇总 on Easton 跨国智库</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Tue, 12 May 2026 13:11:56 +0800</lastBuildDate><atom:link href="https://radar.huadongpeng.com/tags/%E6%AF%8F%E6%97%A5%E6%B1%87%E6%80%BB/index.xml" rel="self" type="application/rss+xml"/><item><title>每日快讯</title><link>https://radar.huadongpeng.com/posts/daily-briefing/briefing-2026-05-12/</link><pubDate>Tue, 12 May 2026 13:11:56 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/daily-briefing/briefing-2026-05-12/</guid><description>&lt;blockquote&gt;
+&lt;p&gt;2026年05月12日 · 13 条情报&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h2 id="海外信息差"&gt;海外信息差&lt;/h2&gt;
-&lt;h3 id="ai自动挽留"&gt;AI自动挽留&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：Stratechery/Reddit-美国 | 用AI自动分析用户取消邮件并给出挽留方案&lt;/p&gt;
-&lt;p&gt;国内SaaS和电商客服还在手动处理，你可用现成API快速搭建小程序服务小商家。&lt;/p&gt;
+&lt;h2 id="效率工具与自动化"&gt;效率工具与自动化&lt;/h2&gt;
+&lt;h3 id="tanstack被投毒"&gt;TanStack被投毒&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：Hacker News | TanStack 42个npm包被恶意篡改，发布84个带毒版本&lt;/p&gt;
+&lt;p&gt;前三大前端库之一被供应链攻击，波及React Query等明星项目，今天内就得检查你的依赖版本&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;🎯 去微信搜‘客户挽留’看有没有此类小程序或机器人&lt;/p&gt;
+&lt;p&gt;🎯 立即检查项目：在终端执行 npm ls @tanstack/* 看是否有以下版本→自查列表见下文&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h3 id="ai幻觉检测"&gt;AI幻觉检测&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：Guardian/Reddit-全球 | 检测AI生成内容中的事实错误和格式错误&lt;/p&gt;
-&lt;p&gt;政府和企业AI生成文档频繁出错，国内缺乏此类检测服务。&lt;/p&gt;
+&lt;h3 id="snapseed大更新"&gt;Snapseed大更新&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：Google Play | 谷歌神级免费修图工具Snapseed 4.0上线&lt;/p&gt;
+&lt;p&gt;免费、无广告、离线可用，新增AI级别校正功能，省掉Lightroom订阅费每月118元&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;🎯 在知乎搜‘AI幻觉 治理’看讨论热度&lt;/p&gt;
+&lt;p&gt;🎯 立即体验：手机打开应用商店→搜索Snapseed→更新到4.0→任意试一张照片&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h3 id="非洲新闻创作者"&gt;非洲新闻创作者&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：TikTok-南非 | 非洲创作者用短视频报道本地新闻，广告收入可观&lt;/p&gt;
-&lt;p&gt;国内下沉市场类似模式刚起步，可搬运非洲运营经验到三四线小城。&lt;/p&gt;
+&lt;h3 id="courseraudemy合并"&gt;Coursera+Udemy合并&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：TechCrunch | 全球两大在线学习平台Coursera和Udemy合并&lt;/p&gt;
+&lt;p&gt;课程门类2万+，许多课短期内可能涨价或下架，赶紧下载你要学的课&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;🎯 在抖音搜‘本地新闻 博主’看内容和粉丝结构&lt;/p&gt;
+&lt;p&gt;🎯 立即行动：打开你的Udemy/Coursera账户→找到已购课程→点击下载课程离线资料→PDF/视频备一份&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id="claude上aws"&gt;Claude上AWS&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：AWS | Anthropic的Claude模型正式上线AWS Bedrock平台&lt;/p&gt;
+&lt;p&gt;Claude经过AWS企业级安全认证，可用AWS免费额度调用，替代ChatGPT每月20美元成本&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;🎯 立即体验：注册AWS免费账户→打开Bedrock控制台→选Claude 3 Sonnet→发第一条消息&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;hr&gt;
 &lt;h2 id="宏观风向标"&gt;宏观风向标&lt;/h2&gt;
-&lt;h3 id="通用汽车裁it换ai"&gt;通用汽车裁IT换AI&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：TechCrunch | 通用汽车裁掉数百名IT员工，转向招募AI人才。&lt;/p&gt;
-&lt;p&gt;传统IT岗位正在被AI替代。如果你是程序员，今天就要开始准备转型为AI相关技能。&lt;/p&gt;
+&lt;h3 id="通用汽车it裁员"&gt;通用汽车IT裁员&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：路透社 | 通用汽车裁数百IT岗，招AI技能员工&lt;/p&gt;
+&lt;p&gt;大厂IT非核心岗位收缩，传统开发岗减少，AI技能成为筛选条件，今天起影响面试门槛&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;🎯 今天去freeCodeCamp搜AI课程，花1小时学一个提示工程入门教程。&lt;/p&gt;
+&lt;p&gt;🎯 今天用LinkedIn搜“prompt engineering”职位分析要求&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h3 id="tiktok英国推付费去广告"&gt;TikTok英国推付费去广告&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：BBC | TikTok在英国上线3.99英镑月费的无广告订阅版。&lt;/p&gt;
-&lt;p&gt;平台开始收用户的钱，同时可能对免费用户推更多广告。如果你做TikTok营销，流量成本可能上升。&lt;/p&gt;
+&lt;h3 id="印度限制黄金进口"&gt;印度限制黄金进口&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：彭博社 | 印度拟限制黄金等非必需进口保外汇&lt;/p&gt;
+&lt;p&gt;若实施，全球金价短期下跌，持有黄金低价变现时机错失，今天关注国内金饰回收价&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;🎯 今天检查你的TikTok广告账户预算，下调每日限额20%防止意外超支。&lt;/p&gt;
+&lt;p&gt;🎯 今天打开支付宝黄金页面看实时金价&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h3 id="linux又现严重漏洞"&gt;Linux又现严重漏洞&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：Ars Technica | Linux两星期内曝出第二个严重安全漏洞，补丁正在推出。&lt;/p&gt;
-&lt;p&gt;如果你用Linux服务器或开发环境，系统可能被远程攻击。需要立即更新补丁。&lt;/p&gt;
+&lt;h3 id="韩国ai分红提议"&gt;韩国AI分红提议&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：彭博社 | 韩国提征AI企业税收向全民分红&lt;/p&gt;
+&lt;p&gt;政策信号可能推高AI设备管控，影响二手显卡和AI工具获取成本，今天可关注后续&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;🎯 今天运行sudo apt update &amp;amp;&amp;amp; sudo apt upgrade，重启服务器并确认补丁版本。&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h3 id="印度拟限制黄金电子产品进口"&gt;印度拟限制黄金电子产品进口&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：Bloomberg | 印度考虑紧急措施限制非必需进口，包括黄金和电子产品。&lt;/p&gt;
-&lt;p&gt;如果你做跨境电商或代购，电子产品和黄金类商品可能面临供应中断或价格上涨，尤其影响低价小包直邮模式。&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;🎯 今天检查你的备货清单，减少电子配件和饰品库存比例，增加快消品类。&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;hr&gt;
-&lt;h2 id="套利雷达"&gt;套利雷达&lt;/h2&gt;
-&lt;h3 id="视频搜索痛点"&gt;视频搜索痛点&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：Reddit | YouTube搜索太烂，缺好用的视频搜索引擎&lt;/p&gt;
-&lt;p&gt;有代码基础就能做，已有人直接抱怨，需求真实可见&lt;/p&gt;</description><content:encoded><![CDATA[<blockquote>
-<p>2026年05月12日 · 18 条情报</p>
+&lt;p&gt;🎯 今天在推特搜“Korea AI dividend proposal”看进展&lt;/p&gt;</description><content:encoded><![CDATA[<blockquote>
+<p>2026年05月12日 · 13 条情报</p>
 </blockquote>
-<h2 id="海外信息差">海外信息差</h2>
-<h3 id="ai自动挽留">AI自动挽留</h3>
-<p><strong>来源</strong>：Stratechery/Reddit-美国 | 用AI自动分析用户取消邮件并给出挽留方案</p>
-<p>国内SaaS和电商客服还在手动处理，你可用现成API快速搭建小程序服务小商家。</p>
+<h2 id="效率工具与自动化">效率工具与自动化</h2>
+<h3 id="tanstack被投毒">TanStack被投毒</h3>
+<p><strong>来源</strong>：Hacker News | TanStack 42个npm包被恶意篡改，发布84个带毒版本</p>
+<p>前三大前端库之一被供应链攻击，波及React Query等明星项目，今天内就得检查你的依赖版本</p>
 <blockquote>
-<p>🎯 去微信搜‘客户挽留’看有没有此类小程序或机器人</p>
+<p>🎯 立即检查项目：在终端执行 npm ls @tanstack/* 看是否有以下版本→自查列表见下文</p>
 </blockquote>
-<h3 id="ai幻觉检测">AI幻觉检测</h3>
-<p><strong>来源</strong>：Guardian/Reddit-全球 | 检测AI生成内容中的事实错误和格式错误</p>
-<p>政府和企业AI生成文档频繁出错，国内缺乏此类检测服务。</p>
+<h3 id="snapseed大更新">Snapseed大更新</h3>
+<p><strong>来源</strong>：Google Play | 谷歌神级免费修图工具Snapseed 4.0上线</p>
+<p>免费、无广告、离线可用，新增AI级别校正功能，省掉Lightroom订阅费每月118元</p>
 <blockquote>
-<p>🎯 在知乎搜‘AI幻觉 治理’看讨论热度</p>
+<p>🎯 立即体验：手机打开应用商店→搜索Snapseed→更新到4.0→任意试一张照片</p>
 </blockquote>
-<h3 id="非洲新闻创作者">非洲新闻创作者</h3>
-<p><strong>来源</strong>：TikTok-南非 | 非洲创作者用短视频报道本地新闻，广告收入可观</p>
-<p>国内下沉市场类似模式刚起步，可搬运非洲运营经验到三四线小城。</p>
+<h3 id="courseraudemy合并">Coursera+Udemy合并</h3>
+<p><strong>来源</strong>：TechCrunch | 全球两大在线学习平台Coursera和Udemy合并</p>
+<p>课程门类2万+，许多课短期内可能涨价或下架，赶紧下载你要学的课</p>
 <blockquote>
-<p>🎯 在抖音搜‘本地新闻 博主’看内容和粉丝结构</p>
+<p>🎯 立即行动：打开你的Udemy/Coursera账户→找到已购课程→点击下载课程离线资料→PDF/视频备一份</p>
+</blockquote>
+<h3 id="claude上aws">Claude上AWS</h3>
+<p><strong>来源</strong>：AWS | Anthropic的Claude模型正式上线AWS Bedrock平台</p>
+<p>Claude经过AWS企业级安全认证，可用AWS免费额度调用，替代ChatGPT每月20美元成本</p>
+<blockquote>
+<p>🎯 立即体验：注册AWS免费账户→打开Bedrock控制台→选Claude 3 Sonnet→发第一条消息</p>
 </blockquote>
 <hr>
 <h2 id="宏观风向标">宏观风向标</h2>
-<h3 id="通用汽车裁it换ai">通用汽车裁IT换AI</h3>
-<p><strong>来源</strong>：TechCrunch | 通用汽车裁掉数百名IT员工，转向招募AI人才。</p>
-<p>传统IT岗位正在被AI替代。如果你是程序员，今天就要开始准备转型为AI相关技能。</p>
+<h3 id="通用汽车it裁员">通用汽车IT裁员</h3>
+<p><strong>来源</strong>：路透社 | 通用汽车裁数百IT岗，招AI技能员工</p>
+<p>大厂IT非核心岗位收缩，传统开发岗减少，AI技能成为筛选条件，今天起影响面试门槛</p>
 <blockquote>
-<p>🎯 今天去freeCodeCamp搜AI课程，花1小时学一个提示工程入门教程。</p>
+<p>🎯 今天用LinkedIn搜“prompt engineering”职位分析要求</p>
 </blockquote>
-<h3 id="tiktok英国推付费去广告">TikTok英国推付费去广告</h3>
-<p><strong>来源</strong>：BBC | TikTok在英国上线3.99英镑月费的无广告订阅版。</p>
-<p>平台开始收用户的钱，同时可能对免费用户推更多广告。如果你做TikTok营销，流量成本可能上升。</p>
+<h3 id="印度限制黄金进口">印度限制黄金进口</h3>
+<p><strong>来源</strong>：彭博社 | 印度拟限制黄金等非必需进口保外汇</p>
+<p>若实施，全球金价短期下跌，持有黄金低价变现时机错失，今天关注国内金饰回收价</p>
 <blockquote>
-<p>🎯 今天检查你的TikTok广告账户预算，下调每日限额20%防止意外超支。</p>
+<p>🎯 今天打开支付宝黄金页面看实时金价</p>
 </blockquote>
-<h3 id="linux又现严重漏洞">Linux又现严重漏洞</h3>
-<p><strong>来源</strong>：Ars Technica | Linux两星期内曝出第二个严重安全漏洞，补丁正在推出。</p>
-<p>如果你用Linux服务器或开发环境，系统可能被远程攻击。需要立即更新补丁。</p>
+<h3 id="韩国ai分红提议">韩国AI分红提议</h3>
+<p><strong>来源</strong>：彭博社 | 韩国提征AI企业税收向全民分红</p>
+<p>政策信号可能推高AI设备管控，影响二手显卡和AI工具获取成本，今天可关注后续</p>
 <blockquote>
-<p>🎯 今天运行sudo apt update &amp;&amp; sudo apt upgrade，重启服务器并确认补丁版本。</p>
+<p>🎯 今天在推特搜“Korea AI dividend proposal”看进展</p>
 </blockquote>
-<h3 id="印度拟限制黄金电子产品进口">印度拟限制黄金电子产品进口</h3>
-<p><strong>来源</strong>：Bloomberg | 印度考虑紧急措施限制非必需进口，包括黄金和电子产品。</p>
-<p>如果你做跨境电商或代购，电子产品和黄金类商品可能面临供应中断或价格上涨，尤其影响低价小包直邮模式。</p>
+<h3 id="linux新漏洞补丁">Linux新漏洞补丁</h3>
+<p><strong>来源</strong>：Ars Technica | Linux两周内第二个高危漏洞已出补丁</p>
+<p>使用Linux服务器或云主机的用户，今天不更新可能被攻击，涉及隐私和站点安全</p>
 <blockquote>
-<p>🎯 今天检查你的备货清单，减少电子配件和饰品库存比例，增加快消品类。</p>
+<p>🎯 今天在终端执行 sudo apt update &amp;&amp; sudo apt upgrade</p>
 </blockquote>
-<hr>
-<h2 id="套利雷达">套利雷达</h2>
-<h3 id="视频搜索痛点">视频搜索痛点</h3>
-<p><strong>来源</strong>：Reddit | YouTube搜索太烂，缺好用的视频搜索引擎</p>
-<p>有代码基础就能做，已有人直接抱怨，需求真实可见</p>
+<h3 id="tiktok英国推无广告订阅">TikTok英国推无广告订阅</h3>
+<p><strong>来源</strong>：BBC | TikTok英国测试3.99英镑无广告版</p>
+<p>平台强化付费模式，免费版广告增多，间接挤压创作者收益，今天可看自己账号广告频率</p>
 <blockquote>
-<p>🎯 搜索Reddit该帖子评论区，记录前50个具体搜索场景，整理成需求清单</p>
-</blockquote>
-<h3 id="个体户行政自动化">个体户行政自动化</h3>
-<p><strong>来源</strong>：Reddit | 小企业苦于发票催款等手动操作，缺便宜自动化工具</p>
-<p>门槛低，能写Python脚本就能做，面向本地小老板可收费</p>
-<blockquote>
-<p>🎯 在本地小商家微信群问催款和发票痛点，记录前10个常用场景</p>
-</blockquote>
-<h3 id="电子签名合规混乱">电子签名合规混乱</h3>
-<p><strong>来源</strong>：Reddit | 亚太区电子签名法律要求不透明，没人整理靠谱信息</p>
-<p>信息整理类项目，零代码，靠内容就能变现</p>
-<blockquote>
-<p>🎯 搜索新加坡和马来西亚政府官网电子签名法规，整理为一页对比表格</p>
+<p>🎯 今天在TikTok设置页查看“广告偏好”选项</p>
 </blockquote>
 <hr>
 <h2 id="ai-工具实战">AI 工具实战</h2>
-<h3 id="免费替代claude-code">免费替代Claude Code</h3>
-<p><strong>来源</strong>：VentureBeat | Goose免费替代Claude Code，自动写代码调bug</p>
-<p>Claude Code月费200美元，Goose完全免费，国内可注册，省下大笔开销。</p>
+<h3 id="goose免费替代">Goose免费替代</h3>
+<p><strong>来源</strong>：VentureBeat | 免费开源的AI编码代理，功能对标每月200美元的Claude Code。</p>
+<p>零成本体验AI自动写代码、调试、部署，无需翻墙。GitHub上直接下载，适合预算紧张的技术学习者。</p>
 <blockquote>
-<p>🎯 打开goose.ai官网→注册→GitHub授权→终端输入&rsquo;goose run&rsquo;试自动修复</p>
+<p>🎯 打开GitHub→搜索Goose→下载安装→给一个简单任务测试自动生成代码。</p>
 </blockquote>
-<h3 id="照片转3d世界">照片转3D世界</h3>
-<p><strong>来源</strong>：World Labs | 上传一张照片30秒生成可交互3D场景</p>
-<p>免费且无需3D技能，适合做产品展示或设计。</p>
+<h3 id="chatgpt用户结构">ChatGPT用户结构</h3>
+<p><strong>来源</strong>：MIT Technology Review | 2026年初ChatGPT增长最快的是35岁以上用户，性别比例更平衡。</p>
+<p>说明AI工具正被非技术背景人群接受。你可以利用这个趋势，用ChatGPT帮身边人（如长辈）解决生活问题，比如写计划或查资料。</p>
 <blockquote>
-<p>🎯 打开worldlabs.ai→上传照片→等待→鼠标拖拽查看3D效果</p>
+<p>🎯 打开ChatGPT免费版→随便问一个生活问题（如“帮我写个周末健身计划”）→看看输出质量。</p>
 </blockquote>
-<h3 id="数据转表格">数据转表格</h3>
-<p><strong>来源</strong>：Tables | 粘贴零散数据自动生成可编辑表格</p>
-<p>免费，省去手动整理数据时间，适合做数据分析。</p>
+<h3 id="openai学生联网">OpenAI学生联网</h3>
+<p><strong>来源</strong>：OpenAI官网 | OpenAI校园网络计划：学生社团可申请使用AI工具。</p>
+<p>如果你是学生或能联系到学生社团，可以免费获得AI工具使用权。校内社群运营低成本，且能积累经验。</p>
 <blockquote>
-<p>🎯 打开tables.xyz→粘贴杂乱数据→点击生成→下载CSV</p>
+<p>🎯 打开OpenAI Campus Network官网→填写社团兴趣表→等待审核通知。</p>
 </blockquote>
-<h3 id="小模型实用于简单任务">小模型实用于简单任务</h3>
-<p><strong>来源</strong>：Reddit r/MachineLearning | Qwen3.5 0.8B月下载288万次，适合简单问答</p>
-<p>免费离线运行，不用联网不花钱，适合嵌入到办公脚本。</p>
+<h3 id="ai版google金融">AI版Google金融</h3>
+<p><strong>来源</strong>：Google Finance | AI增强的Google Finance在欧洲上线，可智能解读金融数据。</p>
+<p>免费访问，对投资小白很友好。用它分析美股和欧洲公司趋势，0成本获取投资参考。</p>
 <blockquote>
-<p>🎯 打开huggingface.co→搜Qwen3.5-0.8B→点击Use in Transformers→按示例运行</p>
-</blockquote>
-<hr>
-<h2 id="出海工具链">出海工具链</h2>
-<h3 id="推特有新图库接口">推特有新图库接口</h3>
-<p><strong>来源</strong>：X/Twitter + 全球 | Twitter API 可以拉取高分辨率图片，用于训练或生成内容</p>
-<p>个人开发者可用免费 API 额度获取真实用户视觉素材，零成本，需基础 Python 知识</p>
-<blockquote>
-<p>🎯 去 developer.twitter.com 注册免费项目，用 Python requests 调用 tweets/:id 接口拉图</p>
-</blockquote>
-<h3 id="ai视频工具kling分拆">AI视频工具Kling分拆</h3>
-<p><strong>来源</strong>：TechCrunch + 中国 | 快手将分拆 Kling AI 独立IPO，AI视频生成开放更多接口</p>
-<p>独立后API或降价，可用于低成本批量生成短视频素材，门槛降至月费约100元</p>
-<blockquote>
-<p>🎯 访问 Kling 官网 kling.kuaishou.com 注册，选择个人开发者计划，试用免费5分钟生成</p>
-</blockquote>
-<h3 id="阿根廷fintech-belo获投">阿根廷fintech belo获投</h3>
-<p><strong>来源</strong>：LatamList + 拉美 | 阿根廷金融科技belo获1400万美元A轮，支持加密和法币兑换</p>
-<p>对自由职业者：可零成本开户，用USDT收海外款，提现手续费低于1%</p>
-<blockquote>
-<p>🎯 下载belo App，用护照实名认证，绑定钱包地址，接收小额定金测试提现</p>
-</blockquote>
-<h3 id="巴西segura融资800万">巴西Segura融资800万</h3>
-<p><strong>来源</strong>：LatamList + 巴西 | 巴西保险科技Segura获800万美元种子轮，提供API保险接口</p>
-<p>个人开发者可接入其API做保险比价或嵌入电商，零启动成本，月均50元服务器费用</p>
-<blockquote>
-<p>🎯 访问Segura官网开发者文档，用邮箱注册沙箱，试调单品报价API</p>
+<p>🎯 打开Google Finance→进入AI体验版→搜索一只股票→看AI生成的摘要。</p>
 </blockquote>
 <hr>
 ]]></content:encoded></item></channel></rss>

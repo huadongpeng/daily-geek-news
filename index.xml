@@ -1,567 +1,136 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Easton 跨国智库</title><link>https://radar.huadongpeng.com/</link><description>Recent content on Easton 跨国智库</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Tue, 12 May 2026 12:58:21 +0800</lastBuildDate><atom:link href="https://radar.huadongpeng.com/index.xml" rel="self" type="application/rss+xml"/><item><title>每日快讯</title><link>https://radar.huadongpeng.com/posts/daily-briefing/briefing-2026-05-12/</link><pubDate>Tue, 12 May 2026 12:58:21 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/daily-briefing/briefing-2026-05-12/</guid><description>&lt;blockquote&gt;
-&lt;p&gt;2026年05月12日 · 18 条情报&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Easton 跨国智库</title><link>https://radar.huadongpeng.com/</link><description>Recent content on Easton 跨国智库</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Tue, 12 May 2026 13:11:56 +0800</lastBuildDate><atom:link href="https://radar.huadongpeng.com/index.xml" rel="self" type="application/rss+xml"/><item><title>每日快讯</title><link>https://radar.huadongpeng.com/posts/daily-briefing/briefing-2026-05-12/</link><pubDate>Tue, 12 May 2026 13:11:56 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/daily-briefing/briefing-2026-05-12/</guid><description>&lt;blockquote&gt;
+&lt;p&gt;2026年05月12日 · 13 条情报&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h2 id="海外信息差"&gt;海外信息差&lt;/h2&gt;
-&lt;h3 id="ai自动挽留"&gt;AI自动挽留&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：Stratechery/Reddit-美国 | 用AI自动分析用户取消邮件并给出挽留方案&lt;/p&gt;
-&lt;p&gt;国内SaaS和电商客服还在手动处理，你可用现成API快速搭建小程序服务小商家。&lt;/p&gt;
+&lt;h2 id="效率工具与自动化"&gt;效率工具与自动化&lt;/h2&gt;
+&lt;h3 id="tanstack被投毒"&gt;TanStack被投毒&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：Hacker News | TanStack 42个npm包被恶意篡改，发布84个带毒版本&lt;/p&gt;
+&lt;p&gt;前三大前端库之一被供应链攻击，波及React Query等明星项目，今天内就得检查你的依赖版本&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;🎯 去微信搜‘客户挽留’看有没有此类小程序或机器人&lt;/p&gt;
+&lt;p&gt;🎯 立即检查项目：在终端执行 npm ls @tanstack/* 看是否有以下版本→自查列表见下文&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h3 id="ai幻觉检测"&gt;AI幻觉检测&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：Guardian/Reddit-全球 | 检测AI生成内容中的事实错误和格式错误&lt;/p&gt;
-&lt;p&gt;政府和企业AI生成文档频繁出错，国内缺乏此类检测服务。&lt;/p&gt;
+&lt;h3 id="snapseed大更新"&gt;Snapseed大更新&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：Google Play | 谷歌神级免费修图工具Snapseed 4.0上线&lt;/p&gt;
+&lt;p&gt;免费、无广告、离线可用，新增AI级别校正功能，省掉Lightroom订阅费每月118元&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;🎯 在知乎搜‘AI幻觉 治理’看讨论热度&lt;/p&gt;
+&lt;p&gt;🎯 立即体验：手机打开应用商店→搜索Snapseed→更新到4.0→任意试一张照片&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h3 id="非洲新闻创作者"&gt;非洲新闻创作者&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：TikTok-南非 | 非洲创作者用短视频报道本地新闻，广告收入可观&lt;/p&gt;
-&lt;p&gt;国内下沉市场类似模式刚起步，可搬运非洲运营经验到三四线小城。&lt;/p&gt;
+&lt;h3 id="courseraudemy合并"&gt;Coursera+Udemy合并&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：TechCrunch | 全球两大在线学习平台Coursera和Udemy合并&lt;/p&gt;
+&lt;p&gt;课程门类2万+，许多课短期内可能涨价或下架，赶紧下载你要学的课&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;🎯 在抖音搜‘本地新闻 博主’看内容和粉丝结构&lt;/p&gt;
+&lt;p&gt;🎯 立即行动：打开你的Udemy/Coursera账户→找到已购课程→点击下载课程离线资料→PDF/视频备一份&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id="claude上aws"&gt;Claude上AWS&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：AWS | Anthropic的Claude模型正式上线AWS Bedrock平台&lt;/p&gt;
+&lt;p&gt;Claude经过AWS企业级安全认证，可用AWS免费额度调用，替代ChatGPT每月20美元成本&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;🎯 立即体验：注册AWS免费账户→打开Bedrock控制台→选Claude 3 Sonnet→发第一条消息&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;hr&gt;
 &lt;h2 id="宏观风向标"&gt;宏观风向标&lt;/h2&gt;
-&lt;h3 id="通用汽车裁it换ai"&gt;通用汽车裁IT换AI&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：TechCrunch | 通用汽车裁掉数百名IT员工，转向招募AI人才。&lt;/p&gt;
-&lt;p&gt;传统IT岗位正在被AI替代。如果你是程序员，今天就要开始准备转型为AI相关技能。&lt;/p&gt;
+&lt;h3 id="通用汽车it裁员"&gt;通用汽车IT裁员&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：路透社 | 通用汽车裁数百IT岗，招AI技能员工&lt;/p&gt;
+&lt;p&gt;大厂IT非核心岗位收缩，传统开发岗减少，AI技能成为筛选条件，今天起影响面试门槛&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;🎯 今天去freeCodeCamp搜AI课程，花1小时学一个提示工程入门教程。&lt;/p&gt;
+&lt;p&gt;🎯 今天用LinkedIn搜“prompt engineering”职位分析要求&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h3 id="tiktok英国推付费去广告"&gt;TikTok英国推付费去广告&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：BBC | TikTok在英国上线3.99英镑月费的无广告订阅版。&lt;/p&gt;
-&lt;p&gt;平台开始收用户的钱，同时可能对免费用户推更多广告。如果你做TikTok营销，流量成本可能上升。&lt;/p&gt;
+&lt;h3 id="印度限制黄金进口"&gt;印度限制黄金进口&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：彭博社 | 印度拟限制黄金等非必需进口保外汇&lt;/p&gt;
+&lt;p&gt;若实施，全球金价短期下跌，持有黄金低价变现时机错失，今天关注国内金饰回收价&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;🎯 今天检查你的TikTok广告账户预算，下调每日限额20%防止意外超支。&lt;/p&gt;
+&lt;p&gt;🎯 今天打开支付宝黄金页面看实时金价&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h3 id="linux又现严重漏洞"&gt;Linux又现严重漏洞&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：Ars Technica | Linux两星期内曝出第二个严重安全漏洞，补丁正在推出。&lt;/p&gt;
-&lt;p&gt;如果你用Linux服务器或开发环境，系统可能被远程攻击。需要立即更新补丁。&lt;/p&gt;
+&lt;h3 id="韩国ai分红提议"&gt;韩国AI分红提议&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：彭博社 | 韩国提征AI企业税收向全民分红&lt;/p&gt;
+&lt;p&gt;政策信号可能推高AI设备管控，影响二手显卡和AI工具获取成本，今天可关注后续&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;🎯 今天运行sudo apt update &amp;amp;&amp;amp; sudo apt upgrade，重启服务器并确认补丁版本。&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h3 id="印度拟限制黄金电子产品进口"&gt;印度拟限制黄金电子产品进口&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：Bloomberg | 印度考虑紧急措施限制非必需进口，包括黄金和电子产品。&lt;/p&gt;
-&lt;p&gt;如果你做跨境电商或代购，电子产品和黄金类商品可能面临供应中断或价格上涨，尤其影响低价小包直邮模式。&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;🎯 今天检查你的备货清单，减少电子配件和饰品库存比例，增加快消品类。&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;hr&gt;
-&lt;h2 id="套利雷达"&gt;套利雷达&lt;/h2&gt;
-&lt;h3 id="视频搜索痛点"&gt;视频搜索痛点&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：Reddit | YouTube搜索太烂，缺好用的视频搜索引擎&lt;/p&gt;
-&lt;p&gt;有代码基础就能做，已有人直接抱怨，需求真实可见&lt;/p&gt;</description><content:encoded><![CDATA[<blockquote>
-<p>2026年05月12日 · 18 条情报</p>
+&lt;p&gt;🎯 今天在推特搜“Korea AI dividend proposal”看进展&lt;/p&gt;</description><content:encoded><![CDATA[<blockquote>
+<p>2026年05月12日 · 13 条情报</p>
 </blockquote>
-<h2 id="海外信息差">海外信息差</h2>
-<h3 id="ai自动挽留">AI自动挽留</h3>
-<p><strong>来源</strong>：Stratechery/Reddit-美国 | 用AI自动分析用户取消邮件并给出挽留方案</p>
-<p>国内SaaS和电商客服还在手动处理，你可用现成API快速搭建小程序服务小商家。</p>
+<h2 id="效率工具与自动化">效率工具与自动化</h2>
+<h3 id="tanstack被投毒">TanStack被投毒</h3>
+<p><strong>来源</strong>：Hacker News | TanStack 42个npm包被恶意篡改，发布84个带毒版本</p>
+<p>前三大前端库之一被供应链攻击，波及React Query等明星项目，今天内就得检查你的依赖版本</p>
 <blockquote>
-<p>🎯 去微信搜‘客户挽留’看有没有此类小程序或机器人</p>
+<p>🎯 立即检查项目：在终端执行 npm ls @tanstack/* 看是否有以下版本→自查列表见下文</p>
 </blockquote>
-<h3 id="ai幻觉检测">AI幻觉检测</h3>
-<p><strong>来源</strong>：Guardian/Reddit-全球 | 检测AI生成内容中的事实错误和格式错误</p>
-<p>政府和企业AI生成文档频繁出错，国内缺乏此类检测服务。</p>
+<h3 id="snapseed大更新">Snapseed大更新</h3>
+<p><strong>来源</strong>：Google Play | 谷歌神级免费修图工具Snapseed 4.0上线</p>
+<p>免费、无广告、离线可用，新增AI级别校正功能，省掉Lightroom订阅费每月118元</p>
 <blockquote>
-<p>🎯 在知乎搜‘AI幻觉 治理’看讨论热度</p>
+<p>🎯 立即体验：手机打开应用商店→搜索Snapseed→更新到4.0→任意试一张照片</p>
 </blockquote>
-<h3 id="非洲新闻创作者">非洲新闻创作者</h3>
-<p><strong>来源</strong>：TikTok-南非 | 非洲创作者用短视频报道本地新闻，广告收入可观</p>
-<p>国内下沉市场类似模式刚起步，可搬运非洲运营经验到三四线小城。</p>
+<h3 id="courseraudemy合并">Coursera+Udemy合并</h3>
+<p><strong>来源</strong>：TechCrunch | 全球两大在线学习平台Coursera和Udemy合并</p>
+<p>课程门类2万+，许多课短期内可能涨价或下架，赶紧下载你要学的课</p>
 <blockquote>
-<p>🎯 在抖音搜‘本地新闻 博主’看内容和粉丝结构</p>
+<p>🎯 立即行动：打开你的Udemy/Coursera账户→找到已购课程→点击下载课程离线资料→PDF/视频备一份</p>
+</blockquote>
+<h3 id="claude上aws">Claude上AWS</h3>
+<p><strong>来源</strong>：AWS | Anthropic的Claude模型正式上线AWS Bedrock平台</p>
+<p>Claude经过AWS企业级安全认证，可用AWS免费额度调用，替代ChatGPT每月20美元成本</p>
+<blockquote>
+<p>🎯 立即体验：注册AWS免费账户→打开Bedrock控制台→选Claude 3 Sonnet→发第一条消息</p>
 </blockquote>
 <hr>
 <h2 id="宏观风向标">宏观风向标</h2>
-<h3 id="通用汽车裁it换ai">通用汽车裁IT换AI</h3>
-<p><strong>来源</strong>：TechCrunch | 通用汽车裁掉数百名IT员工，转向招募AI人才。</p>
-<p>传统IT岗位正在被AI替代。如果你是程序员，今天就要开始准备转型为AI相关技能。</p>
+<h3 id="通用汽车it裁员">通用汽车IT裁员</h3>
+<p><strong>来源</strong>：路透社 | 通用汽车裁数百IT岗，招AI技能员工</p>
+<p>大厂IT非核心岗位收缩，传统开发岗减少，AI技能成为筛选条件，今天起影响面试门槛</p>
 <blockquote>
-<p>🎯 今天去freeCodeCamp搜AI课程，花1小时学一个提示工程入门教程。</p>
+<p>🎯 今天用LinkedIn搜“prompt engineering”职位分析要求</p>
 </blockquote>
-<h3 id="tiktok英国推付费去广告">TikTok英国推付费去广告</h3>
-<p><strong>来源</strong>：BBC | TikTok在英国上线3.99英镑月费的无广告订阅版。</p>
-<p>平台开始收用户的钱，同时可能对免费用户推更多广告。如果你做TikTok营销，流量成本可能上升。</p>
+<h3 id="印度限制黄金进口">印度限制黄金进口</h3>
+<p><strong>来源</strong>：彭博社 | 印度拟限制黄金等非必需进口保外汇</p>
+<p>若实施，全球金价短期下跌，持有黄金低价变现时机错失，今天关注国内金饰回收价</p>
 <blockquote>
-<p>🎯 今天检查你的TikTok广告账户预算，下调每日限额20%防止意外超支。</p>
+<p>🎯 今天打开支付宝黄金页面看实时金价</p>
 </blockquote>
-<h3 id="linux又现严重漏洞">Linux又现严重漏洞</h3>
-<p><strong>来源</strong>：Ars Technica | Linux两星期内曝出第二个严重安全漏洞，补丁正在推出。</p>
-<p>如果你用Linux服务器或开发环境，系统可能被远程攻击。需要立即更新补丁。</p>
+<h3 id="韩国ai分红提议">韩国AI分红提议</h3>
+<p><strong>来源</strong>：彭博社 | 韩国提征AI企业税收向全民分红</p>
+<p>政策信号可能推高AI设备管控，影响二手显卡和AI工具获取成本，今天可关注后续</p>
 <blockquote>
-<p>🎯 今天运行sudo apt update &amp;&amp; sudo apt upgrade，重启服务器并确认补丁版本。</p>
+<p>🎯 今天在推特搜“Korea AI dividend proposal”看进展</p>
 </blockquote>
-<h3 id="印度拟限制黄金电子产品进口">印度拟限制黄金电子产品进口</h3>
-<p><strong>来源</strong>：Bloomberg | 印度考虑紧急措施限制非必需进口，包括黄金和电子产品。</p>
-<p>如果你做跨境电商或代购，电子产品和黄金类商品可能面临供应中断或价格上涨，尤其影响低价小包直邮模式。</p>
+<h3 id="linux新漏洞补丁">Linux新漏洞补丁</h3>
+<p><strong>来源</strong>：Ars Technica | Linux两周内第二个高危漏洞已出补丁</p>
+<p>使用Linux服务器或云主机的用户，今天不更新可能被攻击，涉及隐私和站点安全</p>
 <blockquote>
-<p>🎯 今天检查你的备货清单，减少电子配件和饰品库存比例，增加快消品类。</p>
+<p>🎯 今天在终端执行 sudo apt update &amp;&amp; sudo apt upgrade</p>
 </blockquote>
-<hr>
-<h2 id="套利雷达">套利雷达</h2>
-<h3 id="视频搜索痛点">视频搜索痛点</h3>
-<p><strong>来源</strong>：Reddit | YouTube搜索太烂，缺好用的视频搜索引擎</p>
-<p>有代码基础就能做，已有人直接抱怨，需求真实可见</p>
+<h3 id="tiktok英国推无广告订阅">TikTok英国推无广告订阅</h3>
+<p><strong>来源</strong>：BBC | TikTok英国测试3.99英镑无广告版</p>
+<p>平台强化付费模式，免费版广告增多，间接挤压创作者收益，今天可看自己账号广告频率</p>
 <blockquote>
-<p>🎯 搜索Reddit该帖子评论区，记录前50个具体搜索场景，整理成需求清单</p>
-</blockquote>
-<h3 id="个体户行政自动化">个体户行政自动化</h3>
-<p><strong>来源</strong>：Reddit | 小企业苦于发票催款等手动操作，缺便宜自动化工具</p>
-<p>门槛低，能写Python脚本就能做，面向本地小老板可收费</p>
-<blockquote>
-<p>🎯 在本地小商家微信群问催款和发票痛点，记录前10个常用场景</p>
-</blockquote>
-<h3 id="电子签名合规混乱">电子签名合规混乱</h3>
-<p><strong>来源</strong>：Reddit | 亚太区电子签名法律要求不透明，没人整理靠谱信息</p>
-<p>信息整理类项目，零代码，靠内容就能变现</p>
-<blockquote>
-<p>🎯 搜索新加坡和马来西亚政府官网电子签名法规，整理为一页对比表格</p>
+<p>🎯 今天在TikTok设置页查看“广告偏好”选项</p>
 </blockquote>
 <hr>
 <h2 id="ai-工具实战">AI 工具实战</h2>
-<h3 id="免费替代claude-code">免费替代Claude Code</h3>
-<p><strong>来源</strong>：VentureBeat | Goose免费替代Claude Code，自动写代码调bug</p>
-<p>Claude Code月费200美元，Goose完全免费，国内可注册，省下大笔开销。</p>
+<h3 id="goose免费替代">Goose免费替代</h3>
+<p><strong>来源</strong>：VentureBeat | 免费开源的AI编码代理，功能对标每月200美元的Claude Code。</p>
+<p>零成本体验AI自动写代码、调试、部署，无需翻墙。GitHub上直接下载，适合预算紧张的技术学习者。</p>
 <blockquote>
-<p>🎯 打开goose.ai官网→注册→GitHub授权→终端输入&rsquo;goose run&rsquo;试自动修复</p>
+<p>🎯 打开GitHub→搜索Goose→下载安装→给一个简单任务测试自动生成代码。</p>
 </blockquote>
-<h3 id="照片转3d世界">照片转3D世界</h3>
-<p><strong>来源</strong>：World Labs | 上传一张照片30秒生成可交互3D场景</p>
-<p>免费且无需3D技能，适合做产品展示或设计。</p>
+<h3 id="chatgpt用户结构">ChatGPT用户结构</h3>
+<p><strong>来源</strong>：MIT Technology Review | 2026年初ChatGPT增长最快的是35岁以上用户，性别比例更平衡。</p>
+<p>说明AI工具正被非技术背景人群接受。你可以利用这个趋势，用ChatGPT帮身边人（如长辈）解决生活问题，比如写计划或查资料。</p>
 <blockquote>
-<p>🎯 打开worldlabs.ai→上传照片→等待→鼠标拖拽查看3D效果</p>
+<p>🎯 打开ChatGPT免费版→随便问一个生活问题（如“帮我写个周末健身计划”）→看看输出质量。</p>
 </blockquote>
-<h3 id="数据转表格">数据转表格</h3>
-<p><strong>来源</strong>：Tables | 粘贴零散数据自动生成可编辑表格</p>
-<p>免费，省去手动整理数据时间，适合做数据分析。</p>
+<h3 id="openai学生联网">OpenAI学生联网</h3>
+<p><strong>来源</strong>：OpenAI官网 | OpenAI校园网络计划：学生社团可申请使用AI工具。</p>
+<p>如果你是学生或能联系到学生社团，可以免费获得AI工具使用权。校内社群运营低成本，且能积累经验。</p>
 <blockquote>
-<p>🎯 打开tables.xyz→粘贴杂乱数据→点击生成→下载CSV</p>
+<p>🎯 打开OpenAI Campus Network官网→填写社团兴趣表→等待审核通知。</p>
 </blockquote>
-<h3 id="小模型实用于简单任务">小模型实用于简单任务</h3>
-<p><strong>来源</strong>：Reddit r/MachineLearning | Qwen3.5 0.8B月下载288万次，适合简单问答</p>
-<p>免费离线运行，不用联网不花钱，适合嵌入到办公脚本。</p>
+<h3 id="ai版google金融">AI版Google金融</h3>
+<p><strong>来源</strong>：Google Finance | AI增强的Google Finance在欧洲上线，可智能解读金融数据。</p>
+<p>免费访问，对投资小白很友好。用它分析美股和欧洲公司趋势，0成本获取投资参考。</p>
 <blockquote>
-<p>🎯 打开huggingface.co→搜Qwen3.5-0.8B→点击Use in Transformers→按示例运行</p>
-</blockquote>
-<hr>
-<h2 id="出海工具链">出海工具链</h2>
-<h3 id="推特有新图库接口">推特有新图库接口</h3>
-<p><strong>来源</strong>：X/Twitter + 全球 | Twitter API 可以拉取高分辨率图片，用于训练或生成内容</p>
-<p>个人开发者可用免费 API 额度获取真实用户视觉素材，零成本，需基础 Python 知识</p>
-<blockquote>
-<p>🎯 去 developer.twitter.com 注册免费项目，用 Python requests 调用 tweets/:id 接口拉图</p>
-</blockquote>
-<h3 id="ai视频工具kling分拆">AI视频工具Kling分拆</h3>
-<p><strong>来源</strong>：TechCrunch + 中国 | 快手将分拆 Kling AI 独立IPO，AI视频生成开放更多接口</p>
-<p>独立后API或降价，可用于低成本批量生成短视频素材，门槛降至月费约100元</p>
-<blockquote>
-<p>🎯 访问 Kling 官网 kling.kuaishou.com 注册，选择个人开发者计划，试用免费5分钟生成</p>
-</blockquote>
-<h3 id="阿根廷fintech-belo获投">阿根廷fintech belo获投</h3>
-<p><strong>来源</strong>：LatamList + 拉美 | 阿根廷金融科技belo获1400万美元A轮，支持加密和法币兑换</p>
-<p>对自由职业者：可零成本开户，用USDT收海外款，提现手续费低于1%</p>
-<blockquote>
-<p>🎯 下载belo App，用护照实名认证，绑定钱包地址，接收小额定金测试提现</p>
-</blockquote>
-<h3 id="巴西segura融资800万">巴西Segura融资800万</h3>
-<p><strong>来源</strong>：LatamList + 巴西 | 巴西保险科技Segura获800万美元种子轮，提供API保险接口</p>
-<p>个人开发者可接入其API做保险比价或嵌入电商，零启动成本，月均50元服务器费用</p>
-<blockquote>
-<p>🎯 访问Segura官网开发者文档，用邮箱注册沙箱，试调单品报价API</p>
+<p>🎯 打开Google Finance→进入AI体验版→搜索一只股票→看AI生成的摘要。</p>
 </blockquote>
 <hr>
-]]></content:encoded></item><item><title>Twitter图库抓取</title><link>https://radar.huadongpeng.com/posts/china-going-global/deep-dive-2026-05-12-1258/</link><pubDate>Tue, 12 May 2026 12:58:20 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/china-going-global/deep-dive-2026-05-12-1258/</guid><description>&lt;h3 id="目标市场画像"&gt;目标市场画像&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;为什么选Twitter/ X？&lt;/strong&gt; 全球月活4.5亿用户，每天产生超过5亿条推文和图片。这些图片天然带有用户真实场景和高互动标签，非常适合用来训练AI视觉模型、生成社交媒体素材，或做竞品视觉分析。个人开发者无需任何成本即可获取海量素材。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;适合卖什么？&lt;/strong&gt;
-&lt;ol&gt;
-&lt;li&gt;定制AI头像生成服务（用爬到的图做风格迁移训练）&lt;/li&gt;
-&lt;li&gt;社交媒体图片素材包（按主题打包，例如“科技创业者办公室实拍”）&lt;/li&gt;
-&lt;li&gt;电商产品图背景替换服务（用真实街景图做背景）&lt;/li&gt;
-&lt;/ol&gt;
-&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id="从零到上线的每一步"&gt;从零到上线的每一步&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;Step 1：注册Twitter开发者账号&lt;/strong&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;访问 &lt;a href="https://developer.twitter.com"&gt;developer.twitter.com&lt;/a&gt;，点击“Sign up”。&lt;/li&gt;
-&lt;li&gt;使用个人邮箱注册，推荐用Gmail或Outlook。&lt;/li&gt;
-&lt;li&gt;填写基本信息：姓名、电话（可选）、国家。&lt;/li&gt;
-&lt;li&gt;选择“Individual Developer”计划——免费，每月可发送500条推文、读取15000条推文数据。&lt;/li&gt;
-&lt;li&gt;提交申请表，简述用途，例如“build a photo gallery app”。&lt;/li&gt;
-&lt;li&gt;审核通常24小时内通过，通过后你会获得以下信息：
-&lt;ul&gt;
-&lt;li&gt;API Key&lt;/li&gt;
-&lt;li&gt;API Key Secret&lt;/li&gt;
-&lt;li&gt;Bearer Token（推荐用这个）&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;注意：&lt;/strong&gt; 如果你的IP在国内，可能需挂梯子，否则注册页面加载缓慢。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;strong&gt;Step 2：配置Python环境&lt;/strong&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;安装Python 3.9以上版本，在终端运行：
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;pip install requests
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
-&lt;li&gt;创建一个Python脚本 &lt;code&gt;fetch_twitter_media.py&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;strong&gt;Step 3：编写代码拉取图片&lt;/strong&gt;
-复制以下代码到文件中（替换 &lt;code&gt;YOUR_BEARER_TOKEN&lt;/code&gt;）：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;import&lt;/span&gt; requests
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;import&lt;/span&gt; json
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;bearer_token &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;YOUR_BEARER_TOKEN&amp;#34;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;get_tweet_media&lt;/span&gt;(tweet_id):
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; url &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#e6db74"&gt;f&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;https://api.twitter.com/2/tweets/&lt;/span&gt;&lt;span style="color:#e6db74"&gt;{&lt;/span&gt;tweet_id&lt;span style="color:#e6db74"&gt;}&lt;/span&gt;&lt;span style="color:#e6db74"&gt;?expansions=attachments.media_keys&amp;amp;media.fields=url,preview_image_url&amp;#34;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; headers &lt;span style="color:#f92672"&gt;=&lt;/span&gt; {&lt;span style="color:#e6db74"&gt;&amp;#34;Authorization&amp;#34;&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;f&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;Bearer &lt;/span&gt;&lt;span style="color:#e6db74"&gt;{&lt;/span&gt;bearer_token&lt;span style="color:#e6db74"&gt;}&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;&lt;/span&gt;}
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; response &lt;span style="color:#f92672"&gt;=&lt;/span&gt; requests&lt;span style="color:#f92672"&gt;.&lt;/span&gt;get(url, headers&lt;span style="color:#f92672"&gt;=&lt;/span&gt;headers)
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;if&lt;/span&gt; response&lt;span style="color:#f92672"&gt;.&lt;/span&gt;status_code &lt;span style="color:#f92672"&gt;!=&lt;/span&gt; &lt;span style="color:#ae81ff"&gt;200&lt;/span&gt;:
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; print(&lt;span style="color:#e6db74"&gt;f&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;Error: &lt;/span&gt;&lt;span style="color:#e6db74"&gt;{&lt;/span&gt;response&lt;span style="color:#f92672"&gt;.&lt;/span&gt;status_code&lt;span style="color:#e6db74"&gt;}&lt;/span&gt;&lt;span style="color:#e6db74"&gt;, &lt;/span&gt;&lt;span style="color:#e6db74"&gt;{&lt;/span&gt;response&lt;span style="color:#f92672"&gt;.&lt;/span&gt;text&lt;span style="color:#e6db74"&gt;}&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;&lt;/span&gt;)
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;return&lt;/span&gt; []
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; data &lt;span style="color:#f92672"&gt;=&lt;/span&gt; response&lt;span style="color:#f92672"&gt;.&lt;/span&gt;json()
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; media_urls &lt;span style="color:#f92672"&gt;=&lt;/span&gt; []
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;if&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;includes&amp;#34;&lt;/span&gt; &lt;span style="color:#f92672"&gt;in&lt;/span&gt; data &lt;span style="color:#f92672"&gt;and&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;media&amp;#34;&lt;/span&gt; &lt;span style="color:#f92672"&gt;in&lt;/span&gt; data[&lt;span style="color:#e6db74"&gt;&amp;#34;includes&amp;#34;&lt;/span&gt;]:
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;for&lt;/span&gt; m &lt;span style="color:#f92672"&gt;in&lt;/span&gt; data[&lt;span style="color:#e6db74"&gt;&amp;#34;includes&amp;#34;&lt;/span&gt;][&lt;span style="color:#e6db74"&gt;&amp;#34;media&amp;#34;&lt;/span&gt;]:
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;if&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;url&amp;#34;&lt;/span&gt; &lt;span style="color:#f92672"&gt;in&lt;/span&gt; m:
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; media_urls&lt;span style="color:#f92672"&gt;.&lt;/span&gt;append(m[&lt;span style="color:#e6db74"&gt;&amp;#34;url&amp;#34;&lt;/span&gt;])
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;return&lt;/span&gt; media_urls
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;if&lt;/span&gt; __name__ &lt;span style="color:#f92672"&gt;==&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;__main__&amp;#34;&lt;/span&gt;:
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;# 找一个包含图片的推文ID，例如某网红发的图&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; tweet_id &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;1790045219106652160&amp;#34;&lt;/span&gt; &lt;span style="color:#75715e"&gt;# 示例ID，实际请改&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; urls &lt;span style="color:#f92672"&gt;=&lt;/span&gt; get_tweet_media(tweet_id)
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;for&lt;/span&gt; url &lt;span style="color:#f92672"&gt;in&lt;/span&gt; urls:
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; print(url)
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;运行：&lt;code&gt;python fetch_twitter_media.py&lt;/code&gt;，你会在终端看到图片URL列表。&lt;/p&gt;</description><content:encoded><![CDATA[<h3 id="目标市场画像">目标市场画像</h3>
-<ul>
-<li><strong>为什么选Twitter/ X？</strong> 全球月活4.5亿用户，每天产生超过5亿条推文和图片。这些图片天然带有用户真实场景和高互动标签，非常适合用来训练AI视觉模型、生成社交媒体素材，或做竞品视觉分析。个人开发者无需任何成本即可获取海量素材。</li>
-<li><strong>适合卖什么？</strong>
-<ol>
-<li>定制AI头像生成服务（用爬到的图做风格迁移训练）</li>
-<li>社交媒体图片素材包（按主题打包，例如“科技创业者办公室实拍”）</li>
-<li>电商产品图背景替换服务（用真实街景图做背景）</li>
-</ol>
-</li>
-</ul>
-<h3 id="从零到上线的每一步">从零到上线的每一步</h3>
-<p><strong>Step 1：注册Twitter开发者账号</strong></p>
-<ul>
-<li>访问 <a href="https://developer.twitter.com">developer.twitter.com</a>，点击“Sign up”。</li>
-<li>使用个人邮箱注册，推荐用Gmail或Outlook。</li>
-<li>填写基本信息：姓名、电话（可选）、国家。</li>
-<li>选择“Individual Developer”计划——免费，每月可发送500条推文、读取15000条推文数据。</li>
-<li>提交申请表，简述用途，例如“build a photo gallery app”。</li>
-<li>审核通常24小时内通过，通过后你会获得以下信息：
-<ul>
-<li>API Key</li>
-<li>API Key Secret</li>
-<li>Bearer Token（推荐用这个）</li>
-</ul>
-</li>
-<li><strong>注意：</strong> 如果你的IP在国内，可能需挂梯子，否则注册页面加载缓慢。</li>
-</ul>
-<p><strong>Step 2：配置Python环境</strong></p>
-<ul>
-<li>安装Python 3.9以上版本，在终端运行：
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>pip install requests
-</span></span></code></pre></div></li>
-<li>创建一个Python脚本 <code>fetch_twitter_media.py</code></li>
-</ul>
-<p><strong>Step 3：编写代码拉取图片</strong>
-复制以下代码到文件中（替换 <code>YOUR_BEARER_TOKEN</code>）：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> requests
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> json
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>bearer_token <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;YOUR_BEARER_TOKEN&#34;</span>
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_tweet_media</span>(tweet_id):
-</span></span><span style="display:flex;"><span>    url <span style="color:#f92672">=</span> <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;https://api.twitter.com/2/tweets/</span><span style="color:#e6db74">{</span>tweet_id<span style="color:#e6db74">}</span><span style="color:#e6db74">?expansions=attachments.media_keys&amp;media.fields=url,preview_image_url&#34;</span>
-</span></span><span style="display:flex;"><span>    headers <span style="color:#f92672">=</span> {<span style="color:#e6db74">&#34;Authorization&#34;</span>: <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Bearer </span><span style="color:#e6db74">{</span>bearer_token<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>}
-</span></span><span style="display:flex;"><span>    response <span style="color:#f92672">=</span> requests<span style="color:#f92672">.</span>get(url, headers<span style="color:#f92672">=</span>headers)
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> response<span style="color:#f92672">.</span>status_code <span style="color:#f92672">!=</span> <span style="color:#ae81ff">200</span>:
-</span></span><span style="display:flex;"><span>        print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Error: </span><span style="color:#e6db74">{</span>response<span style="color:#f92672">.</span>status_code<span style="color:#e6db74">}</span><span style="color:#e6db74">, </span><span style="color:#e6db74">{</span>response<span style="color:#f92672">.</span>text<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> []
-</span></span><span style="display:flex;"><span>    data <span style="color:#f92672">=</span> response<span style="color:#f92672">.</span>json()
-</span></span><span style="display:flex;"><span>    media_urls <span style="color:#f92672">=</span> []
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#e6db74">&#34;includes&#34;</span> <span style="color:#f92672">in</span> data <span style="color:#f92672">and</span> <span style="color:#e6db74">&#34;media&#34;</span> <span style="color:#f92672">in</span> data[<span style="color:#e6db74">&#34;includes&#34;</span>]:
-</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> m <span style="color:#f92672">in</span> data[<span style="color:#e6db74">&#34;includes&#34;</span>][<span style="color:#e6db74">&#34;media&#34;</span>]:
-</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> <span style="color:#e6db74">&#34;url&#34;</span> <span style="color:#f92672">in</span> m:
-</span></span><span style="display:flex;"><span>                media_urls<span style="color:#f92672">.</span>append(m[<span style="color:#e6db74">&#34;url&#34;</span>])
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> media_urls
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;__main__&#34;</span>:
-</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 找一个包含图片的推文ID，例如某网红发的图</span>
-</span></span><span style="display:flex;"><span>    tweet_id <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;1790045219106652160&#34;</span>  <span style="color:#75715e"># 示例ID，实际请改</span>
-</span></span><span style="display:flex;"><span>    urls <span style="color:#f92672">=</span> get_tweet_media(tweet_id)
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> url <span style="color:#f92672">in</span> urls:
-</span></span><span style="display:flex;"><span>        print(url)
-</span></span></code></pre></div><p>运行：<code>python fetch_twitter_media.py</code>，你会在终端看到图片URL列表。</p>
-<ul>
-<li><strong>常见坑：</strong> Twitter API限制每秒最多300个请求，免费计划每月15000次读取。不要循环请求太快，建议手动脚本执行。</li>
-</ul>
-<p><strong>Step 4：存储和使用图片</strong></p>
-<ul>
-<li>用Python <code>urllib</code> 或 <code>requests</code> 下载到本地：
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> urllib.request
-</span></span><span style="display:flex;"><span>urllib<span style="color:#f92672">.</span>request<span style="color:#f92672">.</span>urlretrieve(url, <span style="color:#e6db74">&#34;photo.jpg&#34;</span>)
-</span></span></code></pre></div></li>
-<li>建议按主题建文件夹（如：ai_art / street_photography）。</li>
-<li>用途一：将这些图片输入到Stable Diffusion或Midjourney中做风格训练（需有ComfyUI或SD Web UI）。</li>
-<li>用途二：直接打包成图片素材包，在Gumroad上出售（定价2-5美元）。</li>
-</ul>
-<p><strong>Step 5：收款</strong></p>
-<ul>
-<li>注册 <a href="https://gumroad.com">Gumroad</a>（支持中国用户，用PayPal收款，无月费）。</li>
-<li>上传图片素材包，设置价格。</li>
-<li>买家付款后，平台自动发送下载链接。</li>
-<li>提现到PayPal，再转回国内银行卡（手续费约2-3%）。</li>
-<li>回款周期：买家下单后7天后可提现。</li>
-</ul>
-<h3 id="工具链推荐">工具链推荐</h3>
-<ol>
-<li><strong>Python requests库（免费）</strong>：核心工具，无需安装第三方库。替代品：cURL命令行。</li>
-<li><strong>Gumroad（免费，抽成5%）</strong>：销售数字商品的最佳平台。替代品：Etsy（需美区身份，较繁琐）。</li>
-<li><strong>Stable Diffusion Web UI（免费）</strong>：用于风格迁移训练。替代品：ComfyUI（更灵活但复杂）。</li>
-</ol>
-<h3 id="避坑清单">避坑清单</h3>
-<ol>
-<li><strong>API密钥泄露导致滥用封号：</strong> 不要把Bearer Token硬编码在打包脚本里；尽量使用环境变量或配置文件。</li>
-<li><strong>下载受版权保护的图片：</strong> 不要爬取品牌官方图或带水印图，建议只爬普通用户分享的生活/街拍图。</li>
-<li><strong>请求频率过高被限：</strong> 免费计划每月15000次读取，平均每天500次。如果你一次爬100张图，大概消耗100次配额，足够日常使用。</li>
-</ol>
-<h3 id="成本拆解">成本拆解</h3>
-<ul>
-<li><strong>启动成本：</strong> 0元（开发者账号免费、Python免费、Gumroad免费）</li>
-<li><strong>时间投入：</strong> 首次配置约2小时，之后每周维护1-2小时</li>
-<li><strong>月度运营成本：</strong> 0元（除非你买VPS，但本地电脑+外网连接即可）</li>
-<li><strong>预期首周收益：</strong> 卖出10份5美元素材包，减去Gumroad 5%抽成和PayPal提现费，到手约40美元（约280元人民币）</li>
-</ul>
-]]></content:encoded></item><item><title>YouTube搜索痛点掘金</title><link>https://radar.huadongpeng.com/posts/arbitrage-radar/deep-dive-2026-05-12-1237/</link><pubDate>Tue, 12 May 2026 12:37:45 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/arbitrage-radar/deep-dive-2026-05-12-1237/</guid><description>&lt;h2 id="核心洞察youtube搜索太烂几百人在抱怨没人搞定"&gt;核心洞察：YouTube搜索太烂，几百人在抱怨，没人搞定&lt;/h2&gt;
-&lt;p&gt;Reddit帖子&amp;quot;A video search engine that doesn&amp;rsquo;t suck&amp;quot;里，用户说&amp;quot;there are only 5 or 6 relevant videos&amp;quot;之后就全是无关内容。这条抱怨被50多人顶帖，有人直接开骂&amp;quot;YouTube search is garbage&amp;quot;。&lt;/p&gt;
-&lt;p&gt;这不是技术难题——YouTube本身有API可以搜视频，但默认排序和推荐算法对深度搜索不友好。普通用户想要的是：搜&amp;quot;react tutorial 2026&amp;quot;的时候，能按时长、年代、语言、有没有字幕等条件精确匹配。&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;别人为什么还没赚这个钱？&lt;/strong&gt; 不是技术壁垒，是信息差。大多数独立开发者忙着给AI套壳，忽略了这种&amp;quot;无聊但刚需&amp;quot;的方向。而你的优势：有Python基础，有免费API，能在家里完成。&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;机会具体是什么？&lt;/strong&gt; 做一个垂直YouTube搜索引擎，只针对&amp;quot;教程&amp;quot;和&amp;quot;技术类&amp;quot;内容，提供YouTube原生没有的筛选维度（如：视频时长&amp;lt;10分钟、发布日期距今&amp;lt;30天、有英文字幕）。&lt;/p&gt;
-&lt;h2 id="执行清单day1-7每天30分钟"&gt;执行清单Day1-7（每天≤30分钟）&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;Day1（周三）：验证需求规模&lt;/strong&gt;
-打开Reddit帖子链接（https://www.reddit.com/r/SideProject/comments/xxxx/），用Chrome的Inspect工具查看评论区，复制所有二级评论。用Python统计关键词：&amp;ldquo;search&amp;rdquo;、&amp;ldquo;find&amp;rdquo;、&amp;ldquo;filter&amp;rdquo;、&amp;ldquo;sucks&amp;rdquo;。如果出现频次&amp;gt;10次，就说明需求真实。&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Day2（周四）：注册YouTube API&lt;/strong&gt;
-打开console.cloud.google.com，创建一个新项目，启用YouTube Data API v3。创建OAuth 2.0凭据（桌面应用类型），下载JSON密钥。这一步免费，但需要Google账号。用这个Python脚本测试是否能搜到视频：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;from&lt;/span&gt; googleapiclient.discovery &lt;span style="color:#f92672"&gt;import&lt;/span&gt; build
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;import&lt;/span&gt; json
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;api_key &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;YOUR_API_KEY&amp;#34;&lt;/span&gt; &lt;span style="color:#75715e"&gt;# 在凭据页面创建API key&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;youtube &lt;span style="color:#f92672"&gt;=&lt;/span&gt; build(&lt;span style="color:#e6db74"&gt;&amp;#39;youtube&amp;#39;&lt;/span&gt;, &lt;span style="color:#e6db74"&gt;&amp;#39;v3&amp;#39;&lt;/span&gt;, developerKey&lt;span style="color:#f92672"&gt;=&lt;/span&gt;api_key)
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;request &lt;span style="color:#f92672"&gt;=&lt;/span&gt; youtube&lt;span style="color:#f92672"&gt;.&lt;/span&gt;search()&lt;span style="color:#f92672"&gt;.&lt;/span&gt;list(
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; q&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;react tutorial 2026&amp;#39;&lt;/span&gt;,
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; part&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;snippet&amp;#39;&lt;/span&gt;,
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; maxResults&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;10&lt;/span&gt;,
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; type&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;video&amp;#39;&lt;/span&gt;,
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; order&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;viewCount&amp;#39;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;)
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;response &lt;span style="color:#f92672"&gt;=&lt;/span&gt; request&lt;span style="color:#f92672"&gt;.&lt;/span&gt;execute()
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;for&lt;/span&gt; item &lt;span style="color:#f92672"&gt;in&lt;/span&gt; response[&lt;span style="color:#e6db74"&gt;&amp;#39;items&amp;#39;&lt;/span&gt;]:
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; print(item[&lt;span style="color:#e6db74"&gt;&amp;#39;snippet&amp;#39;&lt;/span&gt;][&lt;span style="color:#e6db74"&gt;&amp;#39;title&amp;#39;&lt;/span&gt;], item[&lt;span style="color:#e6db74"&gt;&amp;#39;id&amp;#39;&lt;/span&gt;][&lt;span style="color:#e6db74"&gt;&amp;#39;videoId&amp;#39;&lt;/span&gt;])
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;strong&gt;Day3（周五）：添加筛选条件&lt;/strong&gt;
-修改脚本，加入&amp;quot;videoDuration&amp;quot;参数（long/medium/short），筛选5-15分钟长度的教程。再加&amp;quot;publishedBefore&amp;quot;和&amp;quot;publishedAfter&amp;quot;，筛出近30天的视频。输出结果为CSV文件：标题、链接、时长、发布日期。&lt;/p&gt;</description><content:encoded><![CDATA[<h2 id="核心洞察youtube搜索太烂几百人在抱怨没人搞定">核心洞察：YouTube搜索太烂，几百人在抱怨，没人搞定</h2>
-<p>Reddit帖子&quot;A video search engine that doesn&rsquo;t suck&quot;里，用户说&quot;there are only 5 or 6 relevant videos&quot;之后就全是无关内容。这条抱怨被50多人顶帖，有人直接开骂&quot;YouTube search is garbage&quot;。</p>
-<p>这不是技术难题——YouTube本身有API可以搜视频，但默认排序和推荐算法对深度搜索不友好。普通用户想要的是：搜&quot;react tutorial 2026&quot;的时候，能按时长、年代、语言、有没有字幕等条件精确匹配。</p>
-<p><strong>别人为什么还没赚这个钱？</strong> 不是技术壁垒，是信息差。大多数独立开发者忙着给AI套壳，忽略了这种&quot;无聊但刚需&quot;的方向。而你的优势：有Python基础，有免费API，能在家里完成。</p>
-<p><strong>机会具体是什么？</strong> 做一个垂直YouTube搜索引擎，只针对&quot;教程&quot;和&quot;技术类&quot;内容，提供YouTube原生没有的筛选维度（如：视频时长&lt;10分钟、发布日期距今&lt;30天、有英文字幕）。</p>
-<h2 id="执行清单day1-7每天30分钟">执行清单Day1-7（每天≤30分钟）</h2>
-<p><strong>Day1（周三）：验证需求规模</strong>
-打开Reddit帖子链接（https://www.reddit.com/r/SideProject/comments/xxxx/），用Chrome的Inspect工具查看评论区，复制所有二级评论。用Python统计关键词：&ldquo;search&rdquo;、&ldquo;find&rdquo;、&ldquo;filter&rdquo;、&ldquo;sucks&rdquo;。如果出现频次&gt;10次，就说明需求真实。</p>
-<p><strong>Day2（周四）：注册YouTube API</strong>
-打开console.cloud.google.com，创建一个新项目，启用YouTube Data API v3。创建OAuth 2.0凭据（桌面应用类型），下载JSON密钥。这一步免费，但需要Google账号。用这个Python脚本测试是否能搜到视频：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> googleapiclient.discovery <span style="color:#f92672">import</span> build
-</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> json
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>api_key <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;YOUR_API_KEY&#34;</span> <span style="color:#75715e"># 在凭据页面创建API key</span>
-</span></span><span style="display:flex;"><span>youtube <span style="color:#f92672">=</span> build(<span style="color:#e6db74">&#39;youtube&#39;</span>, <span style="color:#e6db74">&#39;v3&#39;</span>, developerKey<span style="color:#f92672">=</span>api_key)
-</span></span><span style="display:flex;"><span>request <span style="color:#f92672">=</span> youtube<span style="color:#f92672">.</span>search()<span style="color:#f92672">.</span>list(
-</span></span><span style="display:flex;"><span>    q<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;react tutorial 2026&#39;</span>,
-</span></span><span style="display:flex;"><span>    part<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;snippet&#39;</span>,
-</span></span><span style="display:flex;"><span>    maxResults<span style="color:#f92672">=</span><span style="color:#ae81ff">10</span>,
-</span></span><span style="display:flex;"><span>    type<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;video&#39;</span>,
-</span></span><span style="display:flex;"><span>    order<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;viewCount&#39;</span>
-</span></span><span style="display:flex;"><span>)
-</span></span><span style="display:flex;"><span>response <span style="color:#f92672">=</span> request<span style="color:#f92672">.</span>execute()
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> item <span style="color:#f92672">in</span> response[<span style="color:#e6db74">&#39;items&#39;</span>]:
-</span></span><span style="display:flex;"><span>    print(item[<span style="color:#e6db74">&#39;snippet&#39;</span>][<span style="color:#e6db74">&#39;title&#39;</span>], item[<span style="color:#e6db74">&#39;id&#39;</span>][<span style="color:#e6db74">&#39;videoId&#39;</span>])
-</span></span></code></pre></div><p><strong>Day3（周五）：添加筛选条件</strong>
-修改脚本，加入&quot;videoDuration&quot;参数（long/medium/short），筛选5-15分钟长度的教程。再加&quot;publishedBefore&quot;和&quot;publishedAfter&quot;，筛出近30天的视频。输出结果为CSV文件：标题、链接、时长、发布日期。</p>
-<p><strong>Day4（周六）：做展示页面</strong>
-用Flask或FastAPI写个简单的Web界面，只有一个搜索框。用户输入关键词后，后端调用API返回结果。部署到Render（免费版）。域名可以不买，用render的免费子域名。</p>
-<p><strong>Day5（周日）：发布到V2EX和Reddit</strong>
-在V2EX的&quot;分享创造&quot;板块发帖，标题&quot;做了个YouTube教程搜索工具，能按时长日期筛选&quot;。同时去Reddit原帖下回复&quot;I built a simple demo for this&quot;加链接。目标：收集10个用户反馈。</p>
-<p><strong>Day6（周一）：收集需求迭代</strong>
-分析用户反馈，重点关注&quot;还缺什么&quot;。常见需求可能是：按频道筛选、按语言筛选、支持下载字幕。把最热门的需求加入下一个版本。</p>
-<p><strong>Day7（周二）：加入变现尝试</strong>
-在页面底部加一个&quot;赞助&quot;按钮，通过Patreon或Buy Me a Coffee链接（免费注册）。不强制收费，但告诉用户&quot;如果你觉得有用，请请我喝咖啡&quot;。同时发到Product Hunt（免费）做暴露。</p>
-<h2 id="工具清单">工具清单</h2>
-<ul>
-<li>YouTube Data API v3：免费，配额每天10000个单位（每次搜索消耗100个单位，可搜100次/天）</li>
-<li>Google Cloud Console：免费注册，需要信用卡但不会自动扣费</li>
-<li>Python 3.8+：免费，本地安装</li>
-<li>Flask：开源免费</li>
-<li>Render：免费版支持Flask部署，无需信用卡</li>
-<li>Buy Me a Coffee：免费注册，提现手续费较低</li>
-</ul>
-<h2 id="收益预估三档">收益预估（三档）</h2>
-<ul>
-<li><strong>保守（首月0元）</strong>：工具只有你一个人用，没有外网获客。但积累了技能和代码库，下次做类似的东西能快50%。</li>
-<li><strong>中等（首月200元）</strong>：在Reddit和V2EX各获得50个访客，其中有10%的人通过&quot;Buy Me a Coffee&quot;赞助了10元。计算逻辑：100访客×10%转化率×10元=100元，加上可能有用户主动问定制服务的付费（200元）。</li>
-<li><strong>乐观（首月1000元）</strong>：踩中Product Hunt首页展示，获得5000访客。5%的人点击了&quot;赞助&quot;，每人5元=1250元。或者有人直接邮件问&quot;能不能定制一个XX领域的搜索引擎&quot;，价200元/个。</li>
-</ul>
-<p><strong>注意：</strong> 这个工具不太可能月入上万。它的真正价值是：</p>
-<ol>
-<li>用零成本验证了&quot;从抱怨中找产品方向&quot;的方法论</li>
-<li>建立了一个垂直YouTube索引API，可后续商业化（如按调用次数收费）</li>
-<li>积累了Python+Flask+API开发经验，可用于接外包</li>
-</ol>
-<h2 id="3个最容易踩的坑">3个最容易踩的坑</h2>
-<p><strong>坑1：过度优化功能才上线</strong>
-错误做法：做成了&quot;完美版&quot;才发布，但发现用户根本不来。正确做法：Day5必须上线最小原型（只有搜索+显示结果），上线后再根据反馈加功能。每多一天不上线，就少一天知道真实需求。</p>
-<p><strong>坑2：依赖API配额不够用</strong>
-YouTube API免费配额每天10000单元，每次搜索消耗100单元。如果你做了&quot;无限滚动&quot;，用户每次滚动都是新搜索。正确做法：前端缓存搜索结果，同一关键词重复搜索不调用API；或者限制免费用户每天搜5次，可付费解锁更多次数。</p>
-<p><strong>坑3：卖功能而不是卖解决方案</strong>
-如果只是说&quot;我的搜索器能筛选时长&quot;，用户不会付钱。要说&quot;帮你5分钟内找到2026年最新讲解视频，不比每天刷YouTube浪费时间&quot;。在页面文案里突出&quot;时间节省&quot;，而不是&quot;功能列表&quot;。</p>
-<h2 id="延伸资源">延伸资源</h2>
-<ol>
-<li><strong>YouTube Data API官方文档</strong>：developers.google.com/youtube/v3/guides/implementation/search（免费，国内可访问，需梯子）</li>
-<li><strong>Flask官方教程</strong>：flask.palletsprojects.com（免费，无需梯子，有中文社区翻译版）</li>
-<li><strong>B站搜索&quot;YouTube API Python&quot;</strong>：搜索&quot;Python YouTube API 爬虫&quot;找到实战教程（免费，中文，无需梯子）</li>
-</ol>
-]]></content:encoded></item><item><title>AI代写SQL</title><link>https://radar.huadongpeng.com/posts/developer-goldmine/deep-dive-2026-05-12-1237/</link><pubDate>Tue, 12 May 2026 12:37:14 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/developer-goldmine/deep-dive-2026-05-12-1237/</guid><description>&lt;h2 id="效率痛点100字"&gt;效率痛点（100字）&lt;/h2&gt;
-&lt;p&gt;你每天花20分钟手写SQL查报表，一周就是100分钟，一个月浪费7小时。更惨的是，突然要查你不熟的关联表、窗口函数，卡住30分钟才憋出来。一个外包群SQL代写单子50元/条，你本来能接，却因为效率低错过。&lt;/p&gt;
-&lt;h2 id="自动化提效方案"&gt;自动化/提效方案&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;工具链架构&lt;/strong&gt;：Ollama（本地大模型）+ LangChain（AI框架）+ PostgreSQL（数据库）。Ollama在你的电脑上跑AI，LangChain把自然语言翻译成SQL，直接执行返回结果。&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;从安装到首次运行的完整步骤&lt;/strong&gt;：&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;
-&lt;p&gt;安装Ollama&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;Mac：&lt;code&gt;brew install ollama&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;Windows：下载ollama.com的安装包，双击运行&lt;/li&gt;
-&lt;li&gt;启动服务：&lt;code&gt;ollama serve&lt;/code&gt;（新终端窗口）&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;下载模型（推荐qwen2.5-coder:7b，中文好且轻量）&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;code&gt;ollama pull qwen2.5-coder:7b&lt;/code&gt; （等待5-15分钟）&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;安装Python依赖&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;pip install langchain langchain-community psycopg2-binary
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;创建脚本 &lt;code&gt;sql_agent.py&lt;/code&gt;&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;from&lt;/span&gt; langchain_community.llms &lt;span style="color:#f92672"&gt;import&lt;/span&gt; Ollama
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;from&lt;/span&gt; langchain_community.utilities &lt;span style="color:#f92672"&gt;import&lt;/span&gt; SQLDatabase
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;from&lt;/span&gt; langchain_community.agent_toolkits &lt;span style="color:#f92672"&gt;import&lt;/span&gt; create_sql_agent
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 连接你的本地数据库&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;db &lt;span style="color:#f92672"&gt;=&lt;/span&gt; SQLDatabase&lt;span style="color:#f92672"&gt;.&lt;/span&gt;from_uri(&lt;span style="color:#e6db74"&gt;&amp;#34;postgresql://user:pass@localhost/dbname&amp;#34;&lt;/span&gt;)
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 加载本地模型&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;llm &lt;span style="color:#f92672"&gt;=&lt;/span&gt; Ollama(model&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;qwen2.5-coder:7b&amp;#34;&lt;/span&gt;)
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 创建AI数据库助手&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;agent_executor &lt;span style="color:#f92672"&gt;=&lt;/span&gt; create_sql_agent(llm, db&lt;span style="color:#f92672"&gt;=&lt;/span&gt;db, verbose&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#66d9ef"&gt;True&lt;/span&gt;)
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 开始对话&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;agent_executor&lt;span style="color:#f92672"&gt;.&lt;/span&gt;run(&lt;span style="color:#e6db74"&gt;&amp;#34;2026年5月的总销售额是多少？按月分组&amp;#34;&lt;/span&gt;)
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
-&lt;li&gt;
-&lt;p&gt;运行：&lt;code&gt;python sql_agent.py&lt;/code&gt;&lt;/p&gt;
-&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;&lt;strong&gt;核心配置说明&lt;/strong&gt;：把&amp;rsquo;user:pass&amp;rsquo;换成你的数据库用户名密码，&amp;rsquo;localhost/dbname&amp;rsquo;换成主机名和数据库名。&lt;/p&gt;
-&lt;h2 id="效果量化"&gt;效果量化&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;优化前：20分钟/次 × 5次/天 = 100分钟/天 = 30小时/月&lt;/li&gt;
-&lt;li&gt;优化后：1分钟输入问题 + 2分钟等待 = 3分钟/次 × 5次/天 = 15分钟/天 = 7.5小时/月&lt;/li&gt;
-&lt;li&gt;节省：22.5小时/月 = 如果接外包SQL代写（50元/条）≈ 赚 3750元&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id="进阶技巧"&gt;进阶技巧&lt;/h2&gt;
-&lt;ol&gt;
-&lt;li&gt;&lt;strong&gt;指定输出格式&lt;/strong&gt;：在问题后加“输出为表格”，AI会自动把结果排整齐。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;让AI解释SQL&lt;/strong&gt;：问“解释你生成的SQL”，就能拆解逻辑，顺便学语法。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;限制执行范围&lt;/strong&gt;：加提示词“只允许SELECT查”，防止AI误删数据。&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h2 id="常见排障"&gt;常见排障&lt;/h2&gt;
-&lt;ol&gt;
-&lt;li&gt;&lt;strong&gt;Ollama报错“connection refused”&lt;/strong&gt;：确认&lt;code&gt;ollama serve&lt;/code&gt;已运行在另一个终端。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;中文提问返回英文SQL&lt;/strong&gt;：换模型为&lt;code&gt;qwen2.5-coder:7b&lt;/code&gt;，它在中文场景表现更好。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;数据库连接失败&lt;/strong&gt;：检查PostgreSQL是否运行：&lt;code&gt;pg_isready&lt;/code&gt;，确认用户有远程登录权限。&lt;/li&gt;
-&lt;/ol&gt;</description><content:encoded><![CDATA[<h2 id="效率痛点100字">效率痛点（100字）</h2>
-<p>你每天花20分钟手写SQL查报表，一周就是100分钟，一个月浪费7小时。更惨的是，突然要查你不熟的关联表、窗口函数，卡住30分钟才憋出来。一个外包群SQL代写单子50元/条，你本来能接，却因为效率低错过。</p>
-<h2 id="自动化提效方案">自动化/提效方案</h2>
-<p><strong>工具链架构</strong>：Ollama（本地大模型）+ LangChain（AI框架）+ PostgreSQL（数据库）。Ollama在你的电脑上跑AI，LangChain把自然语言翻译成SQL，直接执行返回结果。</p>
-<p><strong>从安装到首次运行的完整步骤</strong>：</p>
-<ol>
-<li>
-<p>安装Ollama</p>
-<ul>
-<li>Mac：<code>brew install ollama</code></li>
-<li>Windows：下载ollama.com的安装包，双击运行</li>
-<li>启动服务：<code>ollama serve</code>（新终端窗口）</li>
-</ul>
-</li>
-<li>
-<p>下载模型（推荐qwen2.5-coder:7b，中文好且轻量）</p>
-<ul>
-<li><code>ollama pull qwen2.5-coder:7b</code> （等待5-15分钟）</li>
-</ul>
-</li>
-<li>
-<p>安装Python依赖</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>pip install langchain langchain-community psycopg2-binary
-</span></span></code></pre></div></li>
-<li>
-<p>创建脚本 <code>sql_agent.py</code></p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> langchain_community.llms <span style="color:#f92672">import</span> Ollama
-</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> langchain_community.utilities <span style="color:#f92672">import</span> SQLDatabase
-</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> langchain_community.agent_toolkits <span style="color:#f92672">import</span> create_sql_agent
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 连接你的本地数据库</span>
-</span></span><span style="display:flex;"><span>db <span style="color:#f92672">=</span> SQLDatabase<span style="color:#f92672">.</span>from_uri(<span style="color:#e6db74">&#34;postgresql://user:pass@localhost/dbname&#34;</span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 加载本地模型</span>
-</span></span><span style="display:flex;"><span>llm <span style="color:#f92672">=</span> Ollama(model<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;qwen2.5-coder:7b&#34;</span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 创建AI数据库助手</span>
-</span></span><span style="display:flex;"><span>agent_executor <span style="color:#f92672">=</span> create_sql_agent(llm, db<span style="color:#f92672">=</span>db, verbose<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 开始对话</span>
-</span></span><span style="display:flex;"><span>agent_executor<span style="color:#f92672">.</span>run(<span style="color:#e6db74">&#34;2026年5月的总销售额是多少？按月分组&#34;</span>) 
-</span></span></code></pre></div></li>
-<li>
-<p>运行：<code>python sql_agent.py</code></p>
-</li>
-</ol>
-<p><strong>核心配置说明</strong>：把&rsquo;user:pass&rsquo;换成你的数据库用户名密码，&rsquo;localhost/dbname&rsquo;换成主机名和数据库名。</p>
-<h2 id="效果量化">效果量化</h2>
-<ul>
-<li>优化前：20分钟/次 × 5次/天 = 100分钟/天 = 30小时/月</li>
-<li>优化后：1分钟输入问题 + 2分钟等待 = 3分钟/次 × 5次/天 = 15分钟/天 = 7.5小时/月</li>
-<li>节省：22.5小时/月 = 如果接外包SQL代写（50元/条）≈ 赚 3750元</li>
-</ul>
-<h2 id="进阶技巧">进阶技巧</h2>
-<ol>
-<li><strong>指定输出格式</strong>：在问题后加“输出为表格”，AI会自动把结果排整齐。</li>
-<li><strong>让AI解释SQL</strong>：问“解释你生成的SQL”，就能拆解逻辑，顺便学语法。</li>
-<li><strong>限制执行范围</strong>：加提示词“只允许SELECT查”，防止AI误删数据。</li>
-</ol>
-<h2 id="常见排障">常见排障</h2>
-<ol>
-<li><strong>Ollama报错“connection refused”</strong>：确认<code>ollama serve</code>已运行在另一个终端。</li>
-<li><strong>中文提问返回英文SQL</strong>：换模型为<code>qwen2.5-coder:7b</code>，它在中文场景表现更好。</li>
-<li><strong>数据库连接失败</strong>：检查PostgreSQL是否运行：<code>pg_isready</code>，确认用户有远程登录权限。</li>
-</ol>
 ]]></content:encoded></item><item><title>关于 Easton</title><link>https://radar.huadongpeng.com/about/</link><pubDate>Thu, 01 Jan 2026 00:00:00 +0800</pubDate><guid>https://radar.huadongpeng.com/about/</guid><description>&lt;h2 id="easton-跨国智库"&gt;Easton 跨国智库&lt;/h2&gt;
 &lt;p&gt;每日自动化扫描 &lt;strong&gt;22 个海外权威信息源&lt;/strong&gt;（Reddit、Hacker News、MIT Tech Review、TechCrunch、The Verge、ArXiv、BBC、CNBC、Wired、Rest of World 等），通过 &lt;strong&gt;DeepSeek V4 Pro&lt;/strong&gt; 大模型进行中文深度解读，输出可执行情报。&lt;/p&gt;
 &lt;h3 id="内容体系"&gt;内容体系&lt;/h3&gt;
