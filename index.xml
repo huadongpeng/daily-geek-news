@@ -1,70 +1,70 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Easton 跨国智库</title><link>https://radar.huadongpeng.com/</link><description>Recent content on Easton 跨国智库</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Tue, 12 May 2026 22:24:09 +0800</lastBuildDate><atom:link href="https://radar.huadongpeng.com/index.xml" rel="self" type="application/rss+xml"/><item><title>每日快讯</title><link>https://radar.huadongpeng.com/posts/daily-briefing/briefing-2026-05-12/</link><pubDate>Tue, 12 May 2026 22:24:09 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/daily-briefing/briefing-2026-05-12/</guid><description>&lt;blockquote&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Easton 跨国智库</title><link>https://radar.huadongpeng.com/</link><description>Recent content on Easton 跨国智库</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Tue, 12 May 2026 22:35:56 +0800</lastBuildDate><atom:link href="https://radar.huadongpeng.com/index.xml" rel="self" type="application/rss+xml"/><item><title>每日快讯</title><link>https://radar.huadongpeng.com/posts/daily-briefing/briefing-2026-05-12/</link><pubDate>Tue, 12 May 2026 22:35:56 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/daily-briefing/briefing-2026-05-12/</guid><description>&lt;blockquote&gt;
 &lt;p&gt;2026年05月12日 · 6 条情报&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h2 id="宏观风向标"&gt;宏观风向标&lt;/h2&gt;
-&lt;h3 id="linux严重漏洞"&gt;Linux严重漏洞&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：Ars Technica | Linux两周内出现第二个严重安全漏洞，需立即打补丁。&lt;/p&gt;
-&lt;p&gt;如果你自营网站或服务器，黑客可能利用该漏洞窃取数据或挖矿，影响网站收入和个人信息。&lt;/p&gt;
+&lt;h3 id="美国封路由器"&gt;美国封路由器&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：Ars Technica | FCC对进口路由器限制放宽至2029年前可更新。&lt;/p&gt;
+&lt;p&gt;国内生产的路由器（如TP-Link）若被禁，海外用户将被迫更换设备，近期二手库存会涨价。&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;🎯 今天登录SSH执行&amp;rsquo;sudo apt update &amp;amp;&amp;amp; sudo apt upgrade -y&amp;rsquo;，打补丁后重启服务，耗时10分钟。&lt;/p&gt;
+&lt;p&gt;🎯 今天去eBay/Amazon查TP-Link二手路由器价格，对比一周前判断是否已上涨。&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;hr&gt;
-&lt;h2 id="ai-工具实战"&gt;AI 工具实战&lt;/h2&gt;
-&lt;h3 id="免费编码agent对比"&gt;免费编码Agent对比&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：未知 |&lt;/p&gt;
-&lt;hr&gt;
 &lt;h2 id="海外信息差"&gt;海外信息差&lt;/h2&gt;
-&lt;h3 id="坏客户筛选法"&gt;坏客户筛选法&lt;/h3&gt;
+&lt;h3 id="ai版leetcode搬运"&gt;AI版LeetCode搬运&lt;/h3&gt;
 &lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：未知 |&lt;/p&gt;
 &lt;hr&gt;
 &lt;h2 id="效率工具与自动化"&gt;效率工具与自动化&lt;/h2&gt;
-&lt;h3 id="npm供应链攻击"&gt;Npm供应链攻击&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：Reddit r/programming | 170+包被恶意版本感染，伪装成项目依赖&lt;/p&gt;
-&lt;p&gt;npm install可能执行恶意代码，影响个人项目和求职作品集，需立即检查依赖&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;🎯 运行npm audit检查项目依赖，删除可疑包，改用npm install &amp;ndash;ignore-scripts&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;hr&gt;
-&lt;h2 id="套利雷达"&gt;套利雷达&lt;/h2&gt;
-&lt;h3 id="bilinote付费版教程"&gt;BiliNote付费版教程&lt;/h3&gt;
+&lt;h3 id="npm安全防护实操"&gt;npm安全防护实操&lt;/h3&gt;
 &lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：未知 |&lt;/p&gt;
 &lt;hr&gt;
+&lt;h2 id="ai-工具实战"&gt;AI 工具实战&lt;/h2&gt;
+&lt;h3 id="goose零成本编程"&gt;Goose零成本编程&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：未知 |&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="套利雷达"&gt;套利雷达&lt;/h2&gt;
+&lt;h3 id="bilinote-pro内测零成本套利"&gt;BiliNote Pro内测零成本套利&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：V2EX | 开源项目作者推出付费版，普通用户部署困难是痛点&lt;/p&gt;
+&lt;p&gt;你不需要自己重复造轮子：注册内测版，提出改进建议换取免费使用资格&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;🎯 打开V2EX帖子→找到BiliNote Pro内测链接→注册并安装→在GitHub提issue建议增加&amp;rsquo;一键部署&amp;rsquo;功能&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;hr&gt;
 &lt;h2 id="出海工具链"&gt;出海工具链&lt;/h2&gt;
-&lt;h3 id="可灵ai视频出海"&gt;可灵AI视频出海&lt;/h3&gt;
+&lt;h3 id="kling-ai指南"&gt;Kling AI指南&lt;/h3&gt;
 &lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：未知 |&lt;/p&gt;
 &lt;hr&gt;</description><content:encoded><![CDATA[<blockquote>
 <p>2026年05月12日 · 6 条情报</p>
 </blockquote>
 <h2 id="宏观风向标">宏观风向标</h2>
-<h3 id="linux严重漏洞">Linux严重漏洞</h3>
-<p><strong>来源</strong>：Ars Technica | Linux两周内出现第二个严重安全漏洞，需立即打补丁。</p>
-<p>如果你自营网站或服务器，黑客可能利用该漏洞窃取数据或挖矿，影响网站收入和个人信息。</p>
+<h3 id="美国封路由器">美国封路由器</h3>
+<p><strong>来源</strong>：Ars Technica | FCC对进口路由器限制放宽至2029年前可更新。</p>
+<p>国内生产的路由器（如TP-Link）若被禁，海外用户将被迫更换设备，近期二手库存会涨价。</p>
 <blockquote>
-<p>🎯 今天登录SSH执行&rsquo;sudo apt update &amp;&amp; sudo apt upgrade -y&rsquo;，打补丁后重启服务，耗时10分钟。</p>
+<p>🎯 今天去eBay/Amazon查TP-Link二手路由器价格，对比一周前判断是否已上涨。</p>
 </blockquote>
 <hr>
-<h2 id="ai-工具实战">AI 工具实战</h2>
-<h3 id="免费编码agent对比">免费编码Agent对比</h3>
-<p><strong>来源</strong>：未知 |</p>
-<hr>
 <h2 id="海外信息差">海外信息差</h2>
-<h3 id="坏客户筛选法">坏客户筛选法</h3>
+<h3 id="ai版leetcode搬运">AI版LeetCode搬运</h3>
 <p><strong>来源</strong>：未知 |</p>
 <hr>
 <h2 id="效率工具与自动化">效率工具与自动化</h2>
-<h3 id="npm供应链攻击">Npm供应链攻击</h3>
-<p><strong>来源</strong>：Reddit r/programming | 170+包被恶意版本感染，伪装成项目依赖</p>
-<p>npm install可能执行恶意代码，影响个人项目和求职作品集，需立即检查依赖</p>
-<blockquote>
-<p>🎯 运行npm audit检查项目依赖，删除可疑包，改用npm install &ndash;ignore-scripts</p>
-</blockquote>
-<hr>
-<h2 id="套利雷达">套利雷达</h2>
-<h3 id="bilinote付费版教程">BiliNote付费版教程</h3>
+<h3 id="npm安全防护实操">npm安全防护实操</h3>
 <p><strong>来源</strong>：未知 |</p>
 <hr>
+<h2 id="ai-工具实战">AI 工具实战</h2>
+<h3 id="goose零成本编程">Goose零成本编程</h3>
+<p><strong>来源</strong>：未知 |</p>
+<hr>
+<h2 id="套利雷达">套利雷达</h2>
+<h3 id="bilinote-pro内测零成本套利">BiliNote Pro内测零成本套利</h3>
+<p><strong>来源</strong>：V2EX | 开源项目作者推出付费版，普通用户部署困难是痛点</p>
+<p>你不需要自己重复造轮子：注册内测版，提出改进建议换取免费使用资格</p>
+<blockquote>
+<p>🎯 打开V2EX帖子→找到BiliNote Pro内测链接→注册并安装→在GitHub提issue建议增加&rsquo;一键部署&rsquo;功能</p>
+</blockquote>
+<hr>
 <h2 id="出海工具链">出海工具链</h2>
-<h3 id="可灵ai视频出海">可灵AI视频出海</h3>
+<h3 id="kling-ai指南">Kling AI指南</h3>
 <p><strong>来源</strong>：未知 |</p>
 <hr>
 ]]></content:encoded></item><item><title>关于 Easton</title><link>https://radar.huadongpeng.com/about/</link><pubDate>Thu, 01 Jan 2026 00:00:00 +0800</pubDate><guid>https://radar.huadongpeng.com/about/</guid><description>&lt;h2 id="easton-跨国智库"&gt;Easton 跨国智库&lt;/h2&gt;
