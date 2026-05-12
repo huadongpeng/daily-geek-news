@@ -1,4 +1,154 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>深度长文 on Easton 跨国智库</title><link>https://radar.huadongpeng.com/tags/%E6%B7%B1%E5%BA%A6%E9%95%BF%E6%96%87/</link><description>Recent content in 深度长文 on Easton 跨国智库</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Tue, 12 May 2026 11:49:17 +0800</lastBuildDate><atom:link href="https://radar.huadongpeng.com/tags/%E6%B7%B1%E5%BA%A6%E9%95%BF%E6%96%87/index.xml" rel="self" type="application/rss+xml"/><item><title>Zepto代运营教程</title><link>https://radar.huadongpeng.com/posts/china-going-global/deep-dive-2026-05-12-1149/</link><pubDate>Tue, 12 May 2026 11:49:17 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/china-going-global/deep-dive-2026-05-12-1149/</guid><description>&lt;h1 id="zepto代运营从零到月入5000元指南"&gt;Zepto代运营从零到月入5000元指南&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>深度长文 on Easton 跨国智库</title><link>https://radar.huadongpeng.com/tags/%E6%B7%B1%E5%BA%A6%E9%95%BF%E6%96%87/</link><description>Recent content in 深度长文 on Easton 跨国智库</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Tue, 12 May 2026 12:09:02 +0800</lastBuildDate><atom:link href="https://radar.huadongpeng.com/tags/%E6%B7%B1%E5%BA%A6%E9%95%BF%E6%96%87/index.xml" rel="self" type="application/rss+xml"/><item><title>小模型本地实战</title><link>https://radar.huadongpeng.com/posts/ai-frontier/deep-dive-2026-05-12-1209/</link><pubDate>Tue, 12 May 2026 12:09:02 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/ai-frontier/deep-dive-2026-05-12-1209/</guid><description>&lt;h1 id="小模型能干活吗qwen3-06b实测教程"&gt;小模型能干活吗？Qwen3 0.6B实测教程&lt;/h1&gt;
+&lt;h2 id="痛点"&gt;痛点&lt;/h2&gt;
+&lt;p&gt;你有一个分类任务：把一堆邮件分成“需回复”和“垃圾”。用DeepSeek或GPT-4o？每次都要联网，API花钱，公司网还慢。
+是否有一个本地跑、免费、不联网、10秒内出结果的小模型？&lt;/p&gt;
+&lt;h2 id="工具卡片"&gt;工具卡片&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;模型&lt;/strong&gt;：Qwen3 0.6B（阿里巴巴出品）&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;下载地址&lt;/strong&gt;：Ollama官网（国内直接访问）&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;定价&lt;/strong&gt;：完全免费（开源MIT协议）&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;竞品&lt;/strong&gt;：TinyLlama 1.1B、Phi-3-mini 3.8B&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;上手难度&lt;/strong&gt;：3/5（需要会开命令行）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="从注册到产出第一个结果"&gt;从注册到产出第一个结果&lt;/h2&gt;
+&lt;h3 id="第一步安装ollama2分钟零成本"&gt;第一步：安装Ollama（2分钟，零成本）&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;浏览器打开ollama.com&lt;/li&gt;
+&lt;li&gt;下载对应系统（Windows/Mac/Linux）的安装包&lt;/li&gt;
+&lt;li&gt;双击安装，一路默认&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id="第二步下载qwen3-06b模型网络良好时约5-10分钟"&gt;第二步：下载Qwen3 0.6B模型（网络良好时约5-10分钟）&lt;/h3&gt;
+&lt;p&gt;打开终端（Windows按Win+R，输入cmd），粘贴：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;ollama pull qwen3:0.6b
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;看到&lt;code&gt;success&lt;/code&gt;字样表示完成。&lt;/p&gt;
+&lt;h3 id="第三步跑一个分类任务1秒出结果"&gt;第三步：跑一个分类任务（1秒出结果）&lt;/h3&gt;
+&lt;p&gt;输入：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;ollama run qwen3:0.6b
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;进入对话模式后，粘贴：&lt;/p&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;请给这句话分类，只输出“技术”、“营销”或“其他”：
+“我们已更新数据库连接池配置，请重启服务后验证。”
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;模型输出：&lt;code&gt;技术&lt;/code&gt;（实测3秒内）&lt;/p&gt;
+&lt;h2 id="进阶用法批量处理100条记录"&gt;进阶用法：批量处理100条记录&lt;/h2&gt;
+&lt;h3 id="需求"&gt;需求&lt;/h3&gt;
+&lt;p&gt;将100条客户反馈分为“满意”“不满意”“中性”。&lt;/p&gt;
+&lt;h3 id="方法"&gt;方法&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;创建一个&lt;code&gt;classify.py&lt;/code&gt;文件，粘贴以下代码：&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;import&lt;/span&gt; subprocess
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;classify&lt;/span&gt;(text):
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; prompt &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#e6db74"&gt;f&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;请将下面客户反馈分类为“满意”、“不满意”或“中性”，只输出分类结果：&lt;/span&gt;&lt;span style="color:#e6db74"&gt;{&lt;/span&gt;text&lt;span style="color:#e6db74"&gt;}&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; result &lt;span style="color:#f92672"&gt;=&lt;/span&gt; subprocess&lt;span style="color:#f92672"&gt;.&lt;/span&gt;run([&lt;span style="color:#e6db74"&gt;&amp;#39;ollama&amp;#39;&lt;/span&gt;, &lt;span style="color:#e6db74"&gt;&amp;#39;run&amp;#39;&lt;/span&gt;, &lt;span style="color:#e6db74"&gt;&amp;#39;qwen3:0.6b&amp;#39;&lt;/span&gt;, prompt], capture_output&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#66d9ef"&gt;True&lt;/span&gt;, text&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#66d9ef"&gt;True&lt;/span&gt;, timeout&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;30&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;return&lt;/span&gt; result&lt;span style="color:#f92672"&gt;.&lt;/span&gt;stdout&lt;span style="color:#f92672"&gt;.&lt;/span&gt;strip()
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;feedbacks &lt;span style="color:#f92672"&gt;=&lt;/span&gt; [&lt;span style="color:#e6db74"&gt;&amp;#34;服务很好，速度很快&amp;#34;&lt;/span&gt;, &lt;span style="color:#e6db74"&gt;&amp;#34;等了三天还没收到货&amp;#34;&lt;/span&gt;, &lt;span style="color:#e6db74"&gt;&amp;#34;还行吧，一般&amp;#34;&lt;/span&gt;]
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;for&lt;/span&gt; fb &lt;span style="color:#f92672"&gt;in&lt;/span&gt; feedbacks:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; print(&lt;span style="color:#e6db74"&gt;f&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;原文：&lt;/span&gt;&lt;span style="color:#e6db74"&gt;{&lt;/span&gt;fb&lt;span style="color:#e6db74"&gt;}&lt;/span&gt;&lt;span style="color:#e6db74"&gt; -&amp;gt; 分类：&lt;/span&gt;&lt;span style="color:#e6db74"&gt;{&lt;/span&gt;classify(fb)&lt;span style="color:#e6db74"&gt;}&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ol start="2"&gt;
+&lt;li&gt;运行：&lt;code&gt;python classify.py&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;结果：
+&lt;ul&gt;
+&lt;li&gt;&amp;ldquo;服务很好，速度很快&amp;rdquo; -&amp;gt; 满意&lt;/li&gt;
+&lt;li&gt;&amp;ldquo;等了三天还没收到货&amp;rdquo; -&amp;gt; 不满意&lt;/li&gt;
+&lt;li&gt;&amp;ldquo;还行吧，一般&amp;rdquo; -&amp;gt; 中性&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id="量化效果"&gt;量化效果&lt;/h3&gt;
+&lt;p&gt;手动分类100条需要20分钟，0.6B模型处理100条约5分钟（含网络延迟到本地），节省75%时间。&lt;/p&gt;</description><content:encoded><![CDATA[<h1 id="小模型能干活吗qwen3-06b实测教程">小模型能干活吗？Qwen3 0.6B实测教程</h1>
+<h2 id="痛点">痛点</h2>
+<p>你有一个分类任务：把一堆邮件分成“需回复”和“垃圾”。用DeepSeek或GPT-4o？每次都要联网，API花钱，公司网还慢。
+是否有一个本地跑、免费、不联网、10秒内出结果的小模型？</p>
+<h2 id="工具卡片">工具卡片</h2>
+<ul>
+<li><strong>模型</strong>：Qwen3 0.6B（阿里巴巴出品）</li>
+<li><strong>下载地址</strong>：Ollama官网（国内直接访问）</li>
+<li><strong>定价</strong>：完全免费（开源MIT协议）</li>
+<li><strong>竞品</strong>：TinyLlama 1.1B、Phi-3-mini 3.8B</li>
+<li><strong>上手难度</strong>：3/5（需要会开命令行）</li>
+</ul>
+<h2 id="从注册到产出第一个结果">从注册到产出第一个结果</h2>
+<h3 id="第一步安装ollama2分钟零成本">第一步：安装Ollama（2分钟，零成本）</h3>
+<ol>
+<li>浏览器打开ollama.com</li>
+<li>下载对应系统（Windows/Mac/Linux）的安装包</li>
+<li>双击安装，一路默认</li>
+</ol>
+<h3 id="第二步下载qwen3-06b模型网络良好时约5-10分钟">第二步：下载Qwen3 0.6B模型（网络良好时约5-10分钟）</h3>
+<p>打开终端（Windows按Win+R，输入cmd），粘贴：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>ollama pull qwen3:0.6b
+</span></span></code></pre></div><p>看到<code>success</code>字样表示完成。</p>
+<h3 id="第三步跑一个分类任务1秒出结果">第三步：跑一个分类任务（1秒出结果）</h3>
+<p>输入：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>ollama run qwen3:0.6b
+</span></span></code></pre></div><p>进入对话模式后，粘贴：</p>
+<pre tabindex="0"><code>请给这句话分类，只输出“技术”、“营销”或“其他”：
+“我们已更新数据库连接池配置，请重启服务后验证。”
+</code></pre><p>模型输出：<code>技术</code>（实测3秒内）</p>
+<h2 id="进阶用法批量处理100条记录">进阶用法：批量处理100条记录</h2>
+<h3 id="需求">需求</h3>
+<p>将100条客户反馈分为“满意”“不满意”“中性”。</p>
+<h3 id="方法">方法</h3>
+<ol>
+<li>创建一个<code>classify.py</code>文件，粘贴以下代码：</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> subprocess
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">classify</span>(text):
+</span></span><span style="display:flex;"><span>    prompt <span style="color:#f92672">=</span> <span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;请将下面客户反馈分类为“满意”、“不满意”或“中性”，只输出分类结果：</span><span style="color:#e6db74">{</span>text<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>
+</span></span><span style="display:flex;"><span>    result <span style="color:#f92672">=</span> subprocess<span style="color:#f92672">.</span>run([<span style="color:#e6db74">&#39;ollama&#39;</span>, <span style="color:#e6db74">&#39;run&#39;</span>, <span style="color:#e6db74">&#39;qwen3:0.6b&#39;</span>, prompt], capture_output<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>, text<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>, timeout<span style="color:#f92672">=</span><span style="color:#ae81ff">30</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> result<span style="color:#f92672">.</span>stdout<span style="color:#f92672">.</span>strip()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>feedbacks <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#34;服务很好，速度很快&#34;</span>, <span style="color:#e6db74">&#34;等了三天还没收到货&#34;</span>, <span style="color:#e6db74">&#34;还行吧，一般&#34;</span>]
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> fb <span style="color:#f92672">in</span> feedbacks:
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;原文：</span><span style="color:#e6db74">{</span>fb<span style="color:#e6db74">}</span><span style="color:#e6db74"> -&gt; 分类：</span><span style="color:#e6db74">{</span>classify(fb)<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span></code></pre></div><ol start="2">
+<li>运行：<code>python classify.py</code></li>
+<li>结果：
+<ul>
+<li>&ldquo;服务很好，速度很快&rdquo; -&gt; 满意</li>
+<li>&ldquo;等了三天还没收到货&rdquo; -&gt; 不满意</li>
+<li>&ldquo;还行吧，一般&rdquo; -&gt; 中性</li>
+</ul>
+</li>
+</ol>
+<h3 id="量化效果">量化效果</h3>
+<p>手动分类100条需要20分钟，0.6B模型处理100条约5分钟（含网络延迟到本地），节省75%时间。</p>
+<h2 id="优缺点清单">优缺点清单</h2>
+<p><strong>优点：</strong></p>
+<ul>
+<li>完全免费，无需网络（除第一次下载）</li>
+<li>隐私安全（数据不出设备）</li>
+<li>能在2018年后的普通笔记本上运行（4GB内存即可）</li>
+</ul>
+<p><strong>缺点：</strong></p>
+<ul>
+<li>英文推理能力弱于中文（中文分类准确率约85%，英文约70%）</li>
+<li>创意生成任务几乎不可用（会生成无意义循环）</li>
+<li>不支持多轮复杂对话</li>
+</ul>
+<p><strong>替代方案：</strong></p>
+<ul>
+<li>需要更好中文：Qwen3 4B（1.5GB显存，免费）</li>
+<li>需要更好英文：TinyLlama 1.1B（CPU也能跑，免费）</li>
+</ul>
+<h2 id="谁适合用谁不适合用">谁适合用/谁不适合用</h2>
+<p><strong>适合：</strong></p>
+<ul>
+<li>需要做文本分类、标签提取、简单问答的普通用户</li>
+<li>预算为零、需要离线使用的开发者</li>
+<li>处理大量重复性文本工作的运营/客服人员</li>
+</ul>
+<p><strong>不适合：</strong></p>
+<ul>
+<li>写论文、写小说等需要创意生成的场景</li>
+<li>对准确率要求100%的正式业务（建议用GPT-4o API）</li>
+<li>需要处理图片/音频的多模态场景</li>
+</ul>
+<h2 id="性价比结论">性价比结论</h2>
+<p><strong>免费完全够用</strong>。如果只是做文本分类和简单提取，0.6B模型每月帮你省下至少100元的API费用。</p>
+]]></content:encoded></item><item><title>Zepto代运营教程</title><link>https://radar.huadongpeng.com/posts/china-going-global/deep-dive-2026-05-12-1149/</link><pubDate>Tue, 12 May 2026 11:49:17 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/china-going-global/deep-dive-2026-05-12-1149/</guid><description>&lt;h1 id="zepto代运营从零到月入5000元指南"&gt;Zepto代运营从零到月入5000元指南&lt;/h1&gt;
 &lt;h2 id="目标市场画像"&gt;目标市场画像&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;为什么选Zepto？Zepto是印度即时零售龙头，覆盖18个城市，日订单超50万，客单价约300-500卢比（25-42元人民币）。竞争比外卖低，且有佣金补贴期。&lt;/li&gt;
