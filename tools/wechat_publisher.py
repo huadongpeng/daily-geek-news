@@ -372,42 +372,43 @@ class WeChatRenderer(mistune.HTMLRenderer):
         return ''
 
 
+def clean_markdown(md_text):
+    """预处理 Markdown：去除 emoji、修复 LLM 常见格式问题"""
+    import re as _re
+    # 去除所有 emoji（Unicode 表情符号范围）
+    md = _re.sub(r'[\U0001F600-\U0001F64F'
+                 r'\U0001F300-\U0001F5FF'
+                 r'\U0001F680-\U0001F6FF'
+                 r'\U0001F1E0-\U0001F1FF'
+                 r'\U00002702-\U000027B0'
+                 r'\U000024C2-\U0001F251'
+                 r'\U0001F900-\U0001F9FF'
+                 r'\U0001FA00-\U0001FA6F'
+                 r'\U0001FA70-\U0001FAFF'
+                 r'\U00002600-\U000026FF'
+                 r'\U0000FE00-\U0000FE0F'
+                 r'\U00002300-\U000023FF'
+                 r'\U00002B50'
+                 r'\U0001F004'
+                 r'\U0001F0CF'
+                 r'\U0001F18E'
+                 r'☀-➿'
+                 r'⭐'
+                 r'\U0001F300-\U0001FAD6'
+                 r']+', '', md)
+    # 去除零宽连接符和变体选择符
+    md = _re.sub(r'[‍️]', '', md)
+    # 修复中文编号后的空格：一、 → 一、
+    md = _re.sub(r'(^|\n)([一二三四五六七八九十]、)\s*', r'\1\2 ', md)
+    return md.strip()
+
+
 def md_to_wechat_html(md_text, article_url=""):
-    """使用 mistune 解析器将 Markdown 转换为微信公众号兼容 HTML"""
+    """纯 Markdown → HTML 转换（不添加模板首尾，由 wrap_wechat_html 统一处理）"""
+    cleaned = clean_markdown(md_text)
     renderer = WeChatRenderer()
     parser = mistune.Markdown(renderer)
-    body_html = parser(md_text)
-
-    # ---- 顶部：简洁引导 ----
-    header = (
-        f'<section style="text-align:center;padding:12px 0 20px;margin-bottom:8px;">'
-        f'<p style="font-size:12px;color:#b0b0b0;margin:0 0 4px;letter-spacing:2px;">老花有话说</p>'
-        f'<p style="font-size:11px;color:#c0c0c0;margin:0;">海外情报 · 机会发掘 · 实操指南</p>'
-        f'</section>'
-    )
-
-    # ---- 底部：引流关注 ----
-    footer = (
-        f'<hr style="border:none;border-top:1px solid #e8e8e8;margin:32px 0 20px;">'
-        f'<section style="text-align:center;padding:12px 0;">'
-        f'<p style="font-size:14px;color:#3f3f3f;margin:0 0 8px;">感谢阅读 · 老花有话说</p>'
-        f'<p style="font-size:12px;color:#888;margin:0 0 4px;line-height:1.8;">'
-        f'独立开发者 · 跨国信息差套利 · AI 工具提效</p>'
-        f'<p style="font-size:12px;color:#888;margin:0 0 12px;">'
-        f'套利雷达 | AI 实战 | 信息差 | 出海工具 | 效率自动化</p>'
-    )
-    if article_url:
-        footer += (
-            f'<p style="margin:0 0 8px;">'
-            f'<a href="{article_url}" style="color:#576b95;font-size:13px;text-decoration:none;">'
-            f'在网站上阅读（含代码高亮和目录导航）</a></p>'
-        )
-    footer += (
-        f'<p style="font-size:11px;color:#b0b0b0;margin:0;">hdop1993@gmail.com</p>'
-        f'</section>'
-    )
-
-    return f'<section style="padding:0 16px;">\n{header}\n{body_html}\n{footer}\n</section>'
+    return parser(cleaned)
 
 
 # ============================================================
@@ -500,23 +501,36 @@ def find_articles(date_str=None):
     return articles
 
 
-WECHAT_HEADER = f"""<section style="text-align:center;padding:12px 0 20px;margin-bottom:8px;">
-<p style="font-size:12px;color:#b0b0b0;margin:0 0 4px;letter-spacing:2px;">老花有话说</p>
-<p style="font-size:11px;color:#c0c0c0;margin:0;">海外情报 · 机会发掘 · 实操指南</p>
-</section>"""
-
-WECHAT_FOOTER = f"""<hr style="border:none;border-top:1px solid #e8e8e8;margin:32px 0 20px;">
-<section style="text-align:center;padding:12px 0;">
-<p style="font-size:14px;color:#3f3f3f;margin:0 0 8px;">感谢阅读 · 老花有话说</p>
-<p style="font-size:12px;color:#888;margin:0 0 4px;line-height:1.8;">独立开发者 · 跨国信息差套利 · AI 工具提效</p>
-<p style="font-size:12px;color:#888;margin:0 0 12px;">套利雷达 | AI 实战 | 信息差 | 出海工具 | 效率自动化</p>
-<p style="font-size:11px;color:#b0b0b0;margin:0;">hdop1993@gmail.com</p>
-</section>"""
 
 
-def wrap_wechat_html(body_html):
-    """用固定的品牌首尾包裹微信文章正文"""
-    return WECHAT_HEADER + body_html + WECHAT_FOOTER
+def wrap_wechat_html(body_html, article_url=""):
+    """用固定的品牌首尾包裹微信文章正文——唯一模板入口"""
+    header = (
+        f'<section style="text-align:center;padding:12px 0 20px;margin-bottom:8px;">'
+        f'<p style="font-size:12px;color:#b0b0b0;margin:0 0 4px;letter-spacing:2px;">老花有话说</p>'
+        f'<p style="font-size:11px;color:#c0c0c0;margin:0;">海外情报 · 机会发掘 · 实操指南</p>'
+        f'</section>'
+    )
+    footer = (
+        f'<hr style="border:none;border-top:1px solid #e8e8e8;margin:32px 0 20px;">'
+        f'<section style="text-align:center;padding:12px 0;">'
+        f'<p style="font-size:14px;color:#3f3f3f;margin:0 0 8px;">感谢阅读 · 老花有话说</p>'
+        f'<p style="font-size:12px;color:#888;margin:0 0 4px;line-height:1.8;">'
+        f'独立开发者 · 跨国信息差套利 · AI 工具提效</p>'
+        f'<p style="font-size:12px;color:#888;margin:0 0 12px;">'
+        f'套利雷达 | AI 实战 | 信息差 | 出海工具 | 效率自动化</p>'
+    )
+    if article_url:
+        footer += (
+            f'<p style="margin:0 0 8px;">'
+            f'<a href="{article_url}" style="color:#576b95;font-size:13px;text-decoration:none;">'
+            f'在网站上阅读（含代码高亮和目录导航）</a></p>'
+        )
+    footer += (
+        f'<p style="font-size:11px;color:#b0b0b0;margin:0;">hdop1993@gmail.com</p>'
+        f'</section>'
+    )
+    return f'<section style="padding:0 16px;">\n{header}\n{body_html}\n{footer}\n</section>'
 
 
 def process_article(token, article, args):
@@ -545,8 +559,8 @@ def process_article(token, article, args):
     article_url = f"{SITE_URL}/posts/{cat.lower()}/"
 
     # ---- Markdown → 微信 HTML + 品牌首尾模板 ----
-    html_content = md_to_wechat_html(body, article_url)
-    html_content = wrap_wechat_html(html_content)
+    body_html = md_to_wechat_html(body)
+    html_content = wrap_wechat_html(body_html, article_url)
 
     # ---- 封面图生成（双引擎）----
     cover_path = None
