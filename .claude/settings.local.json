@@ -13,7 +13,12 @@
       "Bash(python \"D:\\\\MyProject\\\\10 热点文章\\\\daily-geek-news\\\\purifier.py\")",
       "PowerShell(git *)",
       "PowerShell(python -c \"compile\\(open\\(r'D:\\\\MyProject\\\\10 热点文章\\\\daily-geek-news\\\\purifier.py', encoding='utf-8'\\).read\\(\\), 'purifier.py', 'exec'\\); print\\('Syntax OK'\\)\")",
-      "Bash(python *)"
+      "Bash(python *)",
+      "PowerShell(python -c \"import py_compile; py_compile.compile\\('D:\\\\MyProject\\\\10 热点文章\\\\daily-geek-news\\\\purifier.py', doraise=True\\); print\\('purifier.py OK'\\)\")",
+      "PowerShell(python -c \"compile\\(open\\(r'D:\\\\MyProject\\\\10 热点文章\\\\daily-geek-news\\\\purifier.py'\\).read\\(\\), 'purifier.py', 'exec'\\); print\\('purifier.py OK'\\)\")",
+      "PowerShell(python -c \"import ast; ast.parse\\(open\\(r'D:\\\\MyProject\\\\10 热点文章\\\\daily-geek-news\\\\purifier.py', encoding='utf-8'\\).read\\(\\)\\); print\\('purifier.py: syntax OK'\\)\")",
+      "PowerShell(python -c \"import ast; ast.parse\\(open\\(r'D:\\\\MyProject\\\\10 热点文章\\\\daily-geek-news\\\\tools\\\\wechat_publisher.py', encoding='utf-8'\\).read\\(\\)\\); print\\('wechat_publisher.py: syntax OK'\\)\")",
+      "PowerShell(python -c \"import ast; ast.parse\\(open\\(r'D:\\\\MyProject\\\\10 热点文章\\\\daily-geek-news\\\\tools\\\\wechat_publisher.py', encoding='utf-8'\\).read\\(\\)\\); print\\('syntax OK'\\)\")"
     ]
   }
 }
