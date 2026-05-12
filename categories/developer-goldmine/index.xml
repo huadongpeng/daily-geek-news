@@ -1,4 +1,144 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Developer-Goldmine on Easton 跨国智库</title><link>https://radar.huadongpeng.com/categories/developer-goldmine/</link><description>Recent content in Developer-Goldmine on Easton 跨国智库</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Tue, 12 May 2026 23:02:53 +0800</lastBuildDate><atom:link href="https://radar.huadongpeng.com/categories/developer-goldmine/index.xml" rel="self" type="application/rss+xml"/><item><title>Python慢速诊断</title><link>https://radar.huadongpeng.com/posts/developer-goldmine/deep-dive-2026-05-12-2302/</link><pubDate>Tue, 12 May 2026 23:02:53 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/developer-goldmine/deep-dive-2026-05-12-2302/</guid><description>&lt;h1 id="python慢速诊断零成本用内置采样分析器定位瓶颈"&gt;Python慢速诊断：零成本用内置采样分析器定位瓶颈&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Developer-Goldmine on Easton 跨国智库</title><link>https://radar.huadongpeng.com/categories/developer-goldmine/</link><description>Recent content in Developer-Goldmine on Easton 跨国智库</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Wed, 13 May 2026 06:27:30 +0800</lastBuildDate><atom:link href="https://radar.huadongpeng.com/categories/developer-goldmine/index.xml" rel="self" type="application/rss+xml"/><item><title>本地工具调用</title><link>https://radar.huadongpeng.com/posts/developer-goldmine/deep-dive-2026-05-13-0627/</link><pubDate>Wed, 13 May 2026 06:27:30 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/developer-goldmine/deep-dive-2026-05-13-0627/</guid><description>&lt;h1 id="用needle-26m在本地实现ai工具调用指南"&gt;用Needle 26M在本地实现AI工具调用指南&lt;/h1&gt;
+&lt;h2 id="效率痛点"&gt;效率痛点&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;场景&lt;/strong&gt;：你写Python脚本时经常需要调用外部API（天气查询、计算器、数据库查询），但每次都要手动构造请求、解析返回&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;谁在浪费时间&lt;/strong&gt;：28-35岁的自由开发者/接单程序员，每天花30分钟写工具调用代码&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;代价&lt;/strong&gt;：一个月浪费15小时，相当于损失375元（按每小时25元接单价算）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="自动化方案"&gt;自动化方案&lt;/h2&gt;
+&lt;h3 id="工具链架构"&gt;工具链架构&lt;/h3&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;你的代码 → Needle 26M模型（本地） → 工具调用 → 执行结果
+&lt;/code&gt;&lt;/pre&gt;&lt;h3 id="步骤"&gt;步骤&lt;/h3&gt;
+&lt;h4 id="1-安装依赖5分钟"&gt;1. 安装依赖（5分钟）&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;启动成本：0元&lt;/li&gt;
+&lt;li&gt;时间投入：5分钟&lt;/li&gt;
+&lt;li&gt;注意：需要Python 3.9+，建议用虚拟环境&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;打开终端执行：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 创建虚拟环境&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;python -m venv needle_env
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;source needle_env/bin/activate &lt;span style="color:#75715e"&gt;# Windows上: needle_env\Scripts\activate&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 安装Needle&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;pip install git+https://github.com/cactus-compute/needle.git
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id="2-编写工具10分钟"&gt;2. 编写工具（10分钟）&lt;/h4&gt;
+&lt;p&gt;创建文件 &lt;code&gt;tools.py&lt;/code&gt;：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 定义你的工具函数&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;get_weather&lt;/span&gt;(city: str) &lt;span style="color:#f92672"&gt;-&amp;gt;&lt;/span&gt; str:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;&amp;#34;&amp;#34;查询城市天气（模拟）&amp;#34;&amp;#34;&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; url &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#e6db74"&gt;f&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;https://wttr.in/&lt;/span&gt;&lt;span style="color:#e6db74"&gt;{&lt;/span&gt;city&lt;span style="color:#e6db74"&gt;}&lt;/span&gt;&lt;span style="color:#e6db74"&gt;?format=%C+%t&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;import&lt;/span&gt; requests
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; resp &lt;span style="color:#f92672"&gt;=&lt;/span&gt; requests&lt;span style="color:#f92672"&gt;.&lt;/span&gt;get(url)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;return&lt;/span&gt; resp&lt;span style="color:#f92672"&gt;.&lt;/span&gt;text&lt;span style="color:#f92672"&gt;.&lt;/span&gt;strip() &lt;span style="color:#66d9ef"&gt;if&lt;/span&gt; resp&lt;span style="color:#f92672"&gt;.&lt;/span&gt;ok &lt;span style="color:#66d9ef"&gt;else&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;查询失败&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;calculator&lt;/span&gt;(expression: str) &lt;span style="color:#f92672"&gt;-&amp;gt;&lt;/span&gt; str:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;&amp;#34;&amp;#34;安全计算表达式&amp;#34;&amp;#34;&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#f92672"&gt;import&lt;/span&gt; ast
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;try&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;return&lt;/span&gt; str(ast&lt;span style="color:#f92672"&gt;.&lt;/span&gt;literal_eval(expression))
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;except&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;return&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;表达式错误&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id="3-运行测试10分钟"&gt;3. 运行测试（10分钟）&lt;/h4&gt;
+&lt;p&gt;创建文件 &lt;code&gt;run.py&lt;/code&gt;：&lt;/p&gt;</description><content:encoded><![CDATA[<h1 id="用needle-26m在本地实现ai工具调用指南">用Needle 26M在本地实现AI工具调用指南</h1>
+<h2 id="效率痛点">效率痛点</h2>
+<ul>
+<li><strong>场景</strong>：你写Python脚本时经常需要调用外部API（天气查询、计算器、数据库查询），但每次都要手动构造请求、解析返回</li>
+<li><strong>谁在浪费时间</strong>：28-35岁的自由开发者/接单程序员，每天花30分钟写工具调用代码</li>
+<li><strong>代价</strong>：一个月浪费15小时，相当于损失375元（按每小时25元接单价算）</li>
+</ul>
+<h2 id="自动化方案">自动化方案</h2>
+<h3 id="工具链架构">工具链架构</h3>
+<pre tabindex="0"><code>你的代码 → Needle 26M模型（本地） → 工具调用 → 执行结果
+</code></pre><h3 id="步骤">步骤</h3>
+<h4 id="1-安装依赖5分钟">1. 安装依赖（5分钟）</h4>
+<ul>
+<li>启动成本：0元</li>
+<li>时间投入：5分钟</li>
+<li>注意：需要Python 3.9+，建议用虚拟环境</li>
+</ul>
+<p>打开终端执行：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 创建虚拟环境</span>
+</span></span><span style="display:flex;"><span>python -m venv needle_env
+</span></span><span style="display:flex;"><span>source needle_env/bin/activate  <span style="color:#75715e"># Windows上: needle_env\Scripts\activate</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 安装Needle</span>
+</span></span><span style="display:flex;"><span>pip install git+https://github.com/cactus-compute/needle.git
+</span></span></code></pre></div><h4 id="2-编写工具10分钟">2. 编写工具（10分钟）</h4>
+<p>创建文件 <code>tools.py</code>：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># 定义你的工具函数</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_weather</span>(city: str) <span style="color:#f92672">-&gt;</span> str:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;查询城市天气（模拟）&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    url <span style="color:#f92672">=</span> <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;https://wttr.in/</span><span style="color:#e6db74">{</span>city<span style="color:#e6db74">}</span><span style="color:#e6db74">?format=%C+%t&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">import</span> requests
+</span></span><span style="display:flex;"><span>    resp <span style="color:#f92672">=</span> requests<span style="color:#f92672">.</span>get(url)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> resp<span style="color:#f92672">.</span>text<span style="color:#f92672">.</span>strip() <span style="color:#66d9ef">if</span> resp<span style="color:#f92672">.</span>ok <span style="color:#66d9ef">else</span> <span style="color:#e6db74">&#34;查询失败&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">calculator</span>(expression: str) <span style="color:#f92672">-&gt;</span> str:
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;安全计算表达式&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">import</span> ast
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> str(ast<span style="color:#f92672">.</span>literal_eval(expression))
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">except</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#e6db74">&#34;表达式错误&#34;</span>
+</span></span></code></pre></div><h4 id="3-运行测试10分钟">3. 运行测试（10分钟）</h4>
+<p>创建文件 <code>run.py</code>：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> needle <span style="color:#f92672">import</span> Needle
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> tools <span style="color:#f92672">import</span> get_weather, calculator
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 初始化模型（首次下载约200MB）</span>
+</span></span><span style="display:flex;"><span>model <span style="color:#f92672">=</span> Needle()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 注册工具</span>
+</span></span><span style="display:flex;"><span>model<span style="color:#f92672">.</span>add_tool(get_weather)
+</span></span><span style="display:flex;"><span>model<span style="color:#f92672">.</span>add_tool(calculator)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 推理</span>
+</span></span><span style="display:flex;"><span>result <span style="color:#f92672">=</span> model<span style="color:#f92672">.</span>invoke(<span style="color:#e6db74">&#34;北京今天天气怎么样？&#34;</span>)
+</span></span><span style="display:flex;"><span>print(result)
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 输出：北京，晴，24°C</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>result <span style="color:#f92672">=</span> model<span style="color:#f92672">.</span>invoke(<span style="color:#e6db74">&#34;计算 3 * (4 + 5) 的结果&#34;</span>)
+</span></span><span style="display:flex;"><span>print(result)
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 输出：27</span>
+</span></span></code></pre></div><p>执行：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>python run.py
+</span></span></code></pre></div><p>首次运行会下载模型，之后离线可用。</p>
+<h3 id="核心配置说明">核心配置说明</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span>model <span style="color:#f92672">=</span> Needle(device<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;cpu&#34;</span>)  <span style="color:#75715e"># 没有GPU也能跑</span>
+</span></span><span style="display:flex;"><span>model<span style="color:#f92672">.</span>set_max_tokens(<span style="color:#ae81ff">512</span>)     <span style="color:#75715e"># 限制输出长度，加快速度</span>
+</span></span><span style="display:flex;"><span>model<span style="color:#f92672">.</span>set_temperature(<span style="color:#ae81ff">0.1</span>)    <span style="color:#75715e"># 低温度提高确定性</span>
+</span></span></code></pre></div><h2 id="效果量化">效果量化</h2>
+<ul>
+<li>优化前：每次调用API需要写7行样板代码 × 每天10次 = 70行/天，编写30分钟</li>
+<li>优化后：只需定义工具函数一次，后续自动推理调用，编写5分钟</li>
+<li>节省：25分钟/天 × 22天 = 9.1小时/月 = 227元（按每小时25元）</li>
+</ul>
+<h2 id="进阶技巧">进阶技巧</h2>
+<ol>
+<li><strong>并行工具调用</strong>：修改<code>model.parallel_tools=True</code>，一次推理可触发多个工具</li>
+<li><strong>自定义错误处理</strong>：在工具函数内加 try/except 并返回错误信息</li>
+<li><strong>缓存结果</strong>：对耗时的工具（如网络请求）加<code>@functools.lru_cache</code>装饰器</li>
+</ol>
+<h2 id="常见排障">常见排障</h2>
+<ol>
+<li><strong>问题</strong>：<code>pip install</code>报网络超时
+<ul>
+<li>解决：用国内镜像 <code>pip install -i https://pypi.tuna.tsinghua.edu.cn/simple ...</code></li>
+</ul>
+</li>
+<li><strong>问题</strong>：首次运行显示<code>模型加载失败</code>
+<ul>
+<li>解决：检查磁盘空间是否大于500MB，模型下载到<code>~/.cache/needle</code>目录</li>
+</ul>
+</li>
+<li><strong>问题</strong>：工具调用返回空结果
+<ul>
+<li>解决：在工具函数里加<code>print</code>语句，检查是否被调用；或者在<code>model.invoke</code>中设置<code>debug=True</code></li>
+</ul>
+</li>
+</ol>
+]]></content:encoded></item><item><title>Python慢速诊断</title><link>https://radar.huadongpeng.com/posts/developer-goldmine/deep-dive-2026-05-12-2302/</link><pubDate>Tue, 12 May 2026 23:02:53 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/developer-goldmine/deep-dive-2026-05-12-2302/</guid><description>&lt;h1 id="python慢速诊断零成本用内置采样分析器定位瓶颈"&gt;Python慢速诊断：零成本用内置采样分析器定位瓶颈&lt;/h1&gt;
 &lt;h2 id="效率痛点"&gt;效率痛点&lt;/h2&gt;
 &lt;p&gt;你每天可能花20-30分钟等待代码跑完，或者反复猜测哪个函数拖慢了整个程序。传统cProfile要改代码、加装饰器，而且会显著拖慢程序（2-10倍），导致生产环境无法使用。一个月下来，光是无目的的排查就浪费10多个小时。用Python 3.15自带的&lt;code&gt;profiling.sampling&lt;/code&gt;模块，无需改一行代码，以不到1%的开销采样堆栈，直接输出火焰图或统计表，把排查时间压缩到5分钟以内。&lt;/p&gt;
 &lt;h2 id="自动化提效方案"&gt;自动化/提效方案&lt;/h2&gt;
