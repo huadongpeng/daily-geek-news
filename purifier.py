@@ -922,16 +922,17 @@ def deep_dive_worker(category_name, config):
         t_api = time.time()
 
         final_text = response.json()['choices'][0]['message']['content']
-        # DEBUG: 直接尝试 json.loads 原始响应
+        # 首选：直接 json.loads（模型输出合法 JSON 时跳过复杂的候选提取）
+        result = None
         try:
-            direct = json.loads(final_text)
-            print(f"   [DEBUG-DIRECT] json.loads 成功! keys={list(direct.keys())} deep_dive={'present' if 'deep_dive' in direct else 'MISSING'}", flush=True)
-            if 'deep_dive' in direct:
-                dd_val = direct['deep_dive']
-                print(f"   [DEBUG-DIRECT] deep_dive={type(dd_val).__name__} = {str(dd_val)[:200]}", flush=True)
-        except json.JSONDecodeError as de:
-            print(f"   [DEBUG-DIRECT] json.loads 失败: {de}", flush=True)
-        result = _extract_json(final_text)
+            result = json.loads(final_text)
+            if isinstance(result, dict) and "briefing" in result:
+                print(f"   [DEBUG-DIRECT] json.loads 直接成功", flush=True)
+        except json.JSONDecodeError:
+            pass
+        # 回退：_extract_json 候选提取
+        if result is None or not isinstance(result, dict) or "briefing" not in result:
+            result = _extract_json(final_text)
         has_brief = bool(result.get("briefing"))
         dd = result.get("deep_dive")
         has_deep = bool(dd and dd.get("title"))
