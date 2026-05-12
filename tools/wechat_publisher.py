@@ -332,7 +332,8 @@ class WeChatRenderer(mistune.HTMLRenderer):
         # Strip <p> wrapping inside list items — mistune adds it for longer text,
         # but WeChat renders <p> inside <li> with extra margin = blank lines
         text = re.sub(r'^<p[^>]*>(.*?)</p>\s*$', r'\1', text.strip(), flags=re.DOTALL)
-        return f'<li style="margin:6px 0;font-size:15px;color:#3f3f3f;line-height:1.8;">{text}</li>\n'
+        # WeChat 会在 <li> 间的空白/换行处插入空序号，去掉所有换行
+        return f'<li style="margin:6px 0;font-size:15px;color:#3f3f3f;line-height:1.8;">{text.strip()}</li>'
 
     def thematic_break(self):
         return '<hr style="border:none;border-top:1px solid #e8e8e8;margin:28px 0;">\n'
@@ -345,10 +346,13 @@ class WeChatRenderer(mistune.HTMLRenderer):
 
     def list(self, text, ordered, *args, **attrs):
         tag = 'ol' if ordered else 'ul'
-        return f'<{tag} style="padding-left:24px;margin:12px 0;">\n{text}</{tag}>\n'
+        # 去掉 text 中的换行（list_item 已处理），防止 WeChat 插入空序号
+        text = text.strip()
+        return f'<{tag} style="padding-left:24px;margin:12px 0;">{text}</{tag}>'
 
     def table(self, text):
-        return f'<table style="width:100%;border-collapse:collapse;margin:16px 0;font-size:14px;">\n{text}</table>\n'
+        # WeChat 表格需要 border="1" HTML 属性（非 CSS），否则不渲染边框
+        return f'<table border="1" cellspacing="0" style="border-collapse:collapse;margin:16px 0;font-size:14px;width:100%;">\n{text}</table>\n'
 
     def table_head(self, text):
         return f'<thead>\n{text}</thead>\n'

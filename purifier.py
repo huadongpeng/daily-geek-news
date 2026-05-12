@@ -541,7 +541,7 @@ def auto_search_context(query):
     """全网主动检索补充深度背景"""
     try:
         print(f"   🔍 正在全网主动检索: {query[:60]}...")
-        results = DDGS().text(query, max_results=5)
+        results = DDGS().text(query, max_results=12)
         context = ""
         for r in results:
             context += f"-[外网检索] {r['title']}: {r['body']}\n"
@@ -560,7 +560,7 @@ def auto_search_pain_points(query):
         ]
         context = ""
         for pq in pain_queries:
-            results = DDGS().text(pq, max_results=3)
+            results = DDGS().text(pq, max_results=8)
             for r in results:
                 context += f"-[痛点挖掘] {r['title']}: {r['body']}\n"
         return context
@@ -596,12 +596,12 @@ def _fetch_one_feed(url):
     with _FEED_CACHE_LOCK:
         _FEED_OK += 1
     entries = []
-    for entry in feed.entries[:5]:
+    for entry in feed.entries[:10]:
         desc = ""
         if hasattr(entry, 'description') and entry.description:
-            desc = re.sub('<[^<]+>', '', entry.description)[:250]
+            desc = re.sub('<[^<]+>', '', entry.description)[:400]
         elif hasattr(entry, 'summary') and entry.summary:
-            desc = re.sub('<[^<]+>', '', entry.summary)[:250]
+            desc = re.sub('<[^<]+>', '', entry.summary)[:400]
         link = getattr(entry, 'link', '')
         entries.append(f"标题: {entry.title}\n来源: {link}\n摘要: {desc}")
     with _FEED_CACHE_LOCK:
@@ -628,22 +628,24 @@ def fetch_and_augment(feeds):
 
     base_context = "\n".join(raw_articles)
 
-    # DEBUG临时：减少检索量精确定位问题
-    target_titles = all_titles[:3]
+    # 对前 8 个最具代表性的标题做深度全网检索
+    target_titles = all_titles[:6]
     deep_context = ""
     pain_context = ""
 
     if target_titles:
-        with concurrent.futures.ThreadPoolExecutor(max_workers=3) as pool:
+        with concurrent.futures.ThreadPoolExecutor(max_workers=5) as pool:
             futures = {}
             for i, t in enumerate(target_titles):
                 futures[pool.submit(auto_search_context, t)] = ("bg", t)
+                if i > 0 and i % 3 == 0:
+                    time.sleep(0.5)  # 每 3 个标题稍息避免触发 DDG 频率限制
                 futures[pool.submit(auto_search_pain_points, t)] = ("pain", t)
                 try:
                     futures[pool.submit(
                         lambda q=t: "\n".join(
                             f"-[中国市场关联] {r['title']}: {r['body']}"
-                            for r in DDGS().text(f"{q} 中国 替代 市场", max_results=3)
+                            for r in DDGS().text(f"{q} 中国 替代 市场", max_results=5)
                         )
                     )] = ("cn", t)
                 except Exception:
@@ -735,14 +737,6 @@ def _extract_json(text):
                 last_brace = wrapped.rfind('}')
                 wrapped = wrapped[:last_brace + 1]
                 candidates.append(wrapped)
-
-    # DEBUG: 打印候选数量和每个候选是否包含 deep_dive
-    print(f"   [DEBUG-EXTRACT] 候选数={len(candidates)}", flush=True)
-    for idx, c in enumerate(candidates):
-        has_dd = '"deep_dive"' in c
-        dd_pos = c.find('"deep_dive"')
-        dd_val = c[dd_pos:dd_pos+50] if dd_pos >= 0 else "N/A"
-        print(f"   [DEBUG-EXTRACT] 候选{idx}: len={len(c)} has_deep_dive={has_dd} dd_context={dd_val}", flush=True)
 
     # 通用修复函数
     def _repair(raw):
@@ -922,22 +916,16 @@ def deep_dive_worker(category_name, config):
         t_api = time.time()
 
         final_text = response.json()['choices'][0]['message']['content']
-        # 首选：直接 json.loads（模型输出合法 JSON 时跳过复杂的候选提取）
-        result = None
+        # 首选：直接 json.loads（模型输出合法 JSON 时跳过候选提取）
         try:
             result = json.loads(final_text)
-            if isinstance(result, dict) and "briefing" in result:
-                print(f"   [DEBUG-DIRECT] json.loads 直接成功", flush=True)
         except json.JSONDecodeError:
-            pass
-        # 回退：_extract_json 候选提取
-        if result is None or not isinstance(result, dict) or "briefing" not in result:
+            result = _extract_json(final_text)
+        if not isinstance(result, dict) or "briefing" not in result:
             result = _extract_json(final_text)
         has_brief = bool(result.get("briefing"))
-        dd = result.get("deep_dive")
-        has_deep = bool(dd and dd.get("title"))
-        dd_preview = str(dd)[:200] if dd else "null/None"
-        print(f"[{category_name}] API {t_api-t_api_start:.0f}s | 快讯:{has_brief} 深度:{has_deep} | deep_dive={dd_preview} (type={type(dd).__name__}) | 原始响应长度={len(final_text)}chars", flush=True)
+        has_deep = bool(result.get("deep_dive") and result["deep_dive"].get("title"))
+        print(f"[{category_name}] API {t_api-t_api_start:.0f}s | 快讯:{has_brief} 深度:{has_deep}", flush=True)
         return category_name, result
 
     except Exception as e:

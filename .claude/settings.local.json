@@ -18,7 +18,13 @@
       "PowerShell(python -c \"compile\\(open\\(r'D:\\\\MyProject\\\\10 热点文章\\\\daily-geek-news\\\\purifier.py'\\).read\\(\\), 'purifier.py', 'exec'\\); print\\('purifier.py OK'\\)\")",
       "PowerShell(python -c \"import ast; ast.parse\\(open\\(r'D:\\\\MyProject\\\\10 热点文章\\\\daily-geek-news\\\\purifier.py', encoding='utf-8'\\).read\\(\\)\\); print\\('purifier.py: syntax OK'\\)\")",
       "PowerShell(python -c \"import ast; ast.parse\\(open\\(r'D:\\\\MyProject\\\\10 热点文章\\\\daily-geek-news\\\\tools\\\\wechat_publisher.py', encoding='utf-8'\\).read\\(\\)\\); print\\('wechat_publisher.py: syntax OK'\\)\")",
-      "PowerShell(python -c \"import ast; ast.parse\\(open\\(r'D:\\\\MyProject\\\\10 热点文章\\\\daily-geek-news\\\\tools\\\\wechat_publisher.py', encoding='utf-8'\\).read\\(\\)\\); print\\('syntax OK'\\)\")"
+      "PowerShell(python -c \"import ast; ast.parse\\(open\\(r'D:\\\\MyProject\\\\10 热点文章\\\\daily-geek-news\\\\tools\\\\wechat_publisher.py', encoding='utf-8'\\).read\\(\\)\\); print\\('syntax OK'\\)\")",
+      "Bash(rm -f content/posts/daily-briefing/briefing-2026-05-12.md)",
+      "Bash(rm -f content/posts/*/briefing-*)",
+      "Bash(git rm *)",
+      "Bash(git add *)",
+      "Bash(git rebase *)",
+      "Bash(GIT_EDITOR=true git rebase --continue)"
     ]
   }
 }
