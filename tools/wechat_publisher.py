@@ -429,10 +429,13 @@ def _published_key(md_file):
     rel = md_file.relative_to(GIT_REPO_DIR)
     parts = rel.parts
     category = parts[1] if len(parts) > 1 else "unknown"
-    # 提取日期和类型：deep-dive-2026-05-12-1430.md → deep-dive-2026-05-12
+    # 提取日期和类型：deep-dive-2026-05-12-1127.md → deep-dive-2026-05-12
     name = md_file.stem
     if "deep-dive" in name:
-        type_date = "-".join(name.split("-")[:3])  # deep-dive-2026-05-12
+        # 文件名格式: deep-dive-YYYY-MM-DD[-HHMM]
+        # split 后 6 段: ['deep','dive','YYYY','MM','DD','HHMM']
+        # [:5] 取前 5 段 = deep-dive-YYYY-MM-DD
+        type_date = "-".join(name.split("-")[:5])
     elif "briefing" in name:
         type_date = name  # briefing-2026-05-12
     else:
