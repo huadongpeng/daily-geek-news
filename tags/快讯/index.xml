@@ -1,105 +1,102 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>快讯 on Easton 跨国智库</title><link>https://radar.huadongpeng.com/tags/%E5%BF%AB%E8%AE%AF/</link><description>Recent content in 快讯 on Easton 跨国智库</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Tue, 12 May 2026 14:40:40 +0800</lastBuildDate><atom:link href="https://radar.huadongpeng.com/tags/%E5%BF%AB%E8%AE%AF/index.xml" rel="self" type="application/rss+xml"/><item><title>每日快讯</title><link>https://radar.huadongpeng.com/posts/daily-briefing/briefing-2026-05-12/</link><pubDate>Tue, 12 May 2026 14:40:40 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/daily-briefing/briefing-2026-05-12/</guid><description>&lt;blockquote&gt;
-&lt;p&gt;2026年05月12日 · 8 条情报&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>快讯 on Easton 跨国智库</title><link>https://radar.huadongpeng.com/tags/%E5%BF%AB%E8%AE%AF/</link><description>Recent content in 快讯 on Easton 跨国智库</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Tue, 12 May 2026 15:03:41 +0800</lastBuildDate><atom:link href="https://radar.huadongpeng.com/tags/%E5%BF%AB%E8%AE%AF/index.xml" rel="self" type="application/rss+xml"/><item><title>每日快讯</title><link>https://radar.huadongpeng.com/posts/daily-briefing/briefing-2026-05-12/</link><pubDate>Tue, 12 May 2026 15:03:41 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/daily-briefing/briefing-2026-05-12/</guid><description>&lt;blockquote&gt;
+&lt;p&gt;2026年05月12日 · 6 条情报&lt;/p&gt;
 &lt;/blockquote&gt;
+&lt;h2 id="海外信息差"&gt;海外信息差&lt;/h2&gt;
+&lt;h3 id="非洲新闻搬运工"&gt;非洲新闻搬运工&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：TikTok+非洲 | 非洲年轻人做新闻解说号揽流量卖广告，国内空白&lt;/p&gt;
+&lt;p&gt;模仿非洲模式，翻译搬运海外新闻到B站，挣平台分成&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;🎯 去TikTok搜&amp;rsquo;Africa news creator&amp;rsquo;看账号模板&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;hr&gt;
+&lt;h2 id="效率工具与自动化"&gt;效率工具与自动化&lt;/h2&gt;
+&lt;h3 id="恶意包扩散范围"&gt;恶意包扩散范围&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：Snyk | 已影响UiPath、DraftLab等多家维护者&lt;/p&gt;
+&lt;p&gt;蠕虫状传播，自带有效SLSA认证。开锁即查相关依赖清单可避免被连带。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;🎯 运行npm audit &amp;ndash;json | grep malicious 检查当前项目&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;hr&gt;
 &lt;h2 id="宏观风向标"&gt;宏观风向标&lt;/h2&gt;
-&lt;h3 id="通用裁员换ai"&gt;通用裁员换AI&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：CNBC | 通用汽车裁掉数百IT员工，换招AI技能强的&lt;/p&gt;
-&lt;p&gt;直接影响美国IT打工人的饭碗，尤其是传统IT运维岗，需立即补AI技能&lt;/p&gt;
+&lt;h3 id="美伊和平希望降"&gt;美伊和平希望降&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：CNBC | 美伊和平谈判无望，欧洲股市开盘下跌。&lt;/p&gt;
+&lt;p&gt;直接影响你：能源股可能波动，但和你的月薪暂无直接关系。已发生。&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;🎯 今天去LinkedIn搜‘prompt engineer岗位要求’，整理10个JD关键词&lt;/p&gt;
+&lt;p&gt;🎯 今天打开炒股软件，看看你关注的股票有无异动。0元，2分钟。&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h3 id="英国tiktok收月费"&gt;英国TikTok收月费&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：BBC | TikTok在英国推月费3.99英镑去广告订阅&lt;/p&gt;
-&lt;p&gt;影响代购/跨境作者：英国用户付费意愿强，免费流量可能减少，需调整内容策略&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="ai-工具实战"&gt;AI 工具实战&lt;/h2&gt;
+&lt;h3 id="listen-labs获资6900万"&gt;Listen Labs获资6900万&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：科技媒体 | AI做客户访谈的工具融资6900万美元&lt;/p&gt;
+&lt;p&gt;雇主正用AI辅助用户调研，你学会AI访谈技巧可赚外包费。&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;🎯 今天在TikTok设置里开启英国区账号测试，观察有无广告变化&lt;/p&gt;
+&lt;p&gt;🎯 去Listen Labs官网试用Demo→用真实问题录一段AI访谈→看结果是否满意&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h3 id="韩国拟发ai分红"&gt;韩国拟发AI分红&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：Bloomberg | 韩国高官提议用AI利润税收给国民发红包&lt;/p&gt;
-&lt;p&gt;影响加密货币/跨境套利的普通人：政策若落地可能抬高汇率和消费力，短期炒作情绪&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="套利雷达"&gt;套利雷达&lt;/h2&gt;
+&lt;h3 id="脱机页面存书签"&gt;脱机页面存书签&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：Reddit / r/SomebodyMakeThis | ADHD用户需要保存网页离线库，但现有扩展太复杂。&lt;/p&gt;
+&lt;p&gt;你懂Chrome扩展开发，可做一键保存/搜索的免费插件。&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;🎯 今天在Upbit查看AI主题币涨幅，记录前5名&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h3 id="linux爆严重漏洞"&gt;Linux爆严重漏洞&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：Arstechnica | Linux两周内再曝严重漏洞，补丁已出需速装&lt;/p&gt;
-&lt;p&gt;影响用Linux服务器跑AI脚本/挖矿的极客，不升级有被黑风险&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;🎯 今天在服务器跑‘sudo apt update &amp;amp;&amp;amp; sudo apt upgrade -y’&lt;/p&gt;
+&lt;p&gt;🎯 打开Chrome开发者文档→复制官方保存页面的示例代码→修改为自动生成标题标签→提交到Chrome商店&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;hr&gt;
 &lt;h2 id="出海工具链"&gt;出海工具链&lt;/h2&gt;
-&lt;h3 id="腾讯混元集成文档"&gt;腾讯混元集成文档&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：36氪+中国 | 腾讯QClaw AI接入腾讯文档和ima知识库，支持跨文档查询&lt;/p&gt;
-&lt;p&gt;个人开发者可直接用免费AI工具做文档摘要/翻译，降低出海内容制作门槛，零成本注册腾讯云即可用&lt;/p&gt;
+&lt;h3 id="科威特ai基金"&gt;科威特AI基金&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：CoinDesk+中东 | 科威特设立1.5亿美元AI基金，吸引全球开发者入驻&lt;/p&gt;
+&lt;p&gt;中东政府资金入局AI，个人可针对本地化需求开发阿拉伯语AI工具，月成本&amp;lt;200元&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;🎯 去腾讯云官网用微信注册，搜索QClaw API申请免费额度，10分钟配置&lt;/p&gt;
+&lt;p&gt;🎯 用腾讯云免费额度部署一个阿拉伯语Chatbot，通过Upwork接科威特当地小企业单&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h3 id="快手可灵ai拟分拆"&gt;快手可灵AI拟分拆&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：36氪+中国 | 快手考虑分拆可灵AI视频生成单元独立IPO&lt;/p&gt;
-&lt;p&gt;可灵AI视频生成工具开放API，小团队可低成本生成海外营销视频，零成本注册，每分钟约0.5元&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;🎯 去kling.kuaishou.com用手机号注册，点击API文档免费测试视频生成&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h3 id="canvas全球数据泄露"&gt;Canvas全球数据泄露&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：南华早报+香港 | 学习平台Canvas遭黑客入侵，香港7.2万师生数据泄露&lt;/p&gt;
-&lt;p&gt;暴露在线教育平台安全漏洞，个人开发者可提供安全审计或加固服务，零成本代理调查竞品安全措施&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;🎯 搜索Canvas安全漏洞报告，整理常见问题，在暗网上发布安全咨询或开发安全插件上架&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h3 id="拉美fintech获c轮"&gt;拉美fintech获C轮&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：LatamList+拉美 | 阿根廷fintech belo获1400万美元A轮，巴西Segura获800万美元种子轮&lt;/p&gt;</description><content:encoded><![CDATA[<blockquote>
-<p>2026年05月12日 · 8 条情报</p>
+&lt;hr&gt;</description><content:encoded><![CDATA[<blockquote>
+<p>2026年05月12日 · 6 条情报</p>
 </blockquote>
+<h2 id="海外信息差">海外信息差</h2>
+<h3 id="非洲新闻搬运工">非洲新闻搬运工</h3>
+<p><strong>来源</strong>：TikTok+非洲 | 非洲年轻人做新闻解说号揽流量卖广告，国内空白</p>
+<p>模仿非洲模式，翻译搬运海外新闻到B站，挣平台分成</p>
+<blockquote>
+<p>🎯 去TikTok搜&rsquo;Africa news creator&rsquo;看账号模板</p>
+</blockquote>
+<hr>
+<h2 id="效率工具与自动化">效率工具与自动化</h2>
+<h3 id="恶意包扩散范围">恶意包扩散范围</h3>
+<p><strong>来源</strong>：Snyk | 已影响UiPath、DraftLab等多家维护者</p>
+<p>蠕虫状传播，自带有效SLSA认证。开锁即查相关依赖清单可避免被连带。</p>
+<blockquote>
+<p>🎯 运行npm audit &ndash;json | grep malicious 检查当前项目</p>
+</blockquote>
+<hr>
 <h2 id="宏观风向标">宏观风向标</h2>
-<h3 id="通用裁员换ai">通用裁员换AI</h3>
-<p><strong>来源</strong>：CNBC | 通用汽车裁掉数百IT员工，换招AI技能强的</p>
-<p>直接影响美国IT打工人的饭碗，尤其是传统IT运维岗，需立即补AI技能</p>
+<h3 id="美伊和平希望降">美伊和平希望降</h3>
+<p><strong>来源</strong>：CNBC | 美伊和平谈判无望，欧洲股市开盘下跌。</p>
+<p>直接影响你：能源股可能波动，但和你的月薪暂无直接关系。已发生。</p>
 <blockquote>
-<p>🎯 今天去LinkedIn搜‘prompt engineer岗位要求’，整理10个JD关键词</p>
+<p>🎯 今天打开炒股软件，看看你关注的股票有无异动。0元，2分钟。</p>
 </blockquote>
-<h3 id="英国tiktok收月费">英国TikTok收月费</h3>
-<p><strong>来源</strong>：BBC | TikTok在英国推月费3.99英镑去广告订阅</p>
-<p>影响代购/跨境作者：英国用户付费意愿强，免费流量可能减少，需调整内容策略</p>
+<hr>
+<h2 id="ai-工具实战">AI 工具实战</h2>
+<h3 id="listen-labs获资6900万">Listen Labs获资6900万</h3>
+<p><strong>来源</strong>：科技媒体 | AI做客户访谈的工具融资6900万美元</p>
+<p>雇主正用AI辅助用户调研，你学会AI访谈技巧可赚外包费。</p>
 <blockquote>
-<p>🎯 今天在TikTok设置里开启英国区账号测试，观察有无广告变化</p>
+<p>🎯 去Listen Labs官网试用Demo→用真实问题录一段AI访谈→看结果是否满意</p>
 </blockquote>
-<h3 id="韩国拟发ai分红">韩国拟发AI分红</h3>
-<p><strong>来源</strong>：Bloomberg | 韩国高官提议用AI利润税收给国民发红包</p>
-<p>影响加密货币/跨境套利的普通人：政策若落地可能抬高汇率和消费力，短期炒作情绪</p>
+<hr>
+<h2 id="套利雷达">套利雷达</h2>
+<h3 id="脱机页面存书签">脱机页面存书签</h3>
+<p><strong>来源</strong>：Reddit / r/SomebodyMakeThis | ADHD用户需要保存网页离线库，但现有扩展太复杂。</p>
+<p>你懂Chrome扩展开发，可做一键保存/搜索的免费插件。</p>
 <blockquote>
-<p>🎯 今天在Upbit查看AI主题币涨幅，记录前5名</p>
-</blockquote>
-<h3 id="linux爆严重漏洞">Linux爆严重漏洞</h3>
-<p><strong>来源</strong>：Arstechnica | Linux两周内再曝严重漏洞，补丁已出需速装</p>
-<p>影响用Linux服务器跑AI脚本/挖矿的极客，不升级有被黑风险</p>
-<blockquote>
-<p>🎯 今天在服务器跑‘sudo apt update &amp;&amp; sudo apt upgrade -y’</p>
+<p>🎯 打开Chrome开发者文档→复制官方保存页面的示例代码→修改为自动生成标题标签→提交到Chrome商店</p>
 </blockquote>
 <hr>
 <h2 id="出海工具链">出海工具链</h2>
-<h3 id="腾讯混元集成文档">腾讯混元集成文档</h3>
-<p><strong>来源</strong>：36氪+中国 | 腾讯QClaw AI接入腾讯文档和ima知识库，支持跨文档查询</p>
-<p>个人开发者可直接用免费AI工具做文档摘要/翻译，降低出海内容制作门槛，零成本注册腾讯云即可用</p>
+<h3 id="科威特ai基金">科威特AI基金</h3>
+<p><strong>来源</strong>：CoinDesk+中东 | 科威特设立1.5亿美元AI基金，吸引全球开发者入驻</p>
+<p>中东政府资金入局AI，个人可针对本地化需求开发阿拉伯语AI工具，月成本&lt;200元</p>
 <blockquote>
-<p>🎯 去腾讯云官网用微信注册，搜索QClaw API申请免费额度，10分钟配置</p>
-</blockquote>
-<h3 id="快手可灵ai拟分拆">快手可灵AI拟分拆</h3>
-<p><strong>来源</strong>：36氪+中国 | 快手考虑分拆可灵AI视频生成单元独立IPO</p>
-<p>可灵AI视频生成工具开放API，小团队可低成本生成海外营销视频，零成本注册，每分钟约0.5元</p>
-<blockquote>
-<p>🎯 去kling.kuaishou.com用手机号注册，点击API文档免费测试视频生成</p>
-</blockquote>
-<h3 id="canvas全球数据泄露">Canvas全球数据泄露</h3>
-<p><strong>来源</strong>：南华早报+香港 | 学习平台Canvas遭黑客入侵，香港7.2万师生数据泄露</p>
-<p>暴露在线教育平台安全漏洞，个人开发者可提供安全审计或加固服务，零成本代理调查竞品安全措施</p>
-<blockquote>
-<p>🎯 搜索Canvas安全漏洞报告，整理常见问题，在暗网上发布安全咨询或开发安全插件上架</p>
-</blockquote>
-<h3 id="拉美fintech获c轮">拉美fintech获C轮</h3>
-<p><strong>来源</strong>：LatamList+拉美 | 阿根廷fintech belo获1400万美元A轮，巴西Segura获800万美元种子轮</p>
-<p>拉美数字支付市场爆发，中国开发者可开发收款插件/税务工具对接当地API，启动成本500元(拉美服务器)，1周内完成对接</p>
-<blockquote>
-<p>🎯 去belo.app注册商户账号，测试API接口，用Node.js一周内写出收款插件demo</p>
+<p>🎯 用腾讯云免费额度部署一个阿拉伯语Chatbot，通过Upwork接科威特当地小企业单</p>
 </blockquote>
 <hr>
 ]]></content:encoded></item></channel></rss>
