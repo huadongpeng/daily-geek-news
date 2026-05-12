@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Arbitrage-Radar on Easton 跨国智库</title><link>https://radar.huadongpeng.com/categories/arbitrage-radar/</link><description>Recent content in Arbitrage-Radar on Easton 跨国智库</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Tue, 12 May 2026 13:20:42 +0800</lastBuildDate><atom:link href="https://radar.huadongpeng.com/categories/arbitrage-radar/index.xml" rel="self" type="application/rss+xml"/><item><title>自动化逃税催款</title><link>https://radar.huadongpeng.com/posts/arbitrage-radar/deep-dive-2026-05-12-1320/</link><pubDate>Tue, 12 May 2026 13:20:42 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/arbitrage-radar/deep-dive-2026-05-12-1320/</guid><description>&lt;h2 id="核心洞察"&gt;核心洞察&lt;/h2&gt;
+&lt;p&gt;这条机会来自Reddit上一条抱怨：“小企业失去大量时间在无聊的行政工作：发票催款、付款提醒……”评论区一片附和。为什么别人没赚到这个钱？因为大多数独立开发者追求“性感玩具”，觉得后台自动化太low。但实际上，这类工具需求明确、开发逻辑简单、替代门槛极低——现有方案（如QuickBooks）功能过重且价格高，小老板只需要一个能自动发邮件的定时脚本。&lt;strong&gt;这是信息差+行动差：大家知道但懒得做。&lt;/strong&gt;&lt;/p&gt;
+&lt;h2 id="执行清单-day1-7"&gt;执行清单 Day1-7&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Day1（周一）：&lt;/strong&gt; 打开Reddit r/SmallBusiness→搜索“invoice reminder”和“payment follow up”→截图点赞超过20的帖子，记录10条具体抱怨原文（复制英文）。
+&lt;strong&gt;Day2（周二）：&lt;/strong&gt; 注册Twilio SendGrid免费层（sendgrid.com）→确认每月免费100封邮件→安装Python（已有则跳过）→执行 &lt;code&gt;pip install sendgrid&lt;/code&gt; 验证成功。
+&lt;strong&gt;Day3（周三）：&lt;/strong&gt; 写核心代码：一个Python函数 &lt;code&gt;def send_reminder(email_to, amount, due_date):&lt;/code&gt;。代码可以直接复制：[Github gist链接] 包含：从CSV读取数据、替换模板、调用SendGrid API。
+&lt;strong&gt;Day4（周四）：&lt;/strong&gt; 写第二个函数 &lt;code&gt;def list_unpaid(csv_path):&lt;/code&gt; 判断due_date是否已过、标记未付。测试用自己邮箱模拟数据（示例CSV：客户名、金额、到期日）。
+&lt;strong&gt;Day5（周五）：&lt;/strong&gt; 创建Web界面（Flask / Streamlit均免费）。Streamlit最快：&lt;code&gt;pip install streamlit&lt;/code&gt;→一个上传CSV的页面+点击“生成提醒”按钮。本地上支持运行：&lt;code&gt;streamlit run app.py&lt;/code&gt;。
+&lt;strong&gt;Day6（周六）：&lt;/strong&gt; 录制一段5分钟操作视频：演示上传CSV、点击按钮、看到邮件发送成功。用OBS免费录制，上传到B站（标题：《Python自动发催款邮件，小企业主省2小时》）。
+&lt;strong&gt;Day7（周日）：&lt;/strong&gt; 把代码和视频链接同时发布到：a) Reddit r/SmallBusiness 正文：附Github仓库+说明“免费工具，源代码开源”；b) V2EX“分享创造”板块；c)微信群“小企业工具”（搜索加入）。预期当天10-20次访问，2-5人询问细节。&lt;/p&gt;
+&lt;h2 id="工具清单"&gt;工具清单&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;SendGrid&lt;/strong&gt;：sendgrid.com，免费100封/天，国内可直连访问&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Python 3.9+&lt;/strong&gt;：python.org，免费&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Streamlit&lt;/strong&gt;：streamlit.io，免费，国内可访问&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;VS Code&lt;/strong&gt;（可选）：code.visualstudio.com，免费&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;GitHub&lt;/strong&gt;：github.com，免费仓库+Pages&lt;/li&gt;
+&lt;li&gt;无需境外支付、无需VPN、无需额外硬件。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="收益预估"&gt;收益预估&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;保守首月&lt;/strong&gt;：300元。来自B站广告分成（视频播放约5000次）+按需定制咨询（200元/次，1-2单）。计算逻辑：B站创作激励约20元/1000播放，播放量保守5000。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;中等首月&lt;/strong&gt;：1200元。视频播放过万（200元）+定制咨询5单（1000元）+捐赠渠道（如爱发电，约0）。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;乐观首月&lt;/strong&gt;：3000元+。视频被大V转发（播放5万+）+付费插件版（Streamlit可发布成SaaS，当前纯开源引流），定制咨询15单（3000元）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="3个最容易踩的坑"&gt;3个最容易踩的坑&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;坑：邮件被当作垃圾邮件。&lt;/strong&gt; 避免方法：在SendGrid控制台开启DKIM/SPF记录，免费配置。发送时包含取消订阅链接。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;坑：CSV格式不标准。&lt;/strong&gt; 避免：在Streamlit界面上传后展示预览，允许用户调整列名映射（提供默认匹配）。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;坑：认为需要UI才可销售。&lt;/strong&gt; 实际上只要发送前确认按钮即可，第一个版本不需要数据库。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id="延伸资源"&gt;延伸资源&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;B站UP主【Python老刘】《零基础用Streamlit做Web应用》系列（免费搜）。&lt;/li&gt;
+&lt;li&gt;B站UP主【代码真香】《SendGrid API发邮件教程》（带Github代码，免费）。&lt;/li&gt;
+&lt;li&gt;免费电子书《Automate the Boring Stuff with Python》官方中文翻译版（下载地址：https://automatetheboringstuff.com/2e/chapter46/）。&lt;/li&gt;
+&lt;/ol&gt;</description><content:encoded><![CDATA[<h2 id="核心洞察">核心洞察</h2>
+<p>这条机会来自Reddit上一条抱怨：“小企业失去大量时间在无聊的行政工作：发票催款、付款提醒……”评论区一片附和。为什么别人没赚到这个钱？因为大多数独立开发者追求“性感玩具”，觉得后台自动化太low。但实际上，这类工具需求明确、开发逻辑简单、替代门槛极低——现有方案（如QuickBooks）功能过重且价格高，小老板只需要一个能自动发邮件的定时脚本。<strong>这是信息差+行动差：大家知道但懒得做。</strong></p>
+<h2 id="执行清单-day1-7">执行清单 Day1-7</h2>
+<p><strong>Day1（周一）：</strong> 打开Reddit r/SmallBusiness→搜索“invoice reminder”和“payment follow up”→截图点赞超过20的帖子，记录10条具体抱怨原文（复制英文）。
+<strong>Day2（周二）：</strong> 注册Twilio SendGrid免费层（sendgrid.com）→确认每月免费100封邮件→安装Python（已有则跳过）→执行 <code>pip install sendgrid</code> 验证成功。
+<strong>Day3（周三）：</strong> 写核心代码：一个Python函数 <code>def send_reminder(email_to, amount, due_date):</code>。代码可以直接复制：[Github gist链接] 包含：从CSV读取数据、替换模板、调用SendGrid API。
+<strong>Day4（周四）：</strong> 写第二个函数 <code>def list_unpaid(csv_path):</code> 判断due_date是否已过、标记未付。测试用自己邮箱模拟数据（示例CSV：客户名、金额、到期日）。
+<strong>Day5（周五）：</strong> 创建Web界面（Flask / Streamlit均免费）。Streamlit最快：<code>pip install streamlit</code>→一个上传CSV的页面+点击“生成提醒”按钮。本地上支持运行：<code>streamlit run app.py</code>。
+<strong>Day6（周六）：</strong> 录制一段5分钟操作视频：演示上传CSV、点击按钮、看到邮件发送成功。用OBS免费录制，上传到B站（标题：《Python自动发催款邮件，小企业主省2小时》）。
+<strong>Day7（周日）：</strong> 把代码和视频链接同时发布到：a) Reddit r/SmallBusiness 正文：附Github仓库+说明“免费工具，源代码开源”；b) V2EX“分享创造”板块；c)微信群“小企业工具”（搜索加入）。预期当天10-20次访问，2-5人询问细节。</p>
+<h2 id="工具清单">工具清单</h2>
+<ul>
+<li><strong>SendGrid</strong>：sendgrid.com，免费100封/天，国内可直连访问</li>
+<li><strong>Python 3.9+</strong>：python.org，免费</li>
+<li><strong>Streamlit</strong>：streamlit.io，免费，国内可访问</li>
+<li><strong>VS Code</strong>（可选）：code.visualstudio.com，免费</li>
+<li><strong>GitHub</strong>：github.com，免费仓库+Pages</li>
+<li>无需境外支付、无需VPN、无需额外硬件。</li>
+</ul>
+<h2 id="收益预估">收益预估</h2>
+<ul>
+<li><strong>保守首月</strong>：300元。来自B站广告分成（视频播放约5000次）+按需定制咨询（200元/次，1-2单）。计算逻辑：B站创作激励约20元/1000播放，播放量保守5000。</li>
+<li><strong>中等首月</strong>：1200元。视频播放过万（200元）+定制咨询5单（1000元）+捐赠渠道（如爱发电，约0）。</li>
+<li><strong>乐观首月</strong>：3000元+。视频被大V转发（播放5万+）+付费插件版（Streamlit可发布成SaaS，当前纯开源引流），定制咨询15单（3000元）。</li>
+</ul>
+<h2 id="3个最容易踩的坑">3个最容易踩的坑</h2>
+<ol>
+<li><strong>坑：邮件被当作垃圾邮件。</strong> 避免方法：在SendGrid控制台开启DKIM/SPF记录，免费配置。发送时包含取消订阅链接。</li>
+<li><strong>坑：CSV格式不标准。</strong> 避免：在Streamlit界面上传后展示预览，允许用户调整列名映射（提供默认匹配）。</li>
+<li><strong>坑：认为需要UI才可销售。</strong> 实际上只要发送前确认按钮即可，第一个版本不需要数据库。</li>
+</ol>
+<h2 id="延伸资源">延伸资源</h2>
+<ol>
+<li>B站UP主【Python老刘】《零基础用Streamlit做Web应用》系列（免费搜）。</li>
+<li>B站UP主【代码真香】《SendGrid API发邮件教程》（带Github代码，免费）。</li>
+<li>免费电子书《Automate the Boring Stuff with Python》官方中文翻译版（下载地址：https://automatetheboringstuff.com/2e/chapter46/）。</li>
+</ol>
+]]></content:encoded></item></channel></rss>

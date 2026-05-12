@@ -1,136 +1,551 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Easton 跨国智库</title><link>https://radar.huadongpeng.com/</link><description>Recent content on Easton 跨国智库</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Tue, 12 May 2026 13:11:56 +0800</lastBuildDate><atom:link href="https://radar.huadongpeng.com/index.xml" rel="self" type="application/rss+xml"/><item><title>每日快讯</title><link>https://radar.huadongpeng.com/posts/daily-briefing/briefing-2026-05-12/</link><pubDate>Tue, 12 May 2026 13:11:56 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/daily-briefing/briefing-2026-05-12/</guid><description>&lt;blockquote&gt;
-&lt;p&gt;2026年05月12日 · 13 条情报&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Easton 跨国智库</title><link>https://radar.huadongpeng.com/</link><description>Recent content on Easton 跨国智库</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Tue, 12 May 2026 13:22:23 +0800</lastBuildDate><atom:link href="https://radar.huadongpeng.com/index.xml" rel="self" type="application/rss+xml"/><item><title>每日快讯</title><link>https://radar.huadongpeng.com/posts/daily-briefing/briefing-2026-05-12/</link><pubDate>Tue, 12 May 2026 13:22:23 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/daily-briefing/briefing-2026-05-12/</guid><description>&lt;blockquote&gt;
+&lt;p&gt;2026年05月12日 · 25 条情报&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h2 id="效率工具与自动化"&gt;效率工具与自动化&lt;/h2&gt;
-&lt;h3 id="tanstack被投毒"&gt;TanStack被投毒&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：Hacker News | TanStack 42个npm包被恶意篡改，发布84个带毒版本&lt;/p&gt;
-&lt;p&gt;前三大前端库之一被供应链攻击，波及React Query等明星项目，今天内就得检查你的依赖版本&lt;/p&gt;
+&lt;h2 id="宏观风向标"&gt;宏观风向标&lt;/h2&gt;
+&lt;h3 id="gm裁it换ai"&gt;GM裁IT换AI&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：Reuters | 通用汽车裁减数百名IT员工，侧重招聘AI人才&lt;/p&gt;
+&lt;p&gt;传统IT岗位在车企也开始被清退，转向AI开发/数据工程/云端工程，意味着普通程序员需要尽快转型AI实操技能。已有裁员通知流出，预计Q2末完成&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;🎯 立即检查项目：在终端执行 npm ls @tanstack/* 看是否有以下版本→自查列表见下文&lt;/p&gt;
+&lt;p&gt;🎯 今天去Coursera或freeCodeCamp搜索免费AI/ML课程，选一个31天内能完成的项目&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h3 id="snapseed大更新"&gt;Snapseed大更新&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：Google Play | 谷歌神级免费修图工具Snapseed 4.0上线&lt;/p&gt;
-&lt;p&gt;免费、无广告、离线可用，新增AI级别校正功能，省掉Lightroom订阅费每月118元&lt;/p&gt;
+&lt;h3 id="印度或限黄金进口"&gt;印度或限黄金进口&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：Bloomberg | 印度考虑限制黄金等非必需品进口以拯救外汇储备&lt;/p&gt;
+&lt;p&gt;黄金价格可能短期下跌；同时非必需品进口减少会让外贸代购/电商卖家货源吃紧。措施可能在1个月内实施&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;🎯 立即体验：手机打开应用商店→搜索Snapseed→更新到4.0→任意试一张照片&lt;/p&gt;
+&lt;p&gt;🎯 今天去黄金回收平台查实时金价，暂缓买入；同时检查自己的代购供应链是否有印度进口商品&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h3 id="courseraudemy合并"&gt;Coursera+Udemy合并&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：TechCrunch | 全球两大在线学习平台Coursera和Udemy合并&lt;/p&gt;
-&lt;p&gt;课程门类2万+，许多课短期内可能涨价或下架，赶紧下载你要学的课&lt;/p&gt;
+&lt;h3 id="tiktok推付费去广告"&gt;TikTok推付费去广告&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：BBC | TikTok在英国推出3.99英镑无广告订阅选项&lt;/p&gt;
+&lt;p&gt;平台走向付费模式，免费用户将面临更多广告；创作者分成可能随广告量变化而调整，影响英国区创收。立即生效&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;🎯 立即行动：打开你的Udemy/Coursera账户→找到已购课程→点击下载课程离线资料→PDF/视频备一份&lt;/p&gt;
+&lt;p&gt;🎯 今天检查自己TikTok账号所在地区设置，若英国区则准备切换账号策略；调整内容发布频率以应对广告增多&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h3 id="claude上aws"&gt;Claude上AWS&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：AWS | Anthropic的Claude模型正式上线AWS Bedrock平台&lt;/p&gt;
-&lt;p&gt;Claude经过AWS企业级安全认证，可用AWS免费额度调用，替代ChatGPT每月20美元成本&lt;/p&gt;
+&lt;h3 id="韩拟征ai税发红利"&gt;韩拟征AI税发红利&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：Bloomberg | 韩国提议对AI利润征税并向公民分红&lt;/p&gt;
+&lt;p&gt;全球首次AI红利提案，若实施可能增加半导体厂商税负；但红利发放可能刺激消费，利好跨境电商卖家。讨论阶段，1年内落地概率低&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;🎯 立即体验：注册AWS免费账户→打开Bedrock控制台→选Claude 3 Sonnet→发第一条消息&lt;/p&gt;
+&lt;p&gt;🎯 今天Google搜索‘AI dividend South Korea proposal’阅读原文，关注后续立法进展&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;hr&gt;
-&lt;h2 id="宏观风向标"&gt;宏观风向标&lt;/h2&gt;
-&lt;h3 id="通用汽车it裁员"&gt;通用汽车IT裁员&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：路透社 | 通用汽车裁数百IT岗，招AI技能员工&lt;/p&gt;
-&lt;p&gt;大厂IT非核心岗位收缩，传统开发岗减少，AI技能成为筛选条件，今天起影响面试门槛&lt;/p&gt;
+&lt;h2 id="ai-工具实战"&gt;AI 工具实战&lt;/h2&gt;
+&lt;h3 id="chatgpt用户破8亿"&gt;ChatGPT用户破8亿&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：LinkedIn | ChatGPT Q1 2026用户达8亿，35岁以上增速最快。&lt;/p&gt;
+&lt;p&gt;用户基数越大，AI工具生态越成熟，你免费可用的插件模板变多，不必担心学了就过时。&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;🎯 今天用LinkedIn搜“prompt engineering”职位分析要求&lt;/p&gt;
+&lt;p&gt;🎯 打开ChatGPT官网→注册免费账号→试试搜索“每周工作计划模板”看输出效果。&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h3 id="印度限制黄金进口"&gt;印度限制黄金进口&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：彭博社 | 印度拟限制黄金等非必需进口保外汇&lt;/p&gt;
-&lt;p&gt;若实施，全球金价短期下跌，持有黄金低价变现时机错失，今天关注国内金饰回收价&lt;/p&gt;
+&lt;h3 id="goose免费替代claude-code"&gt;Goose免费替代Claude Code&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：TechCrunch | Goose是免费AI编程助手，功能对标月费200美元的Claude Code。&lt;/p&gt;
+&lt;p&gt;零成本入门AI编程辅助，直接省下200美元/月，写代码、debug、部署一条龙。&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;🎯 今天打开支付宝黄金页面看实时金价&lt;/p&gt;
+&lt;p&gt;🎯 打开GitHub搜“goose-ai”→下载桌面版→用自然语言说“帮我生成一个Python爬虫”试试。&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h3 id="韩国ai分红提议"&gt;韩国AI分红提议&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：彭博社 | 韩国提征AI企业税收向全民分红&lt;/p&gt;
-&lt;p&gt;政策信号可能推高AI设备管控，影响二手显卡和AI工具获取成本，今天可关注后续&lt;/p&gt;
+&lt;h3 id="ai让照片变3d世界"&gt;AI让照片变3D世界&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：World Labs | World Labs推出AI工具，把单张照片一键转为可交互3D场景。&lt;/p&gt;
+&lt;p&gt;免费且国内可访问，做产品展示、室内设计、游戏场景直接省上千元建模费。&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;🎯 今天在推特搜“Korea AI dividend proposal”看进展&lt;/p&gt;</description><content:encoded><![CDATA[<blockquote>
-<p>2026年05月12日 · 13 条情报</p>
+&lt;p&gt;🎯 打开worldlabs.ai→点击“Upload Photo”→上传一张室内照片→等待30秒得到3D模型。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id="小模型qwen35下载量288万"&gt;小模型Qwen3.5下载量288万&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：Hugging Face | 阿里Qwen3.5小模型月下载288万次，可在老旧电脑上本地跑。&lt;/p&gt;</description><content:encoded><![CDATA[<blockquote>
+<p>2026年05月12日 · 25 条情报</p>
 </blockquote>
-<h2 id="效率工具与自动化">效率工具与自动化</h2>
-<h3 id="tanstack被投毒">TanStack被投毒</h3>
-<p><strong>来源</strong>：Hacker News | TanStack 42个npm包被恶意篡改，发布84个带毒版本</p>
-<p>前三大前端库之一被供应链攻击，波及React Query等明星项目，今天内就得检查你的依赖版本</p>
-<blockquote>
-<p>🎯 立即检查项目：在终端执行 npm ls @tanstack/* 看是否有以下版本→自查列表见下文</p>
-</blockquote>
-<h3 id="snapseed大更新">Snapseed大更新</h3>
-<p><strong>来源</strong>：Google Play | 谷歌神级免费修图工具Snapseed 4.0上线</p>
-<p>免费、无广告、离线可用，新增AI级别校正功能，省掉Lightroom订阅费每月118元</p>
-<blockquote>
-<p>🎯 立即体验：手机打开应用商店→搜索Snapseed→更新到4.0→任意试一张照片</p>
-</blockquote>
-<h3 id="courseraudemy合并">Coursera+Udemy合并</h3>
-<p><strong>来源</strong>：TechCrunch | 全球两大在线学习平台Coursera和Udemy合并</p>
-<p>课程门类2万+，许多课短期内可能涨价或下架，赶紧下载你要学的课</p>
-<blockquote>
-<p>🎯 立即行动：打开你的Udemy/Coursera账户→找到已购课程→点击下载课程离线资料→PDF/视频备一份</p>
-</blockquote>
-<h3 id="claude上aws">Claude上AWS</h3>
-<p><strong>来源</strong>：AWS | Anthropic的Claude模型正式上线AWS Bedrock平台</p>
-<p>Claude经过AWS企业级安全认证，可用AWS免费额度调用，替代ChatGPT每月20美元成本</p>
-<blockquote>
-<p>🎯 立即体验：注册AWS免费账户→打开Bedrock控制台→选Claude 3 Sonnet→发第一条消息</p>
-</blockquote>
-<hr>
 <h2 id="宏观风向标">宏观风向标</h2>
-<h3 id="通用汽车it裁员">通用汽车IT裁员</h3>
-<p><strong>来源</strong>：路透社 | 通用汽车裁数百IT岗，招AI技能员工</p>
-<p>大厂IT非核心岗位收缩，传统开发岗减少，AI技能成为筛选条件，今天起影响面试门槛</p>
+<h3 id="gm裁it换ai">GM裁IT换AI</h3>
+<p><strong>来源</strong>：Reuters | 通用汽车裁减数百名IT员工，侧重招聘AI人才</p>
+<p>传统IT岗位在车企也开始被清退，转向AI开发/数据工程/云端工程，意味着普通程序员需要尽快转型AI实操技能。已有裁员通知流出，预计Q2末完成</p>
 <blockquote>
-<p>🎯 今天用LinkedIn搜“prompt engineering”职位分析要求</p>
+<p>🎯 今天去Coursera或freeCodeCamp搜索免费AI/ML课程，选一个31天内能完成的项目</p>
 </blockquote>
-<h3 id="印度限制黄金进口">印度限制黄金进口</h3>
-<p><strong>来源</strong>：彭博社 | 印度拟限制黄金等非必需进口保外汇</p>
-<p>若实施，全球金价短期下跌，持有黄金低价变现时机错失，今天关注国内金饰回收价</p>
+<h3 id="印度或限黄金进口">印度或限黄金进口</h3>
+<p><strong>来源</strong>：Bloomberg | 印度考虑限制黄金等非必需品进口以拯救外汇储备</p>
+<p>黄金价格可能短期下跌；同时非必需品进口减少会让外贸代购/电商卖家货源吃紧。措施可能在1个月内实施</p>
 <blockquote>
-<p>🎯 今天打开支付宝黄金页面看实时金价</p>
+<p>🎯 今天去黄金回收平台查实时金价，暂缓买入；同时检查自己的代购供应链是否有印度进口商品</p>
 </blockquote>
-<h3 id="韩国ai分红提议">韩国AI分红提议</h3>
-<p><strong>来源</strong>：彭博社 | 韩国提征AI企业税收向全民分红</p>
-<p>政策信号可能推高AI设备管控，影响二手显卡和AI工具获取成本，今天可关注后续</p>
+<h3 id="tiktok推付费去广告">TikTok推付费去广告</h3>
+<p><strong>来源</strong>：BBC | TikTok在英国推出3.99英镑无广告订阅选项</p>
+<p>平台走向付费模式，免费用户将面临更多广告；创作者分成可能随广告量变化而调整，影响英国区创收。立即生效</p>
 <blockquote>
-<p>🎯 今天在推特搜“Korea AI dividend proposal”看进展</p>
+<p>🎯 今天检查自己TikTok账号所在地区设置，若英国区则准备切换账号策略；调整内容发布频率以应对广告增多</p>
 </blockquote>
-<h3 id="linux新漏洞补丁">Linux新漏洞补丁</h3>
-<p><strong>来源</strong>：Ars Technica | Linux两周内第二个高危漏洞已出补丁</p>
-<p>使用Linux服务器或云主机的用户，今天不更新可能被攻击，涉及隐私和站点安全</p>
+<h3 id="韩拟征ai税发红利">韩拟征AI税发红利</h3>
+<p><strong>来源</strong>：Bloomberg | 韩国提议对AI利润征税并向公民分红</p>
+<p>全球首次AI红利提案，若实施可能增加半导体厂商税负；但红利发放可能刺激消费，利好跨境电商卖家。讨论阶段，1年内落地概率低</p>
 <blockquote>
-<p>🎯 今天在终端执行 sudo apt update &amp;&amp; sudo apt upgrade</p>
-</blockquote>
-<h3 id="tiktok英国推无广告订阅">TikTok英国推无广告订阅</h3>
-<p><strong>来源</strong>：BBC | TikTok英国测试3.99英镑无广告版</p>
-<p>平台强化付费模式，免费版广告增多，间接挤压创作者收益，今天可看自己账号广告频率</p>
-<blockquote>
-<p>🎯 今天在TikTok设置页查看“广告偏好”选项</p>
+<p>🎯 今天Google搜索‘AI dividend South Korea proposal’阅读原文，关注后续立法进展</p>
 </blockquote>
 <hr>
 <h2 id="ai-工具实战">AI 工具实战</h2>
-<h3 id="goose免费替代">Goose免费替代</h3>
-<p><strong>来源</strong>：VentureBeat | 免费开源的AI编码代理，功能对标每月200美元的Claude Code。</p>
-<p>零成本体验AI自动写代码、调试、部署，无需翻墙。GitHub上直接下载，适合预算紧张的技术学习者。</p>
+<h3 id="chatgpt用户破8亿">ChatGPT用户破8亿</h3>
+<p><strong>来源</strong>：LinkedIn | ChatGPT Q1 2026用户达8亿，35岁以上增速最快。</p>
+<p>用户基数越大，AI工具生态越成熟，你免费可用的插件模板变多，不必担心学了就过时。</p>
 <blockquote>
-<p>🎯 打开GitHub→搜索Goose→下载安装→给一个简单任务测试自动生成代码。</p>
+<p>🎯 打开ChatGPT官网→注册免费账号→试试搜索“每周工作计划模板”看输出效果。</p>
 </blockquote>
-<h3 id="chatgpt用户结构">ChatGPT用户结构</h3>
-<p><strong>来源</strong>：MIT Technology Review | 2026年初ChatGPT增长最快的是35岁以上用户，性别比例更平衡。</p>
-<p>说明AI工具正被非技术背景人群接受。你可以利用这个趋势，用ChatGPT帮身边人（如长辈）解决生活问题，比如写计划或查资料。</p>
+<h3 id="goose免费替代claude-code">Goose免费替代Claude Code</h3>
+<p><strong>来源</strong>：TechCrunch | Goose是免费AI编程助手，功能对标月费200美元的Claude Code。</p>
+<p>零成本入门AI编程辅助，直接省下200美元/月，写代码、debug、部署一条龙。</p>
 <blockquote>
-<p>🎯 打开ChatGPT免费版→随便问一个生活问题（如“帮我写个周末健身计划”）→看看输出质量。</p>
+<p>🎯 打开GitHub搜“goose-ai”→下载桌面版→用自然语言说“帮我生成一个Python爬虫”试试。</p>
 </blockquote>
-<h3 id="openai学生联网">OpenAI学生联网</h3>
-<p><strong>来源</strong>：OpenAI官网 | OpenAI校园网络计划：学生社团可申请使用AI工具。</p>
-<p>如果你是学生或能联系到学生社团，可以免费获得AI工具使用权。校内社群运营低成本，且能积累经验。</p>
+<h3 id="ai让照片变3d世界">AI让照片变3D世界</h3>
+<p><strong>来源</strong>：World Labs | World Labs推出AI工具，把单张照片一键转为可交互3D场景。</p>
+<p>免费且国内可访问，做产品展示、室内设计、游戏场景直接省上千元建模费。</p>
 <blockquote>
-<p>🎯 打开OpenAI Campus Network官网→填写社团兴趣表→等待审核通知。</p>
+<p>🎯 打开worldlabs.ai→点击“Upload Photo”→上传一张室内照片→等待30秒得到3D模型。</p>
 </blockquote>
-<h3 id="ai版google金融">AI版Google金融</h3>
-<p><strong>来源</strong>：Google Finance | AI增强的Google Finance在欧洲上线，可智能解读金融数据。</p>
-<p>免费访问，对投资小白很友好。用它分析美股和欧洲公司趋势，0成本获取投资参考。</p>
+<h3 id="小模型qwen35下载量288万">小模型Qwen3.5下载量288万</h3>
+<p><strong>来源</strong>：Hugging Face | 阿里Qwen3.5小模型月下载288万次，可在老旧电脑上本地跑。</p>
+<p>不需要GPU，2015年后的笔记本就能跑，完全免费离线可用，隐私安全。</p>
 <blockquote>
-<p>🎯 打开Google Finance→进入AI体验版→搜索一只股票→看AI生成的摘要。</p>
+<p>🎯 打开huggingface.co搜索Qwen3.5-0.6B→点击“Use in Transformers”→复制代码在本地运行。</p>
+</blockquote>
+<h3 id="google-finance-ai扩展到欧洲">Google Finance AI扩展到欧洲</h3>
+<p><strong>来源</strong>：Google | Google Finance新增AI功能，用自然语言问股票行情和财报解读。</p>
+<p>免费无门槛，不用翻墙，直接访问Google Finance，小白也能轻松看财报。</p>
+<blockquote>
+<p>🎯 打开google.com/finance→点击AI图标→输入“特斯拉2026Q1利润多少”即可。</p>
 </blockquote>
 <hr>
+<h2 id="效率工具与自动化">效率工具与自动化</h2>
+<h3 id="ai写代码新风险">AI写代码新风险</h3>
+<p><strong>来源</strong>：Reddit | 警惕Git仓库内的恶意软件伪装成代码提交</p>
+<p>每天检查仓库可能浪费10分钟，一场误判能浪费半天。注意审查提交来源可节省灾难性返工时间。</p>
+<blockquote>
+<p>🎯 打开你的Git仓库→检查最近3次提交→观察来自陌生人的pr→拒绝不信任的合并</p>
+</blockquote>
+<h3 id="免费课程合并">免费课程合并</h3>
+<p><strong>来源</strong>：Coursera+Udemy | Coursera和Udemy合并为一个平台，可用一门订阅</p>
+<p>以前需要两个平台找课，月费加起来40美元。现在平台统一，节省筛选时间约2小时/周。</p>
+<blockquote>
+<p>🎯 打开Coursera官网→点击“课程”标签→对比原先要单独开户的课程→免费试用新联合账户</p>
+</blockquote>
+<h3 id="ai防追踪广告">AI防追踪广告</h3>
+<p><strong>来源</strong>：GitHub | They Live主题Adblocker自动屏蔽追踪器</p>
+<p>每天被追踪弹窗打断5-8次，每次浪费30秒。安装后一月省约1小时，且完全免费。</p>
+<blockquote>
+<p>🎯 打开GitHub→搜索“They Live Adblocker”→安装浏览器扩展→重启Chrome/Edge→浏览网页观察自动屏蔽</p>
+</blockquote>
+<hr>
+<h2 id="海外信息差">海外信息差</h2>
+<h3 id="非洲新闻创作者">非洲新闻创作者</h3>
+<p><strong>来源</strong>：TikTok+南非 | 非洲草根用短视频做严肃新闻，国内空白</p>
+<p>模式可搬运：用国内平台剪辑海外新闻，靠流量分成和广告赚钱，启动零成本</p>
+<blockquote>
+<p>🎯 去小红书搜‘非洲新闻搬运’看有没有人做，或自己试剪一条TikTok视频</p>
+</blockquote>
+<h3 id="ai客服挽留客户">AI客服挽留客户</h3>
+<p><strong>来源</strong>：Hacker News+美国 | 用AI自动回复愤怒投诉邮件减少流失</p>
+<p>国内客服外包成本高，用大模型API写回复模板，可卖SaaS或做代运营</p>
+<blockquote>
+<p>🎯 去淘宝搜‘AI客服回复’看竞争，或免费注册Coze测一个投诉邮件回复机器人</p>
+</blockquote>
+<h3 id="ai幻觉检测服务">AI幻觉检测服务</h3>
+<p><strong>来源</strong>：The Guardian+英国 | 政府用AI出丑，企业需要检测幻觉工具</p>
+<p>国内AI文档审核需求大但工具少，可用开源模型封装成浏览器插件或Word插件</p>
+<blockquote>
+<p>🎯 去知乎搜‘AI幻觉检测工具’看需求，或自己用GPT写一条‘可能错误’标记规则</p>
+</blockquote>
+<h3 id="spec驱动开发">Spec驱动开发</h3>
+<p><strong>来源</strong>：Notion+美国 | Notion团队用规格文档自动生成代码</p>
+<p>国内团队沟通成本高，可用飞书+Coze搭类似工作流卖给小团队</p>
+<blockquote>
+<p>🎯 去飞书搜索‘自动化代码生成’看竞品，或自己用Notion AI写一个PR模板</p>
+</blockquote>
+<hr>
+<h2 id="套利雷达">套利雷达</h2>
+<h3 id="youtube搜索抱怨">YouTube搜索抱怨</h3>
+<p><strong>来源</strong>：Reddit/r/SideProject | YouTube搜索极差，需更好视频搜索引擎。</p>
+<p>普通开发者可用公开API和爬虫技能快速构建，门槛低、无需资金。</p>
+<blockquote>
+<p>🎯 打开YouTube API文档→申请免费API密钥→搜索特定长尾关键词（如“tutorial 2024”），记录50个视频信息对比搜索结果相关性</p>
+</blockquote>
+<h3 id="电子签亚太合规求助">电子签亚太合规求助</h3>
+<p><strong>来源</strong>：Reddit/r/SaaS | 新加坡、马来西亚等地电子签法规混乱，无人清晰解答。</p>
+<p>内容创作型机会：只需搜索、整理公开法规即可输出价值，零成本。</p>
+<blockquote>
+<p>🎯 打开新加坡政府电子签官网→复制合规要求文档→用Notion或飞书整理成对比表格，发布到LinkedIn/Reddit亚太社群</p>
+</blockquote>
+<h3 id="无聊后台自动化才是真需求">无聊后台自动化才是真需求</h3>
+<p><strong>来源</strong>：Reddit/r/Entrepreneur | 小企业缺发票催款、提醒等后台自动化工具。</p>
+<p>工具开发门槛低，API集成即可，无需AI或复杂算法。</p>
+<blockquote>
+<p>🎯 搜索“invoice reminder API”找到SendGrid免费层→注册账号→用Python写一个流程：读取CSV→发邮件提醒付款→上传Github公开</p>
+</blockquote>
+<h3 id="us外派税务抱怨">US外派税务抱怨</h3>
+<p><strong>来源</strong>：Reddit/r/ExpatFinance | US外派人士对DIY报税方案不满，需要专业服务推荐或指南。</p>
+<p>内容或聚合平台机会：收集专家回答或服务列表，无需编程能力。</p>
+<blockquote>
+<p>🎯 打开Reddit r/USExpatTaxes→用站内搜索搜“best service 2026”→记录所有回复中的服务名前三名为一篇清单，发回原论坛</p>
+</blockquote>
+<hr>
+<h2 id="出海工具链">出海工具链</h2>
+<h3 id="快手拆可灵ai">快手拆可灵AI</h3>
+<p><strong>来源</strong>：36氪/中国 | 快手可灵AI视频生成工具拆分独立融资</p>
+<p>可灵是目前中文AI视频生成效果较好的工具。独立后可能开放API，个人开发者可用其生成素材，低成本出海做短视频内容。启动成本0元，需翻墙访问。</p>
+<blockquote>
+<p>🎯 注册可灵AI官网（klingai.com），用国内手机号，免费生成5秒AI视频测试效果。</p>
+</blockquote>
+<h3 id="walulu充电管家">Walulu充电管家</h3>
+<p><strong>来源</strong>：36氪/中国 | AI消费硬件Walulu获数千万融资，主打充电管理</p>
+<p>显示AI+消费电子在国内有市场。个人卖家可在Shopee/Lazada跟卖同类充电配件，选品思路：找AI噱头的日用硬件，毛利率可达40%。</p>
+<blockquote>
+<p>🎯 打开Shopee印尼站（shopee.co.id），搜索“AI charger”，分析前10名卖家定价和差评。</p>
+</blockquote>
+<h3 id="core非洲创新基金">Core非洲创新基金</h3>
+<p><strong>来源</strong>：Core DAO/非洲 | Core DAO设500万美元基金扶持非洲Web3项目</p>
+<p>非洲市场web3开发需求大但竞争少。有前端开发基础的，可申请小额资助或接当地外包。启动成本0元，需英语沟通。</p>
+<blockquote>
+<p>🎯 访问Core DAO官网（coredao.org），找到“African Innovation Fund”页面，看申请截止日期。</p>
+</blockquote>
+<h3 id="omnicard印度增长">OmniCard印度增长</h3>
+<p><strong>来源</strong>：e27/印度 | 印度企业支付平台OmniCard获关注，解决费用管理痛点</p>
+<p>印度企业数字化支出管理是刚需。会写代码的人可开发轻量级费用追踪脚本或插件，卖给中小企业。启动成本0元，门槛低。</p>
+<blockquote>
+<p>🎯 在印度自由职业平台Freelancer（freelancer.in）搜索“expense tracking”，看有多少bid和预算。</p>
+</blockquote>
+<h3 id="segura获a16z领投">Segura获a16z领投</h3>
+<p><strong>来源</strong>：LatamList/巴西 | 巴西保险科技Segura获800万美元种子轮</p>
+<p>拉美保险数字化刚起步。个人可做保险比价/导购网站（affiliate模式），用免费建站工具推广，每月赚佣金。</p>
+<blockquote>
+<p>🎯 注册Hotmart（hotmart.com），搜索“insurance”类产品，查看佣金比例。</p>
+</blockquote>
+<hr>
+]]></content:encoded></item><item><title>自动化逃税催款</title><link>https://radar.huadongpeng.com/posts/arbitrage-radar/deep-dive-2026-05-12-1320/</link><pubDate>Tue, 12 May 2026 13:20:42 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/arbitrage-radar/deep-dive-2026-05-12-1320/</guid><description>&lt;h2 id="核心洞察"&gt;核心洞察&lt;/h2&gt;
+&lt;p&gt;这条机会来自Reddit上一条抱怨：“小企业失去大量时间在无聊的行政工作：发票催款、付款提醒……”评论区一片附和。为什么别人没赚到这个钱？因为大多数独立开发者追求“性感玩具”，觉得后台自动化太low。但实际上，这类工具需求明确、开发逻辑简单、替代门槛极低——现有方案（如QuickBooks）功能过重且价格高，小老板只需要一个能自动发邮件的定时脚本。&lt;strong&gt;这是信息差+行动差：大家知道但懒得做。&lt;/strong&gt;&lt;/p&gt;
+&lt;h2 id="执行清单-day1-7"&gt;执行清单 Day1-7&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Day1（周一）：&lt;/strong&gt; 打开Reddit r/SmallBusiness→搜索“invoice reminder”和“payment follow up”→截图点赞超过20的帖子，记录10条具体抱怨原文（复制英文）。
+&lt;strong&gt;Day2（周二）：&lt;/strong&gt; 注册Twilio SendGrid免费层（sendgrid.com）→确认每月免费100封邮件→安装Python（已有则跳过）→执行 &lt;code&gt;pip install sendgrid&lt;/code&gt; 验证成功。
+&lt;strong&gt;Day3（周三）：&lt;/strong&gt; 写核心代码：一个Python函数 &lt;code&gt;def send_reminder(email_to, amount, due_date):&lt;/code&gt;。代码可以直接复制：[Github gist链接] 包含：从CSV读取数据、替换模板、调用SendGrid API。
+&lt;strong&gt;Day4（周四）：&lt;/strong&gt; 写第二个函数 &lt;code&gt;def list_unpaid(csv_path):&lt;/code&gt; 判断due_date是否已过、标记未付。测试用自己邮箱模拟数据（示例CSV：客户名、金额、到期日）。
+&lt;strong&gt;Day5（周五）：&lt;/strong&gt; 创建Web界面（Flask / Streamlit均免费）。Streamlit最快：&lt;code&gt;pip install streamlit&lt;/code&gt;→一个上传CSV的页面+点击“生成提醒”按钮。本地上支持运行：&lt;code&gt;streamlit run app.py&lt;/code&gt;。
+&lt;strong&gt;Day6（周六）：&lt;/strong&gt; 录制一段5分钟操作视频：演示上传CSV、点击按钮、看到邮件发送成功。用OBS免费录制，上传到B站（标题：《Python自动发催款邮件，小企业主省2小时》）。
+&lt;strong&gt;Day7（周日）：&lt;/strong&gt; 把代码和视频链接同时发布到：a) Reddit r/SmallBusiness 正文：附Github仓库+说明“免费工具，源代码开源”；b) V2EX“分享创造”板块；c)微信群“小企业工具”（搜索加入）。预期当天10-20次访问，2-5人询问细节。&lt;/p&gt;
+&lt;h2 id="工具清单"&gt;工具清单&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;SendGrid&lt;/strong&gt;：sendgrid.com，免费100封/天，国内可直连访问&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Python 3.9+&lt;/strong&gt;：python.org，免费&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Streamlit&lt;/strong&gt;：streamlit.io，免费，国内可访问&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;VS Code&lt;/strong&gt;（可选）：code.visualstudio.com，免费&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;GitHub&lt;/strong&gt;：github.com，免费仓库+Pages&lt;/li&gt;
+&lt;li&gt;无需境外支付、无需VPN、无需额外硬件。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="收益预估"&gt;收益预估&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;保守首月&lt;/strong&gt;：300元。来自B站广告分成（视频播放约5000次）+按需定制咨询（200元/次，1-2单）。计算逻辑：B站创作激励约20元/1000播放，播放量保守5000。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;中等首月&lt;/strong&gt;：1200元。视频播放过万（200元）+定制咨询5单（1000元）+捐赠渠道（如爱发电，约0）。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;乐观首月&lt;/strong&gt;：3000元+。视频被大V转发（播放5万+）+付费插件版（Streamlit可发布成SaaS，当前纯开源引流），定制咨询15单（3000元）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="3个最容易踩的坑"&gt;3个最容易踩的坑&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;坑：邮件被当作垃圾邮件。&lt;/strong&gt; 避免方法：在SendGrid控制台开启DKIM/SPF记录，免费配置。发送时包含取消订阅链接。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;坑：CSV格式不标准。&lt;/strong&gt; 避免：在Streamlit界面上传后展示预览，允许用户调整列名映射（提供默认匹配）。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;坑：认为需要UI才可销售。&lt;/strong&gt; 实际上只要发送前确认按钮即可，第一个版本不需要数据库。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id="延伸资源"&gt;延伸资源&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;B站UP主【Python老刘】《零基础用Streamlit做Web应用》系列（免费搜）。&lt;/li&gt;
+&lt;li&gt;B站UP主【代码真香】《SendGrid API发邮件教程》（带Github代码，免费）。&lt;/li&gt;
+&lt;li&gt;免费电子书《Automate the Boring Stuff with Python》官方中文翻译版（下载地址：https://automatetheboringstuff.com/2e/chapter46/）。&lt;/li&gt;
+&lt;/ol&gt;</description><content:encoded><![CDATA[<h2 id="核心洞察">核心洞察</h2>
+<p>这条机会来自Reddit上一条抱怨：“小企业失去大量时间在无聊的行政工作：发票催款、付款提醒……”评论区一片附和。为什么别人没赚到这个钱？因为大多数独立开发者追求“性感玩具”，觉得后台自动化太low。但实际上，这类工具需求明确、开发逻辑简单、替代门槛极低——现有方案（如QuickBooks）功能过重且价格高，小老板只需要一个能自动发邮件的定时脚本。<strong>这是信息差+行动差：大家知道但懒得做。</strong></p>
+<h2 id="执行清单-day1-7">执行清单 Day1-7</h2>
+<p><strong>Day1（周一）：</strong> 打开Reddit r/SmallBusiness→搜索“invoice reminder”和“payment follow up”→截图点赞超过20的帖子，记录10条具体抱怨原文（复制英文）。
+<strong>Day2（周二）：</strong> 注册Twilio SendGrid免费层（sendgrid.com）→确认每月免费100封邮件→安装Python（已有则跳过）→执行 <code>pip install sendgrid</code> 验证成功。
+<strong>Day3（周三）：</strong> 写核心代码：一个Python函数 <code>def send_reminder(email_to, amount, due_date):</code>。代码可以直接复制：[Github gist链接] 包含：从CSV读取数据、替换模板、调用SendGrid API。
+<strong>Day4（周四）：</strong> 写第二个函数 <code>def list_unpaid(csv_path):</code> 判断due_date是否已过、标记未付。测试用自己邮箱模拟数据（示例CSV：客户名、金额、到期日）。
+<strong>Day5（周五）：</strong> 创建Web界面（Flask / Streamlit均免费）。Streamlit最快：<code>pip install streamlit</code>→一个上传CSV的页面+点击“生成提醒”按钮。本地上支持运行：<code>streamlit run app.py</code>。
+<strong>Day6（周六）：</strong> 录制一段5分钟操作视频：演示上传CSV、点击按钮、看到邮件发送成功。用OBS免费录制，上传到B站（标题：《Python自动发催款邮件，小企业主省2小时》）。
+<strong>Day7（周日）：</strong> 把代码和视频链接同时发布到：a) Reddit r/SmallBusiness 正文：附Github仓库+说明“免费工具，源代码开源”；b) V2EX“分享创造”板块；c)微信群“小企业工具”（搜索加入）。预期当天10-20次访问，2-5人询问细节。</p>
+<h2 id="工具清单">工具清单</h2>
+<ul>
+<li><strong>SendGrid</strong>：sendgrid.com，免费100封/天，国内可直连访问</li>
+<li><strong>Python 3.9+</strong>：python.org，免费</li>
+<li><strong>Streamlit</strong>：streamlit.io，免费，国内可访问</li>
+<li><strong>VS Code</strong>（可选）：code.visualstudio.com，免费</li>
+<li><strong>GitHub</strong>：github.com，免费仓库+Pages</li>
+<li>无需境外支付、无需VPN、无需额外硬件。</li>
+</ul>
+<h2 id="收益预估">收益预估</h2>
+<ul>
+<li><strong>保守首月</strong>：300元。来自B站广告分成（视频播放约5000次）+按需定制咨询（200元/次，1-2单）。计算逻辑：B站创作激励约20元/1000播放，播放量保守5000。</li>
+<li><strong>中等首月</strong>：1200元。视频播放过万（200元）+定制咨询5单（1000元）+捐赠渠道（如爱发电，约0）。</li>
+<li><strong>乐观首月</strong>：3000元+。视频被大V转发（播放5万+）+付费插件版（Streamlit可发布成SaaS，当前纯开源引流），定制咨询15单（3000元）。</li>
+</ul>
+<h2 id="3个最容易踩的坑">3个最容易踩的坑</h2>
+<ol>
+<li><strong>坑：邮件被当作垃圾邮件。</strong> 避免方法：在SendGrid控制台开启DKIM/SPF记录，免费配置。发送时包含取消订阅链接。</li>
+<li><strong>坑：CSV格式不标准。</strong> 避免：在Streamlit界面上传后展示预览，允许用户调整列名映射（提供默认匹配）。</li>
+<li><strong>坑：认为需要UI才可销售。</strong> 实际上只要发送前确认按钮即可，第一个版本不需要数据库。</li>
+</ol>
+<h2 id="延伸资源">延伸资源</h2>
+<ol>
+<li>B站UP主【Python老刘】《零基础用Streamlit做Web应用》系列（免费搜）。</li>
+<li>B站UP主【代码真香】《SendGrid API发邮件教程》（带Github代码，免费）。</li>
+<li>免费电子书《Automate the Boring Stuff with Python》官方中文翻译版（下载地址：https://automatetheboringstuff.com/2e/chapter46/）。</li>
+</ol>
+]]></content:encoded></item><item><title>AI辅助写代码</title><link>https://radar.huadongpeng.com/posts/developer-goldmine/deep-dive-2026-05-12-1320/</link><pubDate>Tue, 12 May 2026 13:20:24 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/developer-goldmine/deep-dive-2026-05-12-1320/</guid><description>&lt;h2 id="效率痛点每天花2小时重构ai生成的代码"&gt;效率痛点：每天花2小时重构AI生成的代码&lt;/h2&gt;
+&lt;p&gt;很多28-38岁的技术人（尤其是非大厂背景）依赖AI写代码，但常常陷入“AI给我垃圾代码，我花1小时调试，再花1小时重写”的循环。&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;场景：用AI生成的Python脚本处理数据，结果变量名乱、逻辑冗余、不处理边界情况。&lt;/li&gt;
+&lt;li&gt;代价：每天2小时×22个工作日=44小时/月，换算成外包单价（50元/小时）相当于2200元/月的隐形损失。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="自动化提效方案用ai写代码后立刻用脚本自查"&gt;自动化/提效方案：用AI写代码后立刻用脚本自查&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;工具链架构&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;GitHub Copilot（免费试用）生成代码草稿&lt;/li&gt;
+&lt;li&gt;pylint + black（免费）自动检查和格式化&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;完整步骤&lt;/strong&gt;：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;安装依赖&lt;/strong&gt;（Windows/macOS同理）：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;pip install pylint black
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;写一个检查脚本&lt;/strong&gt;，保存为 &lt;code&gt;check_ai_code.py&lt;/code&gt;：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;import&lt;/span&gt; subprocess
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;import&lt;/span&gt; sys
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;import&lt;/span&gt; os
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;main&lt;/span&gt;(file_path):
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;&amp;#34;&amp;#34;对参数中的Python文件执行pylint和black检查&amp;#34;&amp;#34;&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;if&lt;/span&gt; &lt;span style="color:#f92672"&gt;not&lt;/span&gt; os&lt;span style="color:#f92672"&gt;.&lt;/span&gt;path&lt;span style="color:#f92672"&gt;.&lt;/span&gt;exists(file_path):
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; print(&lt;span style="color:#e6db74"&gt;f&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;文件 &lt;/span&gt;&lt;span style="color:#e6db74"&gt;{&lt;/span&gt;file_path&lt;span style="color:#e6db74"&gt;}&lt;/span&gt;&lt;span style="color:#e6db74"&gt; 不存在&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;return&lt;/span&gt; &lt;span style="color:#ae81ff"&gt;1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;# 运行black格式化&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; print(&lt;span style="color:#e6db74"&gt;&amp;#34;格式化代码中 ...&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; subprocess&lt;span style="color:#f92672"&gt;.&lt;/span&gt;run([&lt;span style="color:#e6db74"&gt;&amp;#34;black&amp;#34;&lt;/span&gt;, file_path], check&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#66d9ef"&gt;True&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;# 运行pylint检查&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; print(&lt;span style="color:#e6db74"&gt;&amp;#34;代码风格检查中 ...&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; result &lt;span style="color:#f92672"&gt;=&lt;/span&gt; subprocess&lt;span style="color:#f92672"&gt;.&lt;/span&gt;run([&lt;span style="color:#e6db74"&gt;&amp;#34;pylint&amp;#34;&lt;/span&gt;, file_path], capture_output&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#66d9ef"&gt;True&lt;/span&gt;, text&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#66d9ef"&gt;True&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;if&lt;/span&gt; result&lt;span style="color:#f92672"&gt;.&lt;/span&gt;returncode &lt;span style="color:#f92672"&gt;==&lt;/span&gt; &lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; print(&lt;span style="color:#e6db74"&gt;&amp;#34;代码质量通过！&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;else&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; print(&lt;span style="color:#e6db74"&gt;&amp;#34;发现问题，建议修改后重新检查&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; print(result&lt;span style="color:#f92672"&gt;.&lt;/span&gt;stdout[:&lt;span style="color:#ae81ff"&gt;500&lt;/span&gt;]) &lt;span style="color:#75715e"&gt;# 只看前500字符&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;if&lt;/span&gt; __name__ &lt;span style="color:#f92672"&gt;==&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;__main__&amp;#34;&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;if&lt;/span&gt; len(sys&lt;span style="color:#f92672"&gt;.&lt;/span&gt;argv) &lt;span style="color:#f92672"&gt;!=&lt;/span&gt; &lt;span style="color:#ae81ff"&gt;2&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; print(&lt;span style="color:#e6db74"&gt;&amp;#34;用法: python check_ai_code.py &amp;lt;你的代码文件.py&amp;gt;&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; sys&lt;span style="color:#f92672"&gt;.&lt;/span&gt;exit(&lt;span style="color:#ae81ff"&gt;1&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; sys&lt;span style="color:#f92672"&gt;.&lt;/span&gt;exit(main(sys&lt;span style="color:#f92672"&gt;.&lt;/span&gt;argv[&lt;span style="color:#ae81ff"&gt;1&lt;/span&gt;]))
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;首次运行&lt;/strong&gt;：&lt;/p&gt;</description><content:encoded><![CDATA[<h2 id="效率痛点每天花2小时重构ai生成的代码">效率痛点：每天花2小时重构AI生成的代码</h2>
+<p>很多28-38岁的技术人（尤其是非大厂背景）依赖AI写代码，但常常陷入“AI给我垃圾代码，我花1小时调试，再花1小时重写”的循环。</p>
+<ul>
+<li>场景：用AI生成的Python脚本处理数据，结果变量名乱、逻辑冗余、不处理边界情况。</li>
+<li>代价：每天2小时×22个工作日=44小时/月，换算成外包单价（50元/小时）相当于2200元/月的隐形损失。</li>
+</ul>
+<h2 id="自动化提效方案用ai写代码后立刻用脚本自查">自动化/提效方案：用AI写代码后立刻用脚本自查</h2>
+<p><strong>工具链架构</strong>：</p>
+<ul>
+<li>GitHub Copilot（免费试用）生成代码草稿</li>
+<li>pylint + black（免费）自动检查和格式化</li>
+</ul>
+<p><strong>完整步骤</strong>：</p>
+<ol>
+<li>
+<p><strong>安装依赖</strong>（Windows/macOS同理）：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>pip install pylint black
+</span></span></code></pre></div></li>
+<li>
+<p><strong>写一个检查脚本</strong>，保存为 <code>check_ai_code.py</code>：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> subprocess
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> sys
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> os
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">main</span>(file_path):
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#34;&#34;&#34;对参数中的Python文件执行pylint和black检查&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#f92672">not</span> os<span style="color:#f92672">.</span>path<span style="color:#f92672">.</span>exists(file_path):
+</span></span><span style="display:flex;"><span>        print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;文件 </span><span style="color:#e6db74">{</span>file_path<span style="color:#e6db74">}</span><span style="color:#e6db74"> 不存在&#34;</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 运行black格式化</span>
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">&#34;格式化代码中 ...&#34;</span>)
+</span></span><span style="display:flex;"><span>    subprocess<span style="color:#f92672">.</span>run([<span style="color:#e6db74">&#34;black&#34;</span>, file_path], check<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 运行pylint检查</span>
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">&#34;代码风格检查中 ...&#34;</span>)
+</span></span><span style="display:flex;"><span>    result <span style="color:#f92672">=</span> subprocess<span style="color:#f92672">.</span>run([<span style="color:#e6db74">&#34;pylint&#34;</span>, file_path], capture_output<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>, text<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> result<span style="color:#f92672">.</span>returncode <span style="color:#f92672">==</span> <span style="color:#ae81ff">0</span>:
+</span></span><span style="display:flex;"><span>        print(<span style="color:#e6db74">&#34;代码质量通过！&#34;</span>)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">else</span>:
+</span></span><span style="display:flex;"><span>        print(<span style="color:#e6db74">&#34;发现问题，建议修改后重新检查&#34;</span>)
+</span></span><span style="display:flex;"><span>        print(result<span style="color:#f92672">.</span>stdout[:<span style="color:#ae81ff">500</span>])  <span style="color:#75715e"># 只看前500字符</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;__main__&#34;</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> len(sys<span style="color:#f92672">.</span>argv) <span style="color:#f92672">!=</span> <span style="color:#ae81ff">2</span>:
+</span></span><span style="display:flex;"><span>        print(<span style="color:#e6db74">&#34;用法: python check_ai_code.py &lt;你的代码文件.py&gt;&#34;</span>)
+</span></span><span style="display:flex;"><span>        sys<span style="color:#f92672">.</span>exit(<span style="color:#ae81ff">1</span>)
+</span></span><span style="display:flex;"><span>    sys<span style="color:#f92672">.</span>exit(main(sys<span style="color:#f92672">.</span>argv[<span style="color:#ae81ff">1</span>]))
+</span></span></code></pre></div></li>
+<li>
+<p><strong>首次运行</strong>：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>python check_ai_code.py my_ai_generated_script.py
+</span></span></code></pre></div><ul>
+<li>输出“代码质量通过”表示AI生成的代码可直接用。</li>
+<li>输出pylint报错则逐行修改（常见：缺少注释、变量名过短）。</li>
+</ul>
+</li>
+</ol>
+<h2 id="效果量化">效果量化</h2>
+<ul>
+<li>优化前：AI生成代码后人工审查和重写2小时/次×1次/天=2小时/天=44小时/月</li>
+<li>优化后：运行脚本2分钟/次×1次/天=0.033小时/天=0.73小时/月</li>
+<li>节省：43.27小时/月=如果用来接简单外包值2163元/月</li>
+</ul>
+<h2 id="进阶技巧3个">进阶技巧（3个）</h2>
+<ol>
+<li><strong>批量检查所有历史文件</strong>：
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#66d9ef">for</span> f in *.py; <span style="color:#66d9ef">do</span> python check_ai_code.py <span style="color:#e6db74">&#34;</span>$f<span style="color:#e6db74">&#34;</span>; <span style="color:#66d9ef">done</span>
+</span></span></code></pre></div></li>
+<li><strong>集成到Git提交钩子</strong>：
+在项目根目录创建 <code>.git/hooks/pre-commit</code> 文件，内容为 <code>python check_ai_code.py %1</code>，下次commit自动检查。</li>
+<li><strong>自定义pylint规则</strong>：
+创建 <code>.pylintrc</code> 文件，添加 <code>disable=C0103</code> 忽略变量名短警告，减少误报。</li>
+</ol>
+<h2 id="常见排障3个">常见排障（3个）</h2>
+<ol>
+<li>
+<p><strong>问题：<code>pylint</code>或<code>black</code>命令找不到</strong></p>
+<ul>
+<li>原因：pip安装路径不在PATH</li>
+<li>解决：Windows用 <code>python -m pylint</code>；macOS/Linux用 <code>python3 -m pylint</code></li>
+</ul>
+</li>
+<li>
+<p><strong>问题：AI生成的代码包含中文注释，black格式化失败</strong></p>
+<ul>
+<li>原因：black默认使用UTF-8，但文件编码不匹配</li>
+<li>解决：文件开头加 <code># -*- coding: utf-8 -*-</code></li>
+</ul>
+</li>
+<li>
+<p><strong>问题：pylint报错太多看不懂</strong></p>
+<ul>
+<li>解决：运行 <code>pylint --generate-rcfile &gt; .pylintrc</code>，编辑配置关闭不需要的检查，如 <code>disable=C0114, C0115, C0116</code></li>
+</ul>
+</li>
+</ol>
+<p><strong>启动成本</strong>：0元
+<strong>时间投入</strong>：首次设置15分钟，之后每次2分钟。
+<strong>预期首周收益</strong>：按每周减少6小时重复劳动算，省300元（按时薪50元计）。</p>
+]]></content:encoded></item><item><title>搬运非洲新闻</title><link>https://radar.huadongpeng.com/posts/cross-border-insights/deep-dive-2026-05-12-1320/</link><pubDate>Tue, 12 May 2026 13:20:24 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/cross-border-insights/deep-dive-2026-05-12-1320/</guid><description>&lt;h2 id="源头还原"&gt;源头还原&lt;/h2&gt;
+&lt;p&gt;什么产品/模式/服务？&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;南非TikTok创作者Amahle-Imvelo Jaxa等人用短视频做严肃新闻，解读南非和平部队等时政话题，粉丝数十万，靠流量分成和品牌赞助月入几千美元。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;为什么在海外成立？&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;文化：非洲年轻人习惯TikTok获取信息，传统媒体信任度低。&lt;/li&gt;
+&lt;li&gt;支付：TikTok创作者基金直接打款，无银行门槛。&lt;/li&gt;
+&lt;li&gt;习惯：短视频消费时长超越长文，新闻娱乐化。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;为什么国内没人做/做不好？&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;真壁垒：无（工具、平台全公开）。&lt;/li&gt;
+&lt;li&gt;伪壁垒：认知差——国内认为新闻搬运需资质，实际上搬运海外已公开的英文新闻并翻译剪辑，不涉及国内报道，合规风险极低。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="搬运路径"&gt;搬运路径&lt;/h2&gt;
+&lt;p&gt;最小搬运方案：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;选源：固定3个海外新闻网站（如BBC Africa、Al Jazeera English）+ 1个TikTok对标账号。&lt;/li&gt;
+&lt;li&gt;改编：原文摘要→口语化中文字幕→配上素材片段（无版权免费素材用Pexels）。&lt;/li&gt;
+&lt;li&gt;发布：抖音/快手/小红书，每天1条，标题带#海外新闻 #非洲。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;Day1-3验证清单：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Day1：搜‘非洲新闻’看头部账号数据和评论，记录10个高赞视频类型。&lt;/li&gt;
+&lt;li&gt;Day2：用剪映剪一条1分钟视频（引用BBC一条可公开报道），发小红书并投200曝光测试(免费流量)。&lt;/li&gt;
+&lt;li&gt;Day3：统计播放&amp;gt;500且互动&amp;gt;10则继续，否则换标题/话题标签。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;工具和平台：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;剪映（免费，国内可用）&lt;/li&gt;
+&lt;li&gt;Pexels（免费素材）&lt;/li&gt;
+&lt;li&gt;DeepL（翻译助手，免费版够用）&lt;/li&gt;
+&lt;li&gt;小红书（发布主阵地，流量倾斜知识类）&lt;/li&gt;
+&lt;li&gt;注册方法：剪映下载应用，Pexels直接网页搜，小红书注册后立刻发内容。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="变现路径"&gt;变现路径&lt;/h2&gt;
+&lt;p&gt;路径A：流量分成（启动0元，时间2小时/天，预期首周收益0-50元）&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;加入抖音中视频计划（满1000粉丝），小红书蒲公英平台（满500粉）。&lt;/li&gt;
+&lt;li&gt;预计30天见分成，月入300-800元。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;路径B：代写新闻解读（启动0元，时间3小时/天，预期首周收益0-100元）&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;在闲鱼挂‘海外新闻摘要’服务，50字/条5元，定向卖给自媒体写手。&lt;/li&gt;
+&lt;li&gt;直接私信同赛道号主报价。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="风险提示"&gt;风险提示&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;政策风险：不碰国内敏感话题，只做非洲、南美等地缘中立新闻，或纯科技/文化类。&lt;/li&gt;
+&lt;li&gt;平台规则：避免直接搬运长视频（超1分钟），剪辑成15-30秒短视频，加自己配音/字幕。&lt;/li&gt;
+&lt;li&gt;竞争风险：先做小领域（如东非+中国援助），占稳后再扩。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;你现在就能做的事&lt;/strong&gt;：打开小红书，搜‘非洲新闻’，看前10个笔记的点赞和评论，判断竞争程度。然后打开剪映，随便找一篇BBC Africa的短报道，剪成15秒视频，带中文字幕，搞定后私信我。&lt;/p&gt;</description><content:encoded><![CDATA[<h2 id="源头还原">源头还原</h2>
+<p>什么产品/模式/服务？</p>
+<ul>
+<li>南非TikTok创作者Amahle-Imvelo Jaxa等人用短视频做严肃新闻，解读南非和平部队等时政话题，粉丝数十万，靠流量分成和品牌赞助月入几千美元。</li>
+</ul>
+<p>为什么在海外成立？</p>
+<ol>
+<li>文化：非洲年轻人习惯TikTok获取信息，传统媒体信任度低。</li>
+<li>支付：TikTok创作者基金直接打款，无银行门槛。</li>
+<li>习惯：短视频消费时长超越长文，新闻娱乐化。</li>
+</ol>
+<p>为什么国内没人做/做不好？</p>
+<ul>
+<li>真壁垒：无（工具、平台全公开）。</li>
+<li>伪壁垒：认知差——国内认为新闻搬运需资质，实际上搬运海外已公开的英文新闻并翻译剪辑，不涉及国内报道，合规风险极低。</li>
+</ul>
+<h2 id="搬运路径">搬运路径</h2>
+<p>最小搬运方案：</p>
+<ol>
+<li>选源：固定3个海外新闻网站（如BBC Africa、Al Jazeera English）+ 1个TikTok对标账号。</li>
+<li>改编：原文摘要→口语化中文字幕→配上素材片段（无版权免费素材用Pexels）。</li>
+<li>发布：抖音/快手/小红书，每天1条，标题带#海外新闻 #非洲。</li>
+</ol>
+<p>Day1-3验证清单：</p>
+<ul>
+<li>Day1：搜‘非洲新闻’看头部账号数据和评论，记录10个高赞视频类型。</li>
+<li>Day2：用剪映剪一条1分钟视频（引用BBC一条可公开报道），发小红书并投200曝光测试(免费流量)。</li>
+<li>Day3：统计播放&gt;500且互动&gt;10则继续，否则换标题/话题标签。</li>
+</ul>
+<p>工具和平台：</p>
+<ul>
+<li>剪映（免费，国内可用）</li>
+<li>Pexels（免费素材）</li>
+<li>DeepL（翻译助手，免费版够用）</li>
+<li>小红书（发布主阵地，流量倾斜知识类）</li>
+<li>注册方法：剪映下载应用，Pexels直接网页搜，小红书注册后立刻发内容。</li>
+</ul>
+<h2 id="变现路径">变现路径</h2>
+<p>路径A：流量分成（启动0元，时间2小时/天，预期首周收益0-50元）</p>
+<ul>
+<li>加入抖音中视频计划（满1000粉丝），小红书蒲公英平台（满500粉）。</li>
+<li>预计30天见分成，月入300-800元。</li>
+</ul>
+<p>路径B：代写新闻解读（启动0元，时间3小时/天，预期首周收益0-100元）</p>
+<ul>
+<li>在闲鱼挂‘海外新闻摘要’服务，50字/条5元，定向卖给自媒体写手。</li>
+<li>直接私信同赛道号主报价。</li>
+</ul>
+<h2 id="风险提示">风险提示</h2>
+<ol>
+<li>政策风险：不碰国内敏感话题，只做非洲、南美等地缘中立新闻，或纯科技/文化类。</li>
+<li>平台规则：避免直接搬运长视频（超1分钟），剪辑成15-30秒短视频，加自己配音/字幕。</li>
+<li>竞争风险：先做小领域（如东非+中国援助），占稳后再扩。</li>
+</ol>
+<p><strong>你现在就能做的事</strong>：打开小红书，搜‘非洲新闻’，看前10个笔记的点赞和评论，判断竞争程度。然后打开剪映，随便找一篇BBC Africa的短报道，剪成15秒视频，带中文字幕，搞定后私信我。</p>
 ]]></content:encoded></item><item><title>关于 Easton</title><link>https://radar.huadongpeng.com/about/</link><pubDate>Thu, 01 Jan 2026 00:00:00 +0800</pubDate><guid>https://radar.huadongpeng.com/about/</guid><description>&lt;h2 id="easton-跨国智库"&gt;Easton 跨国智库&lt;/h2&gt;
 &lt;p&gt;每日自动化扫描 &lt;strong&gt;22 个海外权威信息源&lt;/strong&gt;（Reddit、Hacker News、MIT Tech Review、TechCrunch、The Verge、ArXiv、BBC、CNBC、Wired、Rest of World 等），通过 &lt;strong&gt;DeepSeek V4 Pro&lt;/strong&gt; 大模型进行中文深度解读，输出可执行情报。&lt;/p&gt;
 &lt;h3 id="内容体系"&gt;内容体系&lt;/h3&gt;
