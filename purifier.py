@@ -819,6 +819,17 @@ def deep_dive_worker(category_name, config):
         deep_dive_section = ""
         deep_dive_instruction = "本引擎不生成深度长文。deep_dive 字段必须填 null。"
 
+    if has_deep_dive:
+        deep_dive_schema = """
+      "deep_dive": {
+        "title": "深度长文标题（≤10中文字）",
+        "tg_summary": "一句话概述（≤50字）",
+        "content_md": "Markdown 正文（实操指南，含成本/时间/收益标注）"
+      }"""
+    else:
+        deep_dive_schema = """
+      "deep_dive": null"""
+
     full_prompt = f"""
 当前时间是 {bj_now().strftime("%Y年%m月%d日")}。
 请根据资料库内容，生成"快讯汇总（briefing）"（必填）。
@@ -836,8 +847,7 @@ def deep_dive_worker(category_name, config):
         "items": [
           {{"title": "条目标题", "source": "来源", "one_liner": "一句话摘要", "why_matters": "为什么重要", "zero_cost_angle": "零成本切入点"}}
         ]
-      }},
-      "deep_dive": null
+      }},{deep_dive_schema}
     }}
 
 {deep_dive_instruction}
