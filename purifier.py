@@ -541,7 +541,7 @@ def auto_search_context(query):
     """全网主动检索补充深度背景"""
     try:
         print(f"   🔍 正在全网主动检索: {query[:60]}...")
-        results = DDGS().text(query, max_results=10)
+        results = DDGS().text(query, max_results=20)
         context = ""
         for r in results:
             context += f"-[外网检索] {r['title']}: {r['body']}\n"
@@ -560,7 +560,7 @@ def auto_search_pain_points(query):
         ]
         context = ""
         for pq in pain_queries:
-            results = DDGS().text(pq, max_results=5)
+            results = DDGS().text(pq, max_results=10)
             for r in results:
                 context += f"-[痛点挖掘] {r['title']}: {r['body']}\n"
         return context
@@ -596,67 +596,79 @@ def _fetch_one_feed(url):
     with _FEED_CACHE_LOCK:
         _FEED_OK += 1
     entries = []
-    for entry in feed.entries[:10]:
+    for entry in feed.entries:
         desc = ""
         if hasattr(entry, 'description') and entry.description:
-            desc = re.sub('<[^<]+>', '', entry.description)[:500]
+            desc = re.sub('<[^<]+>', '', entry.description)
         elif hasattr(entry, 'summary') and entry.summary:
-            desc = re.sub('<[^<]+>', '', entry.summary)[:500]
-        entries.append(f"标题: {entry.title}\n摘要: {desc}")
+            desc = re.sub('<[^<]+>', '', entry.summary)
+        link = getattr(entry, 'link', '')
+        entries.append(f"标题: {entry.title}\n来源: {link}\n摘要: {desc}")
     with _FEED_CACHE_LOCK:
         _FEED_CACHE[url] = (time.time(), entries)
     return entries
 
 
 def fetch_and_augment(feeds):
-    """并行抓取 RSS + 触发全网主动搜索 + 痛点挖掘"""
+    """并行抓取 RSS + 多话题全网主动搜索 + 痛点挖掘"""
     raw_articles = []
-    top_title = ""
+    all_titles = []
 
-    with concurrent.futures.ThreadPoolExecutor(max_workers=4) as pool:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=6) as pool:
         results = list(pool.map(_fetch_one_feed, feeds))
 
     for entries in results:
         for text in entries:
             raw_articles.append(text)
-            if not top_title:
-                m = re.search(r'标题:\s*(.+)', text)
-                if m:
-                    top_title = m.group(1)[:80]
+            m = re.search(r'标题:\s*(.+)', text)
+            if m:
+                title = m.group(1).strip()[:80]
+                if title and title not in all_titles:
+                    all_titles.append(title)
 
     base_context = "\n".join(raw_articles)
 
-    # 并行执行三个独立搜索：背景补充 + 痛点挖掘 + 中国市场检查
+    # 对前 8 个最具代表性的标题做深度全网检索
+    target_titles = all_titles[:8]
     deep_context = ""
     pain_context = ""
-    if top_title:
-        with concurrent.futures.ThreadPoolExecutor(max_workers=3) as pool:
-            f_bg = pool.submit(auto_search_context, top_title)
-            f_pain = pool.submit(auto_search_pain_points, top_title)
-            f_cn = pool.submit(lambda: None)  # placeholder
-            try:
-                f_cn = pool.submit(
-                    lambda t=top_title: "\n".join(
-                        f"-[中国市场检查] {r['title']}: {r['body']}"
-                        for r in DDGS().text(f"{t} 中国 替代", max_results=2)
-                    )
-                )
-            except Exception:
-                pass
-            deep_context = f_bg.result() or ""
-            pain_context = f_pain.result() or ""
-            try:
-                cn_text = f_cn.result() or ""
-                if cn_text:
-                    pain_context += "\n" + cn_text
-            except Exception:
-                pass
+
+    if target_titles:
+        with concurrent.futures.ThreadPoolExecutor(max_workers=8) as pool:
+            futures = {}
+            for t in target_titles:
+                futures[pool.submit(auto_search_context, t)] = ("bg", t)
+                futures[pool.submit(auto_search_pain_points, t)] = ("pain", t)
+                try:
+                    futures[pool.submit(
+                        lambda q=t: "\n".join(
+                            f"-[中国市场关联] {r['title']}: {r['body']}"
+                            for r in DDGS().text(f"{q} 中国 替代 市场", max_results=5)
+                        )
+                    )] = ("cn", t)
+                except Exception:
+                    pass
+
+            for future in concurrent.futures.as_completed(futures):
+                tag, topic = futures[future]
+                try:
+                    text = future.result() or ""
+                except Exception:
+                    text = ""
+                if not text:
+                    continue
+                if tag == "bg":
+                    deep_context += f"\n\n【话题: {topic}】\n{text}"
+                elif tag == "pain":
+                    pain_context += f"\n\n【话题: {topic}】\n{text}"
+                elif tag == "cn":
+                    pain_context += f"\n\n【中国视角: {topic}】\n{text}"
 
     parts = [base_context]
     if deep_context:
-        parts.append("\n\n【主动全网检索扩充资料】:\n" + deep_context)
+        parts.append("\n\n========== 深度全网检索扩充资料 ==========\n" + deep_context)
     if pain_context:
-        parts.append("\n\n【负面信号挖掘——抱怨、替代品、痛点】:\n" + pain_context)
+        parts.append("\n\n========== 负面信号 & 中国视角检索 ==========\n" + pain_context)
     return "".join(parts)
 
 
