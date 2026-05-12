@@ -47,21 +47,38 @@
 <meta name="baidu-site-verification" content="">
 <meta name="google-site-verification" content="">
 
-<!-- 关键样式：在 PaperMod CSS 加载后通过更高特异性覆盖 -->
+<!-- 关键移动端样式（内联最高优先级） -->
 <style>
 @media (max-width: 768px) {
-  body .main { padding: 0 14px 85px 14px !important; }
-  body .post-content { font-size: 16.5px !important; line-height: 1.9 !important; }
-  #mobile-nav { display: flex !important; z-index: 9999 !important; }
+  body .main { padding: 0 14px 90px 14px !important; }
+  body .post-content { font-size: 16.5px !important; line-height: 1.9 !important; word-break: break-word !important; }
+  body .post-content h2 { font-size: 20px !important; border-left: 4px solid #576b95 !important; padding-left: 12px !important; }
+  body .post-content pre, body .post-content table { max-width: calc(100vw - 28px) !important; overflow-x: auto !important; }
+  body .post-content img { max-width: 100% !important; height: auto !important; }
+  body .nav a, body #menu a { min-height: 44px !important; font-size: 14px !important; }
+  #mobile-nav { position: fixed !important; bottom: 0 !important; left: 0 !important; right: 0 !important;
+    display: flex !important; justify-content: space-around !important; z-index: 9999 !important;
+    background: rgba(255,255,255,0.95) !important; border-top: 1px solid #e8e8e8 !important;
+    padding: 6px 0 env(safe-area-inset-bottom, 8px) !important; }
+  #mobile-nav a { font-size: 13px !important; min-width: 44px !important; min-height: 44px !important;
+    display: flex !important; align-items: center !important; justify-content: center !important;
+    color: #555 !important; text-decoration: none !important; border-radius: 8px !important; }
+  #mobile-nav a:active { color: #576b95 !important; background: rgba(87,107,149,0.08) !important; }
+  body.dark #mobile-nav { background: rgba(30,30,30,0.95) !important; border-top-color: #333 !important; }
+  body.dark #mobile-nav a { color: #aaa !important; }
   body footer { padding-bottom: 90px !important; }
+  body .pagination a { min-height: 44px !important; }
 }
 @media (min-width: 769px) {
   #mobile-nav { display: none !important; }
+  body .main { max-width: 800px; margin: 0 auto; }
+}
+@media (min-width: 1200px) {
+  body .main { max-width: 860px; }
 }
 </style>
 
-<!-- 自定义样式 + 移动端优化 -->
-<link rel="stylesheet" href="/css/custom.css">
+<!-- PaperMod 自动通过 assets/css/extended/ 加载 custom.css，无需 link -->
 
 <!-- 不蒜子 页面浏览量统计 -->
 <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>

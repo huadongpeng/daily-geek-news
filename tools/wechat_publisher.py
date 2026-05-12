@@ -375,32 +375,27 @@ class WeChatRenderer(mistune.HTMLRenderer):
 def clean_markdown(md_text):
     """预处理 Markdown：去除 emoji、修复 LLM 常见格式问题"""
     import re as _re
-    # 去除所有 emoji（Unicode 表情符号范围）
-    md = _re.sub(r'[\U0001F600-\U0001F64F'
-                 r'\U0001F300-\U0001F5FF'
-                 r'\U0001F680-\U0001F6FF'
-                 r'\U0001F1E0-\U0001F1FF'
-                 r'\U00002702-\U000027B0'
-                 r'\U000024C2-\U0001F251'
-                 r'\U0001F900-\U0001F9FF'
-                 r'\U0001FA00-\U0001FA6F'
-                 r'\U0001FA70-\U0001FAFF'
-                 r'\U00002600-\U000026FF'
-                 r'\U0000FE00-\U0000FE0F'
-                 r'\U00002300-\U000023FF'
-                 r'\U00002B50'
-                 r'\U0001F004'
-                 r'\U0001F0CF'
-                 r'\U0001F18E'
-                 r'☀-➿'
-                 r'⭐'
-                 r'\U0001F300-\U0001FAD6'
-                 r']+', '', md)
+    t = md_text
+    # 去除常见 emoji
+    t = _re.sub(r'[\U0001F300-\U0001FAD6'
+                r'\U0001F600-\U0001F64F'
+                r'\U0001F680-\U0001F6FF'
+                r'\U0001F1E0-\U0001F1FF'
+                r'\U00002702-\U000027B0'
+                r'\U000024C2-\U0001F251'
+                r'\U0001F900-\U0001F9FF'
+                r'\U0001FA00-\U0001FAFF'
+                r'\U00002600-\U000026FF'
+                r'\U0000FE00-\U0000FE0F'
+                r'\U00002300-\U000023FF'
+                r'\U00002B50\U0001F004\U0001F0CF\U0001F18E'
+                r'⭐'
+                r']+', '', t)
     # 去除零宽连接符和变体选择符
-    md = _re.sub(r'[‍️]', '', md)
-    # 修复中文编号后的空格：一、 → 一、
-    md = _re.sub(r'(^|\n)([一二三四五六七八九十]、)\s*', r'\1\2 ', md)
-    return md.strip()
+    t = _re.sub(r'[‍️]', '', t)
+    # 修复中文编号后的格式
+    t = _re.sub(r'(^|\n)([一二三四五六七八九十]、)\s*', r'\1\2 ', t)
+    return t.strip()
 
 
 def md_to_wechat_html(md_text, article_url=""):
