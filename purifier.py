@@ -634,10 +634,12 @@ def fetch_and_augment(feeds):
     pain_context = ""
 
     if target_titles:
-        with concurrent.futures.ThreadPoolExecutor(max_workers=8) as pool:
+        with concurrent.futures.ThreadPoolExecutor(max_workers=6) as pool:
             futures = {}
-            for t in target_titles:
+            for i, t in enumerate(target_titles):
                 futures[pool.submit(auto_search_context, t)] = ("bg", t)
+                if i > 0 and i % 3 == 0:
+                    time.sleep(0.5)  # 每 3 个标题稍息避免触发 DDG 频率限制
                 futures[pool.submit(auto_search_pain_points, t)] = ("pain", t)
                 try:
                     futures[pool.submit(
@@ -862,8 +864,6 @@ def deep_dive_worker(category_name, config):
       }},{deep_dive_schema}
     }}
 
-{deep_dive_instruction}
-
 硬性约束（违反导致 JSON 解析失败即视为无效输出）：
 - 所有 title 字段严格不超过 10 个中文字
 - 全文零 emoji，零网络用语，拒绝 AI 套话和空洞排比
@@ -874,6 +874,11 @@ def deep_dive_worker(category_name, config):
 - tg_summary 不超过 50 字，tg_brief 不超过 200 字
 """
 
+    # 深度长文指令放在资料库之前，作为模型读数据前的最后提醒
+    user_content = full_prompt + dedup_hint + f"\n\n【资料库】\n{context}"
+    if has_deep_dive:
+        user_content += f"\n\n🚨 最后提醒 — {deep_dive_instruction}"
+
     url = "https://api.deepseek.com/chat/completions"
     headers = {
         "Content-Type": "application/json",
@@ -882,9 +887,10 @@ def deep_dive_worker(category_name, config):
 
     payload = {
         "model": "deepseek-chat",
+        "max_tokens": 8192,
         "messages": [
             {"role": "system", "content": SYSTEM_PROMPT},
-            {"role": "user", "content": full_prompt + dedup_hint + "\n\n【资料库】\n" + context}
+            {"role": "user", "content": user_content}
         ]
     }
 
