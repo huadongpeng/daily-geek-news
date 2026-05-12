@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Cross-Border-Insights on Easton 跨国智库</title><link>https://radar.huadongpeng.com/categories/cross-border-insights/</link><description>Recent content in Cross-Border-Insights on Easton 跨国智库</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Tue, 12 May 2026 11:47:15 +0800</lastBuildDate><atom:link href="https://radar.huadongpeng.com/categories/cross-border-insights/index.xml" rel="self" type="application/rss+xml"/><item><title>AI代理追踪</title><link>https://radar.huadongpeng.com/posts/cross-border-insights/deep-dive-2026-05-12-1147/</link><pubDate>Tue, 12 May 2026 11:47:15 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/cross-border-insights/deep-dive-2026-05-12-1147/</guid><description>&lt;h2 id="源头还原"&gt;源头还原&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;什么产品/模式/服务？&lt;/strong&gt;
+Known Agents（knownagents.com）是一个网站工具，能自动识别并追踪所有访问你网站的AI代理和机器人。它显示哪些AI公司（如OpenAI、Anthropic、Google）的爬虫访问了你的页面、频率、消耗的带宽。核心功能：仪表盘展示AI代理流量占比、按公司分类统计、实时警报。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;哪个国家/平台？谁在做？什么数据？&lt;/strong&gt;
+美国创业团队，创始人之前在Cloudflare做安全产品。2026年4月上线，两周内获得约3000个注册用户，免费版覆盖小型网站。目前没有公开收入数据，但类似SaaS工具定价为每月29-99美元。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;为什么在海外成立？&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;海外网站主对AI爬虫的版权和内容安全高度敏感（训练数据争议、内容被抄袭）。&lt;/li&gt;
+&lt;li&gt;海外SEO社区活跃，站长习惯用工具分析流量来源。&lt;/li&gt;
+&lt;li&gt;海外企业AI代理使用率高，需要监控这些代理的行为。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;为什么国内没人做/做不好？&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;真壁垒：需要能解析并识别自定义User-Agent字符串的规则库，以及维护爬虫指纹数据库。AI代理变种快，需要持续投入。&lt;/li&gt;
+&lt;li&gt;伪壁垒：站长普遍意识到AI机器人在爬自己网站但不知道如何监控。国内没有类似工具完全是因为没人想到做这个细分市场。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="搬运路径"&gt;搬运路径&lt;/h2&gt;
+&lt;h3 id="最小搬运方案适配3个关键点"&gt;最小搬运方案：适配3个关键点&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;语言与本地化：将界面和报告翻译成中文，聚焦国内站长关心的AI代理（如文心一言、Kimi、通义千问的爬虫特征）。&lt;/li&gt;
+&lt;li&gt;部署方式：从SaaS改为WordPress插件形式，因为国内站长大多用WordPress搭建企业站，插件安装门槛低。&lt;/li&gt;
+&lt;li&gt;变现方式：基础版免费+专业版按网站月PV收费，而非按月订阅，更符合国内站长付费习惯。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id="day1-3验证清单"&gt;Day1-3验证清单&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Day1&lt;/strong&gt;：打开Known Agents官网，注册免费账号，随便输入一个你自己的个人网站域名，看它返回什么信息。观察它的功能是否简单实用。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Day2&lt;/strong&gt;：用Chrome开发者工具（F12）查看Known Agents的请求包，了解它如何获取数据。同时，在WordPress插件市场搜索AI bot monitor tracking，看有没有类似插件。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Day3&lt;/strong&gt;：在公众号或知乎发表文章《我的网站每天都在被哪些AI机器人爬？实测发现惊人》，观察阅读量和评论。如果有人追问怎么查，就是需求验证通过。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="工具和平台"&gt;工具和平台&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;推荐平台&lt;/strong&gt;：WordPress插件开发，搭配码市或猪八戒接外包定制单。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;注册步骤&lt;/strong&gt;：1. 注册一个WordPress.org开发者账号（免费）。2. 安装本地开发环境（如Local by Flywheel）。3. 下载Known Agents的免费版或试用版，查看其功能结构。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="变现路径"&gt;变现路径&lt;/h2&gt;
+&lt;h3 id="路径一wordpress插件免费增值"&gt;路径一：WordPress插件免费+增值&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;启动成本&lt;/strong&gt;：0元（自有电脑+时间）&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;时间投入&lt;/strong&gt;：初始开发约20小时，之后每月维护5小时&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;预期时间线&lt;/strong&gt;：第1-2周开发核心功能，第3周上架，第4周开始有收入&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;预期首周收益&lt;/strong&gt;：0元（验证期），首月收益预估0-500元（若成功带来20个网站安装广告显示）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;操作步骤：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;开发一个WordPress插件，功能：在后台仪表盘显示过去7天内AI爬虫访问次数、排名前三的AI公司、占用带宽。&lt;/li&gt;
+&lt;li&gt;免费版只显示最近48小时数据，专业版显示全部历史（定价49元/年）。&lt;/li&gt;
+&lt;li&gt;上传至WordPress插件市场，同时写宣传文章发到微信公众号。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id="路径二网站安全咨询与报告"&gt;路径二：网站安全咨询与报告&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;启动成本&lt;/strong&gt;：0元（利用已知客户）&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;时间投入&lt;/strong&gt;：每单1-3小时&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;预期时间线&lt;/strong&gt;：有人询问后立即开始&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;预期首周收益&lt;/strong&gt;：0元（需先获信任），第一单可收200-500元&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;操作步骤：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;主动联系朋友或本地小微企业的网站，用Known Agents免费版扫描他们的网站。&lt;/li&gt;
+&lt;li&gt;出具一份简单的PDF报告，告诉他们有哪些AI爬虫在监控他们。&lt;/li&gt;
+&lt;li&gt;告知问题严重性，提供定制拦截脚本或规则服务，开价200元。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id="风险提示"&gt;风险提示&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;政策风险&lt;/strong&gt;：WordPress插件需要备案主体才能上架。一旦插件收集用户网站访问日志，需注意《网络安全法》关于个人信息和日志留存的规定。规避办法：明在插件说明中写清只统计User-Agent和ip段，不存储页面内容。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;平台风险&lt;/strong&gt;：WordPress插件市场审核日趋严格，如果功能太像监控工具可能被拒。对策：先以“流量统计增强”名义上报，通过后更新添加AI爬虫细分功能。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;竞争风险&lt;/strong&gt;：国内站长生态不如海外活跃，核心用户可能只有几千人。但现在完全没有竞品，只要能在知乎SEO关键字“AI爬虫监控”做到第一就有稳定流量。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id="你现在就能做的事"&gt;你现在就能做的事&lt;/h2&gt;
+&lt;p&gt;打开Known Agents官网（knownagents.com），免费注册，随便输入一个你自己的网站域名，看看有什么结果。然后去WordPress插件市场搜AI bot monitor，确认国内没有同类免费插件。&lt;/p&gt;</description><content:encoded><![CDATA[<h2 id="源头还原">源头还原</h2>
+<p><strong>什么产品/模式/服务？</strong>
+Known Agents（knownagents.com）是一个网站工具，能自动识别并追踪所有访问你网站的AI代理和机器人。它显示哪些AI公司（如OpenAI、Anthropic、Google）的爬虫访问了你的页面、频率、消耗的带宽。核心功能：仪表盘展示AI代理流量占比、按公司分类统计、实时警报。</p>
+<p><strong>哪个国家/平台？谁在做？什么数据？</strong>
+美国创业团队，创始人之前在Cloudflare做安全产品。2026年4月上线，两周内获得约3000个注册用户，免费版覆盖小型网站。目前没有公开收入数据，但类似SaaS工具定价为每月29-99美元。</p>
+<p><strong>为什么在海外成立？</strong></p>
+<ol>
+<li>海外网站主对AI爬虫的版权和内容安全高度敏感（训练数据争议、内容被抄袭）。</li>
+<li>海外SEO社区活跃，站长习惯用工具分析流量来源。</li>
+<li>海外企业AI代理使用率高，需要监控这些代理的行为。</li>
+</ol>
+<p><strong>为什么国内没人做/做不好？</strong></p>
+<ul>
+<li>真壁垒：需要能解析并识别自定义User-Agent字符串的规则库，以及维护爬虫指纹数据库。AI代理变种快，需要持续投入。</li>
+<li>伪壁垒：站长普遍意识到AI机器人在爬自己网站但不知道如何监控。国内没有类似工具完全是因为没人想到做这个细分市场。</li>
+</ul>
+<h2 id="搬运路径">搬运路径</h2>
+<h3 id="最小搬运方案适配3个关键点">最小搬运方案：适配3个关键点</h3>
+<ol>
+<li>语言与本地化：将界面和报告翻译成中文，聚焦国内站长关心的AI代理（如文心一言、Kimi、通义千问的爬虫特征）。</li>
+<li>部署方式：从SaaS改为WordPress插件形式，因为国内站长大多用WordPress搭建企业站，插件安装门槛低。</li>
+<li>变现方式：基础版免费+专业版按网站月PV收费，而非按月订阅，更符合国内站长付费习惯。</li>
+</ol>
+<h3 id="day1-3验证清单">Day1-3验证清单</h3>
+<ul>
+<li><strong>Day1</strong>：打开Known Agents官网，注册免费账号，随便输入一个你自己的个人网站域名，看它返回什么信息。观察它的功能是否简单实用。</li>
+<li><strong>Day2</strong>：用Chrome开发者工具（F12）查看Known Agents的请求包，了解它如何获取数据。同时，在WordPress插件市场搜索AI bot monitor tracking，看有没有类似插件。</li>
+<li><strong>Day3</strong>：在公众号或知乎发表文章《我的网站每天都在被哪些AI机器人爬？实测发现惊人》，观察阅读量和评论。如果有人追问怎么查，就是需求验证通过。</li>
+</ul>
+<h3 id="工具和平台">工具和平台</h3>
+<ul>
+<li><strong>推荐平台</strong>：WordPress插件开发，搭配码市或猪八戒接外包定制单。</li>
+<li><strong>注册步骤</strong>：1. 注册一个WordPress.org开发者账号（免费）。2. 安装本地开发环境（如Local by Flywheel）。3. 下载Known Agents的免费版或试用版，查看其功能结构。</li>
+</ul>
+<h2 id="变现路径">变现路径</h2>
+<h3 id="路径一wordpress插件免费增值">路径一：WordPress插件免费+增值</h3>
+<ul>
+<li><strong>启动成本</strong>：0元（自有电脑+时间）</li>
+<li><strong>时间投入</strong>：初始开发约20小时，之后每月维护5小时</li>
+<li><strong>预期时间线</strong>：第1-2周开发核心功能，第3周上架，第4周开始有收入</li>
+<li><strong>预期首周收益</strong>：0元（验证期），首月收益预估0-500元（若成功带来20个网站安装广告显示）</li>
+</ul>
+<p>操作步骤：</p>
+<ol>
+<li>开发一个WordPress插件，功能：在后台仪表盘显示过去7天内AI爬虫访问次数、排名前三的AI公司、占用带宽。</li>
+<li>免费版只显示最近48小时数据，专业版显示全部历史（定价49元/年）。</li>
+<li>上传至WordPress插件市场，同时写宣传文章发到微信公众号。</li>
+</ol>
+<h3 id="路径二网站安全咨询与报告">路径二：网站安全咨询与报告</h3>
+<ul>
+<li><strong>启动成本</strong>：0元（利用已知客户）</li>
+<li><strong>时间投入</strong>：每单1-3小时</li>
+<li><strong>预期时间线</strong>：有人询问后立即开始</li>
+<li><strong>预期首周收益</strong>：0元（需先获信任），第一单可收200-500元</li>
+</ul>
+<p>操作步骤：</p>
+<ol>
+<li>主动联系朋友或本地小微企业的网站，用Known Agents免费版扫描他们的网站。</li>
+<li>出具一份简单的PDF报告，告诉他们有哪些AI爬虫在监控他们。</li>
+<li>告知问题严重性，提供定制拦截脚本或规则服务，开价200元。</li>
+</ol>
+<h2 id="风险提示">风险提示</h2>
+<ol>
+<li><strong>政策风险</strong>：WordPress插件需要备案主体才能上架。一旦插件收集用户网站访问日志，需注意《网络安全法》关于个人信息和日志留存的规定。规避办法：明在插件说明中写清只统计User-Agent和ip段，不存储页面内容。</li>
+<li><strong>平台风险</strong>：WordPress插件市场审核日趋严格，如果功能太像监控工具可能被拒。对策：先以“流量统计增强”名义上报，通过后更新添加AI爬虫细分功能。</li>
+<li><strong>竞争风险</strong>：国内站长生态不如海外活跃，核心用户可能只有几千人。但现在完全没有竞品，只要能在知乎SEO关键字“AI爬虫监控”做到第一就有稳定流量。</li>
+</ol>
+<h2 id="你现在就能做的事">你现在就能做的事</h2>
+<p>打开Known Agents官网（knownagents.com），免费注册，随便输入一个你自己的网站域名，看看有什么结果。然后去WordPress插件市场搜AI bot monitor，确认国内没有同类免费插件。</p>
+]]></content:encoded></item></channel></rss>

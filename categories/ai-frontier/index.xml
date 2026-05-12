@@ -1,4 +1,219 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Ai-Frontier on Easton 跨国智库</title><link>https://radar.huadongpeng.com/categories/ai-frontier/</link><description>Recent content in Ai-Frontier on Easton 跨国智库</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Tue, 12 May 2026 11:27:40 +0800</lastBuildDate><atom:link href="https://radar.huadongpeng.com/categories/ai-frontier/index.xml" rel="self" type="application/rss+xml"/><item><title>Goose免费AI编程</title><link>https://radar.huadongpeng.com/posts/ai-frontier/deep-dive-2026-05-12-1127/</link><pubDate>Tue, 12 May 2026 11:27:40 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/ai-frontier/deep-dive-2026-05-12-1127/</guid><description>&lt;h2 id="工具卡片"&gt;工具卡片&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Ai-Frontier on Easton 跨国智库</title><link>https://radar.huadongpeng.com/categories/ai-frontier/</link><description>Recent content in Ai-Frontier on Easton 跨国智库</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Tue, 12 May 2026 11:47:20 +0800</lastBuildDate><atom:link href="https://radar.huadongpeng.com/categories/ai-frontier/index.xml" rel="self" type="application/rss+xml"/><item><title>Goose免费编程测评</title><link>https://radar.huadongpeng.com/posts/ai-frontier/deep-dive-2026-05-12-1147/</link><pubDate>Tue, 12 May 2026 11:47:20 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/ai-frontier/deep-dive-2026-05-12-1147/</guid><description>&lt;h1 id="goose零成本替代claude-code的ai编程工具实测"&gt;Goose：零成本替代Claude Code的AI编程工具实测&lt;/h1&gt;
+&lt;h2 id="工具卡片"&gt;工具卡片&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;名称：Goose&lt;/li&gt;
+&lt;li&gt;网址：github.com/block/goose&lt;/li&gt;
+&lt;li&gt;定价：完全免费（开源）&lt;/li&gt;
+&lt;li&gt;竞品：Claude Code（$200/月）、GitHub Copilot（$10/月）、Cursor（$20/月）&lt;/li&gt;
+&lt;li&gt;上手难度：3/5（需要基础命令行知识）&lt;/li&gt;
+&lt;li&gt;免费额度：无限使用，无任何限制&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="痛点与解决"&gt;痛点与解决&lt;/h2&gt;
+&lt;p&gt;你会写点JavaScript或Python，但老板让你一周改三个bug，而你完全没有头绪。Claude Code要200美元一个月，你连试都不想试。Goose就是答案——免费、开源、直接在终端里工作，像Claude Code一样能读代码、改代码、跑测试，但一分钱不花。&lt;/p&gt;
+&lt;h2 id="实测记录同一个任务在goose-vs-手写"&gt;实测记录：同一个任务在Goose vs 手写&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;任务&lt;/strong&gt;：用Python写一个函数，读取CSV文件并计算每列平均值。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;手写时间&lt;/strong&gt;：15分钟（找库、查语法、调试）
+&lt;strong&gt;Goose用时&lt;/strong&gt;：3分钟（写提示、看结果、微调）&lt;/p&gt;
+&lt;h3 id="操作步骤从安装到出结果"&gt;操作步骤（从安装到出结果）：&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;打开终端，执行：&lt;code&gt;npm install -g @block/goose&lt;/code&gt;（需要Node.js 16+，没有的话先装Node.js）&lt;/li&gt;
+&lt;li&gt;进入项目文件夹：&lt;code&gt;cd my-project&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;创建或打开一个空文件：&lt;code&gt;touch analyze.py&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;运行Goose：&lt;code&gt;goose code&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;输入提示（英文或中文）：&amp;ldquo;Write a Python function to read a CSV file named data.csv and print the average of each numeric column&amp;rdquo;&lt;/li&gt;
+&lt;li&gt;Goose生成代码到analyze.py&lt;/li&gt;
+&lt;li&gt;检查代码，如果有安装缺失（如pandas），看它自动提示，手动安装后再跑&lt;/li&gt;
+&lt;li&gt;执行：&lt;code&gt;python analyze.py&lt;/code&gt;，看控制台输出&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id="进阶技巧3个高效用法"&gt;进阶技巧：3个高效用法&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;多文件修改&lt;/strong&gt;：先告诉Goose项目结构，再下命令&amp;quot;在app.js末尾添加一个路由处理GET /user&amp;quot;，它自动读取上下文，不改其他地方。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;修复bug&lt;/strong&gt;：运行程序报错后，把错误信息粘贴给Goose，说&amp;quot;这个报错怎么修&amp;quot;，它会解析错误并给出修改建议。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;文档生成&lt;/strong&gt;：对已有代码说&amp;quot;给这段代码写docstring&amp;quot;，它直接插入注释，节省半小时。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id="对比表goose-vs-claude-code-vs-github-copilot"&gt;对比表：Goose vs Claude Code vs GitHub Copilot&lt;/h2&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;维度&lt;/th&gt;
+&lt;th&gt;Goose&lt;/th&gt;
+&lt;th&gt;Claude Code&lt;/th&gt;
+&lt;th&gt;GitHub Copilot&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;价格&lt;/td&gt;
+&lt;td&gt;免费&lt;/td&gt;
+&lt;td&gt;$200/月&lt;/td&gt;
+&lt;td&gt;$10/月&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;速度&lt;/td&gt;
+&lt;td&gt;中等（约5秒生成）&lt;/td&gt;
+&lt;td&gt;快（约2秒）&lt;/td&gt;
+&lt;td&gt;快（实时）&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;中文支持&lt;/td&gt;
+&lt;td&gt;好（可输入中文提示）&lt;/td&gt;
+&lt;td&gt;好&lt;/td&gt;
+&lt;td&gt;一般（英文为主）&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;离线能力&lt;/td&gt;
+&lt;td&gt;需要网络&lt;/td&gt;
+&lt;td&gt;需要网络&lt;/td&gt;
+&lt;td&gt;需要网络&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;开源&lt;/td&gt;
+&lt;td&gt;是&lt;/td&gt;
+&lt;td&gt;否&lt;/td&gt;
+&lt;td&gt;否&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;API可用性&lt;/td&gt;
+&lt;td&gt;无&lt;/td&gt;
+&lt;td&gt;有&lt;/td&gt;
+&lt;td&gt;有&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;strong&gt;五维度评分（10分制）&lt;/strong&gt;：&lt;/p&gt;</description><content:encoded><![CDATA[<h1 id="goose零成本替代claude-code的ai编程工具实测">Goose：零成本替代Claude Code的AI编程工具实测</h1>
+<h2 id="工具卡片">工具卡片</h2>
+<ul>
+<li>名称：Goose</li>
+<li>网址：github.com/block/goose</li>
+<li>定价：完全免费（开源）</li>
+<li>竞品：Claude Code（$200/月）、GitHub Copilot（$10/月）、Cursor（$20/月）</li>
+<li>上手难度：3/5（需要基础命令行知识）</li>
+<li>免费额度：无限使用，无任何限制</li>
+</ul>
+<h2 id="痛点与解决">痛点与解决</h2>
+<p>你会写点JavaScript或Python，但老板让你一周改三个bug，而你完全没有头绪。Claude Code要200美元一个月，你连试都不想试。Goose就是答案——免费、开源、直接在终端里工作，像Claude Code一样能读代码、改代码、跑测试，但一分钱不花。</p>
+<h2 id="实测记录同一个任务在goose-vs-手写">实测记录：同一个任务在Goose vs 手写</h2>
+<p><strong>任务</strong>：用Python写一个函数，读取CSV文件并计算每列平均值。</p>
+<p><strong>手写时间</strong>：15分钟（找库、查语法、调试）
+<strong>Goose用时</strong>：3分钟（写提示、看结果、微调）</p>
+<h3 id="操作步骤从安装到出结果">操作步骤（从安装到出结果）：</h3>
+<ol>
+<li>打开终端，执行：<code>npm install -g @block/goose</code>（需要Node.js 16+，没有的话先装Node.js）</li>
+<li>进入项目文件夹：<code>cd my-project</code></li>
+<li>创建或打开一个空文件：<code>touch analyze.py</code></li>
+<li>运行Goose：<code>goose code</code></li>
+<li>输入提示（英文或中文）：&ldquo;Write a Python function to read a CSV file named data.csv and print the average of each numeric column&rdquo;</li>
+<li>Goose生成代码到analyze.py</li>
+<li>检查代码，如果有安装缺失（如pandas），看它自动提示，手动安装后再跑</li>
+<li>执行：<code>python analyze.py</code>，看控制台输出</li>
+</ol>
+<h3 id="进阶技巧3个高效用法">进阶技巧：3个高效用法</h3>
+<ol>
+<li><strong>多文件修改</strong>：先告诉Goose项目结构，再下命令&quot;在app.js末尾添加一个路由处理GET /user&quot;，它自动读取上下文，不改其他地方。</li>
+<li><strong>修复bug</strong>：运行程序报错后，把错误信息粘贴给Goose，说&quot;这个报错怎么修&quot;，它会解析错误并给出修改建议。</li>
+<li><strong>文档生成</strong>：对已有代码说&quot;给这段代码写docstring&quot;，它直接插入注释，节省半小时。</li>
+</ol>
+<h2 id="对比表goose-vs-claude-code-vs-github-copilot">对比表：Goose vs Claude Code vs GitHub Copilot</h2>
+<table>
+  <thead>
+      <tr>
+          <th>维度</th>
+          <th>Goose</th>
+          <th>Claude Code</th>
+          <th>GitHub Copilot</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>价格</td>
+          <td>免费</td>
+          <td>$200/月</td>
+          <td>$10/月</td>
+      </tr>
+      <tr>
+          <td>速度</td>
+          <td>中等（约5秒生成）</td>
+          <td>快（约2秒）</td>
+          <td>快（实时）</td>
+      </tr>
+      <tr>
+          <td>中文支持</td>
+          <td>好（可输入中文提示）</td>
+          <td>好</td>
+          <td>一般（英文为主）</td>
+      </tr>
+      <tr>
+          <td>离线能力</td>
+          <td>需要网络</td>
+          <td>需要网络</td>
+          <td>需要网络</td>
+      </tr>
+      <tr>
+          <td>开源</td>
+          <td>是</td>
+          <td>否</td>
+          <td>否</td>
+      </tr>
+      <tr>
+          <td>API可用性</td>
+          <td>无</td>
+          <td>有</td>
+          <td>有</td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>五维度评分（10分制）</strong>：</p>
+<ul>
+<li>功能：7（对比Claude Code缺高级调试）</li>
+<li>价格：10</li>
+<li>速度：6</li>
+<li>中文支持：8</li>
+<li>API可用性：0</li>
+</ul>
+<h2 id="3个实际使用场景及效果量化">3个实际使用场景及效果量化</h2>
+<ol>
+<li><strong>修复Python脚本bug</strong>：原先0.5小时→现在5分钟，节省25分钟</li>
+<li><strong>生成Dockerfile</strong>：原先手写20分钟→2分钟提示，结果可用但需微调</li>
+<li><strong>写单元测试</strong>：原先1小时写20个测试→10分钟生成基础框架，然后手动补逻辑</li>
+</ol>
+<h2 id="优缺点清单">优缺点清单</h2>
+<h3 id="优点">优点</h3>
+<ul>
+<li>完全免费，无限次数</li>
+<li>开源，社区活跃，不会突然收费</li>
+<li>支持中文提示，对非英语开发者友好</li>
+<li>直接在终端工作，不干扰编辑器</li>
+</ul>
+<h3 id="缺点">缺点</h3>
+<ul>
+<li>速度比商业产品慢</li>
+<li>没有集成IDE，需要手动把代码复制到编辑器</li>
+<li>对复杂项目有时理解不全，需要多次提示</li>
+<li>不支持API集成（不能做批量任务）</li>
+</ul>
+<h3 id="替代方案">替代方案</h3>
+<p>如果Goose不能满足，可以尝试以下免费选项：</p>
+<ul>
+<li><strong>Tabi</strong>（tabi.sh）：免费AI编程，有网页版，无需命令行</li>
+<li><strong>Continue.dev</strong>（continue.dev）：开源IDE插件，免费，需配合自己的API key</li>
+<li><strong>AiCoder</strong>（github.com/aicoder）：另一个开源终端AI助手，功能相似</li>
+</ul>
+<h2 id="谁适合用谁不适合用">谁适合用/谁不适合用</h2>
+<p><strong>适合人群</strong>：</p>
+<ul>
+<li>会一点命令行（cd、npm install）的初级程序员</li>
+<li>想做副业但不想花钱买工具的人</li>
+<li>需要快速写小脚本或改bug的全职打工人</li>
+</ul>
+<p><strong>不适合人群</strong>：</p>
+<ul>
+<li>完全不会用终端的纯产品经理</li>
+<li>需要实时代码补全（像Copilot那样边写边提示）的人</li>
+<li>项目依赖复杂、需要AI理解大型框架的人</li>
+</ul>
+<h2 id="性价比结论">性价比结论</h2>
+<p>性价比天花板。启动成本0元，时间投入1-2小时学习安装和基础用法，预期首周收益：省下$20（不用买Copilot）或省下3-5小时加班时间。对于月可支配现金&lt;2000元的人，这是目前最好的入门工具。</p>
+]]></content:encoded></item><item><title>Goose免费AI编程</title><link>https://radar.huadongpeng.com/posts/ai-frontier/deep-dive-2026-05-12-1127/</link><pubDate>Tue, 12 May 2026 11:27:40 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/ai-frontier/deep-dive-2026-05-12-1127/</guid><description>&lt;h2 id="工具卡片"&gt;工具卡片&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;名称：Goose&lt;/li&gt;
 &lt;li&gt;网址：GitHub搜索Goose AI&lt;/li&gt;

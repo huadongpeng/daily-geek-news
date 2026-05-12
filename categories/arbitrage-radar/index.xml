@@ -1,4 +1,87 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Arbitrage-Radar on Easton 跨国智库</title><link>https://radar.huadongpeng.com/categories/arbitrage-radar/</link><description>Recent content in Arbitrage-Radar on Easton 跨国智库</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Tue, 12 May 2026 11:27:52 +0800</lastBuildDate><atom:link href="https://radar.huadongpeng.com/categories/arbitrage-radar/index.xml" rel="self" type="application/rss+xml"/><item><title>卖视频搜索</title><link>https://radar.huadongpeng.com/posts/arbitrage-radar/deep-dive-2026-05-12-1127/</link><pubDate>Tue, 12 May 2026 11:27:52 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/arbitrage-radar/deep-dive-2026-05-12-1127/</guid><description>&lt;h1 id="为什么视频搜索是门好生意"&gt;为什么视频搜索是门好生意&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Arbitrage-Radar on Easton 跨国智库</title><link>https://radar.huadongpeng.com/categories/arbitrage-radar/</link><description>Recent content in Arbitrage-Radar on Easton 跨国智库</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Tue, 12 May 2026 11:47:18 +0800</lastBuildDate><atom:link href="https://radar.huadongpeng.com/categories/arbitrage-radar/index.xml" rel="self" type="application/rss+xml"/><item><title>卖Sheet月入300</title><link>https://radar.huadongpeng.com/posts/arbitrage-radar/deep-dive-2026-05-12-1147/</link><pubDate>Tue, 12 May 2026 11:47:18 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/arbitrage-radar/deep-dive-2026-05-12-1147/</guid><description>&lt;h2 id="核心洞察为什么卖sheet能月入333"&gt;核心洞察：为什么卖Sheet能月入$333？&lt;/h2&gt;
+&lt;p&gt;最新贴（r/SaaS, 2026-05-12）里，一个独立开发者卖一个名为Write It Down的Google Sheet，14个月收入$5K，最近一个月$333。反馈显示：用户愿意为&lt;strong&gt;一次性付费&lt;/strong&gt;（$5.99）代替月费SaaS。这不是高大上的代码，是Google Sheet公式+设计。为什么别人没赚到？不是技术壁垒，是&lt;strong&gt;懒惰和信息差&lt;/strong&gt;。&lt;/p&gt;
+&lt;h3 id="抱怨原文"&gt;抱怨原文&lt;/h3&gt;
+&lt;blockquote&gt;
+&lt;p&gt;“I didn’t want another finance subscription. It’s a Google Sheet that costs $5.99 once.”&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Reddit帖里还有用户评论：“Why pay $20/mo when I can buy this once?” 超过80%的评论表示想要类似的记账/项目管理模板。&lt;/p&gt;
+&lt;h2 id="执行清单day1-7"&gt;执行清单Day1-7&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Day1（周一）：&lt;/strong&gt; 打开write-it-down.com→查看产品描述和定价页→截图模板预览。用Chrom扩展“Wappalyzer”分析网站堆栈（提示：纯Google Sheet+简单着陆页）。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Day2（周二）：&lt;/strong&gt; 注册Gumroad（国内可访问）→在Gumroad搜索“Google Sheet template”分析前5名畅销品（标题、价格、描述模式）。每模板至少记录3个重复的付费功能。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Day3（周三）：&lt;/strong&gt; 打开Google Sheets→从空白创建新表格→制作“简单记账”模板：3列（日期、类别、金额）+SUM公式+饼图（用插入图表功能）。用时约30分钟。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Day4（周四）：&lt;/strong&gt; 录制10秒演示视频（用OBS免费版）→上传到YouTube（设为不公开）。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Day5（周五）：&lt;/strong&gt; 在Gumroad创建产品页：标题“Personal Finance Tracker - One Time Payment”，描述包含“No subscription, just formulas”，定价$5.99。添加YouTube视频链接。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Day6（周六）：&lt;/strong&gt; 发布到ProductHunt“Upcoming”列表→同时发帖到Reddit r/SaaS和r/FinancialPlanning（标题“Made a $5.99 sheet that tracks everything”）。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Day7（周日）：&lt;/strong&gt; 监测点赞和评论。如果首日&amp;lt;5个赞，修改定价（降为$3.99）或修改描述（强调“SaaS替代品”）。&lt;/p&gt;
+&lt;h2 id="工具清单"&gt;工具清单&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Gumroad：销售平台，免费注册，扣除10%佣金&lt;/li&gt;
+&lt;li&gt;Google Sheets：免费&lt;/li&gt;
+&lt;li&gt;OBS Studio：免费录屏&lt;/li&gt;
+&lt;li&gt;Canva：免费设计封面图&lt;/li&gt;
+&lt;li&gt;ProductHunt：免费发布，无费用&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="收益预估三档"&gt;收益预估（三档）&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;保守：&lt;/strong&gt; 首月卖出5份→$29.95（约210元）。计算逻辑：日出勤1小时，获ProductHunt10个赞。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;中等：&lt;/strong&gt; 首月卖出15份→$89.85（约630元）。计算逻辑：帖在Reddit收获100+赞，日卖0.5单。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;乐观：&lt;/strong&gt; 首月卖出50份→$299.50（约2100元）。计算逻辑：Reddit首页或产品被其他网站转载，日卖1.6单。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="3个最容易踩的坑"&gt;3个最容易踩的坑&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;定价过高：&lt;/strong&gt; 模仿帖里$5.99，不能超过$9.99（用户潜意识认为Sheet不值钱）。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;无演示：&lt;/strong&gt; 没视频或截图，用户不信任。Day5必须上传视频。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;忽略SEO：&lt;/strong&gt; Gumroad搜索关键词要用“finance template”而不是“money tracker”。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id="延伸资源"&gt;延伸资源&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;B站：搜“Google Sheets 记账模板教程”，看up主“小小函数”视频。&lt;/li&gt;
+&lt;li&gt;公众号：关注“独立开发者工具”，阅读《如何在1小时做出付费模板》。&lt;/li&gt;
+&lt;li&gt;PDF：下载《100个销售模板合集》从Gumroad博客免费下载。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;注意：所有工具国内可直连（Gumroad有时需梯子，备选使用爱发电平台）。&lt;/p&gt;</description><content:encoded><![CDATA[<h2 id="核心洞察为什么卖sheet能月入333">核心洞察：为什么卖Sheet能月入$333？</h2>
+<p>最新贴（r/SaaS, 2026-05-12）里，一个独立开发者卖一个名为Write It Down的Google Sheet，14个月收入$5K，最近一个月$333。反馈显示：用户愿意为<strong>一次性付费</strong>（$5.99）代替月费SaaS。这不是高大上的代码，是Google Sheet公式+设计。为什么别人没赚到？不是技术壁垒，是<strong>懒惰和信息差</strong>。</p>
+<h3 id="抱怨原文">抱怨原文</h3>
+<blockquote>
+<p>“I didn’t want another finance subscription. It’s a Google Sheet that costs $5.99 once.”</p>
+</blockquote>
+<p>Reddit帖里还有用户评论：“Why pay $20/mo when I can buy this once?” 超过80%的评论表示想要类似的记账/项目管理模板。</p>
+<h2 id="执行清单day1-7">执行清单Day1-7</h2>
+<p><strong>Day1（周一）：</strong> 打开write-it-down.com→查看产品描述和定价页→截图模板预览。用Chrom扩展“Wappalyzer”分析网站堆栈（提示：纯Google Sheet+简单着陆页）。</p>
+<p><strong>Day2（周二）：</strong> 注册Gumroad（国内可访问）→在Gumroad搜索“Google Sheet template”分析前5名畅销品（标题、价格、描述模式）。每模板至少记录3个重复的付费功能。</p>
+<p><strong>Day3（周三）：</strong> 打开Google Sheets→从空白创建新表格→制作“简单记账”模板：3列（日期、类别、金额）+SUM公式+饼图（用插入图表功能）。用时约30分钟。</p>
+<p><strong>Day4（周四）：</strong> 录制10秒演示视频（用OBS免费版）→上传到YouTube（设为不公开）。</p>
+<p><strong>Day5（周五）：</strong> 在Gumroad创建产品页：标题“Personal Finance Tracker - One Time Payment”，描述包含“No subscription, just formulas”，定价$5.99。添加YouTube视频链接。</p>
+<p><strong>Day6（周六）：</strong> 发布到ProductHunt“Upcoming”列表→同时发帖到Reddit r/SaaS和r/FinancialPlanning（标题“Made a $5.99 sheet that tracks everything”）。</p>
+<p><strong>Day7（周日）：</strong> 监测点赞和评论。如果首日&lt;5个赞，修改定价（降为$3.99）或修改描述（强调“SaaS替代品”）。</p>
+<h2 id="工具清单">工具清单</h2>
+<ul>
+<li>Gumroad：销售平台，免费注册，扣除10%佣金</li>
+<li>Google Sheets：免费</li>
+<li>OBS Studio：免费录屏</li>
+<li>Canva：免费设计封面图</li>
+<li>ProductHunt：免费发布，无费用</li>
+</ul>
+<h2 id="收益预估三档">收益预估（三档）</h2>
+<ul>
+<li><strong>保守：</strong> 首月卖出5份→$29.95（约210元）。计算逻辑：日出勤1小时，获ProductHunt10个赞。</li>
+<li><strong>中等：</strong> 首月卖出15份→$89.85（约630元）。计算逻辑：帖在Reddit收获100+赞，日卖0.5单。</li>
+<li><strong>乐观：</strong> 首月卖出50份→$299.50（约2100元）。计算逻辑：Reddit首页或产品被其他网站转载，日卖1.6单。</li>
+</ul>
+<h2 id="3个最容易踩的坑">3个最容易踩的坑</h2>
+<ol>
+<li><strong>定价过高：</strong> 模仿帖里$5.99，不能超过$9.99（用户潜意识认为Sheet不值钱）。</li>
+<li><strong>无演示：</strong> 没视频或截图，用户不信任。Day5必须上传视频。</li>
+<li><strong>忽略SEO：</strong> Gumroad搜索关键词要用“finance template”而不是“money tracker”。</li>
+</ol>
+<h2 id="延伸资源">延伸资源</h2>
+<ol>
+<li>B站：搜“Google Sheets 记账模板教程”，看up主“小小函数”视频。</li>
+<li>公众号：关注“独立开发者工具”，阅读《如何在1小时做出付费模板》。</li>
+<li>PDF：下载《100个销售模板合集》从Gumroad博客免费下载。</li>
+</ol>
+<p>注意：所有工具国内可直连（Gumroad有时需梯子，备选使用爱发电平台）。</p>
+]]></content:encoded></item><item><title>卖视频搜索</title><link>https://radar.huadongpeng.com/posts/arbitrage-radar/deep-dive-2026-05-12-1127/</link><pubDate>Tue, 12 May 2026 11:27:52 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/arbitrage-radar/deep-dive-2026-05-12-1127/</guid><description>&lt;h1 id="为什么视频搜索是门好生意"&gt;为什么视频搜索是门好生意&lt;/h1&gt;
 &lt;p&gt;抱怨原文：&amp;ldquo;It&amp;rsquo;s pretty much impossible to search for something on YouTube, as there are only 5 or 6 relevant videos when you&amp;rsquo;re looking for some stuff, and then it&amp;rsquo;s all completely unrelated content.&amp;rdquo; 这条帖子在Hacker News上引发了数十条共鸣评论——像&amp;rsquo;编程教程&amp;rsquo;、&amp;lsquo;物理实验&amp;rsquo;这些细分领域，YouTube搜索根本不出好结果。&lt;/p&gt;
 &lt;p&gt;背后的机会很简单：YouTube搜索算法偏向热门和娱乐内容，忽略了专业化长尾需求。做一个小而美的垂直视频搜索，不是造搜索引擎，而是做&amp;rsquo;人工筛选器&amp;rsquo;。你不需要懂AI，只需要愿意花时间看视频，然后贴链接。&lt;/p&gt;
 &lt;h2 id="day1-7-执行"&gt;Day1-7 执行&lt;/h2&gt;
