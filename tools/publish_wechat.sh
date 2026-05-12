@@ -15,7 +15,9 @@ REPO_DIR="${GIT_REPO_DIR:-/ws/web/daily-geek-news}"
 cd "$REPO_DIR"
 
 echo "=== 1. 拉取最新文章 ==="
-git pull origin main
+# fetch + reset 避免 merge 冲突：服务器端是只读消费者，无需保留本地修改
+git fetch origin main
+git reset --hard origin/main
 
 echo ""
 echo "=== 2. 加载环境变量 ==="
