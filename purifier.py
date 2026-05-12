@@ -761,7 +761,10 @@ def _extract_json(text):
         return raw
 
     # 对每个候选尝试解析，优先返回含 briefing+deep_dive 的有效 JSON
+    # 关键修复：嵌套子对象（如 items 内的单条新闻）也能被策略2提取为候选，
+    # 它们能解析成功但缺少 deep_dive。需优先选择同时包含两者的完整候选。
     errors = []
+    best_briefing_only = None
     for cand in reversed(candidates):
         for attempt in range(4):
             try:
@@ -781,7 +784,12 @@ def _extract_json(text):
                     break
             else:
                 if isinstance(obj, dict) and "briefing" in obj:
-                    return obj
+                    dd = obj.get("deep_dive")
+                    if dd and isinstance(dd, dict) and dd.get("title"):
+                        return obj  # 最优：同时有 briefing + 完整 deep_dive
+                    if best_briefing_only is None:
+                        best_briefing_only = obj
+                    break  # 已找到 briefing 候选，跳出 attempt 循环继续看下一个
                 # 模型输出了有效 JSON 但缺少 briefing 键，尝试结构修复
                 if isinstance(obj, dict):
                     wraps = []
@@ -795,12 +803,19 @@ def _extract_json(text):
                         try:
                             w_obj = json.loads(w_json)
                             if isinstance(w_obj, dict) and "briefing" in w_obj:
-                                return w_obj
+                                dd = w_obj.get("deep_dive")
+                                if dd and isinstance(dd, dict) and dd.get("title"):
+                                    return w_obj
+                                if best_briefing_only is None:
+                                    best_briefing_only = w_obj
+                                break
                         except json.JSONDecodeError:
                             pass
                 errors.append(f"跳过(缺briefing键): {list(obj.keys())[:3]}")
                 break
 
+    if best_briefing_only is not None:
+        return best_briefing_only
     raise ValueError(f"JSON 提取失败: {'; '.join(errors[-3:])}")
 
 
