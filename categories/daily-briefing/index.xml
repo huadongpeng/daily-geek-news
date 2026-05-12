@@ -1,227 +1,105 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Daily-Briefing on Easton 跨国智库</title><link>https://radar.huadongpeng.com/categories/daily-briefing/</link><description>Recent content in Daily-Briefing on Easton 跨国智库</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Tue, 12 May 2026 13:55:33 +0800</lastBuildDate><atom:link href="https://radar.huadongpeng.com/categories/daily-briefing/index.xml" rel="self" type="application/rss+xml"/><item><title>每日快讯</title><link>https://radar.huadongpeng.com/posts/daily-briefing/briefing-2026-05-12/</link><pubDate>Tue, 12 May 2026 13:55:33 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/daily-briefing/briefing-2026-05-12/</guid><description>&lt;blockquote&gt;
-&lt;p&gt;2026年05月12日 · 28 条情报&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Daily-Briefing on Easton 跨国智库</title><link>https://radar.huadongpeng.com/categories/daily-briefing/</link><description>Recent content in Daily-Briefing on Easton 跨国智库</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Tue, 12 May 2026 14:40:40 +0800</lastBuildDate><atom:link href="https://radar.huadongpeng.com/categories/daily-briefing/index.xml" rel="self" type="application/rss+xml"/><item><title>每日快讯</title><link>https://radar.huadongpeng.com/posts/daily-briefing/briefing-2026-05-12/</link><pubDate>Tue, 12 May 2026 14:40:40 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/daily-briefing/briefing-2026-05-12/</guid><description>&lt;blockquote&gt;
+&lt;p&gt;2026年05月12日 · 8 条情报&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h2 id="效率工具与自动化"&gt;效率工具与自动化&lt;/h2&gt;
-&lt;h3 id="npm供应链攻击"&gt;NPM供应链攻击&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：Reddit / Hacker News | 170+个包被投毒，TanStack等受害&lt;/p&gt;
-&lt;p&gt;安装依赖前必须验证哈希，否则可能引入恶意代码，影响所有npm用户安全&lt;/p&gt;
+&lt;h2 id="宏观风向标"&gt;宏观风向标&lt;/h2&gt;
+&lt;h3 id="通用裁员换ai"&gt;通用裁员换AI&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：CNBC | 通用汽车裁掉数百IT员工，换招AI技能强的&lt;/p&gt;
+&lt;p&gt;直接影响美国IT打工人的饭碗，尤其是传统IT运维岗，需立即补AI技能&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;🎯 立即检查项目：运行 npm audit &amp;ndash;audit-level=high → 删除可疑包&lt;/p&gt;
+&lt;p&gt;🎯 今天去LinkedIn搜‘prompt engineer岗位要求’，整理10个JD关键词&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h3 id="miromiro-v2发布"&gt;MiroMiro v2发布&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：Product Hunt | 浏览器扩展，检查编辑导出任意网站设计&lt;/p&gt;
-&lt;p&gt;前端人员调试样式不用再开DevTools，节省每次找CSS的10分钟&lt;/p&gt;
+&lt;h3 id="英国tiktok收月费"&gt;英国TikTok收月费&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：BBC | TikTok在英国推月费3.99英镑去广告订阅&lt;/p&gt;
+&lt;p&gt;影响代购/跨境作者：英国用户付费意愿强，免费流量可能减少，需调整内容策略&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;🎯 下载扩展→打开任意网站→点击图标→检查元素→直接修改并导出&lt;/p&gt;
+&lt;p&gt;🎯 今天在TikTok设置里开启英国区账号测试，观察有无广告变化&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h3 id="genpire平台上线"&gt;Genpire平台上线&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：Product Hunt | 用AI从描述直接生成实体产品&lt;/p&gt;
-&lt;p&gt;零代码快速原型，省去学3D建模或找工厂的几天时间&lt;/p&gt;
+&lt;h3 id="韩国拟发ai分红"&gt;韩国拟发AI分红&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：Bloomberg | 韩国高官提议用AI利润税收给国民发红包&lt;/p&gt;
+&lt;p&gt;影响加密货币/跨境套利的普通人：政策若落地可能抬高汇率和消费力，短期炒作情绪&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;🎯 打开Genpire→用英文描述产品→看AI生成设计→点击打印/定制&lt;/p&gt;
+&lt;p&gt;🎯 今天在Upbit查看AI主题币涨幅，记录前5名&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h3 id="coursera收购udemy"&gt;Coursera收购Udemy&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：Reddit | 全球最大在线技能平台合并&lt;/p&gt;
-&lt;p&gt;课程可能涨价，应尽快下载已有课程离线课件，每月省下200元订阅费&lt;/p&gt;
+&lt;h3 id="linux爆严重漏洞"&gt;Linux爆严重漏洞&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：Arstechnica | Linux两周内再曝严重漏洞，补丁已出需速装&lt;/p&gt;
+&lt;p&gt;影响用Linux服务器跑AI脚本/挖矿的极客，不升级有被黑风险&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;🎯 登录你的Coursera/Udemy账号→找到已购买课程→点击“离线下载”保存到本地硬盘&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h3 id="devops平台评测"&gt;DevOps平台评测&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：QKS Group报告 | SPARK Matrix评出最值得用的DevOps工具&lt;/p&gt;
-&lt;p&gt;小团队选错工具浪费配置时间，正确选择每月省10小时运维&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;🎯 阅读报告摘要→选前3名工具→注册免费版试运行→对比后固定一套&lt;/p&gt;
+&lt;p&gt;🎯 今天在服务器跑‘sudo apt update &amp;amp;&amp;amp; sudo apt upgrade -y’&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;hr&gt;
-&lt;h2 id="海外信息差"&gt;海外信息差&lt;/h2&gt;
-&lt;h3 id="ai-churn情感分析"&gt;AI churn情感分析&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：Stratechery / X平台 / 美国 | AI自动处理客户投诉邮件并分类，国内几乎无人用类似工具&lt;/p&gt;
-&lt;p&gt;国内客服仍人工处理投诉，成本高且慢。可直接搬运模式，用GPT API搭建低价替代品，零代码门槛&lt;/p&gt;
+&lt;h2 id="出海工具链"&gt;出海工具链&lt;/h2&gt;
+&lt;h3 id="腾讯混元集成文档"&gt;腾讯混元集成文档&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：36氪+中国 | 腾讯QClaw AI接入腾讯文档和ima知识库，支持跨文档查询&lt;/p&gt;
+&lt;p&gt;个人开发者可直接用免费AI工具做文档摘要/翻译，降低出海内容制作门槛，零成本注册腾讯云即可用&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;🎯 去知乎搜「自动处理客户投诉」看有没有现成工具，没有就是机会&lt;/p&gt;
+&lt;p&gt;🎯 去腾讯云官网用微信注册，搜索QClaw API申请免费额度，10分钟配置&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h3 id="非洲短视频新闻"&gt;非洲短视频新闻&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：Guardian / 南非 | 非洲创作者用TikTok做本土新闻，日活百万，国内无人模仿&lt;/p&gt;</description><content:encoded><![CDATA[<blockquote>
-<p>2026年05月12日 · 28 条情报</p>
+&lt;h3 id="快手可灵ai拟分拆"&gt;快手可灵AI拟分拆&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：36氪+中国 | 快手考虑分拆可灵AI视频生成单元独立IPO&lt;/p&gt;
+&lt;p&gt;可灵AI视频生成工具开放API，小团队可低成本生成海外营销视频，零成本注册，每分钟约0.5元&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;🎯 去kling.kuaishou.com用手机号注册，点击API文档免费测试视频生成&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id="canvas全球数据泄露"&gt;Canvas全球数据泄露&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：南华早报+香港 | 学习平台Canvas遭黑客入侵，香港7.2万师生数据泄露&lt;/p&gt;
+&lt;p&gt;暴露在线教育平台安全漏洞，个人开发者可提供安全审计或加固服务，零成本代理调查竞品安全措施&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;🎯 搜索Canvas安全漏洞报告，整理常见问题，在暗网上发布安全咨询或开发安全插件上架&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id="拉美fintech获c轮"&gt;拉美fintech获C轮&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：LatamList+拉美 | 阿根廷fintech belo获1400万美元A轮，巴西Segura获800万美元种子轮&lt;/p&gt;</description><content:encoded><![CDATA[<blockquote>
+<p>2026年05月12日 · 8 条情报</p>
 </blockquote>
-<h2 id="效率工具与自动化">效率工具与自动化</h2>
-<h3 id="npm供应链攻击">NPM供应链攻击</h3>
-<p><strong>来源</strong>：Reddit / Hacker News | 170+个包被投毒，TanStack等受害</p>
-<p>安装依赖前必须验证哈希，否则可能引入恶意代码，影响所有npm用户安全</p>
-<blockquote>
-<p>🎯 立即检查项目：运行 npm audit &ndash;audit-level=high → 删除可疑包</p>
-</blockquote>
-<h3 id="miromiro-v2发布">MiroMiro v2发布</h3>
-<p><strong>来源</strong>：Product Hunt | 浏览器扩展，检查编辑导出任意网站设计</p>
-<p>前端人员调试样式不用再开DevTools，节省每次找CSS的10分钟</p>
-<blockquote>
-<p>🎯 下载扩展→打开任意网站→点击图标→检查元素→直接修改并导出</p>
-</blockquote>
-<h3 id="genpire平台上线">Genpire平台上线</h3>
-<p><strong>来源</strong>：Product Hunt | 用AI从描述直接生成实体产品</p>
-<p>零代码快速原型，省去学3D建模或找工厂的几天时间</p>
-<blockquote>
-<p>🎯 打开Genpire→用英文描述产品→看AI生成设计→点击打印/定制</p>
-</blockquote>
-<h3 id="coursera收购udemy">Coursera收购Udemy</h3>
-<p><strong>来源</strong>：Reddit | 全球最大在线技能平台合并</p>
-<p>课程可能涨价，应尽快下载已有课程离线课件，每月省下200元订阅费</p>
-<blockquote>
-<p>🎯 登录你的Coursera/Udemy账号→找到已购买课程→点击“离线下载”保存到本地硬盘</p>
-</blockquote>
-<h3 id="devops平台评测">DevOps平台评测</h3>
-<p><strong>来源</strong>：QKS Group报告 | SPARK Matrix评出最值得用的DevOps工具</p>
-<p>小团队选错工具浪费配置时间，正确选择每月省10小时运维</p>
-<blockquote>
-<p>🎯 阅读报告摘要→选前3名工具→注册免费版试运行→对比后固定一套</p>
-</blockquote>
-<hr>
-<h2 id="海外信息差">海外信息差</h2>
-<h3 id="ai-churn情感分析">AI churn情感分析</h3>
-<p><strong>来源</strong>：Stratechery / X平台 / 美国 | AI自动处理客户投诉邮件并分类，国内几乎无人用类似工具</p>
-<p>国内客服仍人工处理投诉，成本高且慢。可直接搬运模式，用GPT API搭建低价替代品，零代码门槛</p>
-<blockquote>
-<p>🎯 去知乎搜「自动处理客户投诉」看有没有现成工具，没有就是机会</p>
-</blockquote>
-<h3 id="非洲短视频新闻">非洲短视频新闻</h3>
-<p><strong>来源</strong>：Guardian / 南非 | 非洲创作者用TikTok做本土新闻，日活百万，国内无人模仿</p>
-<p>国内新闻号还在做图文，搬运此模式到微信视频号做本地民生新闻，零成本起号</p>
-<blockquote>
-<p>🎯 打开抖音搜「本地新闻」看头部号风格，对比非洲模式找差异</p>
-</blockquote>
-<h3 id="spec-driven开发">Spec-driven开发</h3>
-<p><strong>来源</strong>：Lenny&rsquo;s Podcast / 美国 | Notion用AI根据需求自动生成代码，开发效率翻倍，国内可复制</p>
-<p>国内小团队缺人，此模式可降低开发成本，直接用Cursor+Claude实现</p>
-<blockquote>
-<p>🎯 下载Cursor免费版，输入一条微信小程序需求，看AI能否直接生成</p>
-</blockquote>
-<h3 id="miromiro设计审查">MiroMiro设计审查</h3>
-<p><strong>来源</strong>：Product Hunt / 美国 | 一键检查并导出任何网站设计代码，国内无替代工具</p>
-<p>前端开发者常需复刻设计，此工具可节省大量时间，直接用付费差价搬运</p>
-<blockquote>
-<p>🎯 访问miromiro.io尝试免费功能，看能否导出本地网页设计</p>
-</blockquote>
-<hr>
 <h2 id="宏观风向标">宏观风向标</h2>
-<h3 id="通用汽车裁it">通用汽车裁IT</h3>
-<p><strong>来源</strong>：路透社 | 通用汽车裁数百IT岗，招AI技能人员。</p>
-<p>传统IT岗位正在被AI技能替代。有技术基础的你，马上更新简历突出AI能力，否则三年内失业风险大增。</p>
+<h3 id="通用裁员换ai">通用裁员换AI</h3>
+<p><strong>来源</strong>：CNBC | 通用汽车裁掉数百IT员工，换招AI技能强的</p>
+<p>直接影响美国IT打工人的饭碗，尤其是传统IT运维岗，需立即补AI技能</p>
 <blockquote>
-<p>🎯 今天去LinkedIn搜‘prompt engineering’岗位，看要求并更新个人技能关键词。</p>
+<p>🎯 今天去LinkedIn搜‘prompt engineer岗位要求’，整理10个JD关键词</p>
 </blockquote>
-<h3 id="tiktok推无广版">TikTok推无广版</h3>
-<p><strong>来源</strong>：BBC | TikTok在英国上线3.99英镑月费无广告订阅。</p>
-<p>若该模式推广至国内，普通人刷短视频时间将减少，间接影响依赖流量的副业收入（如带货、挂载小程序）。</p>
+<h3 id="英国tiktok收月费">英国TikTok收月费</h3>
+<p><strong>来源</strong>：BBC | TikTok在英国推月费3.99英镑去广告订阅</p>
+<p>影响代购/跨境作者：英国用户付费意愿强，免费流量可能减少，需调整内容策略</p>
 <blockquote>
-<p>🎯 今天统计你在抖音/快手上的内容发布数量，准备至少3条备用内容应对流量下滑。</p>
+<p>🎯 今天在TikTok设置里开启英国区账号测试，观察有无广告变化</p>
 </blockquote>
-<h3 id="韩国拟发ai红利">韩国拟发AI红利</h3>
-<p><strong>来源</strong>：彭博社 | 韩国官员提议用AI利润税发全民红利。</p>
-<p>未来AI巨头税收可能部分转给民众，但政策落地前普通人收入无直接变化。关注国内是否跟进。</p>
+<h3 id="韩国拟发ai分红">韩国拟发AI分红</h3>
+<p><strong>来源</strong>：Bloomberg | 韩国高官提议用AI利润税收给国民发红包</p>
+<p>影响加密货币/跨境套利的普通人：政策若落地可能抬高汇率和消费力，短期炒作情绪</p>
 <blockquote>
-<p>🎯 今天添加‘中国AI税’到你的百度/微信搜索关键词，每周查看一次政策新闻。</p>
+<p>🎯 今天在Upbit查看AI主题币涨幅，记录前5名</p>
 </blockquote>
-<h3 id="印度拟限制黄金">印度拟限制黄金</h3>
-<p><strong>来源</strong>：彭博社 | 印度考虑紧急措施限制黄金购买以保外汇。</p>
-<p>若黄金进口限制生效，国内金价可能短期上涨。有黄金首饰或投资的人可关注出售时机。</p>
+<h3 id="linux爆严重漏洞">Linux爆严重漏洞</h3>
+<p><strong>来源</strong>：Arstechnica | Linux两周内再曝严重漏洞，补丁已出需速装</p>
+<p>影响用Linux服务器跑AI脚本/挖矿的极客，不升级有被黑风险</p>
 <blockquote>
-<p>🎯 今天打开支付宝黄金基金，记录当前金价，设置15%涨幅提醒。</p>
-</blockquote>
-<h3 id="欧股因伊美开跌">欧股因伊美开跌</h3>
-<p><strong>来源</strong>：CNBC | 伊美和平希望渺茫，欧洲股市预计低开。</p>
-<p>全球股市情绪下滑，A股可能跟跌，持有股票或基金的人需警惕短期账户缩水。</p>
-<blockquote>
-<p>🎯 今天登录你的证券账户，检查‘中证500’ETF仓位，若超过30%设置5%止损单。</p>
-</blockquote>
-<hr>
-<h2 id="ai-工具实战">AI 工具实战</h2>
-<h3 id="开源ai编程免费">开源AI编程免费</h3>
-<p><strong>来源</strong>：GitHub/开源新闻 | Goose替代Claude Code，AI编程代理免费开源。</p>
-<p>Claude Code每月200美元，Goose完全免费、功能和它相同，可直接在终端使用，零成本启动。</p>
-<blockquote>
-<p>🎯 打开GitHub搜索&rsquo;Goose&rsquo;→下载安装→运行&rsquo;goose run&rsquo;测试代码补全。</p>
-</blockquote>
-<h3 id="照片转3d世界">照片转3D世界</h3>
-<p><strong>来源</strong>：World Labs | AI将普通照片一键转换为可交互的3D场景。</p>
-<p>传统3D建模需专业软件和数小时，该工具几秒生成，免费试用，适合创作和展示。</p>
-<blockquote>
-<p>🎯 访问worldlabs.ai→注册→上传照片→下载3D模型。</p>
-</blockquote>
-<h3 id="openai-o1完整版">OpenAI O1完整版</h3>
-<p><strong>来源</strong>：X/Twitter | OpenAI推出O1完整版，推理能力大幅提升。</p>
-<p>相较预览版，O1在复杂数学和代码任务上准确率提升约30%，免费用户可在ChatGPT内体验。</p>
-<blockquote>
-<p>🎯 打开chat.openai.com→免费注册→在模型选择中选&rsquo;O1&rsquo;→提问测试。</p>
-</blockquote>
-<h3 id="ai广告制作免费">AI广告制作免费</h3>
-<p><strong>来源</strong>：Google/创意项目 | 创意大咖用AI帮你生成小企业广告。</p>
-<p>小型企业常无预算请专业团队，该项目提供免费AI广告制作工具，几分钟生成高质量广告。</p>
-<blockquote>
-<p>🎯 谷歌搜索&rsquo;AI Ads for Small Businesses&rsquo;→进入页面→上传产品图→生成广告文案和视觉。</p>
-</blockquote>
-<h3 id="混乱数据转表格">混乱数据转表格</h3>
-<p><strong>来源</strong>：Tables工具 | 一键将非结构化数据（网页、PDF）整理成表格。</p>
-<p>手动整理每小时数据处理量不足50条，该工具几秒内完成，免费版日处理100行。</p>
-<blockquote>
-<p>🎯 访问tablesapp.com→粘贴或拖入数据→点击&rsquo;Convert&rsquo;→导出CSV。</p>
-</blockquote>
-<hr>
-<h2 id="套利雷达">套利雷达</h2>
-<h3 id="视频搜索痛点">视频搜索痛点</h3>
-<p><strong>来源</strong>：Reddit r/SomebodyMakeThis | 用户抱怨YouTube搜索结果太少不相关</p>
-<p>只需基础API调用和前端技能，无需翻墙，用YouTube Data API即可搭一个垂直搜索页</p>
-<blockquote>
-<p>🎯 注册Google Cloud Console→启用YouTube Data API v3→搜索&rsquo;video search engine&rsquo;找5个吐槽帖子</p>
-</blockquote>
-<h3 id="电子签名合规焦虑">电子签名合规焦虑</h3>
-<p><strong>来源</strong>：Reddit r/startups | 东南亚电子签名法规混乱成痛点</p>
-<p>你只需对比新加坡、马来西亚、印尼法律，写一篇对比指南发Blog就有人付费咨询</p>
-<blockquote>
-<p>🎯 搜索&rsquo;singapore e-signature law 2026 free guide&rsquo;→收集3篇免费PDF→用Notion整理对比表</p>
-</blockquote>
-<h3 id="枯燥后台自动化需求">枯燥后台自动化需求</h3>
-<p><strong>来源</strong>：Reddit r/sidehustle | 用户问枯燥办公自动化是否比新SaaS更赚钱</p>
-<p>小企业缺人做发票催款等重复劳动，你只需懂Python+Zapier就能接单</p>
-<blockquote>
-<p>🎯 注册Zapier免费账号→搜索&rsquo;invoice reminder automation&rsquo;→看5个模板并记录流程</p>
-</blockquote>
-<h3 id="独立开发者分发难题">独立开发者分发难题</h3>
-<p><strong>来源</strong>：IndieHackers | 用户问如何获取第一批用户</p>
-<p>你可以整理10个免费分发渠道（ProductHunt/Reddit/V2EX/知乎）并做模板话术</p>
-<blockquote>
-<p>🎯 打开IndieHackers帖子→复制10条最热门的launch策略→用Markdown写成清单发V2EX</p>
-</blockquote>
-<h3 id="不赚钱产品该杀吗">不赚钱产品该杀吗</h3>
-<p><strong>来源</strong>：IndieHackers | 用户抱怨日收入15刀但服务器成本50刀/月</p>
-<p>暴露了低利润定价和成本结构问题，你可以帮人做定价审计或推荐便宜服务器</p>
-<blockquote>
-<p>🎯 打开Hetzner或Oracle Cloud免费层→对比服务器价格→写一篇&rsquo;日收入15刀如何选服务器&rsquo;的帖子发知乎</p>
+<p>🎯 今天在服务器跑‘sudo apt update &amp;&amp; sudo apt upgrade -y’</p>
 </blockquote>
 <hr>
 <h2 id="出海工具链">出海工具链</h2>
-<h3 id="segura融资">Segura融资</h3>
-<p><strong>来源</strong>：LatamList+巴西 | 巴西初创Segura获800万美元种子轮，专注保险科技。</p>
-<p>巴西保险市场分散，个人开发者可接Segura API做保险比价或理赔工具。启动成本0元，门槛低。</p>
+<h3 id="腾讯混元集成文档">腾讯混元集成文档</h3>
+<p><strong>来源</strong>：36氪+中国 | 腾讯QClaw AI接入腾讯文档和ima知识库，支持跨文档查询</p>
+<p>个人开发者可直接用免费AI工具做文档摘要/翻译，降低出海内容制作门槛，零成本注册腾讯云即可用</p>
 <blockquote>
-<p>🎯 去Segura官网注册开发者账号，查看API文档，模拟一个保险比价请求。</p>
+<p>🎯 去腾讯云官网用微信注册，搜索QClaw API申请免费额度，10分钟配置</p>
 </blockquote>
-<h3 id="partment模式">Partment模式</h3>
-<p><strong>来源</strong>：LatamList+埃及 | 埃及Partment用分时共享模式做度假房产投资平台。</p>
-<p>小团队可Copycat模式，用WordPress+WooCommerce搭建本地分时租赁市场。成本&lt;500元，周内上线。</p>
+<h3 id="快手可灵ai拟分拆">快手可灵AI拟分拆</h3>
+<p><strong>来源</strong>：36氪+中国 | 快手考虑分拆可灵AI视频生成单元独立IPO</p>
+<p>可灵AI视频生成工具开放API，小团队可低成本生成海外营销视频，零成本注册，每分钟约0.5元</p>
 <blockquote>
-<p>🎯 用本地号码注册WordPress.com，安装WooCommerce，上架一个虚拟房产做测试。</p>
+<p>🎯 去kling.kuaishou.com用手机号注册，点击API文档免费测试视频生成</p>
 </blockquote>
-<h3 id="core非洲基金">Core非洲基金</h3>
-<p><strong>来源</strong>：CoreDAO+非洲 | Core DAO启动500万美元非洲创新基金，支持Web3项目。</p>
-<p>个人开发者可申请小额资助做非洲本地链上工具（如小额借贷、土地登记）。无资金门槛。</p>
+<h3 id="canvas全球数据泄露">Canvas全球数据泄露</h3>
+<p><strong>来源</strong>：南华早报+香港 | 学习平台Canvas遭黑客入侵，香港7.2万师生数据泄露</p>
+<p>暴露在线教育平台安全漏洞，个人开发者可提供安全审计或加固服务，零成本代理调查竞品安全措施</p>
 <blockquote>
-<p>🎯 访问CoreDAO官网，下载申请模板，用英语填写200字项目概述提交。</p>
+<p>🎯 搜索Canvas安全漏洞报告，整理常见问题，在暗网上发布安全咨询或开发安全插件上架</p>
 </blockquote>
-<h3 id="undp-timbuktoo">Undp timbuktoo</h3>
-<p><strong>来源</strong>：新闻稿+非洲 | 联合国开发计划署启动timbuktoo，为非洲初创提供融资。</p>
-<p>直接申请资金，无需事先成立公司。适合做教育、农业科技类工具。启动成本0元。</p>
+<h3 id="拉美fintech获c轮">拉美fintech获C轮</h3>
+<p><strong>来源</strong>：LatamList+拉美 | 阿根廷fintech belo获1400万美元A轮，巴西Segura获800万美元种子轮</p>
+<p>拉美数字支付市场爆发，中国开发者可开发收款插件/税务工具对接当地API，启动成本500元(拉美服务器)，1周内完成对接</p>
 <blockquote>
-<p>🎯 搜索timbuktoo initiative application page，填写在线申请表单，上传商业计划书草图。</p>
+<p>🎯 去belo.app注册商户账号，测试API接口，用Node.js一周内写出收款插件demo</p>
 </blockquote>
 <hr>
 ]]></content:encoded></item></channel></rss>
