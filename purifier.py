@@ -825,10 +825,10 @@ def deep_dive_worker(category_name, config):
 
     if has_deep_dive:
         deep_dive_section = f"""
-【深度长文任务——仅在资料库有足够操作价值时生成】
+【深度长文任务】从资料库中选出最有操作价值的一个话题，生成深度长文。
 {deep_dive_prompt}
 """
-        deep_dive_instruction = "如果你找到了一个真正可操作、读者看完就能动手的话题，就放心生成 1 篇深度长文。每个引擎独立决策，不需要考虑其他引擎。宁可少而精。"
+        deep_dive_instruction = "请从当前资料中选出相对最好的话题写深度长文。如果确实所有话题都不够操作价值，deep_dive 可以填 null——但不要轻易跳过，大多数资料库中至少有一个可写的话题。"
     else:
         deep_dive_section = ""
         deep_dive_instruction = "本引擎不生成深度长文。deep_dive 字段必须填 null。"
