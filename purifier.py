@@ -903,12 +903,18 @@ def deep_dive_worker(category_name, config):
         has_brief = bool(result.get("briefing"))
         dd = result.get("deep_dive")
         has_deep = bool(dd and dd.get("title"))
-        # DEBUG: 打印模型返回的 deep_dive 原始值和类型
         dd_preview = str(dd)[:200] if dd else "null/None"
-        print(f"[{category_name}] API {t_api-t_api_start:.0f}s | 快讯:{has_brief} 深度:{has_deep} | deep_dive={dd_preview} (type={type(dd).__name__})", flush=True)
-        # DEBUG: 如果深度为 False，打印原始响应的最后300字符帮助排查
+        print(f"[{category_name}] API {t_api-t_api_start:.0f}s | 快讯:{has_brief} 深度:{has_deep} | deep_dive={dd_preview} (type={type(dd).__name__}) | 原始响应长度={len(final_text)}chars", flush=True)
+        # DEBUG: 搜索 "deep_dive" 在原始响应中的位置
+        dd_pos = final_text.find('"deep_dive"')
+        if dd_pos >= 0:
+            ctx_start = max(0, dd_pos - 50)
+            ctx_end = min(len(final_text), dd_pos + 200)
+            print(f"   [DEBUG] 'deep_dive' 出现在位置 {dd_pos}: ...{final_text[ctx_start:ctx_end]}...", flush=True)
+        # DEBUG: 如果深度为 False，打印原始响应的首尾各200字符
         if not has_deep:
-            print(f"   [DEBUG] 原始响应尾段(300chars): ...{final_text[-300:]}", flush=True)
+            print(f"   [DEBUG] 响应头200chars: {final_text[:200]}", flush=True)
+            print(f"   [DEBUG] 响应尾200chars: {final_text[-200:]}", flush=True)
         return category_name, result
 
     except Exception as e:
