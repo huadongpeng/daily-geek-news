@@ -1,128 +1,291 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Easton 跨国智库</title><link>https://radar.huadongpeng.com/</link><description>Recent content on Easton 跨国智库</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Tue, 12 May 2026 22:49:07 +0800</lastBuildDate><atom:link href="https://radar.huadongpeng.com/index.xml" rel="self" type="application/rss+xml"/><item><title>每日快讯</title><link>https://radar.huadongpeng.com/posts/daily-briefing/briefing-2026-05-12/</link><pubDate>Tue, 12 May 2026 22:49:07 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/daily-briefing/briefing-2026-05-12/</guid><description>&lt;blockquote&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Easton 跨国智库</title><link>https://radar.huadongpeng.com/</link><description>Recent content on Easton 跨国智库</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Tue, 12 May 2026 23:08:39 +0800</lastBuildDate><atom:link href="https://radar.huadongpeng.com/index.xml" rel="self" type="application/rss+xml"/><item><title>每日快讯</title><link>https://radar.huadongpeng.com/posts/daily-briefing/briefing-2026-05-12/</link><pubDate>Tue, 12 May 2026 23:08:39 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/daily-briefing/briefing-2026-05-12/</guid><description>&lt;blockquote&gt;
 &lt;p&gt;2026年05月12日 · 12 条情报&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h2 id="宏观风向标"&gt;宏观风向标&lt;/h2&gt;
-&lt;h3 id="canvas-数据被黑客赎回"&gt;Canvas 数据被黑客赎回&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：TechCrunch/BBC/纽约时报 | Instructure与入侵Canvas的黑客达成数据赎回协议，但未透露赎金数额。&lt;/p&gt;
-&lt;p&gt;全球8800所学校使用Canvas，你的同学/同事/孩子的成绩、作业、私信可能已泄露。未来几天留意钓鱼邮件、密码重置。&lt;/p&gt;
+&lt;h3 id="美国通胀再升温"&gt;美国通胀再升温&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：Bloomberg/CNBC | 4月核心CPI超预期叠加油价暴涨&lt;/p&gt;
+&lt;p&gt;汽油、食品杂货等日常必用品价格正快速上涨，直接影响你的每月开支预算，特别是开车通勤和买菜的人。&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;🎯 今天去canvas官网首页。如果学校用Canvas，立即修改密码，开启两步验证。&lt;/p&gt;
+&lt;p&gt;🎯 今天对比附近三家超市的物价，记录涨幅最大的5种食品&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h3 id="tiktok-上线旅行预订"&gt;TikTok 上线旅行预订&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：TechCrunch/TikTok官方 | TikTok在美国推出TikTok GO，用户可直接在App内订酒店、票务和体验。&lt;/p&gt;
-&lt;p&gt;TikTok从内容平台变成交易平台。如果你在发旅游内容，现在可以零成本对接预订接口赚佣金。&lt;/p&gt;
+&lt;h3 id="canvas数据被黑"&gt;Canvas数据被黑&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：TechCrunch/BBC | 教育软件Canvas遭二次入侵，公司付钱给黑客删数据&lt;/p&gt;
+&lt;p&gt;如果你或家人是学生/教师，姓名、邮箱、私信记录可能已泄露，近期小心钓鱼邮件和诈骗电话。&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;🎯 今天打开抖音创作者后台/对应地区的TikTok，检查是否开通“TikTok GO”功能。如果未出现，关注官方公告。&lt;/p&gt;
+&lt;p&gt;🎯 今天修改Canvas账号密码，检查邮箱中最近一周是否有可疑链接&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h3 id="freeswitch-0day-漏洞被利用"&gt;Freeswitch 0day 漏洞被利用&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：Ars Technica | Linux开源通话软件Freeswitch被曝存在严重0day漏洞，已发现被用于攻击。&lt;/p&gt;
-&lt;p&gt;如果你公司或个人自建了基于Freeswitch的呼叫中心/VOIP系统，应立即打补丁。未修补的服务器可能被用于加密勒索。&lt;/p&gt;
+&lt;h3 id="waymo召回无人车"&gt;Waymo召回无人车&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：Bloomberg/Reuters | 3800辆Waymo因软件缺陷被召回：会开上积水路面&lt;/p&gt;
+&lt;p&gt;自动驾驶技术可靠性再受质疑，会影响你对这类服务的信任及行业监管走向，但普通人暂不需要直接行动。&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;🎯 今天用ssh登录你的Freeswitch服务器，运行：&lt;code&gt;sudo apt update &amp;amp;&amp;amp; sudo apt upgrade freeswitch&lt;/code&gt;。若无法升级，暂时在防火墙上封锁端口。&lt;/p&gt;
+&lt;p&gt;🎯 今天在你所在城市的地图上标记出3个易积水路段，开车时留意&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h3 id="美国-4-月通胀因战争走高"&gt;美国 4 月通胀因战争走高&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：CNBC | 伊朗战争推高4月CPI，汽油、食品杂货价格显著上涨。&lt;/p&gt;
-&lt;p&gt;全球物价上涨，你的生活成本正在上升，尤其是油价和食品。如果你有跨境电商/代购业务，运费和进货价都在涨。&lt;/p&gt;
+&lt;h3 id="美国延长路由器更新"&gt;美国延长路由器更新&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：Ars Technica | 美国FCC放宽对华路由器禁令，软件更新可至2029年&lt;/p&gt;
+&lt;p&gt;如果你家路由器是TP-Link等中国品牌，之前担心会被禁用或停止更新，现在可以继续安全使用至2029年。&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;🎯 今天检查你常用的快递/海运价格表，对比上周价格。如果涨超5%，考虑换渠道或提前囤货。&lt;/p&gt;
+&lt;p&gt;🎯 今天检查家中路由器厂商和型号，看是否在TP-Link/华为之列&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;hr&gt;
 &lt;h2 id="海外信息差"&gt;海外信息差&lt;/h2&gt;
-&lt;h3 id="pitchdeck分析服务"&gt;Pitchdeck分析服务&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：Reddit r/Entrepreneur 美国 | 投资人评论分析服务，国内极其稀缺&lt;/p&gt;
-&lt;p&gt;创业者痛点明显，用AI分析后出模板，可做小红书付费资料&lt;/p&gt;
+&lt;h3 id="ai助力的newsletter-5分钟创建服务"&gt;AI助力的Newsletter 5分钟创建服务&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：ProductHunt / 美国 | 美国5分钟用AI生成并发布Newsletter，国内无类似工具&lt;/p&gt;
+&lt;p&gt;你可以用中文模仿，在小红书教人做个人Newsletter，卖模板/代运营&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;🎯 在小红书搜‘融资PPT模板’看评论，找‘需要投资人意见’的提问&lt;/p&gt;
+&lt;p&gt;🎯 去ProductHunt看HeyNews页面记录功能截图&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;hr&gt;
-&lt;h2 id="ai-工具实战"&gt;AI 工具实战&lt;/h2&gt;
-&lt;h3 id="goose免费替代claude-code"&gt;Goose免费替代Claude Code&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：VentureBeat | 免费开源的AI编程助手，功能对标200美元/月的Claude Code&lt;/p&gt;
-&lt;p&gt;零成本替代高价编程AI，适合预算有限的开发者。安装即用，支持代码生成、调试、部署。&lt;/p&gt;
+&lt;h2 id="效率工具与自动化"&gt;效率工具与自动化&lt;/h2&gt;
+&lt;h3 id="python-315内置采样分析器"&gt;Python 3.15内置采样分析器&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：Python官方文档 | python profiling.sampling无需改代码即可诊断性能瓶颈&lt;/p&gt;
+&lt;p&gt;零成本附在标准库中，5分钟定位慢函数，省去排查时间，每月至少省2小时调试&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;🎯 打开GitHub搜索Goose→下载桌面版→安装后新建项目→输入“帮我写一个Python爬虫”&lt;/p&gt;</description><content:encoded><![CDATA[<blockquote>
+&lt;p&gt;🎯 打开终端→python3.15 -m profiling.sampling -p PID→生成火焰图&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id="开源ai-seo审计工具"&gt;开源AI SEO审计工具&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：ProductHunt | 免费审计网站适不适合AI搜索时代&lt;/p&gt;
+&lt;p&gt;自行检查SEO问题，省去每月几百元的审计费，30分钟出报告&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;🎯 访问Free AI SEO Auditor网站→输入域名→获得AI搜索兼容性报告&lt;/p&gt;</description><content:encoded><![CDATA[<blockquote>
 <p>2026年05月12日 · 12 条情报</p>
 </blockquote>
 <h2 id="宏观风向标">宏观风向标</h2>
-<h3 id="canvas-数据被黑客赎回">Canvas 数据被黑客赎回</h3>
-<p><strong>来源</strong>：TechCrunch/BBC/纽约时报 | Instructure与入侵Canvas的黑客达成数据赎回协议，但未透露赎金数额。</p>
-<p>全球8800所学校使用Canvas，你的同学/同事/孩子的成绩、作业、私信可能已泄露。未来几天留意钓鱼邮件、密码重置。</p>
+<h3 id="美国通胀再升温">美国通胀再升温</h3>
+<p><strong>来源</strong>：Bloomberg/CNBC | 4月核心CPI超预期叠加油价暴涨</p>
+<p>汽油、食品杂货等日常必用品价格正快速上涨，直接影响你的每月开支预算，特别是开车通勤和买菜的人。</p>
 <blockquote>
-<p>🎯 今天去canvas官网首页。如果学校用Canvas，立即修改密码，开启两步验证。</p>
+<p>🎯 今天对比附近三家超市的物价，记录涨幅最大的5种食品</p>
 </blockquote>
-<h3 id="tiktok-上线旅行预订">TikTok 上线旅行预订</h3>
-<p><strong>来源</strong>：TechCrunch/TikTok官方 | TikTok在美国推出TikTok GO，用户可直接在App内订酒店、票务和体验。</p>
-<p>TikTok从内容平台变成交易平台。如果你在发旅游内容，现在可以零成本对接预订接口赚佣金。</p>
+<h3 id="canvas数据被黑">Canvas数据被黑</h3>
+<p><strong>来源</strong>：TechCrunch/BBC | 教育软件Canvas遭二次入侵，公司付钱给黑客删数据</p>
+<p>如果你或家人是学生/教师，姓名、邮箱、私信记录可能已泄露，近期小心钓鱼邮件和诈骗电话。</p>
 <blockquote>
-<p>🎯 今天打开抖音创作者后台/对应地区的TikTok，检查是否开通“TikTok GO”功能。如果未出现，关注官方公告。</p>
+<p>🎯 今天修改Canvas账号密码，检查邮箱中最近一周是否有可疑链接</p>
 </blockquote>
-<h3 id="freeswitch-0day-漏洞被利用">Freeswitch 0day 漏洞被利用</h3>
-<p><strong>来源</strong>：Ars Technica | Linux开源通话软件Freeswitch被曝存在严重0day漏洞，已发现被用于攻击。</p>
-<p>如果你公司或个人自建了基于Freeswitch的呼叫中心/VOIP系统，应立即打补丁。未修补的服务器可能被用于加密勒索。</p>
+<h3 id="waymo召回无人车">Waymo召回无人车</h3>
+<p><strong>来源</strong>：Bloomberg/Reuters | 3800辆Waymo因软件缺陷被召回：会开上积水路面</p>
+<p>自动驾驶技术可靠性再受质疑，会影响你对这类服务的信任及行业监管走向，但普通人暂不需要直接行动。</p>
 <blockquote>
-<p>🎯 今天用ssh登录你的Freeswitch服务器，运行：<code>sudo apt update &amp;&amp; sudo apt upgrade freeswitch</code>。若无法升级，暂时在防火墙上封锁端口。</p>
+<p>🎯 今天在你所在城市的地图上标记出3个易积水路段，开车时留意</p>
 </blockquote>
-<h3 id="美国-4-月通胀因战争走高">美国 4 月通胀因战争走高</h3>
-<p><strong>来源</strong>：CNBC | 伊朗战争推高4月CPI，汽油、食品杂货价格显著上涨。</p>
-<p>全球物价上涨，你的生活成本正在上升，尤其是油价和食品。如果你有跨境电商/代购业务，运费和进货价都在涨。</p>
+<h3 id="美国延长路由器更新">美国延长路由器更新</h3>
+<p><strong>来源</strong>：Ars Technica | 美国FCC放宽对华路由器禁令，软件更新可至2029年</p>
+<p>如果你家路由器是TP-Link等中国品牌，之前担心会被禁用或停止更新，现在可以继续安全使用至2029年。</p>
 <blockquote>
-<p>🎯 今天检查你常用的快递/海运价格表，对比上周价格。如果涨超5%，考虑换渠道或提前囤货。</p>
+<p>🎯 今天检查家中路由器厂商和型号，看是否在TP-Link/华为之列</p>
 </blockquote>
 <hr>
 <h2 id="海外信息差">海外信息差</h2>
-<h3 id="pitchdeck分析服务">Pitchdeck分析服务</h3>
-<p><strong>来源</strong>：Reddit r/Entrepreneur 美国 | 投资人评论分析服务，国内极其稀缺</p>
-<p>创业者痛点明显，用AI分析后出模板，可做小红书付费资料</p>
+<h3 id="ai助力的newsletter-5分钟创建服务">AI助力的Newsletter 5分钟创建服务</h3>
+<p><strong>来源</strong>：ProductHunt / 美国 | 美国5分钟用AI生成并发布Newsletter，国内无类似工具</p>
+<p>你可以用中文模仿，在小红书教人做个人Newsletter，卖模板/代运营</p>
 <blockquote>
-<p>🎯 在小红书搜‘融资PPT模板’看评论，找‘需要投资人意见’的提问</p>
-</blockquote>
-<hr>
-<h2 id="ai-工具实战">AI 工具实战</h2>
-<h3 id="goose免费替代claude-code">Goose免费替代Claude Code</h3>
-<p><strong>来源</strong>：VentureBeat | 免费开源的AI编程助手，功能对标200美元/月的Claude Code</p>
-<p>零成本替代高价编程AI，适合预算有限的开发者。安装即用，支持代码生成、调试、部署。</p>
-<blockquote>
-<p>🎯 打开GitHub搜索Goose→下载桌面版→安装后新建项目→输入“帮我写一个Python爬虫”</p>
-</blockquote>
-<h3 id="anthropic-cowork桌面代理">Anthropic Cowork桌面代理</h3>
-<p><strong>来源</strong>：VentureBeat | 无需编程技能的文件操作AI代理，可自动整理文件夹</p>
-<p>零代码门槛，适合非技术用户。免费版可用基本文件操作，节省手动整理时间。</p>
-<blockquote>
-<p>🎯 打开Anthropic官网→下载Cowork桌面版→注册免费账号→选择文件夹说“把图片按日期分类”</p>
-</blockquote>
-<h3 id="chatgpt用户量破9亿">ChatGPT用户量破9亿</h3>
-<p><strong>来源</strong>：OpenAI | 周活跃用户达9亿，35岁以上用户增长最快</p>
-<p>主流人群加速使用AI，学会用它提升工作效率的场景越来越多。免费版够写作、翻译和基础分析。</p>
-<blockquote>
-<p>🎯 打开chat.openai.com→注册免费账号→输入“帮我写一封英文邮件确认会议时间”</p>
-</blockquote>
-<h3 id="tables工具结构化数据">Tables工具结构化数据</h3>
-<p><strong>来源</strong>：AIValley | 将非结构化文本一键转为可编辑表格</p>
-<p>从杂乱信息中提取关键数据，省去手动整理时间。免费版每天可处理10次。</p>
-<blockquote>
-<p>🎯 打开tables.aivalley.ai→粘贴一段描述性文本→点击“生成表格”→导出CSV</p>
+<p>🎯 去ProductHunt看HeyNews页面记录功能截图</p>
 </blockquote>
 <hr>
 <h2 id="效率工具与自动化">效率工具与自动化</h2>
-<h3 id="无标题">无标题</h3>
-<p><strong>来源</strong>：未知 |</p>
+<h3 id="python-315内置采样分析器">Python 3.15内置采样分析器</h3>
+<p><strong>来源</strong>：Python官方文档 | python profiling.sampling无需改代码即可诊断性能瓶颈</p>
+<p>零成本附在标准库中，5分钟定位慢函数，省去排查时间，每月至少省2小时调试</p>
+<blockquote>
+<p>🎯 打开终端→python3.15 -m profiling.sampling -p PID→生成火焰图</p>
+</blockquote>
+<h3 id="开源ai-seo审计工具">开源AI SEO审计工具</h3>
+<p><strong>来源</strong>：ProductHunt | 免费审计网站适不适合AI搜索时代</p>
+<p>自行检查SEO问题，省去每月几百元的审计费，30分钟出报告</p>
+<blockquote>
+<p>🎯 访问Free AI SEO Auditor网站→输入域名→获得AI搜索兼容性报告</p>
+</blockquote>
+<h3 id="nps免费开源字体库">NPS免费开源字体库</h3>
+<p><strong>来源</strong>：GitHub - national-park-service/fonts | 美国国家公园管理局风格开源字体可免费商用</p>
+<p>设计项目省字体授权费，直接下载免版权顾虑</p>
+<blockquote>
+<p>🎯 打开github.com/national-park-service/fonts→点Code→Download ZIP→解压即用</p>
+</blockquote>
+<h3 id="tanstack攻击自查">TanStack攻击自查</h3>
+<p><strong>来源</strong>：TanStack官方博客 | 判断npm项目是否感染Mini Shai-Hulud恶意包</p>
+<p>避免凭证泄露和机器被控，5分钟排查保安全</p>
+<blockquote>
+<p>🎯 在项目目录执行npm ls @tanstack/*→核对版本是否在恶意列表中</p>
+</blockquote>
+<h3 id="防git仓库恶意脚本">防Git仓库恶意脚本</h3>
+<p><strong>来源</strong>：Reddit r/webdev | 收到可疑Git仓库先审查再克隆运行</p>
+<p>假客户通过Git仓库植入恶意npm包，审查可避免被控，节省修复成本</p>
+<blockquote>
+<p>🎯 克隆后检查.gitignore、package.json和scripts字段→审查后再npm install</p>
+</blockquote>
 <hr>
 <h2 id="套利雷达">套利雷达</h2>
-<h3 id="tab管理工具需求">Tab管理工具需求</h3>
-<p><strong>来源</strong>：Reddit r/SomebodyMakeThis | 用户抱怨标签页管理混乱，求更好方案</p>
-<p>门槛低：Chrome扩展开发，免费API，月收入潜力2000-5000元</p>
+<h3 id="教程市场垄断被抱怨">教程市场垄断被抱怨</h3>
+<p><strong>来源</strong>：Reddit r/webdev | Coursera收购Udemy，用户担忧涨价和内容同质</p>
+<p>可建立教程聚合对比站，用爬虫收集全网价格，需要编程基础但无成本</p>
 <blockquote>
-<p>🎯 打开Chrome扩展文档，阅读&rsquo;Tab Vault&rsquo;相关教程，动手开发一个最小原型</p>
+<p>🎯 打开Coursera和Udemy → 搜同一课程 → 对比价格和评分 → 用GitHub Pages搭静态页面</p>
 </blockquote>
 <hr>
-<h2 id="出海工具链">出海工具链</h2>
-<h3 id="巴西保险科技开门">巴西保险科技开门</h3>
-<p><strong>来源</strong>：LatamList, 巴西 | Segura获a16z和Kaszek 800万美元种子轮，保险科技赛道验证。</p>
-<p>拉丁费率全球第二大保险未覆盖市场，Segura做的是线上车险比价。中国开发者可复制模式到宠物保险/手机碎屏险。启动500元，首周收益约200元。</p>
+<h2 id="ai-工具实战">AI 工具实战</h2>
+<h3 id="gemini-webhooks上线">Gemini Webhooks上线</h3>
+<p><strong>来源</strong>：Google Blog | Gemini API支持事件驱动Webhooks，减少长任务延迟。</p>
+<p>对开发者免费调用量大提升，异步处理可节省API等待时间。</p>
 <blockquote>
-<p>🎯 打开Segura官网segura.com.br，分析其落地页转化路径，用Figma仿照设计一页宠物保险落地页，投TikTok巴西小测试。</p>
+<p>🎯 打开Google AI Studio→启用Gemini API→在设置里配Webhooks→连个示例项目试跑</p>
 </blockquote>
 <hr>
+]]></content:encoded></item><item><title>Python慢速诊断</title><link>https://radar.huadongpeng.com/posts/developer-goldmine/deep-dive-2026-05-12-2302/</link><pubDate>Tue, 12 May 2026 23:02:53 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/developer-goldmine/deep-dive-2026-05-12-2302/</guid><description>&lt;h1 id="python慢速诊断零成本用内置采样分析器定位瓶颈"&gt;Python慢速诊断：零成本用内置采样分析器定位瓶颈&lt;/h1&gt;
+&lt;h2 id="效率痛点"&gt;效率痛点&lt;/h2&gt;
+&lt;p&gt;你每天可能花20-30分钟等待代码跑完，或者反复猜测哪个函数拖慢了整个程序。传统cProfile要改代码、加装饰器，而且会显著拖慢程序（2-10倍），导致生产环境无法使用。一个月下来，光是无目的的排查就浪费10多个小时。用Python 3.15自带的&lt;code&gt;profiling.sampling&lt;/code&gt;模块，无需改一行代码，以不到1%的开销采样堆栈，直接输出火焰图或统计表，把排查时间压缩到5分钟以内。&lt;/p&gt;
+&lt;h2 id="自动化提效方案"&gt;自动化/提效方案&lt;/h2&gt;
+&lt;h3 id="工具链架构"&gt;工具链架构&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Python 3.15+&lt;/strong&gt;（必须3.15beta1或更高版本）&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;profiling.sampling&lt;/strong&gt;（即Tachyon分析器，内置模块，无需安装第三方库）&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;浏览器&lt;/strong&gt;（用于查看火焰图HTML报告）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="从安装到首次运行的完整步骤"&gt;从安装到首次运行的完整步骤&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;前提：安装Python 3.15&lt;/strong&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# Windows/macOS/Linux通用：从python.org下载3.15.beta1或更高版本&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 检查版本&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;python3.15 --version
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 应输出类似 Python 3.15.0b1&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;strong&gt;第一步：编写一个慢速测试脚本&lt;/strong&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# slow_demo.py&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;import&lt;/span&gt; time
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;heavy_computation&lt;/span&gt;(n):
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; total &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;for&lt;/span&gt; i &lt;span style="color:#f92672"&gt;in&lt;/span&gt; range(n):
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; total &lt;span style="color:#f92672"&gt;+=&lt;/span&gt; i &lt;span style="color:#f92672"&gt;**&lt;/span&gt; &lt;span style="color:#ae81ff"&gt;2&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; time&lt;span style="color:#f92672"&gt;.&lt;/span&gt;sleep(&lt;span style="color:#ae81ff"&gt;0.0001&lt;/span&gt;) &lt;span style="color:#75715e"&gt;# 模拟I/O延迟&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;return&lt;/span&gt; total
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;main&lt;/span&gt;():
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; result &lt;span style="color:#f92672"&gt;=&lt;/span&gt; heavy_computation(&lt;span style="color:#ae81ff"&gt;5000&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; print(&lt;span style="color:#e6db74"&gt;&amp;#34;结果:&amp;#34;&lt;/span&gt;, result)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; time&lt;span style="color:#f92672"&gt;.&lt;/span&gt;sleep(&lt;span style="color:#ae81ff"&gt;0.5&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;if&lt;/span&gt; __name__ &lt;span style="color:#f92672"&gt;==&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;__main__&amp;#34;&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; main()
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;strong&gt;第二步：用自动附加模式运行分析&lt;/strong&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 启动脚本并自动附加分析器（输出火焰图HTML）&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;python3.15 -m profiling.sampling slow_demo.py --flamegraph profile.html
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;tips：&lt;code&gt;--flamegraph profile.html&lt;/code&gt; 会生成一个火焰图文件，双击用浏览器打开即可看到每个函数占用的调用栈宽度。&lt;/p&gt;</description><content:encoded><![CDATA[<h1 id="python慢速诊断零成本用内置采样分析器定位瓶颈">Python慢速诊断：零成本用内置采样分析器定位瓶颈</h1>
+<h2 id="效率痛点">效率痛点</h2>
+<p>你每天可能花20-30分钟等待代码跑完，或者反复猜测哪个函数拖慢了整个程序。传统cProfile要改代码、加装饰器，而且会显著拖慢程序（2-10倍），导致生产环境无法使用。一个月下来，光是无目的的排查就浪费10多个小时。用Python 3.15自带的<code>profiling.sampling</code>模块，无需改一行代码，以不到1%的开销采样堆栈，直接输出火焰图或统计表，把排查时间压缩到5分钟以内。</p>
+<h2 id="自动化提效方案">自动化/提效方案</h2>
+<h3 id="工具链架构">工具链架构</h3>
+<ul>
+<li><strong>Python 3.15+</strong>（必须3.15beta1或更高版本）</li>
+<li><strong>profiling.sampling</strong>（即Tachyon分析器，内置模块，无需安装第三方库）</li>
+<li><strong>浏览器</strong>（用于查看火焰图HTML报告）</li>
+</ul>
+<h3 id="从安装到首次运行的完整步骤">从安装到首次运行的完整步骤</h3>
+<p><strong>前提：安装Python 3.15</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># Windows/macOS/Linux通用：从python.org下载3.15.beta1或更高版本</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 检查版本</span>
+</span></span><span style="display:flex;"><span>python3.15 --version
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 应输出类似 Python 3.15.0b1</span>
+</span></span></code></pre></div><p><strong>第一步：编写一个慢速测试脚本</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># slow_demo.py</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> time
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">heavy_computation</span>(n):
+</span></span><span style="display:flex;"><span>    total <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(n):
+</span></span><span style="display:flex;"><span>        total <span style="color:#f92672">+=</span> i <span style="color:#f92672">**</span> <span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>        time<span style="color:#f92672">.</span>sleep(<span style="color:#ae81ff">0.0001</span>)  <span style="color:#75715e"># 模拟I/O延迟</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> total
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">main</span>():
+</span></span><span style="display:flex;"><span>    result <span style="color:#f92672">=</span> heavy_computation(<span style="color:#ae81ff">5000</span>)
+</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">&#34;结果:&#34;</span>, result)
+</span></span><span style="display:flex;"><span>    time<span style="color:#f92672">.</span>sleep(<span style="color:#ae81ff">0.5</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;__main__&#34;</span>:
+</span></span><span style="display:flex;"><span>    main()
+</span></span></code></pre></div><p><strong>第二步：用自动附加模式运行分析</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 启动脚本并自动附加分析器（输出火焰图HTML）</span>
+</span></span><span style="display:flex;"><span>python3.15 -m profiling.sampling slow_demo.py --flamegraph profile.html
+</span></span></code></pre></div><p>tips：<code>--flamegraph profile.html</code> 会生成一个火焰图文件，双击用浏览器打开即可看到每个函数占用的调用栈宽度。</p>
+<p><strong>第三步：附加到正在运行的进程（无代码侵入）</strong></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 先运行你的脚本（在另一个终端）</span>
+</span></span><span style="display:flex;"><span>python3.15 slow_demo.py &amp;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 获取进程PID</span>
+</span></span><span style="display:flex;"><span>echo $!
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 用PID附加分析器，采样5秒后输出统计</span>
+</span></span><span style="display:flex;"><span>python3.15 -m profiling.sampling -p &lt;PID&gt; --duration <span style="color:#ae81ff">5</span> --output stats.txt
+</span></span></code></pre></div><p><strong>第四步：解读输出</strong></p>
+<p>输出文本格式：</p>
+<pre tabindex="0"><code>   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+     5001   0.234    0.000    0.234    0.000 slow_demo.py:5(heavy_computation)
+        1   0.500    0.500    0.734    0.734 slow_demo.py:11(main)
+        1   0.001    0.001    0.735    0.735 &lt;string&gt;:1(&lt;module&gt;)
+</code></pre><ul>
+<li><strong>ncalls</strong>：采样击中次数（非实际调用数，而是采样次数）</li>
+<li><strong>tottime</strong>：在该函数中直接花费的时间（不含子函数）</li>
+<li><strong>cumtime</strong>：累计时间（含子函数）</li>
+</ul>
+<p>查看火焰图时，底部是调用栈根，越宽的函数占用时间越多，优先优化。</p>
+<h3 id="核心配置代码">核心配置代码</h3>
+<p>当需要自定义采样频率或输出格式时，可以用API方式调用：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># profile_api.py</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> profiling.sampling <span style="color:#66d9ef">as</span> sampling
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> time
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">my_slow_function</span>():
+</span></span><span style="display:flex;"><span>    time<span style="color:#f92672">.</span>sleep(<span style="color:#ae81ff">2</span>)
+</span></span><span style="display:flex;"><span>    total <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> i <span style="color:#f92672">in</span> range(<span style="color:#ae81ff">100000</span>):
+</span></span><span style="display:flex;"><span>        total <span style="color:#f92672">+=</span> i <span style="color:#f92672">**</span> <span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> total
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 使用上下文管理器启动分析</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">with</span> sampling<span style="color:#f92672">.</span>profile(output<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;profile.html&#34;</span>, flamegraph<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>, sample_rate<span style="color:#f92672">=</span><span style="color:#ae81ff">1000</span>):
+</span></span><span style="display:flex;"><span>    my_slow_function()
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 或者在独立线程中启动/停止</span>
+</span></span><span style="display:flex;"><span>profiler <span style="color:#f92672">=</span> sampling<span style="color:#f92672">.</span>Profiler(target_duration<span style="color:#f92672">=</span><span style="color:#ae81ff">3</span>)  <span style="color:#75715e"># 采样3秒</span>
+</span></span><span style="display:flex;"><span>profiler<span style="color:#f92672">.</span>start()
+</span></span><span style="display:flex;"><span>result <span style="color:#f92672">=</span> my_slow_function()
+</span></span><span style="display:flex;"><span>profiler<span style="color:#f92672">.</span>stop()
+</span></span><span style="display:flex;"><span>profiler<span style="color:#f92672">.</span>write_stats(<span style="color:#e6db74">&#34;profile.pstats&#34;</span>)
+</span></span><span style="display:flex;"><span>profiler<span style="color:#f92672">.</span>write_flamegraph(<span style="color:#e6db74">&#34;flame.html&#34;</span>)
+</span></span></code></pre></div><h2 id="效果量化">效果量化</h2>
+<ul>
+<li><strong>优化前</strong>：手动加print排查每次约20分钟 × 每周3次 = 4小时/月</li>
+<li><strong>优化后</strong>：运行分析器5分钟 + 解读结果5分钟 = 总共10分钟/次，每月0.5小时</li>
+<li><strong>每月节省</strong>：3.5小时，如果按接外包100元/小时计算，相当于350元/月，且零现金成本。</li>
+</ul>
+<h2 id="进阶技巧">进阶技巧</h2>
+<ol>
+<li><strong>部分采样</strong>：<code>--duration 10</code> 只采样10秒，适合快速定位热点，避免分析器占用过多资源。</li>
+<li><strong>对比两次采样</strong>：先跑一次基准，优化后跑第二次，用<code>--diff</code>参数对比两个火焰图，直观看到哪些函数变快了。</li>
+<li><strong>附加到生产进程</strong>：对正在运行的Web服务（如gunicorn），用<code>-p &lt;PID&gt;</code>安全附加采样，无需重启，前提是被采样进程也用Python 3.15。</li>
+</ol>
+<h2 id="常见排障">常见排障</h2>
+<ol>
+<li>
+<p><strong>问题</strong>：提示 <code>module 'profiling' has no attribute 'sampling'</code>
+<strong>解决</strong>：确认Python版本为3.15beta1或更高。在终端执行 <code>python3.15 --version</code>，如果版本低于3.15，需要升级。</p>
+</li>
+<li>
+<p><strong>问题</strong>：附加到进程时提示<code>Permission denied</code>
+<strong>解决</strong>：在Linux/macOS上需要用sudo提升权限，例如 <code>sudo python3.15 -m profiling.sampling -p &lt;PID&gt;</code>。Windows可能需要管理员终端。</p>
+</li>
+<li>
+<p><strong>问题</strong>：火焰图HTML文件在浏览器中空白或无法交互
+<strong>解决</strong>：确保用现代浏览器（Chrome/Firefox/Edge）直接双击打开HTML文件，不要通过file://协议限制严格的安全设置。如果仍然不显示，尝试用 <code>--output stats.txt</code> 输出文本格式代替。</p>
+</li>
+</ol>
+<h2 id="启动成本时间收益">启动成本/时间/收益</h2>
+<ul>
+<li><strong>启动成本</strong>：0元（Python 3.15免费安装，内置模块）</li>
+<li><strong>时间投入</strong>：首次跟随本指南约15分钟，之后每次排查约10分钟</li>
+<li><strong>预期效益</strong>：每月节省至少3.5小时排查时间，折合350元/月（按接外包100元/小时估算）</li>
+<li><strong>适用平台</strong>：Windows/macOS/Linux全平台支持（需Python 3.15+）</li>
+<li><strong>替代方案</strong>：如果无法升级到3.15，可使用第三方库<code>py-spy</code>（免费，需pip安装）作为替代</li>
+</ul>
 ]]></content:encoded></item><item><title>Goose免费编程AI</title><link>https://radar.huadongpeng.com/posts/ai-frontier/deep-dive-2026-05-12-2246/</link><pubDate>Tue, 12 May 2026 22:46:42 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/ai-frontier/deep-dive-2026-05-12-2246/</guid><description>&lt;h1 id="goose免费开源替代claude-code的ai编程助手实测教程"&gt;Goose：免费开源替代Claude Code的AI编程助手实测教程&lt;/h1&gt;
 &lt;h2 id="解决什么痛点"&gt;解决什么痛点&lt;/h2&gt;
 &lt;p&gt;你正在用AI写代码，但每个月要给Claude Code交200美元？或者免费额度不够用，项目卡在调试阶段？Goose是一个完全免费的开源AI编程助手，能写代码、调试、部署，而且不限制调用次数。&lt;/p&gt;
