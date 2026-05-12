@@ -1,70 +1,70 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Posts on Easton 跨国智库</title><link>https://radar.huadongpeng.com/posts/</link><description>Recent content in Posts on Easton 跨国智库</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Tue, 12 May 2026 22:11:59 +0800</lastBuildDate><atom:link href="https://radar.huadongpeng.com/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>每日快讯</title><link>https://radar.huadongpeng.com/posts/daily-briefing/briefing-2026-05-12/</link><pubDate>Tue, 12 May 2026 22:11:59 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/daily-briefing/briefing-2026-05-12/</guid><description>&lt;blockquote&gt;
-&lt;p&gt;2026年05月12日 · 5 条情报&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Posts on Easton 跨国智库</title><link>https://radar.huadongpeng.com/posts/</link><description>Recent content in Posts on Easton 跨国智库</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Tue, 12 May 2026 22:24:09 +0800</lastBuildDate><atom:link href="https://radar.huadongpeng.com/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>每日快讯</title><link>https://radar.huadongpeng.com/posts/daily-briefing/briefing-2026-05-12/</link><pubDate>Tue, 12 May 2026 22:24:09 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/daily-briefing/briefing-2026-05-12/</guid><description>&lt;blockquote&gt;
+&lt;p&gt;2026年05月12日 · 6 条情报&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h2 id="宏观风向标"&gt;宏观风向标&lt;/h2&gt;
-&lt;h3 id="canvas数据泄露和解"&gt;Canvas数据泄露和解&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：BBC | 教育软件Canvas被黑后与黑客达成协议，收回学生数据。&lt;/p&gt;
-&lt;p&gt;涉及2.75亿用户，教育机构网络安全脆弱性暴露，网安人才需求持续增长。&lt;/p&gt;
+&lt;h3 id="linux严重漏洞"&gt;Linux严重漏洞&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：Ars Technica | Linux两周内出现第二个严重安全漏洞，需立即打补丁。&lt;/p&gt;
+&lt;p&gt;如果你自营网站或服务器，黑客可能利用该漏洞窃取数据或挖矿，影响网站收入和个人信息。&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;🎯 今天搜索网安入门课程，如免费平台TryHackMe，完成第一个基础模块。&lt;/p&gt;
+&lt;p&gt;🎯 今天登录SSH执行&amp;rsquo;sudo apt update &amp;amp;&amp;amp; sudo apt upgrade -y&amp;rsquo;，打补丁后重启服务，耗时10分钟。&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;hr&gt;
-&lt;h2 id="海外信息差"&gt;海外信息差&lt;/h2&gt;
-&lt;h3 id="adhd优势重新定义"&gt;ADHD优势重新定义&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：Reddit/美国 | ADHD在AI时代成为生产力优势，国内却仍被当作缺陷标签。&lt;/p&gt;
-&lt;p&gt;可搬运分享ADHD人群的AI使用技巧，在知识星球/小报童卖订阅。&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;🎯 去知乎搜“ADHD AI 效率”看有多少提问→用GPT整理3条实用技巧→发在公众号或即刻看反馈。&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;hr&gt;
-&lt;h2 id="效率工具与自动化"&gt;效率工具与自动化&lt;/h2&gt;
-&lt;h3 id="python性能调优"&gt;Python性能调优&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：未知 |&lt;/p&gt;
 &lt;hr&gt;
 &lt;h2 id="ai-工具实战"&gt;AI 工具实战&lt;/h2&gt;
-&lt;h3 id="parloa语音客户服务agent上架"&gt;Parloa语音客户服务Agent上架&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：OpenAI | 企业级AI电话客服agent，用GPT-5.4模拟测试&lt;/p&gt;
-&lt;p&gt;开源方案寥寥，Parloa展示企业如何用AI模拟真实对话测试agent。小团队可模仿其测试流程，用GPT-5免费额度模拟客服对话。&lt;/p&gt;
+&lt;h3 id="免费编码agent对比"&gt;免费编码Agent对比&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：未知 |&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="海外信息差"&gt;海外信息差&lt;/h2&gt;
+&lt;h3 id="坏客户筛选法"&gt;坏客户筛选法&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：未知 |&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="效率工具与自动化"&gt;效率工具与自动化&lt;/h2&gt;
+&lt;h3 id="npm供应链攻击"&gt;Npm供应链攻击&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：Reddit r/programming | 170+包被恶意版本感染，伪装成项目依赖&lt;/p&gt;
+&lt;p&gt;npm install可能执行恶意代码，影响个人项目和求职作品集，需立即检查依赖&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;🎯 打开ChatGPT → 提示“请扮演不满意的客户，向我推销的产品提出5个刁钻问题” → 录制自己的回答&lt;/p&gt;
+&lt;p&gt;🎯 运行npm audit检查项目依赖，删除可疑包，改用npm install &amp;ndash;ignore-scripts&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;hr&gt;
 &lt;h2 id="套利雷达"&gt;套利雷达&lt;/h2&gt;
-&lt;h3 id="npm投毒变现"&gt;NPM投毒变现&lt;/h3&gt;
+&lt;h3 id="bilinote付费版教程"&gt;BiliNote付费版教程&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：未知 |&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="出海工具链"&gt;出海工具链&lt;/h2&gt;
+&lt;h3 id="可灵ai视频出海"&gt;可灵AI视频出海&lt;/h3&gt;
 &lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：未知 |&lt;/p&gt;
 &lt;hr&gt;</description><content:encoded><![CDATA[<blockquote>
-<p>2026年05月12日 · 5 条情报</p>
+<p>2026年05月12日 · 6 条情报</p>
 </blockquote>
 <h2 id="宏观风向标">宏观风向标</h2>
-<h3 id="canvas数据泄露和解">Canvas数据泄露和解</h3>
-<p><strong>来源</strong>：BBC | 教育软件Canvas被黑后与黑客达成协议，收回学生数据。</p>
-<p>涉及2.75亿用户，教育机构网络安全脆弱性暴露，网安人才需求持续增长。</p>
+<h3 id="linux严重漏洞">Linux严重漏洞</h3>
+<p><strong>来源</strong>：Ars Technica | Linux两周内出现第二个严重安全漏洞，需立即打补丁。</p>
+<p>如果你自营网站或服务器，黑客可能利用该漏洞窃取数据或挖矿，影响网站收入和个人信息。</p>
 <blockquote>
-<p>🎯 今天搜索网安入门课程，如免费平台TryHackMe，完成第一个基础模块。</p>
+<p>🎯 今天登录SSH执行&rsquo;sudo apt update &amp;&amp; sudo apt upgrade -y&rsquo;，打补丁后重启服务，耗时10分钟。</p>
 </blockquote>
-<hr>
-<h2 id="海外信息差">海外信息差</h2>
-<h3 id="adhd优势重新定义">ADHD优势重新定义</h3>
-<p><strong>来源</strong>：Reddit/美国 | ADHD在AI时代成为生产力优势，国内却仍被当作缺陷标签。</p>
-<p>可搬运分享ADHD人群的AI使用技巧，在知识星球/小报童卖订阅。</p>
-<blockquote>
-<p>🎯 去知乎搜“ADHD AI 效率”看有多少提问→用GPT整理3条实用技巧→发在公众号或即刻看反馈。</p>
-</blockquote>
-<hr>
-<h2 id="效率工具与自动化">效率工具与自动化</h2>
-<h3 id="python性能调优">Python性能调优</h3>
-<p><strong>来源</strong>：未知 |</p>
 <hr>
 <h2 id="ai-工具实战">AI 工具实战</h2>
-<h3 id="parloa语音客户服务agent上架">Parloa语音客户服务Agent上架</h3>
-<p><strong>来源</strong>：OpenAI | 企业级AI电话客服agent，用GPT-5.4模拟测试</p>
-<p>开源方案寥寥，Parloa展示企业如何用AI模拟真实对话测试agent。小团队可模仿其测试流程，用GPT-5免费额度模拟客服对话。</p>
+<h3 id="免费编码agent对比">免费编码Agent对比</h3>
+<p><strong>来源</strong>：未知 |</p>
+<hr>
+<h2 id="海外信息差">海外信息差</h2>
+<h3 id="坏客户筛选法">坏客户筛选法</h3>
+<p><strong>来源</strong>：未知 |</p>
+<hr>
+<h2 id="效率工具与自动化">效率工具与自动化</h2>
+<h3 id="npm供应链攻击">Npm供应链攻击</h3>
+<p><strong>来源</strong>：Reddit r/programming | 170+包被恶意版本感染，伪装成项目依赖</p>
+<p>npm install可能执行恶意代码，影响个人项目和求职作品集，需立即检查依赖</p>
 <blockquote>
-<p>🎯 打开ChatGPT → 提示“请扮演不满意的客户，向我推销的产品提出5个刁钻问题” → 录制自己的回答</p>
+<p>🎯 运行npm audit检查项目依赖，删除可疑包，改用npm install &ndash;ignore-scripts</p>
 </blockquote>
 <hr>
 <h2 id="套利雷达">套利雷达</h2>
-<h3 id="npm投毒变现">NPM投毒变现</h3>
+<h3 id="bilinote付费版教程">BiliNote付费版教程</h3>
+<p><strong>来源</strong>：未知 |</p>
+<hr>
+<h2 id="出海工具链">出海工具链</h2>
+<h3 id="可灵ai视频出海">可灵AI视频出海</h3>
 <p><strong>来源</strong>：未知 |</p>
 <hr>
 ]]></content:encoded></item></channel></rss>
