@@ -31,6 +31,7 @@ import json
 import time
 import argparse
 import requests
+import mistune
 from datetime import datetime
 from pathlib import Path
 
@@ -61,12 +62,12 @@ EMOJI_MAP = {
 }
 
 TITLE_MAP = {
-    "Arbitrage-Radar": "零库存套利雷达",
-    "AI-Frontier": "AI 生产力前沿",
-    "Cross-Border-Insights": "跨国商业脑洞",
-    "Macro-Events": "宏观局势风向标",
-    "China-Going-Global": "中国出海录",
-    "Developer-Goldmine": "开发者金矿",
+    "Arbitrage-Radar": "套利雷达",
+    "AI-Frontier": "AI 工具实战",
+    "Cross-Border-Insights": "海外信息差",
+    "Macro-Events": "宏观风向标",
+    "China-Going-Global": "出海工具链",
+    "Developer-Goldmine": "效率工具与自动化",
 }
 
 # 微信公众号内容适配：需要人工审核的表达模式
@@ -279,143 +280,134 @@ def generate_cover_image(title, category_name, date_slug=""):
 
 
 # ============================================================
-# Markdown → 微信公众号 HTML（支持有限的标签子集）
+# Markdown → 微信公众号 HTML — 使用 mistune 解析器确保格式正确
 # ============================================================
-def md_to_wechat_html(md_text, article_url=""):
-    """将 Markdown 转换为微信公众号兼容的 HTML
 
-    微信支持的标签：section, p, br, strong, em, h1-h6,
-    ul, ol, li, blockquote, pre, code, a, img, table 系列
-    """
+class WeChatRenderer(mistune.HTMLRenderer):
+    """自定义 mistune 渲染器——输出微信公众号兼容的 HTML + 内联样式"""
+    def __init__(self):
+        super().__init__(escape=False)
 
-    html = md_text
+    def heading(self, text, level, **attrs):
+        styles = {
+            1: 'font-size:22px;margin:32px 0 18px;text-align:center;font-weight:bold;color:#3f3f3f;',
+            2: 'font-size:20px;margin:28px 0 14px;padding-left:12px;border-left:4px solid #576b95;font-weight:bold;color:#3f3f3f;',
+            3: 'font-size:18px;margin:24px 0 12px;font-weight:bold;color:#3f3f3f;',
+            4: 'font-size:16px;margin:20px 0 10px;font-weight:bold;color:#3f3f3f;',
+        }
+        style = styles.get(level, 'font-size:16px;margin:20px 0 10px;color:#3f3f3f;')
+        return f'<h{level} style="{style}">{text}</h{level}>\n'
 
-    # 转义已有 HTML 实体（防止破坏）
-    # 代码块先保护起来
-    code_blocks = {}
-    code_idx = 0
+    def paragraph(self, text):
+        return f'<p style="margin:10px 0;line-height:2.0;font-size:15px;color:#3f3f3f;letter-spacing:0.5px;">{text}</p>\n'
 
-    def protect_code(m):
-        nonlocal code_idx
-        lang = m.group(1) or ""
-        code = m.group(2)
-        placeholder = f"__CODE_BLOCK_{code_idx}__"
-        # 微信代码块：用 pre > code 包裹，内联样式
-        escaped_code = (code
-                        .replace("&", "&amp;")
-                        .replace("<", "&lt;")
-                        .replace(">", "&gt;")
-                        .replace('"', "&quot;"))
-        code_blocks[placeholder] = (
+    def block_code(self, code, info=None):
+        escaped = code.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
+        lang_tag = f'<span style="color:#7f848e;font-size:12px;">{info}</span>\n' if info else ''
+        return (
             f'<pre style="background:#282c34;color:#abb2bf;padding:16px;'
-            f'border-radius:6px;overflow-x:auto;font-size:14px;line-height:1.6;">'
-            f'<code>{escaped_code}</code></pre>'
+            f'border-radius:6px;overflow-x:auto;font-size:13px;line-height:1.6;'
+            f'max-width:calc(100vw-24px);">'
+            f'{lang_tag}<code>{escaped}</code></pre>\n'
         )
-        code_idx += 1
-        return placeholder
 
-    # 保护行内代码
-    inline_codes = {}
-
-    def protect_inline(m):
-        nonlocal code_idx
-        code = m.group(1)
-        placeholder = f"__INLINE_CODE_{code_idx}__"
-        escaped = code.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
-        inline_codes[placeholder] = (
+    def codespan(self, text):
+        return (
             f'<code style="background:#f0f0f0;color:#c7254e;padding:2px 6px;'
-            f'border-radius:3px;font-family:monospace;font-size:14px;">{escaped}</code>'
+            f'border-radius:3px;font-family:monospace;font-size:13px;word-break:break-all;">{text}</code>'
         )
-        code_idx += 1
-        return placeholder
 
-    # 保护代码块
-    html = re.sub(r'```(\w*)\n(.*?)```', protect_code, html, flags=re.DOTALL)
-    # 保护行内代码
-    html = re.sub(r'`([^`]+)`', protect_inline, html)
+    def blockquote(self, text):
+        return (
+            f'<blockquote style="border-left:3px solid #e0e0e0;padding:10px 16px;'
+            f'color:#888;background:#f9f9f9;margin:16px 0;font-size:14px;">'
+            f'{text}</blockquote>\n'
+        )
 
-    # 标题
-    html = re.sub(r'^#### (.+)$', r'<h4 style="font-size:16px;margin:20px 0 10px;">\1</h4>', html, flags=re.MULTILINE)
-    html = re.sub(r'^### (.+)$', r'<h3 style="font-size:18px;margin:24px 0 12px;">\1</h3>', html, flags=re.MULTILINE)
-    html = re.sub(r'^## (.+)$', r'<h2 style="font-size:20px;margin:28px 0 14px;border-left:4px solid #1890ff;padding-left:12px;">\1</h2>', html, flags=re.MULTILINE)
-    html = re.sub(r'^# (.+)$', r'<h1 style="font-size:22px;margin:32px 0 16px;text-align:center;">\1</h1>', html, flags=re.MULTILINE)
+    def link(self, text, url, title=None):
+        title_attr = f' title="{title}"' if title else ''
+        return f'<a href="{url}"{title_attr} style="color:#576b95;text-decoration:none;">{text}</a>'
 
-    # 粗体 / 斜体
-    html = re.sub(r'\*\*(.+?)\*\*', r'<strong>\1</strong>', html)
-    html = re.sub(r'\*(.+?)\*', r'<em>\1</em>', html)
+    def image(self, src, alt="", title=None):
+        title_attr = f' title="{title}"' if title else ''
+        return f'<img src="{src}" alt="{alt}"{title_attr} style="max-width:100%;border-radius:6px;display:block;margin:16px auto;">'
 
-    # 链接
-    html = re.sub(r'\[([^\]]+)\]\(([^)]+)\)', r'<a href="\2" style="color:#1890ff;">\1</a>', html)
+    def list_item(self, text, **attrs):
+        return f'<li style="margin:6px 0;font-size:15px;color:#3f3f3f;line-height:1.8;">{text}</li>\n'
 
-    # 分割线
-    html = re.sub(r'^---$', r'<hr style="border:none;border-top:1px solid #e8e8e8;margin:24px 0;">', html, flags=re.MULTILINE)
+    def thematic_break(self):
+        return '<hr style="border:none;border-top:1px solid #e8e8e8;margin:28px 0;">\n'
 
-    # 引用
-    html = re.sub(
-        r'^> (.+)$',
-        r'<blockquote style="border-left:3px solid #ddd;padding:8px 16px;color:#666;background:#f9f9f9;margin:16px 0;">\1</blockquote>',
-        html, flags=re.MULTILINE
-    )
+    def strong(self, text):
+        return f'<strong style="color:#3f3f3f;">{text}</strong>'
 
-    # 表格（保留 Markdown 表格的简单处理）
-    # ... 表格处理较复杂，暂时保留原始格式或简单转换
-    html = re.sub(r'^\|(.+)\|$', r'<p style="font-family:monospace;">\1</p>', html, flags=re.MULTILINE)
+    def emphasis(self, text):
+        return f'<em style="color:#888;">{text}</em>'
 
-    # 无序列表
-    html = re.sub(r'^- (.+)$', r'<li>\1</li>', html, flags=re.MULTILINE)
-    # 有序列表
-    html = re.sub(r'^\d+\. (.+)$', r'<li>\1</li>', html, flags=re.MULTILINE)
-    # 包装连续的 <li>
-    html = re.sub(r'(<li>.*?</li>\n?)+', r'<ul style="padding-left:24px;margin:12px 0;">\g<0></ul>', html)
+    def list(self, text, ordered, **attrs):
+        tag = 'ol' if ordered else 'ul'
+        return f'<{tag} style="padding-left:24px;margin:12px 0;">\n{text}</{tag}>\n'
 
-    # 段落（剩余的非空行）
-    html = re.sub(r'^(?!<[a-z/])(.+)$', r'<p style="margin:8px 0;line-height:1.8;">\1</p>', html, flags=re.MULTILINE)
+    def table(self, text):
+        return (
+            f'<table style="width:100%;border-collapse:collapse;margin:16px 0;'
+            f'font-size:14px;overflow-x:auto;display:block;">\n{text}</table>\n'
+        )
 
-    # 恢复代码块
-    for placeholder, code_html in code_blocks.items():
-        html = html.replace(placeholder, code_html)
-    for placeholder, code_html in inline_codes.items():
-        html = html.replace(placeholder, code_html)
+    def table_head(self, text):
+        return f'<thead>\n{text}</thead>\n'
 
-    # 清理多余空行
-    html = re.sub(r'\n{3,}', '\n\n', html)
+    def table_body(self, text):
+        return f'<tbody>\n{text}</tbody>\n'
 
-    # ---- 顶部品牌栏 ----
+    def table_row(self, text):
+        return f'<tr style="border-bottom:1px solid #e0e0e0;">{text}</tr>\n'
+
+    def table_cell(self, text, align=None, is_head=False):
+        tag = 'th' if is_head else 'td'
+        bg = 'background:#f5f5f5;font-weight:bold;' if is_head else ''
+        return f'<{tag} style="{bg}padding:8px 12px;border:1px solid #e0e0e0;text-align:left;">{text}</{tag}>\n'
+
+    def blank_line(self):
+        return ''
+
+
+def md_to_wechat_html(md_text, article_url=""):
+    """使用 mistune 解析器将 Markdown 转换为微信公众号兼容 HTML"""
+    renderer = WeChatRenderer()
+    parser = mistune.Markdown(renderer)
+    body_html = parser(md_text)
+
+    # ---- 顶部：简洁引导 ----
     header = (
-        f'<section style="background:linear-gradient(135deg,#1a1a2e 0%,#16213e 100%);'
-        f'padding:20px 16px;margin-bottom:24px;border-radius:8px;text-align:center;">'
-        f'<p style="color:#e0e0e0;font-size:12px;margin:0 0 6px;">'
-        f'Easton 跨国智库 · 每日海外情报深度解读</p>'
-        f'<p style="margin:0;">'
-        f'<a href="{SITE_URL}" style="color:#4fc3f7;font-size:13px;text-decoration:none;">'
-        f'{SITE_URL.replace("https://", "")}</a>'
-        f'</p></section>'
+        f'<section style="text-align:center;padding:12px 0 20px;margin-bottom:8px;">'
+        f'<p style="font-size:12px;color:#b0b0b0;margin:0 0 4px;letter-spacing:2px;">老花有话说</p>'
+        f'<p style="font-size:11px;color:#c0c0c0;margin:0;">海外情报 · 机会发掘 · 实操指南</p>'
+        f'</section>'
     )
-    html = header + html
 
-    # ---- 底部引流 + 原文链接 ----
+    # ---- 底部：引流关注 ----
     footer = (
-        f'<hr style="border:none;border-top:1px solid #e8e8e8;margin:32px 0 16px;">'
-        f'<section style="background:#f8f9fa;padding:16px;border-radius:8px;text-align:center;">'
-        f'<p style="margin:0 0 8px;font-size:13px;color:#666;">'
-        f'本文由 DeepSeek V4 Pro 自动生成 · Easton 跨国智库</p>'
-        f'<p style="margin:0 0 4px;font-size:14px;">'
-        f'套利雷达 | AI 前沿 | 跨国脑洞 | 宏观风向</p>'
+        f'<hr style="border:none;border-top:1px solid #e8e8e8;margin:32px 0 20px;">'
+        f'<section style="text-align:center;padding:12px 0;">'
+        f'<p style="font-size:14px;color:#3f3f3f;margin:0 0 8px;">感谢阅读 · 老花有话说</p>'
+        f'<p style="font-size:12px;color:#888;margin:0 0 4px;line-height:1.8;">'
+        f'独立开发者 · 跨国信息差套利 · AI 工具提效</p>'
+        f'<p style="font-size:12px;color:#888;margin:0 0 12px;">'
+        f'套利雷达 | AI 实战 | 信息差 | 出海工具 | 效率自动化</p>'
     )
     if article_url:
         footer += (
-            f'<p style="margin:8px 0 0;">'
-            f'<a href="{article_url}" style="color:#1890ff;font-size:14px;text-decoration:none;font-weight:bold;">'
-            f'在网站上阅读完整文章（含代码高亮和目录导航）</a></p>'
+            f'<p style="margin:0 0 8px;">'
+            f'<a href="{article_url}" style="color:#576b95;font-size:13px;text-decoration:none;">'
+            f'在网站上阅读（含代码高亮和目录导航）</a></p>'
         )
     footer += (
-        f'<p style="margin:8px 0 0;font-size:12px;color:#999;">'
-        f'hdop1993@gmail.com | 每日自动更新</p>'
+        f'<p style="font-size:11px;color:#b0b0b0;margin:0;">hdop1993@gmail.com</p>'
         f'</section>'
     )
-    html += footer
 
-    return html
+    return f'<section style="padding:0 16px;">\n{header}\n{body_html}\n{footer}\n</section>'
 
 
 # ============================================================
@@ -508,22 +500,17 @@ def find_articles(date_str=None):
     return articles
 
 
-WECHAT_HEADER = f"""<section style="background:linear-gradient(135deg,#1a1a2e 0%,#16213e 100%);padding:18px 16px;margin-bottom:24px;border-radius:8px;text-align:center;">
-<p style="color:#e0e0e0;font-size:12px;margin:0 0 4px;">Easton 跨国智库 · 每日海外情报深度解读</p>
-<p style="margin:0;"><a href="{SITE_URL}" style="color:#4fc3f7;font-size:13px;text-decoration:none;">{SITE_URL.replace('https://', '')}</a></p>
+WECHAT_HEADER = f"""<section style="text-align:center;padding:12px 0 20px;margin-bottom:8px;">
+<p style="font-size:12px;color:#b0b0b0;margin:0 0 4px;letter-spacing:2px;">老花有话说</p>
+<p style="font-size:11px;color:#c0c0c0;margin:0;">海外情报 · 机会发掘 · 实操指南</p>
 </section>"""
 
-WECHAT_FOOTER = f"""<hr style="border:none;border-top:1px solid #e8e8e8;margin:32px 0 16px;">
-<section style="background:#f8f9fa;padding:16px;border-radius:8px;text-align:center;">
-<p style="margin:0 0 8px;font-size:14px;font-weight:bold;">感谢阅读 · 老花有话说</p>
-<p style="margin:0 0 4px;font-size:13px;color:#666;">独立开发者 · 跨国商业套利 · AI 生产力探索</p>
-<p style="margin:4px 0;font-size:13px;color:#666;">套利雷达 | 跨国脑洞 | 中国出海 | AI 前沿 | 开发者金矿 | 宏观风向</p>
-<p style="margin:8px 0 0;font-size:13px;">
-<a href="{SITE_URL}" style="color:#1890ff;text-decoration:none;">🌐 {SITE_URL.replace('https://', '')}</a>
-<span style="color:#999;"> | </span>
-<span style="color:#666;">hdop1993@gmail.com</span>
-</p>
-<p style="margin:6px 0 0;font-size:12px;color:#999;">关注「老花有话说」获取每日海外情报推送</p>
+WECHAT_FOOTER = f"""<hr style="border:none;border-top:1px solid #e8e8e8;margin:32px 0 20px;">
+<section style="text-align:center;padding:12px 0;">
+<p style="font-size:14px;color:#3f3f3f;margin:0 0 8px;">感谢阅读 · 老花有话说</p>
+<p style="font-size:12px;color:#888;margin:0 0 4px;line-height:1.8;">独立开发者 · 跨国信息差套利 · AI 工具提效</p>
+<p style="font-size:12px;color:#888;margin:0 0 12px;">套利雷达 | AI 实战 | 信息差 | 出海工具 | 效率自动化</p>
+<p style="font-size:11px;color:#b0b0b0;margin:0;">hdop1993@gmail.com</p>
 </section>"""
 
 
@@ -595,13 +582,6 @@ def process_article(token, article, args):
 
     if not thumb_media_id:
         print(f"   ⚠️ 无封面图，请在公众号后台手动添加封面")
-
-    # ---- 微信文章润色（敏感词改写 + 表格适配 + 品牌首尾）----
-    if not args.no_polish:
-        body = polish_for_wechat(title, body, cat)
-
-    # ---- Markdown → 微信 HTML ----
-    html_content = md_to_wechat_html(body, article_url)
 
     # 提取摘要（微信限制 64 字节，安全值 60 字节）
     DIGEST_BYTES = 60

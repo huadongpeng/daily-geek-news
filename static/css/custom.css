@@ -1,335 +1,325 @@
 /* ============================================================
-   Easton 跨国智库 - 移动端深度优化
+   Easton 跨国智库 — 全平台样式优化 v2
+   优先级：内联 > custom.css > PaperMod 主题
+   策略：使用高特异性选择器覆盖 PaperMod 默认样式
    ============================================================ */
 
-/* --- 全局 --- */
+/* --- 全局基础 --- */
 html { scroll-behavior: smooth; }
 
+/* 确保自定义样式覆盖 PaperMod —— 使用双类名提高特异性 */
+.post-content .post-content { display: unset; }
+
 /* ============================================================
-   移动端 (< 768px)
+   移动端 (< 768px) — 高优先级覆盖
    ============================================================ */
 @media (max-width: 768px) {
 
-  /* 基础字体 */
-  body {
-    font-size: 17px;
-    line-height: 1.85;
+  /* 基础排版 — 使用高特异度选择器 */
+  body .main {
+    padding: 0 14px 85px 14px !important;
   }
 
-  .main {
-    padding: 0 12px 75px 12px; /* 左右留白 + 底部分页导航空间 */
+  body .post-content {
+    font-size: 16.5px !important;
+    line-height: 1.9 !important;
+    word-break: break-word !important;
+    overflow-wrap: break-word !important;
   }
 
-  /* 文章正文 */
-  .post-content {
-    font-size: 16.5px;
-    line-height: 1.9;
-    word-break: break-word;
-    overflow-wrap: break-word;
+  body .post-content h1 { font-size: 24px !important; margin: 28px 0 18px !important; }
+  body .post-content h2 {
+    font-size: 20px !important;
+    margin: 30px 0 16px !important;
+    padding-left: 12px !important;
+    border-left: 4px solid #576b95 !important;
   }
+  body .post-content h3 { font-size: 18px !important; margin: 24px 0 12px !important; }
+  body .post-content h4 { font-size: 17px !important; margin: 20px 0 10px !important; }
 
-  .post-content h1 { font-size: 24px; margin: 24px 0 16px; }
-  .post-content h2 {
-    font-size: 21px;
-    margin: 28px 0 14px;
-    padding-left: 10px;
-    border-left: 3px solid var(--primary);
-  }
-  .post-content h3 { font-size: 19px; margin: 22px 0 10px; }
-  .post-content h4 { font-size: 17px; }
-
-  .post-content p { margin: 14px 0; }
+  body .post-content p { margin: 14px 0 !important; }
 
   /* 图片响应式 */
-  .post-content img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 6px;
+  body .post-content img {
+    max-width: 100% !important;
+    height: auto !important;
+    border-radius: 6px !important;
   }
 
-  /* 视频容器 */
-  .post-content iframe,
-  .post-content video {
-    max-width: 100%;
-    height: auto;
+  body .post-content iframe,
+  body .post-content video {
+    max-width: 100% !important;
+    height: auto !important;
   }
 
-  /* 代码块 */
-  .post-content pre {
-    font-size: 13px;
-    padding: 14px;
-    border-radius: 8px;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    max-width: calc(100vw - 24px);
+  /* 代码块 — 横向滚动 */
+  body .post-content pre,
+  body .post-content .highlight pre {
+    font-size: 13px !important;
+    padding: 14px !important;
+    border-radius: 8px !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    max-width: calc(100vw - 28px) !important;
   }
 
-  .post-content code {
-    font-size: 14px;
-    word-break: break-all;
+  body .post-content code {
+    font-size: 14px !important;
+    word-break: break-all !important;
   }
 
   /* 表格横向滚动 */
-  .post-content table {
-    display: block;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    font-size: 14px;
-    max-width: calc(100vw - 24px);
+  body .post-content table {
+    display: block !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    font-size: 14px !important;
+    max-width: calc(100vw - 28px) !important;
   }
 
-  .post-content table th,
-  .post-content table td {
-    padding: 8px 10px;
-    white-space: nowrap;
+  body .post-content table th,
+  body .post-content table td {
+    padding: 8px 10px !important;
+    white-space: nowrap !important;
   }
 
   /* 引用块 */
-  .post-content blockquote {
-    margin: 16px 0;
-    padding: 12px 16px;
-    font-size: 15px;
+  body .post-content blockquote {
+    margin: 18px 0 !important;
+    padding: 12px 16px !important;
+    font-size: 15px !important;
   }
 
   /* 列表 */
-  .post-content ul,
-  .post-content ol {
-    padding-left: 22px;
+  body .post-content ul,
+  body .post-content ol {
+    padding-left: 24px !important;
   }
 
-  .post-content li {
-    margin: 8px 0;
-    line-height: 1.8;
+  body .post-content li {
+    margin: 8px 0 !important;
+    line-height: 1.8 !important;
   }
 
-  /* 分隔线 */
-  .post-content hr {
-    margin: 24px 0;
+  body .post-content hr {
+    margin: 28px 0 !important;
   }
 
-  /* ========= 导航栏 ========= */
-  .nav {
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 2px;
+  /* ========= 导航栏触控优化 ========= */
+  body .nav {
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    gap: 2px !important;
   }
 
-  .nav a,
-  #menu a {
-    font-size: 14px;
-    padding: 8px 10px;
-    min-height: 44px; /* 触控最小尺寸 */
-    display: inline-flex;
-    align-items: center;
+  body .nav a,
+  body #menu a {
+    font-size: 14px !important;
+    padding: 8px 10px !important;
+    min-height: 44px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    text-decoration: none !important;
   }
 
   /* Logo 区域 */
-  .header {
-    padding: 16px 12px 8px;
+  body .header {
+    padding: 16px 12px 8px !important;
   }
 
-  .logo a {
-    font-size: 20px;
+  body .logo a {
+    font-size: 20px !important;
   }
 
   /* ========= 文章列表 ========= */
-  .post-entry {
-    padding: 20px 0;
-    border-bottom: 1px solid var(--border);
+  body .post-entry {
+    padding: 20px 0 !important;
+    border-bottom: 1px solid var(--border) !important;
   }
 
-  .post-entry .entry-header h2 {
-    font-size: 18px;
-    line-height: 1.45;
-    margin-bottom: 6px;
+  body .post-entry .entry-header h2 {
+    font-size: 18px !important;
+    line-height: 1.5 !important;
+    margin-bottom: 8px !important;
   }
 
-  .post-entry .entry-content {
-    font-size: 15px;
-    line-height: 1.6;
+  body .post-entry .entry-content {
+    font-size: 15px !important;
+    line-height: 1.7 !important;
   }
 
-  .post-meta {
-    font-size: 13px;
-    flex-wrap: wrap;
-    gap: 8px;
+  body .post-meta {
+    font-size: 13px !important;
+    flex-wrap: wrap !important;
+    gap: 8px !important;
   }
 
-  /* ========= 分页 ========= */
-  .pagination {
-    display: flex;
-    justify-content: center;
-    gap: 12px;
-    padding: 20px 0;
+  /* ========= 分页触控优化 ========= */
+  body .pagination {
+    display: flex !important;
+    justify-content: center !important;
+    gap: 14px !important;
+    padding: 24px 0 !important;
   }
 
-  .pagination a {
-    font-size: 16px;
-    padding: 10px 18px;
-    min-height: 44px;
-    display: inline-flex;
-    align-items: center;
-    background: var(--code-bg);
-    border-radius: 8px;
-    text-decoration: none;
+  body .pagination a {
+    font-size: 16px !important;
+    padding: 10px 20px !important;
+    min-height: 44px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    background: var(--code-bg) !important;
+    border-radius: 8px !important;
+    text-decoration: none !important;
+    color: var(--primary) !important;
   }
 
-  /* ========= 底部导航 ========= */
+  /* ========= 底部固定导航 ========= */
   #mobile-nav {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: var(--theme);
-    border-top: 1px solid var(--border);
-    display: flex;
-    justify-content: space-around;
-    padding: 6px 0 env(safe-area-inset-bottom, 8px);
-    z-index: 999;
-    box-shadow: 0 -2px 12px rgba(0,0,0,0.06);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    background: rgba(255,255,255,0.95) !important;
+    border-top: 1px solid #e8e8e8 !important;
+    display: flex !important;
+    justify-content: space-around !important;
+    padding: 6px 0 env(safe-area-inset-bottom, 8px) !important;
+    z-index: 9999 !important;
+    box-shadow: 0 -2px 12px rgba(0,0,0,0.06) !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
   }
 
   #mobile-nav a {
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--secondary);
-    text-decoration: none;
-    padding: 12px 4px;
-    min-width: 44px;
-    min-height: 44px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    font-size: 13px !important;
+    font-weight: 500 !important;
+    color: #555 !important;
+    text-decoration: none !important;
+    padding: 12px 4px !important;
+    min-width: 44px !important;
+    min-height: 44px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 8px !important;
+    transition: background 0.15s !important;
   }
 
-  #mobile-nav a:active {
-    color: var(--primary);
-    transform: scale(0.95);
+  #mobile-nav a:active,
+  #mobile-nav a:hover {
+    color: #576b95 !important;
+    background: rgba(87,107,149,0.08) !important;
+    transform: scale(0.95) !important;
   }
 
-  /* ========= 文章切换 ========= */
-  .post-nav {
-    display: flex;
-    justify-content: space-between;
-    gap: 10px;
-    margin: 28px 0;
+  /* 暗黑模式底部导航 */
+  body.dark #mobile-nav {
+    background: rgba(30,30,30,0.95) !important;
+    border-top: 1px solid #333 !important;
+  }
+  body.dark #mobile-nav a {
+    color: #aaa !important;
+  }
+  body.dark #mobile-nav a:active,
+  body.dark #mobile-nav a:hover {
+    color: #6b8cce !important;
+    background: rgba(107,140,206,0.12) !important;
   }
 
-  .post-nav a {
-    flex: 1;
-    text-align: center;
-    padding: 14px 10px;
-    background: var(--code-bg);
-    border-radius: 10px;
-    font-size: 15px;
-    font-weight: 500;
-    text-decoration: none;
-    color: var(--primary);
-    min-height: 44px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  /* ========= 文章切换导航 ========= */
+  body .post-nav {
+    display: flex !important;
+    justify-content: space-between !important;
+    gap: 10px !important;
+    margin: 32px 0 !important;
   }
 
-  .post-nav a:active {
-    opacity: 0.7;
-    transform: scale(0.97);
+  body .post-nav a {
+    flex: 1 !important;
+    text-align: center !important;
+    padding: 14px 10px !important;
+    background: var(--code-bg) !important;
+    border-radius: 10px !important;
+    font-size: 15px !important;
+    font-weight: 500 !important;
+    text-decoration: none !important;
+    color: var(--primary) !important;
+    min-height: 44px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
   }
 
-  /* ========= 首页 ========= */
-  .home-info {
-    padding: 24px 16px;
+  body .post-nav a:active {
+    opacity: 0.7 !important;
+    transform: scale(0.97) !important;
   }
 
-  .home-info .entry-content {
-    font-size: 16px;
-    line-height: 1.8;
+  /* ========= 首页信息区 ========= */
+  body .home-info {
+    padding: 24px 16px !important;
   }
 
-  .profile img {
-    width: 80px;
-    height: 80px;
-    border-radius: 50%;
+  body .home-info .entry-content {
+    font-size: 16px !important;
+    line-height: 1.85 !important;
   }
 
-  /* ========= 目录 (TOC) ========= */
-  .toc {
-    font-size: 14px;
-    padding: 14px;
-    margin: 16px 0;
-    background: var(--code-bg);
-    border-radius: 8px;
+  body .profile img {
+    width: 80px !important;
+    height: 80px !important;
+    border-radius: 50% !important;
   }
 
-  .toc details summary {
-    font-size: 16px;
-    padding: 8px 0;
-    min-height: 44px;
-    display: flex;
-    align-items: center;
+  /* ========= 页脚留出底部导航空间 ========= */
+  body footer {
+    padding: 24px 14px 90px !important;
+    font-size: 13px !important;
+    text-align: center !important;
   }
 
-  .toc li {
-    padding: 6px 0;
-    line-height: 1.6;
-  }
-
-  .toc a {
-    display: block;
-    padding: 4px 0;
-    min-height: 36px;
+  body .busuanzi {
+    text-align: center !important;
+    font-size: 13px !important;
+    padding: 16px 0 !important;
   }
 
   /* ========= 面包屑 ========= */
-  .breadcrumbs {
-    font-size: 13px;
-    padding: 10px 0;
-    overflow-x: auto;
-    white-space: nowrap;
-    -webkit-overflow-scrolling: touch;
+  body .breadcrumbs {
+    font-size: 13px !important;
+    padding: 10px 0 !important;
+    overflow-x: auto !important;
+    white-space: nowrap !important;
+    -webkit-overflow-scrolling: touch !important;
   }
 
-  /* ========= 页脚 ========= */
-  footer {
-    padding: 20px 12px 80px;
-    font-size: 13px;
-    text-align: center;
+  /* ========= 搜索框 ========= */
+  body #searchbox input {
+    font-size: 16px !important;
+    padding: 12px !important;
+    min-height: 44px !important;
+    width: 100% !important;
+    border-radius: 8px !important;
   }
 
-  .busuanzi {
-    text-align: center;
-    font-size: 13px;
-    padding: 16px 0;
+  /* ========= 分类/标签 ========= */
+  body .terms-tags li {
+    margin: 6px !important;
   }
 
-  /* ========= 搜索 ========= */
-  #searchbox input {
-    font-size: 16px;
-    padding: 12px;
-    min-height: 44px;
-    width: 100%;
-    border-radius: 8px;
+  body .terms-tags a {
+    font-size: 14px !important;
+    padding: 8px 14px !important;
+    min-height: 44px !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    border-radius: 8px !important;
   }
 
-  /* ========= 分类/标签页 ========= */
-  .terms-tags li {
-    margin: 6px;
-  }
-
-  .terms-tags a {
-    font-size: 14px;
-    padding: 8px 14px;
-    min-height: 44px;
-    display: inline-flex;
-    align-items: center;
-    border-radius: 8px;
-  }
-
-  /* ========= 分类列表页 ========= */
-  .archive-entry {
-    padding: 16px 0;
+  /* ========= 归档列表 ========= */
+  body .archive-entry {
+    padding: 18px 0 !important;
   }
 }
 
@@ -337,9 +327,9 @@ html { scroll-behavior: smooth; }
    桌面端 (>= 769px)
    ============================================================ */
 @media (min-width: 769px) {
-  #mobile-nav { display: none; }
+  #mobile-nav { display: none !important; }
 
-  .main {
+  body .main {
     max-width: 800px;
     margin: 0 auto;
     padding: 0 20px 40px;
@@ -347,10 +337,10 @@ html { scroll-behavior: smooth; }
 }
 
 /* ============================================================
-   大屏幕优化 (>= 1200px)
+   大屏幕 (>= 1200px)
    ============================================================ */
 @media (min-width: 1200px) {
-  .main {
+  body .main {
     max-width: 860px;
   }
 }
@@ -359,7 +349,7 @@ html { scroll-behavior: smooth; }
    打印样式
    ============================================================ */
 @media print {
-  #mobile-nav, .post-nav, .pagination, .toc, .header nav {
+  #mobile-nav, .post-nav, .pagination, .toc, .header nav, .busuanzi {
     display: none !important;
   }
 
@@ -368,7 +358,7 @@ html { scroll-behavior: smooth; }
     line-height: 1.6;
   }
 
-  .main {
+  body .main {
     max-width: 100%;
     padding: 0;
   }

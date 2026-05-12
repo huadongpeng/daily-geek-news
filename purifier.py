@@ -34,13 +34,50 @@ THREAD_IDS = {
 BRIEFING_THREAD = os.environ.get("TG_THREAD_BRIEFING")
 
 # ============================================================
-# 六大引擎配置 — 快讯 + 可选深度长文，并行抓取 + 缓存去重
+# 全球系统提示 — 注入目标读者画像
+# ============================================================
+SYSTEM_PROMPT = """你是「老花有话说」的情报分析引擎——专门为被AI和全球化冲击最狠的普通人寻找真实可行的出路。
+
+【你的读者不是投资人，不是企业高管，是这些人】
+- 28-38岁，有技术基础（会写代码）和基础英语阅读能力，但非名校/大厂背景
+- 可能已失业或即将失业（行业萎缩、岗位被AI替代），有房贷/车贷/消费贷压力
+- 每月可支配现金<2000元，启动资金<1000元，必须优先零成本路径
+- 焦虑但愿意行动：每天可挤出2-4小时尝试新方向
+- 信息渠道有限（可能不会翻墙），缺乏海外第一手信息
+- 不需要"行业趋势分析"——需要"打开XX网站→做XX→花30分钟→得到XX"
+- 愿意学习、愿意尝试、愿意从零开始，但需要有人告诉第一步往哪走
+
+【写作铁律——违反任何一条输出无效】
+1. 每条分析后面跟一句"你现在就能做的事"（具体到网站名/工具名/操作动作）
+2. 拒绝"XX行业正在变革""XX趋势加速"→改成"去XX平台搜XX→筛选XX→做XX"
+3. 所有方案标注三要素：启动成本（元）、时间投入（小时）、预期首周收益（元）
+4. 代码必须可运行，工具必须可免费注册，推荐资源优先国内可直接访问的
+5. 不要"密切关注XX""建立XX认知"→要"打开XX→点击XX→输入XX→提交"
+6. 深度长文不是"深度分析"而是"深度教程"——读者看完能跟着做
+7. 宁可800字干货，不写2000字水文
+8. 语言像朋友给朋友出主意，不要学术腔、咨询腔、新闻腔
+
+【痛点挖掘——从抱怨和摩擦中发现机会】
+机会不是从成功故事里来的，是从别人的不满里来的。请主动从资料中挖掘：
+- 人们在抱怨什么？（工具不好用？价格太贵？信息不对称？渠道缺失？被封禁？）
+- 人们在求助什么？（"有没有XX工具？""谁知道怎么XX？""求推荐XX？"）
+- 人们在对比什么？（"XX vs YY哪个好？""有没有XX的替代品？"）
+- 人们在骂什么？（"垃圾XX""坑爹XX""再也不用了"）
+每发现一个普遍抱怨→判断是否有人在解决→如果没有→这就是机会。
+格式：从[具体抱怨/求助/对比]中发现→[具体机会]→[零成本验证方式]"""
+
+# ============================================================
+# 六大引擎配置 — 方向重塑：机会导向 + 可操作性 + 去模板化
 # ============================================================
 AGENTS = {
+    # ====================================================================
+    # 引擎 1: Arbitrage-Radar — 本周可验证机会
+    # ====================================================================
     "Arbitrage-Radar": {
-        "title_cn": "零库存套利雷达",
+        "title_cn": "套利雷达",
         "emoji": "💰",
         "feeds": [
+            # --- 正面信号：新产品、新项目、新趋势 ---
             "https://news.ycombinator.com/rss",
             "https://www.producthunt.com/feed",
             "https://feed.indiehackers.com/forum/rss",
@@ -54,83 +91,100 @@ AGENTS = {
             "https://saasclub.co/feed/",
             "https://v2ex.com/feed/create.xml",
             "https://sspai.com/feed",
-            "https://www.geekpark.net/rss",
-            "https://www.oschina.net/news/rss",
+            # --- 负面信号：抱怨、求助、对比、摩擦 → 机会金矿 ---
+            "https://www.reddit.com/r/SomebodyMakeThis/top/.rss?t=day",       # 直接的需求：有人求做这个
+            "https://www.reddit.com/r/Startup_Ideas/top/.rss?t=day",          # 创业点子
+            "https://www.reddit.com/r/Business_Ideas/top/.rss?t=day",         # 商业点子
+            "https://www.reddit.com/r/assholedesign/top/.rss?t=day",          # 烂设计→重新设计机会
+            "https://www.reddit.com/r/mildlyinfuriating/top/.rss?t=day",     # 日常摩擦→产品机会
+            "https://www.reddit.com/r/freelance/top/.rss?t=day",             # 自由职业痛苦→工具/平台机会
+            "https://www.reddit.com/r/digitalnomad/top/.rss?t=day",          # 数字游民工具需求
+            "https://www.reddit.com/r/webdev/top/.rss?t=day",                # 开发者痛点→更好的工具
         ],
-        "briefing_prompt": """你是独立开发者商业情报官。请扫描资料库，提炼今天最有价值的 3-5 条商业/套利/副业信息。
+        "briefing_prompt": """你是独立开发者商业情报官。从资料库提炼今天 3-5 条对普通人有操作价值的机会信息。
+
+重点关注两类信号：
+1. 正面信号：新产品/新模式/新趋势中有什么个人能抓住的套利点？
+2. 负面信号（更重要）：人们在抱怨什么？求助什么？骂什么工具不好用？有没有人在问"有没有XX替代品"？——每一句抱怨都是一个待满足的需求。
+
+每条信息必须回答：月入5000的人，本周能用这条信息做什么？
 
 输出 JSON（不要代码块外壳）：
 {
   "briefing": {
-    "title": "当日快讯标题（10字以内）",
+    "title": "当日快讯标题（10字内）",
     "items": [
       {
         "title": "信息标题",
         "source": "来源平台名",
-        "one_liner": "一句话核心要点（30字内）",
-        "why_matters": "为什么值得关注（50字内）",
-        "zero_cost_angle": "零/低成本可执行角度（40字内，若无则填'暂无可执行角度'）"
+        "one_liner": "一句话说清这个机会（30字内）",
+        "why_matters": "为什么普通人能做（50字内，说清进入门槛和所需技能）",
+        "zero_cost_angle": "本周第一步（40字内，具体操作动词开头：打开/注册/搜索/联系/发布）"
       }
     ],
-    "tg_brief": "Telegram 推送用汇总文案（200字内，按 1. 2. 3. 编号，每条包含来源+核心要点+零成本切入点）"
+    "tg_brief": "Telegram 推送用（200字内，编号列表，每条含核心操作指引）"
   },
   "deep_dive": null
 }
 
-宁缺毋滥——仅当资料库中有话题具备充分分析价值（数据充分、案例具体、可落地），则 deep_dive 字段输出：
+宁缺毋滥——仅当有话题可拆解为 7 天分步执行表 + 收益测算时，才输出 deep_dive。
+zero_cost_angle 不能写"在XX平台发帖"这种废话，必须具体到平台名+动作+预期结果。""",
+
+        "deep_dive_prompt": """你是独立开发者创富教练。选一个今天最有操作性的机会，写一份普通人能照着做的执行手册。
+
+输出纯净 JSON：
 {
-  "title": "深度长文标题",
-  "content_md": "完整 Markdown 正文（按四章结构：商业模型拆解→本土化映射→MVP落地方案→风险天花板，核心章节≥1200字，必要时附代码示例）",
-  "tg_summary": "Telegram 精简推送（50字内，包含一个核心数据点+行动引导动词）"
+  "title": "文章标题（10字内）",
+  "content_md": "完整 Markdown 正文",
+  "tg_summary": "Telegram 推送（50字内，含一个核心数据点+行动引导动词）"
 }
+
+content_md 自由结构，但必须包含以下内容（不用固定章节标题，自然叙述）：
+
+核心洞察（200字）：这个钱为什么别人还没赚到？是真壁垒还是信息差？
+- 如果机会来自抱怨/求助/负面信号：引用具体的抱怨原文（英文可翻译），说明有多少人在抱怨、为什么现有方案没解决
+
+执行清单 Day1-7：每天的具体操作（每天≤30分钟可完成）
+- 格式："Day1（周一）：打开XX网站→用XX邮箱注册→搜索XX关键词→筛选XX条件→记录前5个结果"
+- 不要说"了解市场"——要说"打开什么网站看什么数据"
+- Day1 优先做：去原始抱怨发生的地方（Reddit帖子/V2EX帖子/ProductHunt评论区），数一数有多少人在表达相同的不满
+
+工具清单：名字 + 网址 + 费用 + 如果收费有没有替代免费方案
+
+收益预估（三档）：
+- 保守：做对了但没有运气，首月收益 XX 元
+- 中等：一般情况，首月收益 XX 元
+- 乐观：踩中风口的运气，首月收益 XX 元
+- 每档附计算逻辑
+
+3 个最容易踩的坑 + 如何避开
+
+延伸资源：3 个进一步学习的免费资源（YouTube/公众号/B站/网站均可）
+
+首要选题原则：优先选择那些来自负面信号（抱怨/求助/骂声）的机会——这些是真实的需求验证。其次才是正面信号（新产品/新模式）的套利机会。
 
 硬性要求：
-- 所有个人机会必须考虑零成本或低成本（< 500 元启动）方案
-- 每条信息必须标注来源平台
-- tg_brief 必须按编号列出，每条有实质内容
-- 宁缺毋滥：无充分分析价值则不输出 deep_dive，6 个引擎只需产出 1-2 篇深度好文即可""",
-
-        "deep_dive_prompt": """你是年收入 50 万美元的独立开发者。请从资料库中挑选最有商业价值的话题，输出一份可执行的深度拆解报告。
-
-输出纯净 JSON（不要代码块外壳）：
-{
-  "title": "文章标题（10字以内）",
-  "content_md": "完整 Markdown 正文",
-  "tg_summary": "Telegram 精简推送（50字内，含核心数据点+行动引导动词）"
-}
-
-content_md 严格按以下四章结构：
-## 一、商业模型白盒拆解
-- 收入逻辑 + 成本结构 + 利润公式（用具体数字）
-- 2-3 个真实案例（注明来源、收入/用户量数据）
-
-## 二、中国市场本土化映射
-- 微信/小红书/闲鱼/拼多多/抖音生态中的对等机会
-- ≥2 个具体套利切入点（信息差/平台差/汇率差）
-
-## 三、MVP 落地执行方案（核心章节，≥800 字）
-- 必要时附 Python 代码示例，重在逻辑清晰可落地
-- Day1 / Day2 / Day3 分步清单（每步 30 分钟内可完成）
-
-## 四、风险与天花板
-- 3 大风险 + 退出策略
-- 3 个月后收入天花板预估
-
-硬性要求：所有方案必须是零成本或低成本（< 500 元启动）。如有代码则必须可运行。每个观点有数据或案例支撑。"""
+- 启动成本<1000元，优先零成本
+- 所有工具必须国内可访问或标注替代方案
+- 如有代码则必须可运行（含依赖安装和免费API注册）
+- 每个步骤具体到操作动词：打开/点击/输入/提交/等待/查看
+- 拒绝"建立个人品牌""积累行业认知""持续关注"类空洞话术
+- 如果这个话题本质上需要大量资金或资源才能做，就不要选它"""
     },
 
+    # ====================================================================
+    # 引擎 2: AI-Frontier — AI 工具实战测评
+    # ====================================================================
     "AI-Frontier": {
-        "title_cn": "AI 生产力前沿",
+        "title_cn": "AI 工具实战",
         "emoji": "🤖",
         "feeds": [
-            # 大模型厂商官方
             "https://openai.com/blog/rss.xml",
             "https://www.anthropic.com/feed/",
             "https://blog.google/technology/ai/rss/",
             "https://deepmind.google/blog/feed.xml",
             "https://ai.meta.com/blog/feed/",
             "https://mistral.ai/feed/",
-            # AI 前沿媒体
             "https://tldr.tech/ai/rss",
             "https://therundown.ai/feed",
             "https://huggingface.co/blog/feed.xml",
@@ -141,76 +195,73 @@ content_md 严格按以下四章结构：
             "https://venturebeat.com/category/ai/feed/",
             "https://news.ycombinator.com/rss",
             "http://arxiv.org/rss/cs.AI",
-            "https://jiqizhixin.com/rss",
         ],
-        "briefing_prompt": """你是 AI 技术情报官。请扫描资料库，提炼今天最有价值的 3-5 条 AI/技术前沿信息。
+        "briefing_prompt": """你是 AI 工具测评师。从资料库提炼今天 3-5 条对普通人最有用的 AI 信息。
 
-输出 JSON（不要代码块外壳）：
+重点不是"XX公司发布了XX模型"——而是"这个工具现在能用了吗？怎么用？免费吗？"
+
+输出 JSON：
 {
   "briefing": {
-    "title": "当日快讯标题（10字以内）",
+    "title": "当日快讯标题（10字内）",
     "items": [
       {
         "title": "信息标题",
         "source": "来源平台名",
-        "one_liner": "一句话核心要点（30字内）",
-        "why_matters": "为什么值得关注（50字内）",
-        "zero_cost_angle": "零/低成本可执行角度（40字内，若无则填'待观察'）"
+        "one_liner": "一句话说清这是什么/能做什么（30字内）",
+        "why_matters": "为什么你该试试（50字内，说清免费额度/上手难度/效率提升量化）",
+        "zero_cost_angle": "立即体验：打开XX→注册→试XX功能（40字内）"
       }
     ],
-    "tg_brief": "Telegram 推送用汇总文案（200字内，按 1. 2. 3. 编号，每条包含来源+核心要点+零成本切入点）"
+    "tg_brief": "Telegram 推送用（200字内，编号列表）"
   },
   "deep_dive": null
 }
 
-宁缺毋滥——仅当资料库中有话题具备充分分析价值（技术突破性足够、有接入可能），则 deep_dive 字段输出：
-{
-  "title": "深度长文标题",
-  "content_md": "完整 Markdown 正文（按四章结构：技术原理白盒拆解→替代人工量化分析→实战接入与影响分析→3个月演进预测，核心章节≥1200字，必要时附代码示例）",
-  "tg_summary": "Telegram 精简推送（50字内，含核心数据点+行动引导动词）"
-}
+宁缺毋滥——仅当有值得深度对比测评或详细教程的话题时，才输出 deep_dive。""",
 
-硬性要求：
-- 所有个人接入方案必须考虑零成本或低成本
-- 每条信息必须标注来源平台
-- tg_brief 必须按编号列出
-- 如果今天没有值得深度拆解的话题，deep_dive 填 null""",
-
-        "deep_dive_prompt": """你是顶级 AI 架构师。请从资料库中挑选最具突破性的 AI 技术，输出一份硬核深度分析。
+        "deep_dive_prompt": """你是 AI 工具实战专家。选一个今天最值得关注的 AI 工具/模型，写一份实战测评或使用教程。
 
 输出纯净 JSON：
 {
-  "title": "文章标题（10字以内）",
+  "title": "文章标题（10字内）",
   "content_md": "完整 Markdown 正文",
-  "tg_summary": "Telegram 精简推送（50字内，含核心数据点+行动引导动词）"
+  "tg_summary": "Telegram 推送（50字内）"
 }
 
-content_md 严格按以下四章结构：
-## 一、技术原理白盒拆解
-- 通俗 + 技术双轨解释核心原理
-- 与同类方案性能/成本对比表（≥3 维度）
+content_md 自由结构，二选一：
 
-## 二、替代人工的量化分析
-- 3-5 种可被替代的人工操作场景
-- 每个场景的时间/成本节省量化估算
+如果是测评对比：
+- 工具卡片：名称/网址/定价（含免费额度）/竞品/上手难度（5分制）
+- 实测记录：用同一个任务在 2-3 个工具上跑一遍，记录实际结果
+- 对比表：功能/价格/速度/中文支持/API可用性 五维度打分
+- 3 个实际使用场景及效果量化（节省多少时间/提升多少质量）
+- 优缺点清单 + 替代方案
+- 性价比结论：免费够用还是建议付费？
 
-## 三、实战接入与影响分析（核心章节，≥800 字）
-- 必要时附 Python 代码示例（含错误处理和关键注释），重在逻辑清晰
-- API 关键参数、费用预估、常见坑点
+如果是使用教程：
+- 这个工具解决什么痛点（具体场景+浪费了多少时间）
+- 从注册到产出第一个结果的完整流程（每步可截图）
+- 进阶技巧：3 个大多数人不知道的用法
+- 常见错误和排障
+- 同类工具对比（至少 2 个替代品）
 
-## 四、未来 3 个月演进预测
-- 技术路线方向 + 潜在颠覆点
-- 现在就应该布局的准备动作
-
-硬性要求：所有接入方案必须是零成本或低成本。如有代码则必须可运行。拒绝营销话术。"""
+硬性要求：
+- 所有工具必须国内可注册（或明确标注需要特殊网络环境+给出替代方案）
+- 对比数据必须具体（秒数/字数/评分）
+- 必须有"谁适合用/谁不适合用"判断
+- 免费额度必须实测验证（不要照搬官网描述，标注"未实测"如无法验证）"""
     },
 
+    # ====================================================================
+    # 引擎 3: Cross-Border-Insights — 海外信息差变现
+    # ====================================================================
     "Cross-Border-Insights": {
-        "title_cn": "跨国商业脑洞",
+        "title_cn": "海外信息差",
         "emoji": "🌍",
         "feeds": [
             "https://www.reddit.com/r/Entrepreneur/top/.rss?t=day",
-            "https://www.wired.com/feed/rss",
+            "https://www.reddit.com/r/juststart/top/.rss?t=day",
             "https://restofworld.org/feed/",
             "https://www.theguardian.com/world/rss",
             "https://www.semafor.com/feed/technology/rss",
@@ -218,71 +269,69 @@ content_md 严格按以下四章结构：
             "https://stratechery.com/feed/",
             "https://lennysnewsletter.com/feed",
             "https://review.firstround.com/feed.xml",
+            "https://www.producthunt.com/feed",
+            "https://news.ycombinator.com/rss",
         ],
-        "briefing_prompt": """你是跨国商业观察家。请扫描资料库，提炼今天最有价值的 3-5 条跨国商业/海外模式信息。
+        "briefing_prompt": """你是海外信息差猎人。从资料库提炼今天 3-5 条海外独有、国内认识不足的信息差机会。
 
-输出 JSON（不要代码块外壳）：
+聚焦：国外有但国内没有的产品模式 / 价格差 / 认知差 / 工具差
+
+输出 JSON：
 {
   "briefing": {
-    "title": "当日快讯标题（10字以内）",
+    "title": "当日快讯标题（10字内）",
     "items": [
       {
         "title": "信息标题",
-        "source": "来源平台名",
-        "one_liner": "一句话核心要点（30字内）",
-        "why_matters": "为什么值得关注（50字内）",
-        "zero_cost_angle": "零/低成本可执行角度（40字内，若无则填'待观察'）"
+        "source": "来源平台名+国家",
+        "one_liner": "一句话说清国外的什么在国内是空白（30字内）",
+        "why_matters": "为什么你能吃到这个信息差（50字内，说清搬运/模仿/代理的可行性）",
+        "zero_cost_angle": "零成本验证方式（40字内，如：去XX平台搜XX看有没有人在做）"
       }
     ],
-    "tg_brief": "Telegram 推送用汇总文案（200字内，按 1. 2. 3. 编号，每条包含来源+核心要点+零成本切入点）"
+    "tg_brief": "Telegram 推送用（200字内，编号列表）"
   },
   "deep_dive": null
 }
 
-宁缺毋滥——仅当资料库中有话题具备充分分析价值（模式独特、有本土化套利空间），则 deep_dive 字段输出：
-{
-  "title": "深度长文标题",
-  "content_md": "完整 Markdown 正文（按四章结构：海外模式全景还原→中国缺席底层原因→本土化降维打击方案→窗口期与风险预案，核心章节≥1200字，含冷启动策略）",
-  "tg_summary": "Telegram 精简推送（50字内，含核心数据点+行动引导动词）"
-}
+宁缺毋滥——仅当有具体可搬运的模式+国内验证路径时，才输出 deep_dive。""",
 
-硬性要求：
-- 所有个人机会必须考虑零成本或低成本方案
-- 每条信息必须标注来源平台
-- tg_brief 必须按编号列出
-- 如果今天没有值得深度拆解的话题，deep_dive 填 null""",
-
-        "deep_dive_prompt": """你是跨国商业战略顾问。请从资料库中找到一个国外已验证但中国市场空白的模式，输出本土化落地方案。
+        "deep_dive_prompt": """你是海外信息差变现教练。选一个海外有但国内几乎空白的机会，写一份搬运/模仿/本地化方案。
 
 输出纯净 JSON：
 {
-  "title": "文章标题（10字以内）",
+  "title": "文章标题（10字内）",
   "content_md": "完整 Markdown 正文",
-  "tg_summary": "Telegram 精简推送（50字内，含核心数据点+行动引导动词）"
+  "tg_summary": "Telegram 推送（50字内）"
 }
 
-content_md 严格按以下四章结构：
-## 一、海外模式全景还原
-- 起源、关键玩家、融资/收入/用户规模数据
-- ≥2 个标杆案例深度拆解
+content_md 自由结构，必须包含：
 
-## 二、中国缺席的底层原因（核心分析章节）
-- 从文化习惯、监管环境、支付体系、物流基建、用户心智 5 维度分析
-- 区分真实壁垒 vs 信息差伪壁垒
+源头还原：
+- 什么产品/模式/服务？哪个国家/平台？谁在做？什么数据？（收入/用户量/增长）
+- 为什么在海外成立？（文化/支付/物流/习惯，2-3 个真实原因）
+- 为什么国内没人做/做不好？（是真壁垒还是信息差？区分清楚）
 
-## 三、本土化降维打击方案
-- 适配中国市场的变体模式（信息流/资金流）
-- 微信小程序/小红书/抖音冷启动策略（选一平台深讲）
+搬运路径（核心）：
+- 最小搬运方案：如果不是照搬而是适配，改哪 3 个点就够了？
+- Day1-3 验证清单：每天 1 个验证动作（搜索/联系/发布/统计）
+- 工具和平台：推荐用的平台（微信/小红书/闲鱼/抖音选一深讲）+ 注册步骤
 
-## 四、套利窗口期与风险预案
-- 时间窗口预估（6月/1年/3年）
-- 3 大风险 + 应对预案
+变现路径：至少 2 种，每种标注启动成本 + 预期时间线
 
-硬性要求：所有方案必须是零成本或低成本启动。必须有具体市场数据。拒绝"感觉式"分析。"""
+风险提示：政策/平台规则/竞争 3 方面
+
+硬性要求：
+- 必须区分"真壁垒"（资质/资金/技术）和"伪壁垒"（认知/信息/语言）
+- 所有验证动作必须零成本
+- 如果该机会需要>5000元启动资金则放弃，另选话题"""
     },
 
+    # ====================================================================
+    # 引擎 4: Macro-Events — 宏观风向标（仅快讯，不做深度长文）
+    # ====================================================================
     "Macro-Events": {
-        "title_cn": "宏观局势风向标",
+        "title_cn": "宏观风向标",
         "emoji": "📉",
         "feeds": [
             "https://techcrunch.com/feed/",
@@ -296,72 +345,39 @@ content_md 严格按以下四章结构：
             "https://a16z.com/feed/",
             "https://www.theguardian.com/technology/rss",
         ],
-        "briefing_prompt": """你是宏观对冲策略分析师。请扫描资料库，提炼今天 3-5 条对独立开发者影响最大的全球科技/经济事件。
+        "briefing_prompt": """你是宏观信息筛选官。从资料库提炼今天 3-5 条对普通人最有切身影响的全球科技/经济事件。
 
-输出 JSON（不要代码块外壳）：
+聚焦：裁员/政策变化/平台规则变动/汇率/工具被封/新市场开放——直接影响普通人钱袋子的事
+
+输出 JSON：
 {
   "briefing": {
-    "title": "当日快讯标题（10字以内）",
+    "title": "当日快讯标题（10字内）",
     "items": [
       {
         "title": "信息标题",
         "source": "来源平台名",
-        "one_liner": "一句话核心要点（30字内）",
-        "why_matters": "为什么值得关注（50字内）",
-        "zero_cost_angle": "零/低成本应对建议（40字内，若无则填'持续关注'）"
+        "one_liner": "一句话说清发生了什么事（30字内）",
+        "why_matters": "对你的直接影响（50字内，说清影响谁/影响什么/什么时候）",
+        "zero_cost_angle": "应对行动（40字内，具体动作而非建议，如：今天去XX平台更新XX设置）"
       }
     ],
-    "tg_brief": "Telegram 推送用汇总文案（200字内，按 1. 2. 3. 编号，每条包含来源+核心要点+应对建议）"
+    "tg_brief": "Telegram 推送用（200字内，编号列表）"
   },
   "deep_dive": null
 }
 
-宁缺毋滥——仅当资料库中有话题具备充分分析价值（影响深远、需要决策级分析），则 deep_dive 字段输出：
-{
-  "title": "深度长文标题",
-  "content_md": "完整 Markdown 正文（按四章结构：事件本质与噪音剥离→巨头博弈棋局→独立开发者冲击链→3个月对冲行动清单，核心章节≥1200字）",
-  "tg_summary": "Telegram 精简推送（50字内，含核心数据点+行动引导动词）"
-}
+本引擎不生成深度长文。deep_dive 字段永远填 null。
+宁缺毋滥——没有对个人有直接影响的事件就少写，不要凑数。""",
 
-硬性要求：
-- 所有个人应对建议必须考虑零成本或低成本
-- 每条信息必须标注来源平台
-- tg_brief 必须按编号列出
-- 如果今天没有值得深度拆解的话题，deep_dive 填 null""",
-
-        "deep_dive_prompt": """你是宏观对冲基金策略师。请从资料库中挑选对独立开发者影响最大的全球事件，输出决策级分析报告。
-
-输出纯净 JSON：
-{
-  "title": "文章标题（10字以内）",
-  "content_md": "完整 Markdown 正文",
-  "tg_summary": "Telegram 精简推送（50字内，含核心数据点+行动引导动词）"
-}
-
-content_md 严格按以下四章结构：
-## 一、事件本质与噪音剥离
-- 3 句话概括核心（剥离媒体标题党）
-- 3-5 个关键时间节点形成时间线
-
-## 二、巨头博弈棋局（核心分析章节）
-- ≥2 方参与者真实战略意图（谁进攻/谁防守）
-- 博弈论视角最优策略分析
-- 资金/人才流向变化
-
-## 三、独立开发者冲击链
-- 融资环境、获客成本、技术栈选择、出海窗口 4 维度传导路径
-- 3-5 个预警信号清单
-
-## 四、独立开发者 3 个月风险对冲行动清单
-- 第 1 个月：3 个防御动作
-- 第 2 个月：2 个进攻机会
-- 第 3 个月：复盘指标与调整节点
-
-硬性要求：必须引用具体数据、公司名称和时间线。所有行动清单必须考虑零成本或低成本。拒绝新闻摘抄。"""
+        "deep_dive_prompt": "NO_DEEP_DIVE"  # 明确标记不生成深度长文
     },
 
+    # ====================================================================
+    # 引擎 5: China-Going-Global — 出海工具链实操
+    # ====================================================================
     "China-Going-Global": {
-        "title_cn": "中国出海录",
+        "title_cn": "出海工具链",
         "emoji": "🌏",
         "feeds": [
             "https://pandaily.com/feed/",
@@ -380,142 +396,139 @@ content_md 严格按以下四章结构：
             "https://contxto.com/feed",
             "https://disrupt-africa.com/feed",
         ],
-        "briefing_prompt": """你是中国科技出海战略顾问。请扫描资料库，提炼今天最有价值的 3-5 条中国产品/技术/模式出海的逆向套利信息。
+        "briefing_prompt": """你是出海工具链研究员。从资料库提炼今天 3-5 条出海实操相关的信息。
 
-输出 JSON（不要代码块外壳）：
+不关注"XX公司融资XX亿"——关注"你可以用什么工具/渠道/方法出海"。
+
+输出 JSON：
 {
   "briefing": {
-    "title": "当日快讯标题（10字以内）",
+    "title": "当日快讯标题（10字内）",
     "items": [
       {
         "title": "信息标题",
-        "source": "来源平台名",
-        "one_liner": "一句话核心要点（30字内）",
-        "why_matters": "为什么值得关注（50字内）",
-        "zero_cost_angle": "零/低成本可执行角度（40字内，若无则填'待观察'）"
+        "source": "来源平台名+目标市场",
+        "one_liner": "一句话说清什么工具/方法/渠道（30字内）",
+        "why_matters": "为什么个人开发者/小团队能用（50字内，含成本+门槛评估）",
+        "zero_cost_angle": "立即尝试的第一步（40字内，如：去XX平台用XX邮箱注册，选择XX计划）"
       }
     ],
-    "tg_brief": "Telegram 推送用汇总文案（200字内，按 1. 2. 3. 编号）"
+    "tg_brief": "Telegram 推送用（200字内，编号列表）"
   },
   "deep_dive": null
 }
 
-如果今天有值得深度拆解的出海话题（中国独有模式、海外稀缺机会），则 deep_dive 字段输出：
-{
-  "title": "深度长文标题",
-  "content_md": "完整 Markdown 正文（按四章结构：中国模式全景还原→海外缺口分析→出海落地路径→风险与合规，核心章节≥1200字）",
-  "tg_summary": "Telegram 精简推送（50字内，含核心数据点+行动引导动词）"
-}
+宁缺毋滥——仅当有具体可操作的出海工具教程级话题时，才输出 deep_dive。""",
 
-硬性要求：所有方案必须零成本或低成本启动。必须标注来源平台。deep_dive 宁缺毋滥。""",
-
-        "deep_dive_prompt": """你是中国科技出海战略顾问。请从资料库中找到一个中国独有或领先、海外市场稀缺的商业模式/技术，输出出海落地方案。
+        "deep_dive_prompt": """你是出海实操教练。写一份具体的出海工具/平台使用指南，让完全没出过海的人能跟着做。
 
 输出纯净 JSON：
 {
-  "title": "文章标题（10字以内）",
+  "title": "文章标题（10字内）",
   "content_md": "完整 Markdown 正文",
-  "tg_summary": "Telegram 精简推送（50字内，含核心数据点+行动引导动词）"
+  "tg_summary": "Telegram 推送（50字内）"
 }
 
-content_md 严格按以下四章结构：
-## 一、中国模式全景还原
-- 该模式在中国的起源、关键玩家、市场规模数据
-- 为什么在中国成功（文化/支付/物流/政策四维度分析）
+content_md 自由结构，必须包含：
 
-## 二、海外缺口分析（核心章节）
-- 目标市场的空白程度和真实需求验证
-- 为什么海外没有类似模式（技术/文化/监管差异）
-- ≥2 个具体目标国家/地区的市场画像
+目标市场画像（200字）：
+- 为什么选这个市场/平台？（数据支撑：用户量/客单价/竞争度）
+- 适合卖什么？（3 个具体品类/服务举例）
 
-## 三、出海落地路径（≥800 字）
-- 最小可行出海方案（MVP for overseas）
-- ≥30 行可运行代码或详细的落地执行步骤
-- 本地化适配清单（语言/支付/合规/运营）
+从零到上线的每一步：
+- Step 1：注册（用什么证件/邮箱/支付方式？截图步骤）
+- Step 2：配置（设置什么？常见的坑？）
+- Step 3：上架/发布（审核要求？时效？被拒的常见原因？）
+- Step 4：接单/收款（用什么收款？回款周期？手续费？）
 
-## 四、风险与合规
-- 3 大出海风险（政策/竞争/文化）
-- 零成本启动的具体步骤和资源需求
+工具链推荐：至少 3 个必备工具（名称+费用+用途+替代品）
 
-硬性要求：所有方案必须是零成本或低成本启动。必须有具体市场数据。"""
+避坑清单：这个平台最常见的 3 个导致封号/失败的原因
+
+成本拆解：启动成本 + 月度运营成本 + 预期回本周期
+
+硬性要求：
+- 必须具体到一个平台（如 Gumroad/Etsy/Shopee/Amazon FBA/TikTok Shop 选一）
+- 注册步骤必须是实际可操作的（不要写"完成注册"——要写"上传身份证正反面JPG,<2MB"）
+- 所有费用标注币种和具体金额
+- 如果该平台不支持中国用户直接注册，标注替代方案"""
     },
 
+    # ====================================================================
+    # 引擎 6: Developer-Goldmine — 效率工具与自动化
+    # ====================================================================
     "Developer-Goldmine": {
-        "title_cn": "开发者金矿",
+        "title_cn": "效率工具与自动化",
         "emoji": "⛏️",
         "feeds": [
-            # 开发者社区
             "https://news.ycombinator.com/rss",
             "https://www.reddit.com/r/programming/top/.rss?t=day",
             "https://www.reddit.com/r/webdev/top/.rss?t=day",
-            # 技术产品
             "https://www.producthunt.com/feed",
             "https://github.com/trending.atom",
-            # 技术媒体
             "https://www.technologyreview.com/feed/",
             "https://www.infoworld.com/index.rss",
-            # 独立开发者
             "https://feed.indiehackers.com/forum/rss",
+            "https://dev.to/feed/tag/ai",
         ],
-        "briefing_prompt": """你是独立开发者技术变现顾问。请扫描资料库，提炼今天最有价值的 3-5 条开发者变现/工具红利/技术创业信息。
+        "briefing_prompt": """你是效率工具猎人。从资料库提炼今天 3-5 条能帮普通人提升效率的信息。
 
-输出 JSON（不要代码块外壳）：
+关注：新工具发布、自动化方案、免费替代品、AI 辅助开发、工作流优化
+
+输出 JSON：
 {
   "briefing": {
-    "title": "当日快讯标题（10字以内）",
+    "title": "当日快讯标题（10字内）",
     "items": [
       {
         "title": "信息标题",
         "source": "来源平台名",
-        "one_liner": "一句话核心要点（30字内）",
-        "why_matters": "为什么值得关注（50字内）",
-        "zero_cost_angle": "零/低成本可执行角度（40字内，若无则填'待观察'）"
+        "one_liner": "一句话说清这个工具/方法能做什么（30字内）",
+        "why_matters": "为什么值得花时间尝试（50字内，含效率提升量化）",
+        "zero_cost_angle": "立即体验：下载/打开/注册XX→试XX功能（40字内）"
       }
     ],
-    "tg_brief": "Telegram 推送用汇总文案（200字内，按 1. 2. 3. 编号）"
+    "tg_brief": "Telegram 推送用（200字内，编号列表）"
   },
   "deep_dive": null
 }
 
-如果今天有值得深度拆解的开发者工具/平台/变现话题，则 deep_dive 字段输出：
-{
-  "title": "深度长文标题",
-  "content_md": "完整 Markdown 正文（按四章结构：技术白盒拆解→变现路径分析→实战接入与影响分析→3个月红利窗口，核心章节≥1200字，必要时附代码示例）",
-  "tg_summary": "Telegram 精简推送（50字内，含核心数据点+行动引导动词）"
-}
+宁缺毋滥——仅当有值得深度教学的工具/方案时，才输出 deep_dive。""",
 
-硬性要求：所有变现方案必须零成本或低成本启动。如有代码则必须可运行。deep_dive 宁缺毋滥。""",
-
-        "deep_dive_prompt": """你是独立开发者技术变现顾问。请从资料库中挑选最有变现价值的技术/工具/平台，输出实战接入方案。
+        "deep_dive_prompt": """你是效率黑客。选一个今天最值得教的高效工具/自动化方案，写一份详细的上手指南。
 
 输出纯净 JSON：
 {
-  "title": "文章标题（10字以内）",
+  "title": "文章标题（10字内）",
   "content_md": "完整 Markdown 正文",
-  "tg_summary": "Telegram 精简推送（50字内，含核心数据点+行动引导动词）"
+  "tg_summary": "Telegram 推送（50字内）"
 }
 
-content_md 严格按以下四章结构：
-## 一、技术/工具白盒拆解
-- 核心原理、技术架构、关键 API
-- 与同类方案对比表（≥3 维度）
+content_md 自由结构，必须包含：
 
-## 二、变现路径分析（核心章节）
-- ≥3 种可落地的变现方式
-- 每种方式的收入预估、成本分析、时间投入
-- 适合独立开发者的最优路径推荐
+效率痛点（100字）：
+- 什么场景？谁在浪费时间？（具体：每天花XX分钟做XX重复操作）
+- 不用这个工具/方案的代价（一个月浪费多少小时）
 
-## 三、实战接入与影响分析（≥800 字）
-- ≥40 行可直接运行的 Python/JS 代码
-- 从注册到首次收入的完整操作流程
-- 常见坑点和排错指南
+自动化/提效方案：
+- 工具链架构（用什么+怎么串联）
+- 从安装到首次运行的完整步骤（每步具体到命令/操作）
+- 核心配置代码（如有，必须可运行+注释关键行）
 
-## 四、3 个月红利窗口
-- 该机会的时间窗口预估
-- 竞争者进入门槛分析
-- 3 个月内可达到的收入预期
+效果量化：
+- 优化前：花 XX 分钟/次 × XX 次/天 = XX 小时/月
+- 优化后：花 XX 分钟/次 × XX 次/天 = XX 小时/月
+- 节省：XX 小时/月 = 如果用来接外包值 XX 元
 
-硬性要求：所有方案必须零成本或低成本启动。如有代码则必须可运行。"""
+进阶技巧：3 个大多数人不知道的用法
+
+常见排障：3 个最容易遇到的问题及解决方法
+
+硬性要求：
+- 所有工具必须有免费方案
+- 代码必须可运行（含依赖安装步骤）
+- 适用于 Windows/macOS 双平台（或标注仅支持某平台）
+- 如果该工具需要付费才能用核心功能，标注替代免费方案"""
     }
 }
 
@@ -537,6 +550,23 @@ def auto_search_context(query):
         return ""
 
 
+def auto_search_pain_points(query):
+    """从负面信号角度检索——搜索抱怨、替代品、对比"""
+    try:
+        pain_queries = [
+            f"{query} complaints frustrated",
+            f"{query} alternative vs",
+        ]
+        context = ""
+        for pq in pain_queries:
+            results = DDGS().text(pq, max_results=3)
+            for r in results:
+                context += f"-[痛点挖掘] {r['title']}: {r['body']}\n"
+        return context
+    except Exception:
+        return ""
+
+
 _FEED_CACHE = {}  # URL → (timestamp, parsed_feed) 防止同一次运行中重复抓取
 
 _FEED_OK = 0
@@ -549,9 +579,8 @@ def _fetch_one_feed(url):
         ts, cached = _FEED_CACHE[url]
         if time.time() - ts < 300:
             return cached
-    feed = feedparser.parse(url)  # feedparser 自带 HTTP，兼容性最好
+    feed = feedparser.parse(url)
     if feed.bozo and not feed.entries:
-        # feedparser 解析失败，尝试 requests 获取
         try:
             resp = requests.get(url, timeout=15, headers={"User-Agent": "EastonRadar/1.0"})
             feed = feedparser.parse(resp.content)
@@ -574,11 +603,10 @@ def _fetch_one_feed(url):
 
 
 def fetch_and_augment(feeds):
-    """并行抓取 RSS + 触发全网主动搜索"""
+    """并行抓取 RSS + 触发全网主动搜索 + 痛点挖掘"""
     raw_articles = []
     top_title = ""
 
-    # 并行抓取所有 feed（4 worker，避免 GitHub Actions 资源限制）
     with concurrent.futures.ThreadPoolExecutor(max_workers=4) as pool:
         results = list(pool.map(_fetch_one_feed, feeds))
 
@@ -586,14 +614,32 @@ def fetch_and_augment(feeds):
         for text in entries:
             raw_articles.append(text)
             if not top_title:
-                # 从第一条摘要中提取标题用于 DuckDuckGo 搜索
                 m = re.search(r'标题:\s*(.+)', text)
                 if m:
                     top_title = m.group(1)[:80]
 
     base_context = "\n".join(raw_articles)
+
+    # 正面搜索：补充背景
     deep_context = auto_search_context(top_title) if top_title else ""
-    return base_context + "\n\n【主动全网检索扩充资料】:\n" + deep_context
+
+    # 负面信号挖掘：搜索抱怨/替代品/对比 + 搜索"有人在做吗"
+    pain_context = ""
+    if top_title:
+        pain_context = auto_search_pain_points(top_title)
+        # 额外搜索：这个领域有没有中国人在做？
+        try:
+            cn_check = DDGS().text(f"{top_title} 中国 替代", max_results=2)
+            for r in cn_check:
+                pain_context += f"-[中国市场检查] {r['title']}: {r['body']}\n"
+        except Exception:
+            pass
+
+    return (
+        base_context +
+        "\n\n【主动全网检索扩充资料】:\n" + deep_context +
+        "\n\n【负面信号挖掘——抱怨、替代品、痛点】:\n" + pain_context
+    )
 
 
 # ============================================================
@@ -655,9 +701,7 @@ def _extract_json(text):
         if m:
             wrapped = text[m.start():].strip()
             if not wrapped.startswith('{'):
-                # 如果以 key: 开头，在首尾加花括号
                 wrapped = '{' + wrapped + '}'
-                # 在最后一个 } 处截断（可能是多余文本）
                 last_brace = wrapped.rfind('}')
                 wrapped = wrapped[:last_brace + 1]
                 candidates.append(wrapped)
@@ -677,7 +721,7 @@ def _extract_json(text):
 
     # 对每个候选尝试解析，优先返回含 briefing+deep_dive 的有效 JSON
     errors = []
-    for cand in reversed(candidates):  # 后面的候选更有可能是真正的输出
+    for cand in reversed(candidates):
         for attempt in range(3):
             try:
                 obj = json.loads(cand)
@@ -692,11 +736,9 @@ def _extract_json(text):
                     errors.append(str(e))
                     break
             else:
-                # 验证结构：必须有 briefing 键（deep_dive 可为 null）
                 if isinstance(obj, dict) and "briefing" in obj:
                     return obj
                 else:
-                    # 解析成功但缺少 briefing，可能是 prompt 中的模板 JSON
                     errors.append(f"跳过(缺briefing键): {list(obj.keys())[:3]}")
                     break
 
@@ -722,40 +764,51 @@ def deep_dive_worker(category_name, config):
         dedup_hint = f"\n\n【去重硬约束——违反将导致输出无效】以下话题已在近 7 天内深度覆盖。你必须选择一个与以下所有话题明显不同的新话题。如果资料库中所有话题都与以下列表高度相似，则 deep_dive 必须填 null。\n" + \
                      "\n".join(f"- {t}" for t in recent[:30])
 
+    # 判断该引擎是否支持 deep_dive
+    deep_dive_prompt = config.get('deep_dive_prompt', '')
+    has_deep_dive = bool(deep_dive_prompt and deep_dive_prompt != "NO_DEEP_DIVE")
+
+    if has_deep_dive:
+        deep_dive_section = f"""
+【深度长文任务——仅在资料库有足够操作价值时生成】
+{deep_dive_prompt}
+"""
+        deep_dive_instruction = "深度长文宁缺毋滥——没有真正可操作的话题就填 null。所有引擎总计产出 2-3 篇真正有用的实操指南即可，不求数量。"
+    else:
+        deep_dive_section = ""
+        deep_dive_instruction = "本引擎不生成深度长文。deep_dive 字段必须填 null。"
+
+    full_prompt = f"""
+当前时间是 {bj_now().strftime("%Y年%m月%d日")}。
+请根据资料库内容，生成"快讯汇总（briefing）"（必填）。
+
+【快讯任务】
+{config['briefing_prompt']}
+{deep_dive_section}
+
+你的输出必须是纯净 JSON 对象（不要代码块外壳），包含 briefing 和 deep_dive 字段。
+{deep_dive_instruction}
+
+硬性约束：
+- 所有 title 字段严格不超过 10 个中文字
+- 全文零 emoji，零网络用语，拒绝 AI 套话和空洞排比
+- 深度长文必须是实操指南而非行业分析——读者看完能跟着做
+- 所有方案标注启动成本（元）、时间投入（小时）、预期收益（元）
+- 代码必须可运行，工具必须免费或国内可访问（或标注替代方案）
+- 不要"趋势展望""影响分析""关注XX"——要"打开XX→做XX→得到XX"
+- tg_summary 不超过 50 字，tg_brief 不超过 200 字
+"""
+
     url = "https://api.deepseek.com/chat/completions"
     headers = {
         "Content-Type": "application/json",
         "Authorization": f"Bearer {DEEPSEEK_API_KEY}"
     }
 
-    full_prompt = f"""
-当前时间是 {bj_now().strftime("%Y年%m月%d日")}。
-请根据资料库内容，同时生成"快讯汇总（briefing）"和"深度长文（deep_dive，可选）"。
-
-【快讯任务】
-{config['briefing_prompt']}
-
-【深度长文任务——仅在资料库有足够深度的话题时生成】
-{config['deep_dive_prompt']}
-
-你的输出必须是纯净 JSON 对象（不要代码块外壳），包含 briefing 和 deep_dive 字段。
-深度长文遵循宁缺毋滥原则——六个引擎只需产出 1-2 篇真正有深度的好文即可，无则填 null。
-可以关联此前已发布的相关话题文章，形成系列深度分析。
-
-硬性约束：
-- 所有 title 字段严格不超过 10 个中文字（微信标题 32 字节限制，1 中文≈3 字节）
-- 全文零 emoji，零网络用语，拒绝 AI 套话和空洞排比，语言精炼有力
-- 深度长文核心章节 1200 字以上，最低不少于 800 字
-- 分析必须有递进逻辑、数据支撑和落地推演，结合真实商业环境
-- 必须分析对该领域从业者、投资者、创业者的具体影响和可执行应对方案
-- 个人方案优先考虑零成本或低成本路径
-- tg_summary 不超过 50 字，tg_brief 不超过 200 字
-"""
-
     payload = {
         "model": "deepseek-chat",
         "messages": [
-            {"role": "system", "content": "你是严谨专业的跨国商业智库分析引擎，严格输出标准 JSON。所有输出必须：零 emoji 表情符号、零网络用语、数据驱动、学术商业分析风格。个人方案必须优先考虑零成本或低成本路径。"},
+            {"role": "system", "content": SYSTEM_PROMPT},
             {"role": "user", "content": full_prompt + dedup_hint + "\n\n【资料库】\n" + context}
         ]
     }
@@ -774,7 +827,7 @@ def deep_dive_worker(category_name, config):
         return category_name, result
 
     except Exception as e:
-        print(f"❌ [{category_name}] V4 Pro 推理失败: {e}", flush=True)
+        print(f"❌ [{category_name}] DeepSeek 推理失败: {e}", flush=True)
         return category_name, None
 
 
@@ -807,7 +860,7 @@ def save_deep_dive(category_name, config, data):
     cat_lower = category_name.lower()
     file_path = _write_hugo_post(
         category_name, f"deep-dive-{date_slug}-{time_slug}.md",
-        deep_dive['title'], [cat_lower], ["深度长文", "深度分析"],
+        deep_dive['title'], [cat_lower], ["深度长文"],
         deep_dive['content_md']
     )
     print(f"   📄 深度长文已落盘: {file_path}")
@@ -831,7 +884,7 @@ def save_aggregated_briefing(briefings_by_cat):
     md += f"categories: ['daily-briefing']\n"
     md += f"tags: ['快讯', '每日汇总']\n"
     md += f"draft: false\n"
-    md += f"---\n\n"
+    md += "---\n\n"
     md += f"> {now.strftime('%Y年%m月%d日')} · {sum(len(v) for v in briefings_by_cat.values())} 条情报\n\n"
 
     for cat_name, items in briefings_by_cat.items():
@@ -845,7 +898,7 @@ def save_aggregated_briefing(briefings_by_cat):
                 md += f"{why}\n\n"
             za = item.get('zero_cost_angle', '')
             if za and za not in ('暂无可执行角度', '待观察', '持续关注'):
-                md += f"> 零成本切入点：{za}\n\n"
+                md += f"> 🎯 {za}\n\n"
         md += "---\n\n"
 
     with open(file_name, "w", encoding="utf-8") as f:
@@ -855,7 +908,7 @@ def save_aggregated_briefing(briefings_by_cat):
 
 
 # ============================================================
-# Telegram 推送 —— 内容丰满版
+# Telegram 推送
 # ============================================================
 def _tg_post(category_name, msg, thread_id=None):
     """发送单条 Telegram 消息到指定 Topic"""
@@ -924,7 +977,7 @@ def send_deep_dive_tg(category_name, data):
     title_cn = AGENTS.get(category_name, {}).get("title_cn", category_name)
     msg = f"**[{title_cn}] 深度长文**\n\n"
     msg += f"**{deep_dive['title']}**\n\n"
-    msg += f"{deep_dive.get('tg_summary', '深度分析已发布')}\n\n"
+    msg += f"{deep_dive.get('tg_summary', '深度长文已发布')}\n\n"
     msg += f"阅读全文: {SITE_URL}/categories/{category_name.lower()}/"
     return 1 if _tg_post(category_name, msg) else 0
 
@@ -933,9 +986,11 @@ def send_deep_dive_tg(category_name, data):
 # 主流程
 # ============================================================
 if __name__ == "__main__":
-    print(f"🚀 启动 Easton 满血外脑")
+    print(f"🚀 启动 Easton 满血外脑 v2")
+    print(f"   🎯 目标读者：被AI冲击的普通人（28-38岁/技术背景/现金流紧/零成本启动）")
     print(f"   📡 RSS 源: {sum(len(c['feeds']) for c in AGENTS.values())}")
     print(f"   🤖 模型: DeepSeek V4 Pro (deepseek-chat)")
+    print(f"   📝 深度长文: 仅 5 引擎产出（宏观风向标仅快讯）")
     print()
 
     # 收集所有引擎结果
@@ -953,7 +1008,6 @@ if __name__ == "__main__":
             try:
                 category_name, result = future.result()
                 if result:
-                    # 收集快讯 items 用于聚合
                     briefing = result.get("briefing")
                     if briefing:
                         items = briefing.get("items", [])
@@ -961,12 +1015,10 @@ if __name__ == "__main__":
                             all_briefings[category_name] = items
                             print(f"   📋 [{category_name}] 快讯 {len(items)} 条")
 
-                    # 深度长文独立落盘
                     saved = save_deep_dive(category_name, AGENTS[category_name], result)
                     if saved:
                         total_deep_dives += 1
 
-                    # 深度长文推送各自 Topic
                     total_tg += send_deep_dive_tg(category_name, result)
                 else:
                     print(f"   ⚠️ [{cat}] 未获取有效结果")

@@ -5,7 +5,7 @@
   "@type": "WebSite",
   "name": "Easton 跨国智库",
   "url": "https://radar.huadongpeng.com/",
-  "description": "每日自动化扫描全球权威信息源，DeepSeek V4 Pro 深度推理，输出中文可执行情报。覆盖套利雷达、AI 前沿、跨国脑洞、宏观风向、中国出海、开发者金矿六大领域。",
+  "description": "写给被AI冲击的普通人——每日扫描全球信息源，找到零成本可验证的机会。套利雷达、AI实战、信息差、出海工具、效率自动化、宏观风向六大方向。",
   "author": { "@type": "Person", "name": "Easton Hua", "email": "hdop1993@gmail.com" },
   "inLanguage": "zh-CN",
   "license": "https://creativecommons.org/licenses/by-nc-nd/4.0/"
@@ -46,6 +46,19 @@
 <!-- 搜索引擎验证 -->
 <meta name="baidu-site-verification" content="">
 <meta name="google-site-verification" content="">
+
+<!-- 关键样式：在 PaperMod CSS 加载后通过更高特异性覆盖 -->
+<style>
+@media (max-width: 768px) {
+  body .main { padding: 0 14px 85px 14px !important; }
+  body .post-content { font-size: 16.5px !important; line-height: 1.9 !important; }
+  #mobile-nav { display: flex !important; z-index: 9999 !important; }
+  body footer { padding-bottom: 90px !important; }
+}
+@media (min-width: 769px) {
+  #mobile-nav { display: none !important; }
+}
+</style>
 
 <!-- 自定义样式 + 移动端优化 -->
 <link rel="stylesheet" href="/css/custom.css">

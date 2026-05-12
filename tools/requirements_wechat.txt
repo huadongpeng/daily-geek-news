@@ -3,4 +3,5 @@
 # 清华镜像备选:  -i https://pypi.tuna.tsinghua.edu.cn/simple/
 
 requests>=2.20,<2.28
+mistune>=3.0
 # Pillow 可选（图片裁切），Python 3.6 安装: pip3 install Pillow==8.4.0 -i https://mirrors.aliyun.com/pypi/simple/
