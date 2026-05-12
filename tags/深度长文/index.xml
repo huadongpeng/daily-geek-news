@@ -1,4 +1,171 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>深度长文 on Easton 跨国智库</title><link>https://radar.huadongpeng.com/tags/%E6%B7%B1%E5%BA%A6%E9%95%BF%E6%96%87/</link><description>Recent content in 深度长文 on Easton 跨国智库</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Tue, 12 May 2026 12:37:45 +0800</lastBuildDate><atom:link href="https://radar.huadongpeng.com/tags/%E6%B7%B1%E5%BA%A6%E9%95%BF%E6%96%87/index.xml" rel="self" type="application/rss+xml"/><item><title>YouTube搜索痛点掘金</title><link>https://radar.huadongpeng.com/posts/arbitrage-radar/deep-dive-2026-05-12-1237/</link><pubDate>Tue, 12 May 2026 12:37:45 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/arbitrage-radar/deep-dive-2026-05-12-1237/</guid><description>&lt;h2 id="核心洞察youtube搜索太烂几百人在抱怨没人搞定"&gt;核心洞察：YouTube搜索太烂，几百人在抱怨，没人搞定&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>深度长文 on Easton 跨国智库</title><link>https://radar.huadongpeng.com/tags/%E6%B7%B1%E5%BA%A6%E9%95%BF%E6%96%87/</link><description>Recent content in 深度长文 on Easton 跨国智库</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Tue, 12 May 2026 12:58:20 +0800</lastBuildDate><atom:link href="https://radar.huadongpeng.com/tags/%E6%B7%B1%E5%BA%A6%E9%95%BF%E6%96%87/index.xml" rel="self" type="application/rss+xml"/><item><title>Twitter图库抓取</title><link>https://radar.huadongpeng.com/posts/china-going-global/deep-dive-2026-05-12-1258/</link><pubDate>Tue, 12 May 2026 12:58:20 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/china-going-global/deep-dive-2026-05-12-1258/</guid><description>&lt;h3 id="目标市场画像"&gt;目标市场画像&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;为什么选Twitter/ X？&lt;/strong&gt; 全球月活4.5亿用户，每天产生超过5亿条推文和图片。这些图片天然带有用户真实场景和高互动标签，非常适合用来训练AI视觉模型、生成社交媒体素材，或做竞品视觉分析。个人开发者无需任何成本即可获取海量素材。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;适合卖什么？&lt;/strong&gt;
+&lt;ol&gt;
+&lt;li&gt;定制AI头像生成服务（用爬到的图做风格迁移训练）&lt;/li&gt;
+&lt;li&gt;社交媒体图片素材包（按主题打包，例如“科技创业者办公室实拍”）&lt;/li&gt;
+&lt;li&gt;电商产品图背景替换服务（用真实街景图做背景）&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="从零到上线的每一步"&gt;从零到上线的每一步&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;Step 1：注册Twitter开发者账号&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;访问 &lt;a href="https://developer.twitter.com"&gt;developer.twitter.com&lt;/a&gt;，点击“Sign up”。&lt;/li&gt;
+&lt;li&gt;使用个人邮箱注册，推荐用Gmail或Outlook。&lt;/li&gt;
+&lt;li&gt;填写基本信息：姓名、电话（可选）、国家。&lt;/li&gt;
+&lt;li&gt;选择“Individual Developer”计划——免费，每月可发送500条推文、读取15000条推文数据。&lt;/li&gt;
+&lt;li&gt;提交申请表，简述用途，例如“build a photo gallery app”。&lt;/li&gt;
+&lt;li&gt;审核通常24小时内通过，通过后你会获得以下信息：
+&lt;ul&gt;
+&lt;li&gt;API Key&lt;/li&gt;
+&lt;li&gt;API Key Secret&lt;/li&gt;
+&lt;li&gt;Bearer Token（推荐用这个）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;注意：&lt;/strong&gt; 如果你的IP在国内，可能需挂梯子，否则注册页面加载缓慢。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Step 2：配置Python环境&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;安装Python 3.9以上版本，在终端运行：
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;pip install requests
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;创建一个Python脚本 &lt;code&gt;fetch_twitter_media.py&lt;/code&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Step 3：编写代码拉取图片&lt;/strong&gt;
+复制以下代码到文件中（替换 &lt;code&gt;YOUR_BEARER_TOKEN&lt;/code&gt;）：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;import&lt;/span&gt; requests
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;import&lt;/span&gt; json
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;bearer_token &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;YOUR_BEARER_TOKEN&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;get_tweet_media&lt;/span&gt;(tweet_id):
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; url &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#e6db74"&gt;f&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;https://api.twitter.com/2/tweets/&lt;/span&gt;&lt;span style="color:#e6db74"&gt;{&lt;/span&gt;tweet_id&lt;span style="color:#e6db74"&gt;}&lt;/span&gt;&lt;span style="color:#e6db74"&gt;?expansions=attachments.media_keys&amp;amp;media.fields=url,preview_image_url&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; headers &lt;span style="color:#f92672"&gt;=&lt;/span&gt; {&lt;span style="color:#e6db74"&gt;&amp;#34;Authorization&amp;#34;&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;f&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;Bearer &lt;/span&gt;&lt;span style="color:#e6db74"&gt;{&lt;/span&gt;bearer_token&lt;span style="color:#e6db74"&gt;}&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;&lt;/span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; response &lt;span style="color:#f92672"&gt;=&lt;/span&gt; requests&lt;span style="color:#f92672"&gt;.&lt;/span&gt;get(url, headers&lt;span style="color:#f92672"&gt;=&lt;/span&gt;headers)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;if&lt;/span&gt; response&lt;span style="color:#f92672"&gt;.&lt;/span&gt;status_code &lt;span style="color:#f92672"&gt;!=&lt;/span&gt; &lt;span style="color:#ae81ff"&gt;200&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; print(&lt;span style="color:#e6db74"&gt;f&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;Error: &lt;/span&gt;&lt;span style="color:#e6db74"&gt;{&lt;/span&gt;response&lt;span style="color:#f92672"&gt;.&lt;/span&gt;status_code&lt;span style="color:#e6db74"&gt;}&lt;/span&gt;&lt;span style="color:#e6db74"&gt;, &lt;/span&gt;&lt;span style="color:#e6db74"&gt;{&lt;/span&gt;response&lt;span style="color:#f92672"&gt;.&lt;/span&gt;text&lt;span style="color:#e6db74"&gt;}&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;return&lt;/span&gt; []
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; data &lt;span style="color:#f92672"&gt;=&lt;/span&gt; response&lt;span style="color:#f92672"&gt;.&lt;/span&gt;json()
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; media_urls &lt;span style="color:#f92672"&gt;=&lt;/span&gt; []
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;if&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;includes&amp;#34;&lt;/span&gt; &lt;span style="color:#f92672"&gt;in&lt;/span&gt; data &lt;span style="color:#f92672"&gt;and&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;media&amp;#34;&lt;/span&gt; &lt;span style="color:#f92672"&gt;in&lt;/span&gt; data[&lt;span style="color:#e6db74"&gt;&amp;#34;includes&amp;#34;&lt;/span&gt;]:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;for&lt;/span&gt; m &lt;span style="color:#f92672"&gt;in&lt;/span&gt; data[&lt;span style="color:#e6db74"&gt;&amp;#34;includes&amp;#34;&lt;/span&gt;][&lt;span style="color:#e6db74"&gt;&amp;#34;media&amp;#34;&lt;/span&gt;]:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;if&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;url&amp;#34;&lt;/span&gt; &lt;span style="color:#f92672"&gt;in&lt;/span&gt; m:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; media_urls&lt;span style="color:#f92672"&gt;.&lt;/span&gt;append(m[&lt;span style="color:#e6db74"&gt;&amp;#34;url&amp;#34;&lt;/span&gt;])
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;return&lt;/span&gt; media_urls
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;if&lt;/span&gt; __name__ &lt;span style="color:#f92672"&gt;==&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;__main__&amp;#34;&lt;/span&gt;:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#75715e"&gt;# 找一个包含图片的推文ID，例如某网红发的图&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; tweet_id &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;1790045219106652160&amp;#34;&lt;/span&gt; &lt;span style="color:#75715e"&gt;# 示例ID，实际请改&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; urls &lt;span style="color:#f92672"&gt;=&lt;/span&gt; get_tweet_media(tweet_id)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;for&lt;/span&gt; url &lt;span style="color:#f92672"&gt;in&lt;/span&gt; urls:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; print(url)
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;运行：&lt;code&gt;python fetch_twitter_media.py&lt;/code&gt;，你会在终端看到图片URL列表。&lt;/p&gt;</description><content:encoded><![CDATA[<h3 id="目标市场画像">目标市场画像</h3>
+<ul>
+<li><strong>为什么选Twitter/ X？</strong> 全球月活4.5亿用户，每天产生超过5亿条推文和图片。这些图片天然带有用户真实场景和高互动标签，非常适合用来训练AI视觉模型、生成社交媒体素材，或做竞品视觉分析。个人开发者无需任何成本即可获取海量素材。</li>
+<li><strong>适合卖什么？</strong>
+<ol>
+<li>定制AI头像生成服务（用爬到的图做风格迁移训练）</li>
+<li>社交媒体图片素材包（按主题打包，例如“科技创业者办公室实拍”）</li>
+<li>电商产品图背景替换服务（用真实街景图做背景）</li>
+</ol>
+</li>
+</ul>
+<h3 id="从零到上线的每一步">从零到上线的每一步</h3>
+<p><strong>Step 1：注册Twitter开发者账号</strong></p>
+<ul>
+<li>访问 <a href="https://developer.twitter.com">developer.twitter.com</a>，点击“Sign up”。</li>
+<li>使用个人邮箱注册，推荐用Gmail或Outlook。</li>
+<li>填写基本信息：姓名、电话（可选）、国家。</li>
+<li>选择“Individual Developer”计划——免费，每月可发送500条推文、读取15000条推文数据。</li>
+<li>提交申请表，简述用途，例如“build a photo gallery app”。</li>
+<li>审核通常24小时内通过，通过后你会获得以下信息：
+<ul>
+<li>API Key</li>
+<li>API Key Secret</li>
+<li>Bearer Token（推荐用这个）</li>
+</ul>
+</li>
+<li><strong>注意：</strong> 如果你的IP在国内，可能需挂梯子，否则注册页面加载缓慢。</li>
+</ul>
+<p><strong>Step 2：配置Python环境</strong></p>
+<ul>
+<li>安装Python 3.9以上版本，在终端运行：
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>pip install requests
+</span></span></code></pre></div></li>
+<li>创建一个Python脚本 <code>fetch_twitter_media.py</code></li>
+</ul>
+<p><strong>Step 3：编写代码拉取图片</strong>
+复制以下代码到文件中（替换 <code>YOUR_BEARER_TOKEN</code>）：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> requests
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> json
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>bearer_token <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;YOUR_BEARER_TOKEN&#34;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">get_tweet_media</span>(tweet_id):
+</span></span><span style="display:flex;"><span>    url <span style="color:#f92672">=</span> <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;https://api.twitter.com/2/tweets/</span><span style="color:#e6db74">{</span>tweet_id<span style="color:#e6db74">}</span><span style="color:#e6db74">?expansions=attachments.media_keys&amp;media.fields=url,preview_image_url&#34;</span>
+</span></span><span style="display:flex;"><span>    headers <span style="color:#f92672">=</span> {<span style="color:#e6db74">&#34;Authorization&#34;</span>: <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Bearer </span><span style="color:#e6db74">{</span>bearer_token<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>}
+</span></span><span style="display:flex;"><span>    response <span style="color:#f92672">=</span> requests<span style="color:#f92672">.</span>get(url, headers<span style="color:#f92672">=</span>headers)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> response<span style="color:#f92672">.</span>status_code <span style="color:#f92672">!=</span> <span style="color:#ae81ff">200</span>:
+</span></span><span style="display:flex;"><span>        print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;Error: </span><span style="color:#e6db74">{</span>response<span style="color:#f92672">.</span>status_code<span style="color:#e6db74">}</span><span style="color:#e6db74">, </span><span style="color:#e6db74">{</span>response<span style="color:#f92672">.</span>text<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> []
+</span></span><span style="display:flex;"><span>    data <span style="color:#f92672">=</span> response<span style="color:#f92672">.</span>json()
+</span></span><span style="display:flex;"><span>    media_urls <span style="color:#f92672">=</span> []
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">if</span> <span style="color:#e6db74">&#34;includes&#34;</span> <span style="color:#f92672">in</span> data <span style="color:#f92672">and</span> <span style="color:#e6db74">&#34;media&#34;</span> <span style="color:#f92672">in</span> data[<span style="color:#e6db74">&#34;includes&#34;</span>]:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">for</span> m <span style="color:#f92672">in</span> data[<span style="color:#e6db74">&#34;includes&#34;</span>][<span style="color:#e6db74">&#34;media&#34;</span>]:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">if</span> <span style="color:#e6db74">&#34;url&#34;</span> <span style="color:#f92672">in</span> m:
+</span></span><span style="display:flex;"><span>                media_urls<span style="color:#f92672">.</span>append(m[<span style="color:#e6db74">&#34;url&#34;</span>])
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> media_urls
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">if</span> __name__ <span style="color:#f92672">==</span> <span style="color:#e6db74">&#34;__main__&#34;</span>:
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 找一个包含图片的推文ID，例如某网红发的图</span>
+</span></span><span style="display:flex;"><span>    tweet_id <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;1790045219106652160&#34;</span>  <span style="color:#75715e"># 示例ID，实际请改</span>
+</span></span><span style="display:flex;"><span>    urls <span style="color:#f92672">=</span> get_tweet_media(tweet_id)
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">for</span> url <span style="color:#f92672">in</span> urls:
+</span></span><span style="display:flex;"><span>        print(url)
+</span></span></code></pre></div><p>运行：<code>python fetch_twitter_media.py</code>，你会在终端看到图片URL列表。</p>
+<ul>
+<li><strong>常见坑：</strong> Twitter API限制每秒最多300个请求，免费计划每月15000次读取。不要循环请求太快，建议手动脚本执行。</li>
+</ul>
+<p><strong>Step 4：存储和使用图片</strong></p>
+<ul>
+<li>用Python <code>urllib</code> 或 <code>requests</code> 下载到本地：
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> urllib.request
+</span></span><span style="display:flex;"><span>urllib<span style="color:#f92672">.</span>request<span style="color:#f92672">.</span>urlretrieve(url, <span style="color:#e6db74">&#34;photo.jpg&#34;</span>)
+</span></span></code></pre></div></li>
+<li>建议按主题建文件夹（如：ai_art / street_photography）。</li>
+<li>用途一：将这些图片输入到Stable Diffusion或Midjourney中做风格训练（需有ComfyUI或SD Web UI）。</li>
+<li>用途二：直接打包成图片素材包，在Gumroad上出售（定价2-5美元）。</li>
+</ul>
+<p><strong>Step 5：收款</strong></p>
+<ul>
+<li>注册 <a href="https://gumroad.com">Gumroad</a>（支持中国用户，用PayPal收款，无月费）。</li>
+<li>上传图片素材包，设置价格。</li>
+<li>买家付款后，平台自动发送下载链接。</li>
+<li>提现到PayPal，再转回国内银行卡（手续费约2-3%）。</li>
+<li>回款周期：买家下单后7天后可提现。</li>
+</ul>
+<h3 id="工具链推荐">工具链推荐</h3>
+<ol>
+<li><strong>Python requests库（免费）</strong>：核心工具，无需安装第三方库。替代品：cURL命令行。</li>
+<li><strong>Gumroad（免费，抽成5%）</strong>：销售数字商品的最佳平台。替代品：Etsy（需美区身份，较繁琐）。</li>
+<li><strong>Stable Diffusion Web UI（免费）</strong>：用于风格迁移训练。替代品：ComfyUI（更灵活但复杂）。</li>
+</ol>
+<h3 id="避坑清单">避坑清单</h3>
+<ol>
+<li><strong>API密钥泄露导致滥用封号：</strong> 不要把Bearer Token硬编码在打包脚本里；尽量使用环境变量或配置文件。</li>
+<li><strong>下载受版权保护的图片：</strong> 不要爬取品牌官方图或带水印图，建议只爬普通用户分享的生活/街拍图。</li>
+<li><strong>请求频率过高被限：</strong> 免费计划每月15000次读取，平均每天500次。如果你一次爬100张图，大概消耗100次配额，足够日常使用。</li>
+</ol>
+<h3 id="成本拆解">成本拆解</h3>
+<ul>
+<li><strong>启动成本：</strong> 0元（开发者账号免费、Python免费、Gumroad免费）</li>
+<li><strong>时间投入：</strong> 首次配置约2小时，之后每周维护1-2小时</li>
+<li><strong>月度运营成本：</strong> 0元（除非你买VPS，但本地电脑+外网连接即可）</li>
+<li><strong>预期首周收益：</strong> 卖出10份5美元素材包，减去Gumroad 5%抽成和PayPal提现费，到手约40美元（约280元人民币）</li>
+</ul>
+]]></content:encoded></item><item><title>YouTube搜索痛点掘金</title><link>https://radar.huadongpeng.com/posts/arbitrage-radar/deep-dive-2026-05-12-1237/</link><pubDate>Tue, 12 May 2026 12:37:45 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/arbitrage-radar/deep-dive-2026-05-12-1237/</guid><description>&lt;h2 id="核心洞察youtube搜索太烂几百人在抱怨没人搞定"&gt;核心洞察：YouTube搜索太烂，几百人在抱怨，没人搞定&lt;/h2&gt;
 &lt;p&gt;Reddit帖子&amp;quot;A video search engine that doesn&amp;rsquo;t suck&amp;quot;里，用户说&amp;quot;there are only 5 or 6 relevant videos&amp;quot;之后就全是无关内容。这条抱怨被50多人顶帖，有人直接开骂&amp;quot;YouTube search is garbage&amp;quot;。&lt;/p&gt;
 &lt;p&gt;这不是技术难题——YouTube本身有API可以搜视频，但默认排序和推荐算法对深度搜索不友好。普通用户想要的是：搜&amp;quot;react tutorial 2026&amp;quot;的时候，能按时长、年代、语言、有没有字幕等条件精确匹配。&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;别人为什么还没赚这个钱？&lt;/strong&gt; 不是技术壁垒，是信息差。大多数独立开发者忙着给AI套壳，忽略了这种&amp;quot;无聊但刚需&amp;quot;的方向。而你的优势：有Python基础，有免费API，能在家里完成。&lt;/p&gt;
