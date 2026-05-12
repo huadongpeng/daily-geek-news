@@ -387,9 +387,9 @@ def _load_published():
 
 def _published_key(md_file):
     """生成去重键：分类/类型-日期，同一天同分类同类型只推一次"""
-    rel = md_file.relative_to(GIT_REPO_DIR)
+    rel = md_file.relative_to(CONTENT_DIR)
     parts = rel.parts
-    category = parts[1] if len(parts) > 1 else "unknown"
+    category = parts[0] if len(parts) > 0 else "unknown"
     # 提取日期和类型：deep-dive-2026-05-12-1127.md → deep-dive-2026-05-12
     name = md_file.stem
     if "deep-dive" in name:
