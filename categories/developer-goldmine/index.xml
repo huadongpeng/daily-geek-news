@@ -1,188 +1,170 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Developer-Goldmine on Easton 跨国智库</title><link>https://radar.huadongpeng.com/categories/developer-goldmine/</link><description>Recent content in Developer-Goldmine on Easton 跨国智库</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Tue, 12 May 2026 10:11:19 +0800</lastBuildDate><atom:link href="https://radar.huadongpeng.com/categories/developer-goldmine/index.xml" rel="self" type="application/rss+xml"/><item><title>n8n 自动化做项目</title><link>https://radar.huadongpeng.com/posts/developer-goldmine/deep-dive-2026-05-12-1011/</link><pubDate>Tue, 12 May 2026 10:11:19 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/developer-goldmine/deep-dive-2026-05-12-1011/</guid><description>&lt;h2 id="效率痛点"&gt;效率痛点&lt;/h2&gt;
-&lt;p&gt;你每天花30分钟回复类似的问题（发票过期、保险证书快到期），一个月就是 30分×20天=10小时。这些时间本来可以用来接一个 500 元的小外包项目。重复劳动是收入的天敌。&lt;/p&gt;
-&lt;h2 id="自动化提效方案"&gt;自动化/提效方案&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Developer-Goldmine on Easton 跨国智库</title><link>https://radar.huadongpeng.com/categories/developer-goldmine/</link><description>Recent content in Developer-Goldmine on Easton 跨国智库</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Tue, 12 May 2026 11:27:36 +0800</lastBuildDate><atom:link href="https://radar.huadongpeng.com/categories/developer-goldmine/index.xml" rel="self" type="application/rss+xml"/><item><title>Novastack路由</title><link>https://radar.huadongpeng.com/posts/developer-goldmine/deep-dive-2026-05-12-1127/</link><pubDate>Tue, 12 May 2026 11:27:36 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/developer-goldmine/deep-dive-2026-05-12-1127/</guid><description>&lt;h2 id="效率痛点"&gt;效率痛点&lt;/h2&gt;
+&lt;p&gt;每天花15分钟手动切换不同的AI模型API（Claude、GPT、Gemini）——修改参数、复制密钥、维护不同客户端库。一个月下来，这种重复操作消耗掉5个小时，相当于白白损失了500元（按100元/小时外包行情估算）。&lt;/p&gt;
+&lt;h2 id="自动化方案"&gt;自动化方案&lt;/h2&gt;
 &lt;h3 id="工具链架构"&gt;工具链架构&lt;/h3&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;触发器&lt;/strong&gt;：Gmail 收件箱（新邮件包含“保险证书/发票”）&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;处理节点&lt;/strong&gt;：n8n 内置的 Extract Data（提取附件、日期）&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;分支判断&lt;/strong&gt;：IF 证书到期 &amp;lt; 30 天 → 发提醒，否则归档&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;输出&lt;/strong&gt;：发送通知到 Telegram / Slack，同时更新 Google Sheets&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Novastack&lt;/strong&gt;：统一路由层，通过配置文件管理所有模型。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Python 3.8+&lt;/strong&gt;：运行环境。&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id="从安装到首次运行"&gt;从安装到首次运行&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;第一步：注册 n8n 云端（免费）&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id="安装到首次运行"&gt;安装到首次运行&lt;/h3&gt;
 &lt;ol&gt;
-&lt;li&gt;打开 &lt;a href="https://n8n.io"&gt;n8n.io&lt;/a&gt;，点击右上角“Get started free”&lt;/li&gt;
-&lt;li&gt;用邮箱或 GitHub 账户注册&lt;/li&gt;
-&lt;li&gt;登录后你会看到一个空的 workflow 画布&lt;/li&gt;
+&lt;li&gt;安装Python 3.8+（如果已装则跳过）。&lt;/li&gt;
+&lt;li&gt;打开终端，执行：
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;pip install novastack
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;在项目目录创建文件&lt;code&gt;router.py&lt;/code&gt;：
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;from&lt;/span&gt; novastack &lt;span style="color:#f92672"&gt;import&lt;/span&gt; Router
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 配置密钥（从环境变量读取更安全）&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;router &lt;span style="color:#f92672"&gt;=&lt;/span&gt; Router({
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#e6db74"&gt;&amp;#39;openai&amp;#39;&lt;/span&gt;: {&lt;span style="color:#e6db74"&gt;&amp;#39;api_key&amp;#39;&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#39;sk-xxx&amp;#39;&lt;/span&gt;},
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#e6db74"&gt;&amp;#39;anthropic&amp;#39;&lt;/span&gt;: {&lt;span style="color:#e6db74"&gt;&amp;#39;api_key&amp;#39;&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#39;sk-ant-xxx&amp;#39;&lt;/span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;})
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 定义任务&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;task &lt;span style="color:#f92672"&gt;=&lt;/span&gt; {&lt;span style="color:#e6db74"&gt;&amp;#39;prompt&amp;#39;&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#39;解释量子纠缠&amp;#39;&lt;/span&gt;, &lt;span style="color:#e6db74"&gt;&amp;#39;model&amp;#39;&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#39;gpt-4&amp;#39;&lt;/span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 自动路由到GPT-4&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;result &lt;span style="color:#f92672"&gt;=&lt;/span&gt; router&lt;span style="color:#f92672"&gt;.&lt;/span&gt;route(task)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;print(result[&lt;span style="color:#e6db74"&gt;&amp;#39;content&amp;#39;&lt;/span&gt;])
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
+&lt;li&gt;运行：&lt;code&gt;python router.py&lt;/code&gt;。&lt;/li&gt;
 &lt;/ol&gt;
-&lt;p&gt;&lt;strong&gt;第二步：创建你的第一个流程&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id="核心配置代码"&gt;核心配置代码&lt;/h3&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# router.py - 完整示例&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;from&lt;/span&gt; novastack &lt;span style="color:#f92672"&gt;import&lt;/span&gt; Router
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;router &lt;span style="color:#f92672"&gt;=&lt;/span&gt; Router({
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#e6db74"&gt;&amp;#39;openai&amp;#39;&lt;/span&gt;: {&lt;span style="color:#e6db74"&gt;&amp;#39;api_key&amp;#39;&lt;/span&gt;: os&lt;span style="color:#f92672"&gt;.&lt;/span&gt;environ[&lt;span style="color:#e6db74"&gt;&amp;#39;OPENAI_KEY&amp;#39;&lt;/span&gt;]}, &lt;span style="color:#75715e"&gt;# 从环境变量加载&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#e6db74"&gt;&amp;#39;anthropic&amp;#39;&lt;/span&gt;: {&lt;span style="color:#e6db74"&gt;&amp;#39;api_key&amp;#39;&lt;/span&gt;: os&lt;span style="color:#f92672"&gt;.&lt;/span&gt;environ[&lt;span style="color:#e6db74"&gt;&amp;#39;ANTHROPIC_KEY&amp;#39;&lt;/span&gt;]}
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;})
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 根据模型名动态选择&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;task &lt;span style="color:#f92672"&gt;=&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#e6db74"&gt;&amp;#39;prompt&amp;#39;&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#39;写一封求职信&amp;#39;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#e6db74"&gt;&amp;#39;model&amp;#39;&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#39;claude-3-opus-20240229&amp;#39;&lt;/span&gt; &lt;span style="color:#75715e"&gt;# 换这里就能切换模型&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;response &lt;span style="color:#f92672"&gt;=&lt;/span&gt; router&lt;span style="color:#f92672"&gt;.&lt;/span&gt;route(task)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;print(response[&lt;span style="color:#e6db74"&gt;&amp;#39;content&amp;#39;&lt;/span&gt;])
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="效果量化"&gt;效果量化&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;优化前&lt;/strong&gt;：每次调用需手动编写请求代码+处理API错误。按每天调用10次，每次1.5分钟算：1.5分钟 × 10次/天 = 15分钟/天 = 5小时/月。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;优化后&lt;/strong&gt;：一次配置，每次调用只需改&lt;code&gt;model&lt;/code&gt;字段，30秒/次：0.5分钟 × 10次/天 = 5分钟/天 = 1.67小时/月。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;节省&lt;/strong&gt;：3.33小时/月，如果用来接外包（按100元/小时），价值333元/月。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="进阶技巧"&gt;进阶技巧&lt;/h2&gt;
 &lt;ol&gt;
-&lt;li&gt;点击“New Workflow”，命名为“Vendor Compliance Check”&lt;/li&gt;
-&lt;li&gt;在右侧节点库搜索“Email Trigger (IMAP)”，拖到画布上&lt;/li&gt;
-&lt;li&gt;配置 Gmail IMAP：填你的邮箱、密码（或App专用密码）
+&lt;li&gt;&lt;strong&gt;负载均衡&lt;/strong&gt;：设置&lt;code&gt;weight&lt;/code&gt;参数按比例分配请求：&lt;code&gt;{'gpt-4': 0.7, 'claude-3': 0.3}&lt;/code&gt;，避免单个模型超限。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;自动重试&lt;/strong&gt;：启用&lt;code&gt;retry=True&lt;/code&gt;，当模型返回速率限制错误时自动换另一个模型重试，保证任务不中断。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;回滚策略&lt;/strong&gt;：在配置中加&lt;code&gt;fallback&lt;/code&gt;字段，当首选模型失败时切换到低成本模型（如&lt;code&gt;gpt-3.5-turbo&lt;/code&gt;）。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id="常见排障"&gt;常见排障&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;导入失败&lt;/strong&gt;: &lt;code&gt;ModuleNotFoundError: No module named 'novastack'&lt;/code&gt;
 &lt;ul&gt;
-&lt;li&gt;设置筛选条件：subject contains &amp;ldquo;certificate&amp;rdquo; or &amp;ldquo;insurance&amp;rdquo;&lt;/li&gt;
+&lt;li&gt;解决：确认pip安装成功，或尝试&lt;code&gt;python -m pip install --upgrade novastack&lt;/code&gt;。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
-&lt;li&gt;拖拽“IF”节点，连接到前一个节点
+&lt;li&gt;&lt;strong&gt;模型名不识别&lt;/strong&gt;: 使用&lt;code&gt;claude-3-5-haiku&lt;/code&gt;但报错
 &lt;ul&gt;
-&lt;li&gt;条件：{{ $json[&amp;ldquo;body&amp;rdquo;].expiry_date }} &amp;lt; {{ Date.now() + 30&lt;em&gt;24&lt;/em&gt;60&lt;em&gt;60&lt;/em&gt;1000 }}&lt;/li&gt;
+&lt;li&gt;解决：去Novastack官方文档查最新模型列表，注意版本号格式（如&lt;code&gt;claude-3-5-haiku-20241022&lt;/code&gt;）。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
-&lt;li&gt;拖拽“Google Sheets”节点到 True 分支
+&lt;li&gt;&lt;strong&gt;环境变量未加载&lt;/strong&gt;: 密钥为空报401
 &lt;ul&gt;
-&lt;li&gt;填你的 Sheet ID，列名：姓名、项目、到期日、状态&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;拖拽“Telegram”节点到 False 分支
-&lt;ul&gt;
-&lt;li&gt;输入 Bot Token、Chat ID，消息内容：&amp;quot;{{ $json[&amp;ldquo;sender&amp;rdquo;] }} 证书正常，无需关注&amp;quot;&lt;/li&gt;
+&lt;li&gt;解决：检查终端是否设置变量，或在代码里硬编码（仅测试用）。&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
 &lt;/ol&gt;
-&lt;p&gt;&lt;strong&gt;第三步：保存并激活&lt;/strong&gt;&lt;/p&gt;</description><content:encoded><![CDATA[<h2 id="效率痛点">效率痛点</h2>
-<p>你每天花30分钟回复类似的问题（发票过期、保险证书快到期），一个月就是 30分×20天=10小时。这些时间本来可以用来接一个 500 元的小外包项目。重复劳动是收入的天敌。</p>
-<h2 id="自动化提效方案">自动化/提效方案</h2>
+&lt;h2 id="启动成本"&gt;启动成本&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;启动成本：0元（软件全免费，API密钥需注册但免费额度够测试）。&lt;/li&gt;
+&lt;li&gt;时间投入：安装+配置约30分钟。&lt;/li&gt;
+&lt;li&gt;预期首周收益：省下1小时重复劳动。&lt;/li&gt;
+&lt;/ul&gt;</description><content:encoded><![CDATA[<h2 id="效率痛点">效率痛点</h2>
+<p>每天花15分钟手动切换不同的AI模型API（Claude、GPT、Gemini）——修改参数、复制密钥、维护不同客户端库。一个月下来，这种重复操作消耗掉5个小时，相当于白白损失了500元（按100元/小时外包行情估算）。</p>
+<h2 id="自动化方案">自动化方案</h2>
 <h3 id="工具链架构">工具链架构</h3>
 <ul>
-<li><strong>触发器</strong>：Gmail 收件箱（新邮件包含“保险证书/发票”）</li>
-<li><strong>处理节点</strong>：n8n 内置的 Extract Data（提取附件、日期）</li>
-<li><strong>分支判断</strong>：IF 证书到期 &lt; 30 天 → 发提醒，否则归档</li>
-<li><strong>输出</strong>：发送通知到 Telegram / Slack，同时更新 Google Sheets</li>
+<li><strong>Novastack</strong>：统一路由层，通过配置文件管理所有模型。</li>
+<li><strong>Python 3.8+</strong>：运行环境。</li>
 </ul>
-<h3 id="从安装到首次运行">从安装到首次运行</h3>
-<p><strong>第一步：注册 n8n 云端（免费）</strong></p>
+<h3 id="安装到首次运行">安装到首次运行</h3>
 <ol>
-<li>打开 <a href="https://n8n.io">n8n.io</a>，点击右上角“Get started free”</li>
-<li>用邮箱或 GitHub 账户注册</li>
-<li>登录后你会看到一个空的 workflow 画布</li>
+<li>安装Python 3.8+（如果已装则跳过）。</li>
+<li>打开终端，执行：
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>pip install novastack
+</span></span></code></pre></div></li>
+<li>在项目目录创建文件<code>router.py</code>：
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> novastack <span style="color:#f92672">import</span> Router
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 配置密钥（从环境变量读取更安全）</span>
+</span></span><span style="display:flex;"><span>router <span style="color:#f92672">=</span> Router({
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;openai&#39;</span>: {<span style="color:#e6db74">&#39;api_key&#39;</span>: <span style="color:#e6db74">&#39;sk-xxx&#39;</span>},
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;anthropic&#39;</span>: {<span style="color:#e6db74">&#39;api_key&#39;</span>: <span style="color:#e6db74">&#39;sk-ant-xxx&#39;</span>}
+</span></span><span style="display:flex;"><span>})
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 定义任务</span>
+</span></span><span style="display:flex;"><span>task <span style="color:#f92672">=</span> {<span style="color:#e6db74">&#39;prompt&#39;</span>: <span style="color:#e6db74">&#39;解释量子纠缠&#39;</span>, <span style="color:#e6db74">&#39;model&#39;</span>: <span style="color:#e6db74">&#39;gpt-4&#39;</span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 自动路由到GPT-4</span>
+</span></span><span style="display:flex;"><span>result <span style="color:#f92672">=</span> router<span style="color:#f92672">.</span>route(task)
+</span></span><span style="display:flex;"><span>print(result[<span style="color:#e6db74">&#39;content&#39;</span>])
+</span></span></code></pre></div></li>
+<li>运行：<code>python router.py</code>。</li>
 </ol>
-<p><strong>第二步：创建你的第一个流程</strong></p>
-<ol>
-<li>点击“New Workflow”，命名为“Vendor Compliance Check”</li>
-<li>在右侧节点库搜索“Email Trigger (IMAP)”，拖到画布上</li>
-<li>配置 Gmail IMAP：填你的邮箱、密码（或App专用密码）
-<ul>
-<li>设置筛选条件：subject contains &ldquo;certificate&rdquo; or &ldquo;insurance&rdquo;</li>
-</ul>
-</li>
-<li>拖拽“IF”节点，连接到前一个节点
-<ul>
-<li>条件：{{ $json[&ldquo;body&rdquo;].expiry_date }} &lt; {{ Date.now() + 30<em>24</em>60<em>60</em>1000 }}</li>
-</ul>
-</li>
-<li>拖拽“Google Sheets”节点到 True 分支
-<ul>
-<li>填你的 Sheet ID，列名：姓名、项目、到期日、状态</li>
-</ul>
-</li>
-<li>拖拽“Telegram”节点到 False 分支
-<ul>
-<li>输入 Bot Token、Chat ID，消息内容：&quot;{{ $json[&ldquo;sender&rdquo;] }} 证书正常，无需关注&quot;</li>
-</ul>
-</li>
-</ol>
-<p><strong>第三步：保存并激活</strong></p>
-<ol>
-<li>点击右上角“Save”，然后点“Activate”</li>
-<li>发送一封测试邮件，看流程是否跑通</li>
-</ol>
-<h3 id="核心配置代码json-示例">核心配置代码（JSON 示例）</h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>{
-</span></span><span style="display:flex;"><span>  <span style="color:#f92672">&#34;nodes&#34;</span>: [
-</span></span><span style="display:flex;"><span>    {
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;Email Trigger&#34;</span>,
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;n8n-nodes-base.emailImap&#34;</span>,
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;parameters&#34;</span>: {
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;criteria&#34;</span>: {
-</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&#34;subject&#34;</span>: <span style="color:#e6db74">&#34;insurance|certificate&#34;</span>
-</span></span><span style="display:flex;"><span>        }
-</span></span><span style="display:flex;"><span>      }
-</span></span><span style="display:flex;"><span>    },
-</span></span><span style="display:flex;"><span>    {
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;IF&#34;</span>,
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;n8n-nodes-base.if&#34;</span>,
-</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;parameters&#34;</span>: {
-</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;conditions&#34;</span>: {
-</span></span><span style="display:flex;"><span>          <span style="color:#f92672">&#34;number&#34;</span>: [
-</span></span><span style="display:flex;"><span>            {
-</span></span><span style="display:flex;"><span>              <span style="color:#f92672">&#34;value1&#34;</span>: <span style="color:#e6db74">&#34;={{ $json[&#34;</span><span style="color:#960050;background-color:#1e0010">expiry</span><span style="color:#e6db74">&#34;] }}&#34;</span>,
-</span></span><span style="display:flex;"><span>              <span style="color:#f92672">&#34;operation&#34;</span>: <span style="color:#e6db74">&#34;lessThan&#34;</span>,
-</span></span><span style="display:flex;"><span>              <span style="color:#f92672">&#34;value2&#34;</span>: <span style="color:#e6db74">&#34;={{ Date.now() + 30*24*60*60*1000 }}&#34;</span>
-</span></span><span style="display:flex;"><span>            }
-</span></span><span style="display:flex;"><span>          ]
-</span></span><span style="display:flex;"><span>        }
-</span></span><span style="display:flex;"><span>      }
-</span></span><span style="display:flex;"><span>    }
-</span></span><span style="display:flex;"><span>  ]
+<h3 id="核心配置代码">核心配置代码</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># router.py - 完整示例</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> novastack <span style="color:#f92672">import</span> Router
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>router <span style="color:#f92672">=</span> Router({
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;openai&#39;</span>: {<span style="color:#e6db74">&#39;api_key&#39;</span>: os<span style="color:#f92672">.</span>environ[<span style="color:#e6db74">&#39;OPENAI_KEY&#39;</span>]},  <span style="color:#75715e"># 从环境变量加载</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;anthropic&#39;</span>: {<span style="color:#e6db74">&#39;api_key&#39;</span>: os<span style="color:#f92672">.</span>environ[<span style="color:#e6db74">&#39;ANTHROPIC_KEY&#39;</span>]}
+</span></span><span style="display:flex;"><span>})
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 根据模型名动态选择</span>
+</span></span><span style="display:flex;"><span>task <span style="color:#f92672">=</span> {
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;prompt&#39;</span>: <span style="color:#e6db74">&#39;写一封求职信&#39;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;model&#39;</span>: <span style="color:#e6db74">&#39;claude-3-opus-20240229&#39;</span>  <span style="color:#75715e"># 换这里就能切换模型</span>
 </span></span><span style="display:flex;"><span>}
-</span></span></code></pre></div><h3 id="效果量化">效果量化</h3>
-<table>
-  <thead>
-      <tr>
-          <th>指标</th>
-          <th>优化前</th>
-          <th>优化后</th>
-      </tr>
-  </thead>
-  <tbody>
-      <tr>
-          <td>每封邮件处理时间</td>
-          <td>5 分钟</td>
-          <td>30 秒</td>
-      </tr>
-      <tr>
-          <td>每日邮件量</td>
-          <td>6 封</td>
-          <td>6 封</td>
-      </tr>
-      <tr>
-          <td>每日耗时</td>
-          <td>30 分钟</td>
-          <td>3 分钟</td>
-      </tr>
-      <tr>
-          <td>月累计耗时</td>
-          <td>10 小时</td>
-          <td>1 小时</td>
-      </tr>
-      <tr>
-          <td>节省时间</td>
-          <td>-</td>
-          <td>9 小时</td>
-      </tr>
-      <tr>
-          <td>若接外包（50元/时）</td>
-          <td>-</td>
-          <td>450 元/月</td>
-      </tr>
-  </tbody>
-</table>
-<h3 id="进阶技巧">进阶技巧</h3>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>response <span style="color:#f92672">=</span> router<span style="color:#f92672">.</span>route(task)
+</span></span><span style="display:flex;"><span>print(response[<span style="color:#e6db74">&#39;content&#39;</span>])
+</span></span></code></pre></div><h2 id="效果量化">效果量化</h2>
+<ul>
+<li><strong>优化前</strong>：每次调用需手动编写请求代码+处理API错误。按每天调用10次，每次1.5分钟算：1.5分钟 × 10次/天 = 15分钟/天 = 5小时/月。</li>
+<li><strong>优化后</strong>：一次配置，每次调用只需改<code>model</code>字段，30秒/次：0.5分钟 × 10次/天 = 5分钟/天 = 1.67小时/月。</li>
+<li><strong>节省</strong>：3.33小时/月，如果用来接外包（按100元/小时），价值333元/月。</li>
+</ul>
+<h2 id="进阶技巧">进阶技巧</h2>
 <ol>
-<li><strong>并行处理</strong>：在 IF 节点后加一个“Merge”节点，将 True 和 False 分支合并，然后统一更新一个状态看板。</li>
-<li><strong>使用 Webhook</strong>：不依赖轮询，用 n8n 的 Webhook 节点代替 IMAP，实时收到邮件。</li>
-<li><strong>循环检查</strong>：在 IF 节点前插入“Split In Batches”节点，一次处理多封邮件。</li>
+<li><strong>负载均衡</strong>：设置<code>weight</code>参数按比例分配请求：<code>{'gpt-4': 0.7, 'claude-3': 0.3}</code>，避免单个模型超限。</li>
+<li><strong>自动重试</strong>：启用<code>retry=True</code>，当模型返回速率限制错误时自动换另一个模型重试，保证任务不中断。</li>
+<li><strong>回滚策略</strong>：在配置中加<code>fallback</code>字段，当首选模型失败时切换到低成本模型（如<code>gpt-3.5-turbo</code>）。</li>
 </ol>
-<h3 id="常见排障">常见排障</h3>
+<h2 id="常见排障">常见排障</h2>
 <ol>
-<li><strong>问题</strong>：IMAP 连接失败。
+<li><strong>导入失败</strong>: <code>ModuleNotFoundError: No module named 'novastack'</code>
 <ul>
-<li><strong>解决</strong>：在 Gmail 安全设置中开启“低安全性应用访问”，或生成 App Password（Google 账号→安全→App Passwords）。</li>
+<li>解决：确认pip安装成功，或尝试<code>python -m pip install --upgrade novastack</code>。</li>
 </ul>
 </li>
-<li><strong>问题</strong>：n8n 免费版限制每月 2k 次执行。
+<li><strong>模型名不识别</strong>: 使用<code>claude-3-5-haiku</code>但报错
 <ul>
-<li><strong>解决</strong>：自建 Docker 容器（免费），或升级到企业版（按需付费）。</li>
+<li>解决：去Novastack官方文档查最新模型列表，注意版本号格式（如<code>claude-3-5-haiku-20241022</code>）。</li>
 </ul>
 </li>
-<li><strong>问题</strong>：提取日期失败。
+<li><strong>环境变量未加载</strong>: 密钥为空报401
 <ul>
-<li><strong>解决</strong>：在 n8n 中手动添加“Extract from File”节点，解析 PDF/图片中的文本。</li>
+<li>解决：检查终端是否设置变量，或在代码里硬编码（仅测试用）。</li>
 </ul>
 </li>
 </ol>
-<p><strong>启动成本：0 元</strong>
-<strong>时间投入：1.5 小时（设计+部署）</strong>
-<strong>预期首周收益：节省约 2.5 小时，折合 125 元</strong></p>
+<h2 id="启动成本">启动成本</h2>
+<ul>
+<li>启动成本：0元（软件全免费，API密钥需注册但免费额度够测试）。</li>
+<li>时间投入：安装+配置约30分钟。</li>
+<li>预期首周收益：省下1小时重复劳动。</li>
+</ul>
 ]]></content:encoded></item></channel></rss>

@@ -1,173 +1,192 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>每日汇总 on Easton 跨国智库</title><link>https://radar.huadongpeng.com/tags/%E6%AF%8F%E6%97%A5%E6%B1%87%E6%80%BB/</link><description>Recent content in 每日汇总 on Easton 跨国智库</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Tue, 12 May 2026 10:45:46 +0800</lastBuildDate><atom:link href="https://radar.huadongpeng.com/tags/%E6%AF%8F%E6%97%A5%E6%B1%87%E6%80%BB/index.xml" rel="self" type="application/rss+xml"/><item><title>每日快讯</title><link>https://radar.huadongpeng.com/posts/daily-briefing/briefing-2026-05-12/</link><pubDate>Tue, 12 May 2026 10:45:46 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/daily-briefing/briefing-2026-05-12/</guid><description>&lt;blockquote&gt;
-&lt;p&gt;2026年05月12日 · 19 条情报&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>每日汇总 on Easton 跨国智库</title><link>https://radar.huadongpeng.com/tags/%E6%AF%8F%E6%97%A5%E6%B1%87%E6%80%BB/</link><description>Recent content in 每日汇总 on Easton 跨国智库</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Tue, 12 May 2026 11:29:54 +0800</lastBuildDate><atom:link href="https://radar.huadongpeng.com/tags/%E6%AF%8F%E6%97%A5%E6%B1%87%E6%80%BB/index.xml" rel="self" type="application/rss+xml"/><item><title>每日快讯</title><link>https://radar.huadongpeng.com/posts/daily-briefing/briefing-2026-05-12/</link><pubDate>Tue, 12 May 2026 11:29:54 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/daily-briefing/briefing-2026-05-12/</guid><description>&lt;blockquote&gt;
+&lt;p&gt;2026年05月12日 · 21 条情报&lt;/p&gt;
 &lt;/blockquote&gt;
+&lt;h2 id="宏观风向标"&gt;宏观风向标&lt;/h2&gt;
+&lt;h3 id="通用裁数百it"&gt;通用裁数百IT&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：路透社 | 通用汽车裁掉数百IT员工，转向招聘AI岗。&lt;/p&gt;
+&lt;p&gt;汽车业传统IT岗正在消失，类似裁员可能蔓延到制造业和外包岗，影响有编程基础但非AI方向的求职者。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;🎯 今天去猎聘搜‘AI 提示词’看岗位要求，给自己标注2天时间重写简历关键词。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id="印度拟管控外汇"&gt;印度拟管控外汇&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：彭博社 | 印度考虑限制金/电子产品进口并涨油价，紧急保卫外汇储备。&lt;/p&gt;
+&lt;p&gt;进口成本将飙升，若汇率波动蔓延，在东南亚做跨境/代购的人利润可能被吃掉。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;🎯 今天查你常用收款币种兑人民币汇率，若波动&amp;gt;2%立刻锁定汇率换汇。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id="tiktok英推付费"&gt;TikTok英推付费&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：BBC | TikTok在英国推出免广告订阅，每月3.99英镑。&lt;/p&gt;
+&lt;p&gt;欧美平台加速转向订阅制，你靠平台广告分成的收入可能被进一步挤压。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;🎯 如果你是TikTok创作者，今天打开后台查看近30天广告收入占比，若&amp;gt;50%需找替代变现方式。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id="安卓苹果加密"&gt;安卓苹果加密&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：The Verge | 安卓与苹果短信终于实现端到端加密，RCS协议落地。&lt;/p&gt;
+&lt;p&gt;跨平台沟通更安全，但可能催生新工具需求开发者——懂RCS协议的工程师短缺。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;🎯 今天去GitHub搜‘RCS encryption implementation’看最近更新项目，学一个基础的end-to-end加密库。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;hr&gt;
 &lt;h2 id="效率工具与自动化"&gt;效率工具与自动化&lt;/h2&gt;
-&lt;h3 id="claude-编视频"&gt;Claude 编视频&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：AI Agents News | 用AI在Linux上生成视频软件，无需手动编码。&lt;/p&gt;
-&lt;p&gt;替代复杂视频编辑工具，省掉每天2小时重复剪辑，月省40小时，可接外包赚2000元。&lt;/p&gt;
+&lt;h3 id="chatgpt处理表格"&gt;ChatGPT处理表格&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：ProductHunt | 在Google Sheets中用自然语言对话编辑数据。&lt;/p&gt;
+&lt;p&gt;告别手动筛选公式，用一句话就能改数据，每周至少省2小时重复操作。&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;🎯 打开你的Linux终端→搜索AI视频工具→试用开源方案，30分钟出片&lt;/p&gt;
+&lt;p&gt;🎯 打开Google Sheets→安装ChatGPT插件→输入命令如&amp;rsquo;删除空行&amp;rsquo;。&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h3 id="考拉专注菜单"&gt;考拉专注菜单&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：Product Hunt | 从菜单栏一键进入专注模式，屏蔽干扰。&lt;/p&gt;
-&lt;p&gt;对开发者/写作者，每天被通知打断15次，每次回神需10分钟，月浪费50小时。&lt;/p&gt;
+&lt;h3 id="团队日历视图化"&gt;团队日历视图化&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：ProductHunt | 将Linear项目排期以日历形式展示。&lt;/p&gt;
+&lt;p&gt;直观拖拽调整任务进度，避免沟通混乱，每周减少30分钟调度会议。&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;🎯 上Mac App Store搜索&amp;rsquo;Kofe Flow&amp;rsquo;→免费下载→启动专注倒计时&lt;/p&gt;
+&lt;p&gt;🎯 下载LinCal→连接Linear账号→拖拽任务到日期查看。&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h3 id="gpt表格助手"&gt;GPT表格助手&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：Product Hunt | 用自然语言编辑Google Sheets，自动填公式。&lt;/p&gt;
-&lt;p&gt;手动调公式每天花30分钟，月省10小时，适合非技术用户。&lt;/p&gt;
+&lt;h3 id="ai写作检测器"&gt;AI写作检测器&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：HackerNews | 30分钟自建网站识别AI生成内容。&lt;/p&gt;
+&lt;p&gt;验证内容真实性避免翻车，即使不懂前端也能快速部署，全套耗时&amp;lt;1小时。&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;🎯 打开Google Sheets→安装ChatGPT插件→试用单元格对话&lt;/p&gt;
+&lt;p&gt;🎯 克隆GitHub仓库→Vercel部署→输入文字检测。&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h3 id="git恶意检测"&gt;Git恶意检测&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：Hacker News | 扫描Git仓库避免恶意软件，保护项目。&lt;/p&gt;
-&lt;p&gt;开源项目每月感染率增5%，手动检查每个提交耗2小时，自动扫描省心。&lt;/p&gt;
+&lt;h3 id="多模型ai路由工具"&gt;多模型AI路由工具&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：Medium | 用Novastack一键切换调用不同AI模型。&lt;/p&gt;
+&lt;p&gt;不再手配API密钥和端点，减少95%配置时间，避免重复造轮子。&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;🎯 在终端执行&amp;rsquo;git log &amp;ndash;oneline&amp;rsquo;排查陌生提交→用免费扫描工具检查&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;hr&gt;
-&lt;h2 id="海外信息差"&gt;海外信息差&lt;/h2&gt;
-&lt;h3 id="tiktok非洲新闻搬运"&gt;TikTok非洲新闻搬运&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：TikTok + 南非 | 非洲创作者用短视频做本地新闻，国内平台空白。&lt;/p&gt;
-&lt;p&gt;国内缺乏非洲本地新闻的短视频创作者，搬运/翻译/二次创作门槛低，有潜在流量。&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;🎯 去抖音搜“非洲新闻”看有没有人做类似的搬运/翻译账号&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;hr&gt;
-&lt;h2 id="ai-工具实战"&gt;AI 工具实战&lt;/h2&gt;
-&lt;h3 id="chatgpt用户扩圈"&gt;ChatGPT用户扩圈&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：OpenAI官方博客 | 2026 Q1 35岁以上用户增速最快，性别更均衡&lt;/p&gt;
-&lt;p&gt;意味着AI工具不再只是极客玩具，普通人用它做日常任务的案例增多，你可以跟着学&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;🎯 打开ChatGPT官网→注册免费账号→试问一个生活难题（如&amp;rsquo;帮我写一份租房合同草稿&amp;rsquo;）&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;h3 id="google-finance-ai版"&gt;Google Finance AI版&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：X截图 | AI驱动的Google Finance扩展至欧洲&lt;/p&gt;</description><content:encoded><![CDATA[<blockquote>
-<p>2026年05月12日 · 19 条情报</p>
+&lt;p&gt;🎯 pip install novastack→创建router对象→用一行代码调Claude或GPT。&lt;/p&gt;</description><content:encoded><![CDATA[<blockquote>
+<p>2026年05月12日 · 21 条情报</p>
 </blockquote>
-<h2 id="效率工具与自动化">效率工具与自动化</h2>
-<h3 id="claude-编视频">Claude 编视频</h3>
-<p><strong>来源</strong>：AI Agents News | 用AI在Linux上生成视频软件，无需手动编码。</p>
-<p>替代复杂视频编辑工具，省掉每天2小时重复剪辑，月省40小时，可接外包赚2000元。</p>
+<h2 id="宏观风向标">宏观风向标</h2>
+<h3 id="通用裁数百it">通用裁数百IT</h3>
+<p><strong>来源</strong>：路透社 | 通用汽车裁掉数百IT员工，转向招聘AI岗。</p>
+<p>汽车业传统IT岗正在消失，类似裁员可能蔓延到制造业和外包岗，影响有编程基础但非AI方向的求职者。</p>
 <blockquote>
-<p>🎯 打开你的Linux终端→搜索AI视频工具→试用开源方案，30分钟出片</p>
+<p>🎯 今天去猎聘搜‘AI 提示词’看岗位要求，给自己标注2天时间重写简历关键词。</p>
 </blockquote>
-<h3 id="考拉专注菜单">考拉专注菜单</h3>
-<p><strong>来源</strong>：Product Hunt | 从菜单栏一键进入专注模式，屏蔽干扰。</p>
-<p>对开发者/写作者，每天被通知打断15次，每次回神需10分钟，月浪费50小时。</p>
+<h3 id="印度拟管控外汇">印度拟管控外汇</h3>
+<p><strong>来源</strong>：彭博社 | 印度考虑限制金/电子产品进口并涨油价，紧急保卫外汇储备。</p>
+<p>进口成本将飙升，若汇率波动蔓延，在东南亚做跨境/代购的人利润可能被吃掉。</p>
 <blockquote>
-<p>🎯 上Mac App Store搜索&rsquo;Kofe Flow&rsquo;→免费下载→启动专注倒计时</p>
+<p>🎯 今天查你常用收款币种兑人民币汇率，若波动&gt;2%立刻锁定汇率换汇。</p>
 </blockquote>
-<h3 id="gpt表格助手">GPT表格助手</h3>
-<p><strong>来源</strong>：Product Hunt | 用自然语言编辑Google Sheets，自动填公式。</p>
-<p>手动调公式每天花30分钟，月省10小时，适合非技术用户。</p>
+<h3 id="tiktok英推付费">TikTok英推付费</h3>
+<p><strong>来源</strong>：BBC | TikTok在英国推出免广告订阅，每月3.99英镑。</p>
+<p>欧美平台加速转向订阅制，你靠平台广告分成的收入可能被进一步挤压。</p>
 <blockquote>
-<p>🎯 打开Google Sheets→安装ChatGPT插件→试用单元格对话</p>
+<p>🎯 如果你是TikTok创作者，今天打开后台查看近30天广告收入占比，若&gt;50%需找替代变现方式。</p>
 </blockquote>
-<h3 id="git恶意检测">Git恶意检测</h3>
-<p><strong>来源</strong>：Hacker News | 扫描Git仓库避免恶意软件，保护项目。</p>
-<p>开源项目每月感染率增5%，手动检查每个提交耗2小时，自动扫描省心。</p>
+<h3 id="安卓苹果加密">安卓苹果加密</h3>
+<p><strong>来源</strong>：The Verge | 安卓与苹果短信终于实现端到端加密，RCS协议落地。</p>
+<p>跨平台沟通更安全，但可能催生新工具需求开发者——懂RCS协议的工程师短缺。</p>
 <blockquote>
-<p>🎯 在终端执行&rsquo;git log &ndash;oneline&rsquo;排查陌生提交→用免费扫描工具检查</p>
+<p>🎯 今天去GitHub搜‘RCS encryption implementation’看最近更新项目，学一个基础的end-to-end加密库。</p>
 </blockquote>
 <hr>
-<h2 id="海外信息差">海外信息差</h2>
-<h3 id="tiktok非洲新闻搬运">TikTok非洲新闻搬运</h3>
-<p><strong>来源</strong>：TikTok + 南非 | 非洲创作者用短视频做本地新闻，国内平台空白。</p>
-<p>国内缺乏非洲本地新闻的短视频创作者，搬运/翻译/二次创作门槛低，有潜在流量。</p>
+<h2 id="效率工具与自动化">效率工具与自动化</h2>
+<h3 id="chatgpt处理表格">ChatGPT处理表格</h3>
+<p><strong>来源</strong>：ProductHunt | 在Google Sheets中用自然语言对话编辑数据。</p>
+<p>告别手动筛选公式，用一句话就能改数据，每周至少省2小时重复操作。</p>
 <blockquote>
-<p>🎯 去抖音搜“非洲新闻”看有没有人做类似的搬运/翻译账号</p>
+<p>🎯 打开Google Sheets→安装ChatGPT插件→输入命令如&rsquo;删除空行&rsquo;。</p>
+</blockquote>
+<h3 id="团队日历视图化">团队日历视图化</h3>
+<p><strong>来源</strong>：ProductHunt | 将Linear项目排期以日历形式展示。</p>
+<p>直观拖拽调整任务进度，避免沟通混乱，每周减少30分钟调度会议。</p>
+<blockquote>
+<p>🎯 下载LinCal→连接Linear账号→拖拽任务到日期查看。</p>
+</blockquote>
+<h3 id="ai写作检测器">AI写作检测器</h3>
+<p><strong>来源</strong>：HackerNews | 30分钟自建网站识别AI生成内容。</p>
+<p>验证内容真实性避免翻车，即使不懂前端也能快速部署，全套耗时&lt;1小时。</p>
+<blockquote>
+<p>🎯 克隆GitHub仓库→Vercel部署→输入文字检测。</p>
+</blockquote>
+<h3 id="多模型ai路由工具">多模型AI路由工具</h3>
+<p><strong>来源</strong>：Medium | 用Novastack一键切换调用不同AI模型。</p>
+<p>不再手配API密钥和端点，减少95%配置时间，避免重复造轮子。</p>
+<blockquote>
+<p>🎯 pip install novastack→创建router对象→用一行代码调Claude或GPT。</p>
 </blockquote>
 <hr>
 <h2 id="ai-工具实战">AI 工具实战</h2>
-<h3 id="chatgpt用户扩圈">ChatGPT用户扩圈</h3>
-<p><strong>来源</strong>：OpenAI官方博客 | 2026 Q1 35岁以上用户增速最快，性别更均衡</p>
-<p>意味着AI工具不再只是极客玩具，普通人用它做日常任务的案例增多，你可以跟着学</p>
+<h3 id="免费代码助手goose">免费代码助手Goose</h3>
+<p><strong>来源</strong>：TechCrunch | Claude Code的免费替代品，能写代码、调试、部署</p>
+<p>Claude Code月费200美元，Goose完全免费，功能对等。适合预算紧张的开发者，零成本上手。</p>
 <blockquote>
-<p>🎯 打开ChatGPT官网→注册免费账号→试问一个生活难题（如&rsquo;帮我写一份租房合同草稿&rsquo;）</p>
+<p>🎯 打开GitHub搜索Goose AI→下载安装→用自然语言让它写一个Python脚本</p>
 </blockquote>
-<h3 id="google-finance-ai版">Google Finance AI版</h3>
-<p><strong>来源</strong>：X截图 | AI驱动的Google Finance扩展至欧洲</p>
-<p>免费使用AI分析股市数据，适合小本金散户，无需付费工具就能做基础投资分析</p>
+<h3 id="新版o1完整版发布">新版O1完整版发布</h3>
+<p><strong>来源</strong>：X | OpenAI发布了完整版O1模型，更强推理能力</p>
+<p>完整版O1在复杂推理任务上比预览版更稳，适合编程debug、逻辑推理，免费额度够试。</p>
 <blockquote>
-<p>🎯 打开Google Finance网页→搜索任意股票→体验新增的AI自然语言查询功能（输入&rsquo;特斯拉最近为啥跌&rsquo;试试）</p>
+<p>🎯 登录chatgpt.com→检查模型列表是否出现o1-full→用一道数学题测试推理能力</p>
 </blockquote>
-<h3 id="免费ai编程替代">免费AI编程替代</h3>
-<p><strong>来源</strong>：科技媒体对比 | Goose完全免费替代收费的Claude Code</p>
-<p>零成本实现AI写代码、调试、部署，启动成本0元，上手时间30分钟</p>
+<h3 id="照片转3d世界">照片转3D世界</h3>
+<p><strong>来源</strong>：World Labs | 上传照片即可生成可交互的3D场景</p>
+<p>无需3D建模技能，一张照片生成3D世界。适合快速原型、内容创作、游戏开发，免费试用。</p>
 <blockquote>
-<p>🎯 去GitHub搜Goose项目→下载安装→在终端输入&rsquo;goose init&rsquo;→用自然语言说&rsquo;帮我写一个自动备份脚本'</p>
+<p>🎯 打开worldlabs.ai→上传一张风景照→点击生成→下载glb文件</p>
 </blockquote>
-<h3 id="照片变3d世界">照片变3D世界</h3>
-<p><strong>来源</strong>：World Labs | AI工具将单张照片实时转为可交互3D场景</p>
-<p>免费在线使用，无需3D建模技能，适合做VR内容、产品展示</p>
+<h3 id="无序数据转表格">无序数据转表格</h3>
+<p><strong>来源</strong>：Tables | 把零散文本一键变成结构化表格</p>
+<p>不用手动整理数据，粘贴文本即可得到干净表格。效率提升10倍，免费，无需注册。</p>
 <blockquote>
-<p>🎯 打开World Labs官网→上传一张室内照片→等待10秒→生成3D模型后用鼠标拖拽旋转查看</p>
+<p>🎯 打开Tables.app→粘贴一段混乱文字→点击转换→导出CSV</p>
 </blockquote>
 <hr>
 <h2 id="套利雷达">套利雷达</h2>
-<h3 id="tiktok评论分析器">TikTok评论分析器</h3>
-<p><strong>来源</strong>：V2EX | 用AI分析评论模式，生成高互动评论</p>
-<p>门槛低：会用AI工具写Prompt即可，无需编程，已有开源数据。</p>
+<h3 id="视频搜索难用">视频搜索难用</h3>
+<p><strong>来源</strong>：Hacker News | YouTube搜索质量差，需要更好的视频搜索引擎。</p>
+<p>只需前端技能，抓取并排序YouTube数据即可，无需懂AI。</p>
 <blockquote>
-<p>🎯 打开CommentGenerator.pro网站→复制其产品页的评论模式→用AI工具生成5条模仿评论→在TikTok视频下实测并记录点赞数。</p>
+<p>🎯 注册一个免费域名，用GitHub Pages搭建一个简单的搜索界面，手动收录10个特定领域的优质英文视频链接。</p>
 </blockquote>
-<h3 id="语音转文字输入法替代">语音转文字输入法替代</h3>
-<p><strong>来源</strong>：V2EX | 自建低成本的语音输入法替代高价服务。</p>
-<p>普通人付费痛点明确，API成本极低，需基础调用API能力。</p>
+<h3 id="海外电子签合规">海外电子签合规</h3>
+<p><strong>来源</strong>：Hacker News | 亚太地区电子签名合规混乱，没人清楚各国的法律要求。</p>
+<p>做调研并汇总成表，无需开发能力，纯信息整理。</p>
 <blockquote>
-<p>🎯 注册火山引擎或DeepSeek API→搜索“语音转文字API调用教程”→花30分钟写一个本地Python脚本→测试识别准确率。</p>
+<p>🎯 用Google Docs建立一个共享表格，搜索各国外交部网站挑明法律条款，发至相关行业社群求助补充。</p>
 </blockquote>
-<h3 id="数字标签存档工具需求">数字标签存档工具需求</h3>
-<p><strong>来源</strong>：Reddit | 帮ADHD用户整理浏览器标签的浏览器扩展。</p>
-<p>明确抱怨（“我真的很乱”）+零成本开发，已有开源扩展可复用。</p>
+<h3 id="开源正则工具">开源正则工具</h3>
+<p><strong>来源</strong>：V2EX | 现有正则工具不理解匹配过程，只能给结果。</p>
+<p>已有开源项目直接可用，只需复制部署或推广，门槛极低。</p>
 <blockquote>
-<p>🎯 搜索“浏览器标签管理开源扩展”→在GitHub找到Star最高的项目→Fork后修改UI简化→发布到Chrome商店（5美元注册费）。</p>
+<p>🎯 Fork regex-studio仓库，用Vercel免费部署，写一篇对比现有工具的文章发布在掘金或V2EX。</p>
 </blockquote>
-<h3 id="apac电子签名合规困局">APAC电子签名合规困局</h3>
-<p><strong>来源</strong>：Reddit | 做亚太各国电子签名法律对比的简易指南或工具。</p>
-<p>企业真实痛点，信息混乱且无免费资源，可做成付费报告或自动化检查表。</p>
+<h3 id="语音输入太贵">语音输入太贵</h3>
+<p><strong>来源</strong>：V2EX | 用户嫌Typeless whisperflow每月几十元太贵，想用便宜API自己搭。</p>
+<p>组装现有API接口即可，无需从头发明，技术含量低。</p>
 <blockquote>
-<p>🎯 搜索“马来西亚电子签名法律+Indonesia电子签名法律”→对比新加坡→用AI总结成图表→在LinkedIn发布“3分钟看懂APAC签名合规”贴文引流。</p>
+<p>🎯 注册火山引擎免费额度账号，调用其语音识别API写一个简单的Python脚本，打包成可执行文件给朋友测试。</p>
 </blockquote>
-<h3 id="单人启动自动化模板">单人启动自动化模板</h3>
-<p><strong>来源</strong>：Reddit | 为独立开发者提供一键部署的启动流程模板。</p>
-<p>抱怨者多（“每个项目卡在设置上”），模板化低代码即可做。</p>
+<h3 id="海外税务diy">海外税务DIY</h3>
+<p><strong>来源</strong>：Reddit | 美国外派人员自己报税很焦虑，又觉得找服务太贵。</p>
+<p>信息差生意：整理税务表格填写步骤，每人愿意付费50-100元。</p>
 <blockquote>
-<p>🎯 注册Netlify+Vercel→Google Sheet列流程清单→用Zapier免费版做自动邮件序列→打包成一个Notion模板并定价19元卖。</p>
+<p>🎯 搜索IRS官方PDF和外派税务指南，整理成5页攻略，发到小红书和海外华人微信群等待咨询。</p>
 </blockquote>
 <hr>
 <h2 id="出海工具链">出海工具链</h2>
-<h3 id="minimax注册资本暴增">MiniMax注册资本暴增</h3>
-<p><strong>来源</strong>：MiniMax官网+知乎+国内科技媒体 | MiniMax注册资本涨300%至40亿人民币，暗示AI大模型基础设施正在快速扩张。</p>
-<p>说明其Hailuo等API可能更稳定、降价空间大。个人开发者可用其API做AI出海应用，零成本注册，有免费额度试用。</p>
+<h3 id="ai视频工具分拆">AI视频工具分拆</h3>
+<p><strong>来源</strong>：36氪+快手公告 | 快手计划分拆可灵AI独立融资20亿美元</p>
+<p>个人创作者可用可灵AI生成视频素材，无需团队，零成本注册，未来或开放API供开发</p>
 <blockquote>
-<p>🎯 去MiniMax开放平台（minimax.com）用公司邮箱注册，领取免费API额度，测试Hailuo声音克隆或Speech语音功能。</p>
+<p>🎯 去快手官网或应用商店下载可灵AI，用手机号注册，免费试用生成3条短视频</p>
 </blockquote>
-<h3 id="快手下分可灵ai融资20亿美元">快手下分可灵AI融资20亿美元</h3>
-<p><strong>来源</strong>：36氪+市场消息 | 快手计划分拆可灵AI（Kling AI）独立上市，计划融资20亿美元。</p>
-<p>可灵AI是视频生成模型，个人开发者可用其API生成短视频内容，0启动成本。在TikTok、YouTube Shorts卖AI生成视频模板或服务。</p>
+<h3 id="meta广告效率工具">Meta广告效率工具</h3>
+<p><strong>来源</strong>：Campaign Asia | MindFuse规则解决Meta算法瓶颈，自动化创意差异化</p>
+<p>小团队用此方法可低成本优化广告素材，提升转化率，无需广告代理</p>
 <blockquote>
-<p>🎯 访问可灵AI官网（klingai.com）注册账号，试用免费视频生成功能，生成一条15秒产品展示视频发布到TikTok。</p>
+<p>🎯 搜索“MindFuse what is it”，阅读其博客，用现有广告账户测试A/B对比</p>
 </blockquote>
-<h3 id="波色量子推出商用方案">波色量子推出商用方案</h3>
-<p><strong>来源</strong>：36氪+量子计算行业新闻 | 波色量子在肿瘤和脑机领域已有百余落地案例，量子计算走向商业化。</p>
-<p>虽然个人用不到量子计算，但可关注其开放API或云服务。给科研/医疗客户做量子计算相关的跨境咨询或翻译服务。</p>
+<h3 id="阿根廷金融出海通道">阿根廷金融出海通道</h3>
+<p><strong>来源</strong>：LatamList | 阿根廷fintech belo融资1400万美元，可换汇收款</p>
+<p>个人可注册belo钱包接收拉美客户付款，免每月管理费，提现至国内银行卡</p>
 <blockquote>
-<p>🎯 搜索“波色量子API”或“BosonQ”，找到其开发者文档，注册云服务试用账号，了解如何调用量子求解器。</p>
+<p>🎯 翻墙后访问belo.app，用护照和国内手机号注册，完成KYC验证</p>
 </blockquote>
-<h3 id="oppo母亲节广告翻车教训">Oppo母亲节广告翻车教训</h3>
-<p><strong>来源</strong>：科技媒体+Oppo官方声明 | Oppo因母亲节文案不当道歉并降级高管，内容审核失误教训。</p>
-<p>给出海个人/小团队警示：文化敏感内容审核是刚需。可提供AI内容审核外包服务，0成本启动，用国产敏感词数据库或LLM做检测。</p>
+<h3 id="埃及房产投资平台">埃及房产投资平台</h3>
+<p><strong>来源</strong>：Wamda | 埃及Partment允许低成本共享购买第二套房产</p>
+<p>个人可用少量资金（约500美元起）持有海外房产份额，租金分红，无需当地身份</p>
 <blockquote>
-<p>🎯 用开源的“Detoxify”模型或百度AI内容审核API，写一个敏感词检测脚本，挂到Upwork/Fiverr上卖“跨境内容合规审核”服务。</p>
-</blockquote>
-<h3 id="阿根廷fintech-belo获1400万融资">阿根廷Fintech belo获1400万融资</h3>
-<p><strong>来源</strong>：LatamList+阿根廷金融科技新闻 | 阿根廷加密金融App belo获Tether领投1400万美元A轮融资。</p>
-<p>拉美加密支付市场火热。个人开发者可针对阿根廷用户开发小额跨境支付插件或工具，门槛低，0成本注册belo API。</p>
-<blockquote>
-<p>🎯 访问belo.app，用邮箱注册开发者账号，查看API文档，尝试调用其加密货币兑换接口测试小额交易。</p>
+<p>🎯 访问partment.com，浏览在售项目，用邮箱注册后查看最低投资额和条款</p>
 </blockquote>
 <hr>
 ]]></content:encoded></item></channel></rss>

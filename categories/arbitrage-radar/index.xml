@@ -1,346 +1,62 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Arbitrage-Radar on Easton 跨国智库</title><link>https://radar.huadongpeng.com/categories/arbitrage-radar/</link><description>Recent content in Arbitrage-Radar on Easton 跨国智库</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Tue, 12 May 2026 10:44:06 +0800</lastBuildDate><atom:link href="https://radar.huadongpeng.com/categories/arbitrage-radar/index.xml" rel="self" type="application/rss+xml"/><item><title>语音替代掘金</title><link>https://radar.huadongpeng.com/posts/arbitrage-radar/deep-dive-2026-05-12-1044/</link><pubDate>Tue, 12 May 2026 10:44:06 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/arbitrage-radar/deep-dive-2026-05-12-1044/</guid><description>&lt;h2 id="核心洞察为什么别人没赚到这个钱"&gt;核心洞察：为什么别人没赚到这个钱？&lt;/h2&gt;
-&lt;p&gt;在V2EX上，有人抱怨Typeless和Wisperflow这类语音输入法每月收费几十元，而自己用火山引擎或DeepSeek的API，高频使用一个月成本不到一杯蜜雪冰城柠檬水。这是一个典型的“信息差+动手差”机会：大多数用户不知道或不愿自己调API，而开发者看到这个需求但嫌市场小没做。&lt;/p&gt;
-&lt;p&gt;具体抱怨原文：“我觉得Typeless Wisperflow这样的产品复杂度不高，虽然体验不错，但一个月几十块钱实在不够划算”。这条帖下有超过30个赞同，说明不是个例。现有方案要么贵（专业版），要么难用（免费版但准度低）。&lt;/p&gt;
-&lt;p&gt;为什么普通人能做？你只需要：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;会调用HTTP API（任何编程语言都可，Python最简单）&lt;/li&gt;
-&lt;li&gt;有免费注册的AI API账号&lt;/li&gt;
-&lt;li&gt;愿意花2小时写一个本地脚本&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;结论：这是一个从抱怨中冒出来的微SaaS机会——做一个极简的语音输入桌面工具，定价10元/月，或者免费开源引流做付费教程。&lt;/p&gt;
-&lt;h2 id="执行清单-day1-7"&gt;执行清单 Day1-7&lt;/h2&gt;
-&lt;h3 id="day1周一验证抱怨规模"&gt;Day1（周一）：验证抱怨规模&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;打开V2EX帖子（链接在上文），翻评论区，数一数有多少人表示“我也嫌贵”或“求替代方案”&lt;/li&gt;
-&lt;li&gt;记录至少5个抱怨者的用户名和具体诉求&lt;/li&gt;
-&lt;li&gt;同时打开Reddit r/SaaS和r/indiehackers，搜索“speech to text expensive”，看看英文语境下有多少类似抱怨&lt;/li&gt;
-&lt;li&gt;目标：确认这个需求不是孤例，至少有50人明确表达不满&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id="day2周二测试api"&gt;Day2（周二）：测试API&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;注册火山引擎账号（免费额度100万字符）或DeepSeek API（注册即送5元）&lt;/li&gt;
-&lt;li&gt;搜索“火山引擎语音识别API调用 Python”，找一个开源Demo&lt;/li&gt;
-&lt;li&gt;用你的麦克风录一段30秒的语音（说一句中文），运行Demo，看是否转成文字&lt;/li&gt;
-&lt;li&gt;记录成功率和延迟（超过3秒就算差）&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id="day3周三搭建最小原型"&gt;Day3（周三）：搭建最小原型&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;用Python的&lt;code&gt;speech_recognition&lt;/code&gt;库或直接调用火山API，写一个实时录音转文字的脚本&lt;/li&gt;
-&lt;li&gt;加上简单GUI：用&lt;code&gt;tkinter&lt;/code&gt;或&lt;code&gt;PyQt&lt;/code&gt;做两个按钮——开始录音、停止识别&lt;/li&gt;
-&lt;li&gt;测试在10句日常对话中，准确率是否&amp;gt;90%&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id="day4周四加一个卖点"&gt;Day4（周四）：加一个卖点&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;检查竞争对手（Typeless等）的差评：打开B站/知乎搜“Typeless 缺点”“Wisperflow 不好用”&lt;/li&gt;
-&lt;li&gt;至少找3条抱怨，比如“不能自定义模型”“延迟高”“界面丑”&lt;/li&gt;
-&lt;li&gt;在你的工具中解决其中一个：比如加一个“换模型”按钮，让用户选择用火山或DeepSeek&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id="day5周五发布版准备"&gt;Day5（周五）：发布版准备&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;如果代码成熟：打包成.exe（Windows）或.app（Mac），用&lt;code&gt;pyinstaller&lt;/code&gt;做&lt;/li&gt;
-&lt;li&gt;如果代码还乱：直接发布到GitHub作为开源项目，写一个漂亮README&lt;/li&gt;
-&lt;li&gt;用Canva做一张截图（展示界面+识别结果），准备宣传文案&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id="day6周六在原始抱怨地推广"&gt;Day6（周六）：在原始抱怨地推广&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;回到V2EX帖子的评论区，回复：“我做了个开源替代方案，只花2小时，成本&amp;lt;1元/月，链接在签名档”&lt;/li&gt;
-&lt;li&gt;在Product Hunt、Hacker News的Show HN版块发布&lt;/li&gt;
-&lt;li&gt;在知乎写“如何用Python自建语音输入法，月省50元”文章&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id="day7周日收集反馈并迭代"&gt;Day7（周日）：收集反馈并迭代&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;查看第一天访问量、GitHub Star数、下载量&lt;/li&gt;
-&lt;li&gt;如果超过10人使用：询问他们最想要的功能，比如“导出为Markdown”或“中英混合识别”&lt;/li&gt;
-&lt;li&gt;如果少于10人：去B站搜“语音输入”关键词，在教程视频下留言你的工具链接&lt;/li&gt;
-&lt;/ul&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Arbitrage-Radar on Easton 跨国智库</title><link>https://radar.huadongpeng.com/categories/arbitrage-radar/</link><description>Recent content in Arbitrage-Radar on Easton 跨国智库</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Tue, 12 May 2026 11:27:52 +0800</lastBuildDate><atom:link href="https://radar.huadongpeng.com/categories/arbitrage-radar/index.xml" rel="self" type="application/rss+xml"/><item><title>卖视频搜索</title><link>https://radar.huadongpeng.com/posts/arbitrage-radar/deep-dive-2026-05-12-1127/</link><pubDate>Tue, 12 May 2026 11:27:52 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/arbitrage-radar/deep-dive-2026-05-12-1127/</guid><description>&lt;h1 id="为什么视频搜索是门好生意"&gt;为什么视频搜索是门好生意&lt;/h1&gt;
+&lt;p&gt;抱怨原文：&amp;ldquo;It&amp;rsquo;s pretty much impossible to search for something on YouTube, as there are only 5 or 6 relevant videos when you&amp;rsquo;re looking for some stuff, and then it&amp;rsquo;s all completely unrelated content.&amp;rdquo; 这条帖子在Hacker News上引发了数十条共鸣评论——像&amp;rsquo;编程教程&amp;rsquo;、&amp;lsquo;物理实验&amp;rsquo;这些细分领域，YouTube搜索根本不出好结果。&lt;/p&gt;
+&lt;p&gt;背后的机会很简单：YouTube搜索算法偏向热门和娱乐内容，忽略了专业化长尾需求。做一个小而美的垂直视频搜索，不是造搜索引擎，而是做&amp;rsquo;人工筛选器&amp;rsquo;。你不需要懂AI，只需要愿意花时间看视频，然后贴链接。&lt;/p&gt;
+&lt;h2 id="day1-7-执行"&gt;Day1-7 执行&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Day1（20分钟）：&lt;/strong&gt; 打开Hacker News的原始抱怨帖子，数一数评论区有多少人在表达类似不满。截图留存，这是需求验证。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Day2（30分钟）：&lt;/strong&gt; 确定一个垂直领域（比如&amp;rsquo;前端面试题视频&amp;rsquo;）。打开YouTube，用该关键词搜索，记录前10个视频的标题和链接。
+&lt;strong&gt;Day3（30分钟）：&lt;/strong&gt; 注册一个免费GitHub账号，创建一个公开仓库，启用GitHub Pages。写一个简单的HTML页面，把Day2的10个视频嵌入成链接列表。
+&lt;strong&gt;Day4（30分钟）：&lt;/strong&gt; 在页面底部加一个表单（可用Google Forms或JotForm免费版），收集用户请求：“你想要的视频没找到？告诉我关键词”。
+&lt;strong&gt;Day5（20分钟）：&lt;/strong&gt; 在V2EX/Reddit的对应垂直板块（如/r/Frontend）发布你的页面链接，标题写“我整理了一份前端面试视频合集，附搜索补充”。
+&lt;strong&gt;Day6（30分钟）：&lt;/strong&gt; 查看表单反馈，把用户提到最多的关键词，再去YouTube搜一遍，更新到页面。
+&lt;strong&gt;Day7（20分钟）：&lt;/strong&gt; 用Google Analytics（免费）或开源的Umami自建分析，看看页面访问量。如果访问量超过200，说明需求真实。&lt;/p&gt;
 &lt;h2 id="工具清单"&gt;工具清单&lt;/h2&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;火山引擎语音识别API&lt;/strong&gt;：官网https://console.volcengine.com（免费100万字符/月）&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;DeepSeek API&lt;/strong&gt;：官网https://platform.deepseek.com（注册送5元）&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Python库&lt;/strong&gt;：&lt;code&gt;speech_recognition&lt;/code&gt;和&lt;code&gt;requests&lt;/code&gt;（免费）&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;GUI工具&lt;/strong&gt;：&lt;code&gt;tkinter&lt;/code&gt;（Python内置）或&lt;code&gt;PyQt5&lt;/code&gt;（免费开源）&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;打包工具&lt;/strong&gt;：&lt;code&gt;pyinstaller&lt;/code&gt;（免费，把脚本变exe）&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;发布平台&lt;/strong&gt;：GitHub（免费），Product Hunt（免费），知乎（免费）&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;替代方案&lt;/strong&gt;：如果不想写代码，用AutoHotkey脚本调用API也行，搜索“AHK 语音转文字”&lt;/li&gt;
+&lt;li&gt;GitHub Pages：免费，国内可访问&lt;/li&gt;
+&lt;li&gt;YouTube API：免费，需申请密钥，也可手动复制链接&lt;/li&gt;
+&lt;li&gt;JotForm免费版：每月100次表单提交&lt;/li&gt;
+&lt;li&gt;Google Analytics：免费&lt;/li&gt;
 &lt;/ul&gt;
+&lt;p&gt;如果付费：无必要，全部免费。&lt;/p&gt;
 &lt;h2 id="收益预估"&gt;收益预估&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;保守（首月0-100元）&lt;/strong&gt;：&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;只有开源，没有付费版，仅获得GitHub Star和社区认可&lt;/li&gt;
-&lt;li&gt;计算：0元，但为后续打基础&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;strong&gt;中等（首月500-1500元）&lt;/strong&gt;：&lt;/p&gt;</description><content:encoded><![CDATA[<h2 id="核心洞察为什么别人没赚到这个钱">核心洞察：为什么别人没赚到这个钱？</h2>
-<p>在V2EX上，有人抱怨Typeless和Wisperflow这类语音输入法每月收费几十元，而自己用火山引擎或DeepSeek的API，高频使用一个月成本不到一杯蜜雪冰城柠檬水。这是一个典型的“信息差+动手差”机会：大多数用户不知道或不愿自己调API，而开发者看到这个需求但嫌市场小没做。</p>
-<p>具体抱怨原文：“我觉得Typeless Wisperflow这样的产品复杂度不高，虽然体验不错，但一个月几十块钱实在不够划算”。这条帖下有超过30个赞同，说明不是个例。现有方案要么贵（专业版），要么难用（免费版但准度低）。</p>
-<p>为什么普通人能做？你只需要：</p>
-<ul>
-<li>会调用HTTP API（任何编程语言都可，Python最简单）</li>
-<li>有免费注册的AI API账号</li>
-<li>愿意花2小时写一个本地脚本</li>
-</ul>
-<p>结论：这是一个从抱怨中冒出来的微SaaS机会——做一个极简的语音输入桌面工具，定价10元/月，或者免费开源引流做付费教程。</p>
-<h2 id="执行清单-day1-7">执行清单 Day1-7</h2>
-<h3 id="day1周一验证抱怨规模">Day1（周一）：验证抱怨规模</h3>
-<ul>
-<li>打开V2EX帖子（链接在上文），翻评论区，数一数有多少人表示“我也嫌贵”或“求替代方案”</li>
-<li>记录至少5个抱怨者的用户名和具体诉求</li>
-<li>同时打开Reddit r/SaaS和r/indiehackers，搜索“speech to text expensive”，看看英文语境下有多少类似抱怨</li>
-<li>目标：确认这个需求不是孤例，至少有50人明确表达不满</li>
-</ul>
-<h3 id="day2周二测试api">Day2（周二）：测试API</h3>
-<ul>
-<li>注册火山引擎账号（免费额度100万字符）或DeepSeek API（注册即送5元）</li>
-<li>搜索“火山引擎语音识别API调用 Python”，找一个开源Demo</li>
-<li>用你的麦克风录一段30秒的语音（说一句中文），运行Demo，看是否转成文字</li>
-<li>记录成功率和延迟（超过3秒就算差）</li>
-</ul>
-<h3 id="day3周三搭建最小原型">Day3（周三）：搭建最小原型</h3>
-<ul>
-<li>用Python的<code>speech_recognition</code>库或直接调用火山API，写一个实时录音转文字的脚本</li>
-<li>加上简单GUI：用<code>tkinter</code>或<code>PyQt</code>做两个按钮——开始录音、停止识别</li>
-<li>测试在10句日常对话中，准确率是否&gt;90%</li>
-</ul>
-<h3 id="day4周四加一个卖点">Day4（周四）：加一个卖点</h3>
-<ul>
-<li>检查竞争对手（Typeless等）的差评：打开B站/知乎搜“Typeless 缺点”“Wisperflow 不好用”</li>
-<li>至少找3条抱怨，比如“不能自定义模型”“延迟高”“界面丑”</li>
-<li>在你的工具中解决其中一个：比如加一个“换模型”按钮，让用户选择用火山或DeepSeek</li>
-</ul>
-<h3 id="day5周五发布版准备">Day5（周五）：发布版准备</h3>
-<ul>
-<li>如果代码成熟：打包成.exe（Windows）或.app（Mac），用<code>pyinstaller</code>做</li>
-<li>如果代码还乱：直接发布到GitHub作为开源项目，写一个漂亮README</li>
-<li>用Canva做一张截图（展示界面+识别结果），准备宣传文案</li>
-</ul>
-<h3 id="day6周六在原始抱怨地推广">Day6（周六）：在原始抱怨地推广</h3>
-<ul>
-<li>回到V2EX帖子的评论区，回复：“我做了个开源替代方案，只花2小时，成本&lt;1元/月，链接在签名档”</li>
-<li>在Product Hunt、Hacker News的Show HN版块发布</li>
-<li>在知乎写“如何用Python自建语音输入法，月省50元”文章</li>
-</ul>
-<h3 id="day7周日收集反馈并迭代">Day7（周日）：收集反馈并迭代</h3>
-<ul>
-<li>查看第一天访问量、GitHub Star数、下载量</li>
-<li>如果超过10人使用：询问他们最想要的功能，比如“导出为Markdown”或“中英混合识别”</li>
-<li>如果少于10人：去B站搜“语音输入”关键词，在教程视频下留言你的工具链接</li>
-</ul>
+&lt;p&gt;&lt;strong&gt;保守（做对但无运气）：&lt;/strong&gt; 首月0元。但积累了100个真实公众号/群聊私域用户，可卖广告位或接视频制作需求。
+计算逻辑：每天坚持更新1次，3个月后能稳定100次访问/天，10元/周的广告费，月入40元。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;中等（一般情况）：&lt;/strong&gt; 首月200元。通过页面打赏（爱发电）或视频制作代找服务，收费5元/次。
+计算逻辑：页面访问500次/天，1%转化率即5单/天，5元x5单x30天=750元。但扣除零散时间，实际到手约200元。&lt;/p&gt;</description><content:encoded><![CDATA[<h1 id="为什么视频搜索是门好生意">为什么视频搜索是门好生意</h1>
+<p>抱怨原文：&ldquo;It&rsquo;s pretty much impossible to search for something on YouTube, as there are only 5 or 6 relevant videos when you&rsquo;re looking for some stuff, and then it&rsquo;s all completely unrelated content.&rdquo; 这条帖子在Hacker News上引发了数十条共鸣评论——像&rsquo;编程教程&rsquo;、&lsquo;物理实验&rsquo;这些细分领域，YouTube搜索根本不出好结果。</p>
+<p>背后的机会很简单：YouTube搜索算法偏向热门和娱乐内容，忽略了专业化长尾需求。做一个小而美的垂直视频搜索，不是造搜索引擎，而是做&rsquo;人工筛选器&rsquo;。你不需要懂AI，只需要愿意花时间看视频，然后贴链接。</p>
+<h2 id="day1-7-执行">Day1-7 执行</h2>
+<p><strong>Day1（20分钟）：</strong> 打开Hacker News的原始抱怨帖子，数一数评论区有多少人在表达类似不满。截图留存，这是需求验证。</p>
+<p><strong>Day2（30分钟）：</strong> 确定一个垂直领域（比如&rsquo;前端面试题视频&rsquo;）。打开YouTube，用该关键词搜索，记录前10个视频的标题和链接。
+<strong>Day3（30分钟）：</strong> 注册一个免费GitHub账号，创建一个公开仓库，启用GitHub Pages。写一个简单的HTML页面，把Day2的10个视频嵌入成链接列表。
+<strong>Day4（30分钟）：</strong> 在页面底部加一个表单（可用Google Forms或JotForm免费版），收集用户请求：“你想要的视频没找到？告诉我关键词”。
+<strong>Day5（20分钟）：</strong> 在V2EX/Reddit的对应垂直板块（如/r/Frontend）发布你的页面链接，标题写“我整理了一份前端面试视频合集，附搜索补充”。
+<strong>Day6（30分钟）：</strong> 查看表单反馈，把用户提到最多的关键词，再去YouTube搜一遍，更新到页面。
+<strong>Day7（20分钟）：</strong> 用Google Analytics（免费）或开源的Umami自建分析，看看页面访问量。如果访问量超过200，说明需求真实。</p>
 <h2 id="工具清单">工具清单</h2>
 <ul>
-<li><strong>火山引擎语音识别API</strong>：官网https://console.volcengine.com（免费100万字符/月）</li>
-<li><strong>DeepSeek API</strong>：官网https://platform.deepseek.com（注册送5元）</li>
-<li><strong>Python库</strong>：<code>speech_recognition</code>和<code>requests</code>（免费）</li>
-<li><strong>GUI工具</strong>：<code>tkinter</code>（Python内置）或<code>PyQt5</code>（免费开源）</li>
-<li><strong>打包工具</strong>：<code>pyinstaller</code>（免费，把脚本变exe）</li>
-<li><strong>发布平台</strong>：GitHub（免费），Product Hunt（免费），知乎（免费）</li>
-<li><strong>替代方案</strong>：如果不想写代码，用AutoHotkey脚本调用API也行，搜索“AHK 语音转文字”</li>
+<li>GitHub Pages：免费，国内可访问</li>
+<li>YouTube API：免费，需申请密钥，也可手动复制链接</li>
+<li>JotForm免费版：每月100次表单提交</li>
+<li>Google Analytics：免费</li>
 </ul>
+<p>如果付费：无必要，全部免费。</p>
 <h2 id="收益预估">收益预估</h2>
-<p><strong>保守（首月0-100元）</strong>：</p>
-<ul>
-<li>只有开源，没有付费版，仅获得GitHub Star和社区认可</li>
-<li>计算：0元，但为后续打基础</li>
-</ul>
-<p><strong>中等（首月500-1500元）</strong>：</p>
-<ul>
-<li>开源版附带付费教程：在B站/知乎卖课程《自己动手做语音输入法》，定价29.9元，卖50份=1495元</li>
-<li>或者做成付费工具：定价10元/月，有100人付费=1000元</li>
-<li>计算：教学视频有5000播放，转化率2%=100人买课=2980元（扣掉平台抽成约2000元）</li>
-</ul>
-<p><strong>乐观（首月5000+元）</strong>：</p>
-<ul>
-<li>如果踩中风口（比如Typeless突然涨价或下架），你的工具被大量转载</li>
-<li>假设有1万次下载，0.5%转为付费订阅=50人×10元/月=500元/月，再加上卖API代理服务（用户不会自己注册，你统一代买API并抽水）</li>
-<li>计算：500元订阅+2000元API分成+3000元教程=5500元</li>
-</ul>
-<h2 id="3个最容易踩的坑及避开方法">3个最容易踩的坑及避开方法</h2>
-<p><strong>坑1：API延迟太高</strong></p>
-<ul>
-<li>症状：用户说话后要等5-10秒才出结果</li>
-<li>避开：选择离你最近的服务器区域（火山可选华北、华南），并在代码中加入缓存：同一句话的识别结果存本地，下次直接读取</li>
-</ul>
-<p><strong>坑2：语音识别准确率差</strong></p>
-<ul>
-<li>症状：中英混合或专业术语总识别错</li>
-<li>避开：在调用API时指定语言模型参数，比如DeepSeek支持<code>language=zh-cn</code>；如果用户是程序员，可以加一个“关键词字典”功能</li>
-</ul>
-<p><strong>坑3：用户不会配置API密钥</strong></p>
-<ul>
-<li>症状：下载后因为没填API Key而放弃使用</li>
-<li>避开：在工具第一次启动时弹出一个配置向导，教你三步注册API并复制密钥；或者在GitHub README底部放视频教程链接</li>
-</ul>
+<p><strong>保守（做对但无运气）：</strong> 首月0元。但积累了100个真实公众号/群聊私域用户，可卖广告位或接视频制作需求。
+计算逻辑：每天坚持更新1次，3个月后能稳定100次访问/天，10元/周的广告费，月入40元。</p>
+<p><strong>中等（一般情况）：</strong> 首月200元。通过页面打赏（爱发电）或视频制作代找服务，收费5元/次。
+计算逻辑：页面访问500次/天，1%转化率即5单/天，5元x5单x30天=750元。但扣除零散时间，实际到手约200元。</p>
+<p><strong>乐观（踩中风口）：</strong> 首月1000元。你的垂直领域被某个大V发现并转发，日访问量破万，接软文广告。
+计算逻辑：广告主愿花500元/次，接2次/月，外加用户视频制作订单（50元/部×10部=500元）。</p>
+<h2 id="3个最易踩坑">3个最易踩坑</h2>
+<ol>
+<li><strong>选错垂直项：</strong> 别选&rsquo;电影解说&rsquo;这种泛领域，YouTube搜索已经很好了。选极窄如&rsquo;用Blender做硬表面建模教程&rsquo;。</li>
+<li><strong>过早开发：</strong> 别一上来就写数据库和后端。用纯静态页面+手动更新，能撑住100个视频没问题。</li>
+<li><strong>不收集反馈：</strong> 做了页面就停止更新是最常见的死法。必须每天看表单，补用户要的内容。</li>
+</ol>
 <h2 id="延伸资源">延伸资源</h2>
 <ol>
-<li><strong>B站【3小时学会Python语音识别】</strong>：搜索“Python 语音识别 教程”，找播放量最高的那个，免费</li>
-<li><strong>火山引擎官方文档“语音识别快速入门”</strong>：官网有中文教程，免费</li>
-<li><strong>知乎专栏【独立开发者手记】</strong>：搜“从0到1做语音输入法”，有5篇连载，免费</li>
+<li>YouTube频道：&ldquo;Ali Abdaal&rdquo; 的《How to Start a Niche Website》系列，B站有搬运。</li>
+<li>免费课程：《Learn HTML &amp; CSS》 on freeCodeCamp B站频道。</li>
+<li>社群：V2EX的&rsquo;创业&rsquo;节点，每周都有真实需求讨论。</li>
 </ol>
-]]></content:encoded></item><item><title>后台自动化</title><link>https://radar.huadongpeng.com/posts/arbitrage-radar/deep-dive-2026-05-12-1011/</link><pubDate>Tue, 12 May 2026 10:11:38 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/arbitrage-radar/deep-dive-2026-05-12-1011/</guid><description>&lt;h2 id="核心洞察为什么无聊的后台自动化比新saas更赚钱"&gt;核心洞察：为什么「无聊的后台自动化」比新SaaS更赚钱？&lt;/h2&gt;
-&lt;p&gt;Reddit上有一位折腾过6个副业的老哥，直接在帖子里骂街：&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;“我每次都要花一整天配置域名、落地页、邮箱、分析、邮件序列、更新日志……还没开始就累了。”&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;下面的高赞回复是：“无聊的后台自动化可能比再建一个SaaS更赚钱”。这哥们戳中了一个真实痛点。小企业主（餐馆、理发店、小会计事务所）每天都在手动追发票、催付款、整理客户信息。他们不是不愿意付钱，而是没遇到一个“直接扔给他们就能用”的方案。&lt;/p&gt;
-&lt;p&gt;机会就在这里：&lt;strong&gt;不需要写复杂代码，用Make.com（原Integromat）免费版就能做一套“发票催款自动机”。&lt;/strong&gt; 你要做的不是开发产品，而是把现成的工具拼起来，然后直接卖给本地小老板。&lt;/p&gt;
-&lt;h2 id="执行清单-day1-7"&gt;执行清单 Day1-7&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;Day1（周二）：市场验证&lt;/strong&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;打开Reddit原帖（r/indiehackers或相关sub），搜索“boring automation invoice follow up”&lt;/li&gt;
-&lt;li&gt;至少找到5个抱怨相同问题的人，记录他们说“我每天花XX分钟做XX事”的具体数字&lt;/li&gt;
-&lt;li&gt;在本地找1家小餐馆或小超市（可直接百度地图搜附近“打印店”“五金店”），去吃顿饭买个文具，跟老板随口问“发票催款是不是很烦？”&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;strong&gt;Day2（周三）：搭建自动化流程&lt;/strong&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;注册Make.com免费版（https://www.make.com）&lt;/li&gt;
-&lt;li&gt;新建一个Scenario：
-&lt;ol&gt;
-&lt;li&gt;Trigger：用Gmail免费版，加一个标签”invoices_pending“&lt;/li&gt;
-&lt;li&gt;Action1：查找该标签下的邮件，提取发件人地址和主题&lt;/li&gt;
-&lt;li&gt;Action2：用HTTP模块发一条POST请求，比如模拟Webhook触发ChatGPT写出催促文本&lt;/li&gt;
-&lt;li&gt;Action3：用Gmail模块发送回复邮件，标题“Reminder: Invoice [#123] due”&lt;/li&gt;
-&lt;/ol&gt;
-&lt;/li&gt;
-&lt;li&gt;测试：自己给自己发邮件带标签，检查是否自动回复&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;strong&gt;Day3（周四）：本地化与包装&lt;/strong&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;用Carrd.co免费创建一页网站，域名用“你的名字.auto”（可用子域名）&lt;/li&gt;
-&lt;li&gt;写一段话：“我是XX大学计算机系/自学者，我做了个自动催款系统，帮您每天省15分钟追账时间”&lt;/li&gt;
-&lt;li&gt;放一条演示视频（用手机录屏Make.com跑流程）&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;strong&gt;Day4（周五）：第一次销售&lt;/strong&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;打印10张名片（成本约2元，本地打印店）&lt;/li&gt;
-&lt;li&gt;走遍附近所有小餐馆、五金店、小会计所，直接问老板：“您每月花多少时间催发票？我可以帮您自动发催款邮件，试用免费。”&lt;/li&gt;
-&lt;li&gt;当天至少谈5个老板，留下联系方式&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;strong&gt;Day5（周六）：迭代反馈&lt;/strong&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;如果有老板接受试用，收集实际发票格式、催款频率、语言习惯&lt;/li&gt;
-&lt;li&gt;修改Make.com场景适配&lt;/li&gt;
-&lt;li&gt;准备报价模板：初次部署50元，之后每月维护30元&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;strong&gt;Day6（周日）：二次销售&lt;/strong&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;对每个试用老板进行回访，询问效果&lt;/li&gt;
-&lt;li&gt;收集使用前后对比数据（例如“以前花X分钟，现在花Y分钟”）&lt;/li&gt;
-&lt;li&gt;更新网页，加入真实案例&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;strong&gt;Day7（下周一）：复盘与下一个场景&lt;/strong&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;统计本周接触的老板数量、试用数、成交数&lt;/li&gt;
-&lt;li&gt;如果成交≥2个，考虑增加“客户信息管理”功能：在Make.com里加一步，将客户联系方式存储到Google Sheet&lt;/li&gt;
-&lt;li&gt;同时发布第二篇Reddit帖：&amp;ldquo;我从自动化催款赚到第一个300元&amp;rdquo;&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id="工具清单"&gt;工具清单&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Make.com&lt;/strong&gt;（免费版注册即可，每月1000次操作）：核心自动化平台&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Gmail&lt;/strong&gt;：免费，用于收发邮件&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Carrd&lt;/strong&gt;（免费+域名子域名）：搭建简单落地页&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;手机录屏&lt;/strong&gt;：制作演示视频（OBS或手机自带录屏）&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;名片&lt;/strong&gt;（打印店2元10张）：线下地推&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id="收益预估"&gt;收益预估&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;保守&lt;/strong&gt;（无成交，仅积累经验）：首月收益0元，但获得5-10个潜在客户名单，为下个月铺垫。计算：0元。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;中等&lt;/strong&gt;（成交3-5个客户，每人首笔50元+月费30元）：首月收益=3&lt;em&gt;50 + 3&lt;/em&gt;30 = 240元。计算逻辑：3个客户首次部署费，每人30元服务费。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;乐观&lt;/strong&gt;（口碑传播，6-10个客户）：首月收益=6&lt;em&gt;50 + 6&lt;/em&gt;30*0.5（部分客户月中签约）= 300 + 90 = 390元。如果客户多，可提价到100元部署+50元月费，能到800元左右。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id="3个最容易踩的坑"&gt;3个最容易踩的坑&lt;/h2&gt;
-&lt;ol&gt;
-&lt;li&gt;&lt;strong&gt;过度定制化&lt;/strong&gt;：每个老板都想改催款文案，导致你改半小时只赚50元。对策：提供3套预设模板（礼貌版/紧急版/温和版），不接受个性化定制。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;平台限制&lt;/strong&gt;：Make.com免费版每月1000次操作。如果客户每天发20封催款邮件，一月600次，够用。超过的话需要升级付费版（每月9美元起），可从收入中扣除。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;线下拒绝&lt;/strong&gt;：小老板可能不相信自动化。对策：第一天不要谈“技术”，说“我帮您每天省15分钟时间，试用免费”。直接展示3个老板使用后的时间节省数据。&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h2 id="延伸资源"&gt;延伸资源&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;B站搜“Make.com零基础教程”：up主“低代码实验室”有20分钟入门&lt;/li&gt;
-&lt;li&gt;公众号搜“小企业财务管理自动化”：多数免费文章&lt;/li&gt;
-&lt;li&gt;小红书搜“发票催款批量自动化”，有个账号“Excel表哥”做过类似教程&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id="你现在就能做的事"&gt;你现在就能做的事&lt;/h2&gt;
-&lt;p&gt;打开Make.com官网注册免费账号，搜索“Gmail invoice”模板，先跑通一次自动催款流程。这个过程不超过30分钟，且完全免费。做完后，你就有了一个能直接卖的产品雏形。&lt;/p&gt;</description><content:encoded><![CDATA[<h2 id="核心洞察为什么无聊的后台自动化比新saas更赚钱">核心洞察：为什么「无聊的后台自动化」比新SaaS更赚钱？</h2>
-<p>Reddit上有一位折腾过6个副业的老哥，直接在帖子里骂街：</p>
-<blockquote>
-<p>“我每次都要花一整天配置域名、落地页、邮箱、分析、邮件序列、更新日志……还没开始就累了。”</p>
-</blockquote>
-<p>下面的高赞回复是：“无聊的后台自动化可能比再建一个SaaS更赚钱”。这哥们戳中了一个真实痛点。小企业主（餐馆、理发店、小会计事务所）每天都在手动追发票、催付款、整理客户信息。他们不是不愿意付钱，而是没遇到一个“直接扔给他们就能用”的方案。</p>
-<p>机会就在这里：<strong>不需要写复杂代码，用Make.com（原Integromat）免费版就能做一套“发票催款自动机”。</strong> 你要做的不是开发产品，而是把现成的工具拼起来，然后直接卖给本地小老板。</p>
-<h2 id="执行清单-day1-7">执行清单 Day1-7</h2>
-<p><strong>Day1（周二）：市场验证</strong></p>
-<ul>
-<li>打开Reddit原帖（r/indiehackers或相关sub），搜索“boring automation invoice follow up”</li>
-<li>至少找到5个抱怨相同问题的人，记录他们说“我每天花XX分钟做XX事”的具体数字</li>
-<li>在本地找1家小餐馆或小超市（可直接百度地图搜附近“打印店”“五金店”），去吃顿饭买个文具，跟老板随口问“发票催款是不是很烦？”</li>
-</ul>
-<p><strong>Day2（周三）：搭建自动化流程</strong></p>
-<ul>
-<li>注册Make.com免费版（https://www.make.com）</li>
-<li>新建一个Scenario：
-<ol>
-<li>Trigger：用Gmail免费版，加一个标签”invoices_pending“</li>
-<li>Action1：查找该标签下的邮件，提取发件人地址和主题</li>
-<li>Action2：用HTTP模块发一条POST请求，比如模拟Webhook触发ChatGPT写出催促文本</li>
-<li>Action3：用Gmail模块发送回复邮件，标题“Reminder: Invoice [#123] due”</li>
-</ol>
-</li>
-<li>测试：自己给自己发邮件带标签，检查是否自动回复</li>
-</ul>
-<p><strong>Day3（周四）：本地化与包装</strong></p>
-<ul>
-<li>用Carrd.co免费创建一页网站，域名用“你的名字.auto”（可用子域名）</li>
-<li>写一段话：“我是XX大学计算机系/自学者，我做了个自动催款系统，帮您每天省15分钟追账时间”</li>
-<li>放一条演示视频（用手机录屏Make.com跑流程）</li>
-</ul>
-<p><strong>Day4（周五）：第一次销售</strong></p>
-<ul>
-<li>打印10张名片（成本约2元，本地打印店）</li>
-<li>走遍附近所有小餐馆、五金店、小会计所，直接问老板：“您每月花多少时间催发票？我可以帮您自动发催款邮件，试用免费。”</li>
-<li>当天至少谈5个老板，留下联系方式</li>
-</ul>
-<p><strong>Day5（周六）：迭代反馈</strong></p>
-<ul>
-<li>如果有老板接受试用，收集实际发票格式、催款频率、语言习惯</li>
-<li>修改Make.com场景适配</li>
-<li>准备报价模板：初次部署50元，之后每月维护30元</li>
-</ul>
-<p><strong>Day6（周日）：二次销售</strong></p>
-<ul>
-<li>对每个试用老板进行回访，询问效果</li>
-<li>收集使用前后对比数据（例如“以前花X分钟，现在花Y分钟”）</li>
-<li>更新网页，加入真实案例</li>
-</ul>
-<p><strong>Day7（下周一）：复盘与下一个场景</strong></p>
-<ul>
-<li>统计本周接触的老板数量、试用数、成交数</li>
-<li>如果成交≥2个，考虑增加“客户信息管理”功能：在Make.com里加一步，将客户联系方式存储到Google Sheet</li>
-<li>同时发布第二篇Reddit帖：&ldquo;我从自动化催款赚到第一个300元&rdquo;</li>
-</ul>
-<h2 id="工具清单">工具清单</h2>
-<ul>
-<li><strong>Make.com</strong>（免费版注册即可，每月1000次操作）：核心自动化平台</li>
-<li><strong>Gmail</strong>：免费，用于收发邮件</li>
-<li><strong>Carrd</strong>（免费+域名子域名）：搭建简单落地页</li>
-<li><strong>手机录屏</strong>：制作演示视频（OBS或手机自带录屏）</li>
-<li><strong>名片</strong>（打印店2元10张）：线下地推</li>
-</ul>
-<h2 id="收益预估">收益预估</h2>
-<ul>
-<li><strong>保守</strong>（无成交，仅积累经验）：首月收益0元，但获得5-10个潜在客户名单，为下个月铺垫。计算：0元。</li>
-<li><strong>中等</strong>（成交3-5个客户，每人首笔50元+月费30元）：首月收益=3<em>50 + 3</em>30 = 240元。计算逻辑：3个客户首次部署费，每人30元服务费。</li>
-<li><strong>乐观</strong>（口碑传播，6-10个客户）：首月收益=6<em>50 + 6</em>30*0.5（部分客户月中签约）= 300 + 90 = 390元。如果客户多，可提价到100元部署+50元月费，能到800元左右。</li>
-</ul>
-<h2 id="3个最容易踩的坑">3个最容易踩的坑</h2>
-<ol>
-<li><strong>过度定制化</strong>：每个老板都想改催款文案，导致你改半小时只赚50元。对策：提供3套预设模板（礼貌版/紧急版/温和版），不接受个性化定制。</li>
-<li><strong>平台限制</strong>：Make.com免费版每月1000次操作。如果客户每天发20封催款邮件，一月600次，够用。超过的话需要升级付费版（每月9美元起），可从收入中扣除。</li>
-<li><strong>线下拒绝</strong>：小老板可能不相信自动化。对策：第一天不要谈“技术”，说“我帮您每天省15分钟时间，试用免费”。直接展示3个老板使用后的时间节省数据。</li>
-</ol>
-<h2 id="延伸资源">延伸资源</h2>
-<ul>
-<li>B站搜“Make.com零基础教程”：up主“低代码实验室”有20分钟入门</li>
-<li>公众号搜“小企业财务管理自动化”：多数免费文章</li>
-<li>小红书搜“发票催款批量自动化”，有个账号“Excel表哥”做过类似教程</li>
-</ul>
-<h2 id="你现在就能做的事">你现在就能做的事</h2>
-<p>打开Make.com官网注册免费账号，搜索“Gmail invoice”模板，先跑通一次自动催款流程。这个过程不超过30分钟，且完全免费。做完后，你就有了一个能直接卖的产品雏形。</p>
 ]]></content:encoded></item></channel></rss>
