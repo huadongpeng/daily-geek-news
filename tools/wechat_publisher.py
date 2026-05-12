@@ -419,17 +419,23 @@ def find_articles(date_str=None):
 
     published = _load_published()
     articles = []
-    for md_file in sorted(CONTENT_DIR.rglob(f"*{date_str}*.md")):
+    all_matches = list(CONTENT_DIR.rglob(f"*{date_str}*.md"))
+    print(f"   🔍 扫描日期={date_str} | CONTENT_DIR={CONTENT_DIR} | 匹配文件={len(all_matches)} | 已推送={len(published)}")
+    for md_file in sorted(all_matches):
         relative = md_file.relative_to(CONTENT_DIR)
         if len(relative.parts) < 2:
+            print(f"   ⏭️ 跳过根目录文件: {md_file.name}")
             continue
         # 先检查去重，跳过已推送的（避免不必要的文件 I/O）
-        if _published_key(md_file) in published:
+        pub_key = _published_key(md_file)
+        if pub_key in published:
+            print(f"   ⏭️ 已推送: {pub_key}")
             continue
 
         category = relative.parts[0]
         is_briefing = "briefing" in md_file.name
         is_deep = "deep-dive" in md_file.name
+        print(f"   📄 发现: {category}/{md_file.name} deep={is_deep} brief={is_briefing}")
 
         with open(md_file, "r", encoding="utf-8") as f:
             raw = f.read()
