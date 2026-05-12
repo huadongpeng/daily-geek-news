@@ -280,15 +280,15 @@ def generate_cover_image(title, category_name, date_slug=""):
 
 
 # ============================================================
-# Markdown → 微信公众号 HTML — 使用 mistune 解析器确保格式正确
+# Markdown → 微信公众号 HTML — mistune 自定义渲染器
 # ============================================================
 
 class WeChatRenderer(mistune.HTMLRenderer):
-    """自定义 mistune 渲染器——输出微信公众号兼容的 HTML + 内联样式"""
+    """输出微信公众号兼容的内联样式 HTML。不预处理 Markdown 内容。"""
     def __init__(self):
         super().__init__(escape=False)
 
-    def heading(self, text, level, **attrs):
+    def heading(self, text, level, *args, **attrs):
         styles = {
             1: 'font-size:22px;margin:32px 0 18px;text-align:center;font-weight:bold;color:#3f3f3f;',
             2: 'font-size:20px;margin:28px 0 14px;padding-left:12px;border-left:4px solid #576b95;font-weight:bold;color:#3f3f3f;',
@@ -299,22 +299,20 @@ class WeChatRenderer(mistune.HTMLRenderer):
         return f'<h{level} style="{style}">{text}</h{level}>\n'
 
     def paragraph(self, text):
-        return f'<p style="margin:10px 0;line-height:2.0;font-size:15px;color:#3f3f3f;letter-spacing:0.5px;">{text}</p>\n'
+        return f'<p style="margin:10px 0;font-size:15px;color:#3f3f3f;line-height:2.0;letter-spacing:0.5px;">{text}</p>\n'
 
     def block_code(self, code, info=None):
         escaped = code.replace('&', '&amp;').replace('<', '&lt;').replace('>', '&gt;')
-        lang_tag = f'<span style="color:#7f848e;font-size:12px;">{info}</span>\n' if info else ''
         return (
             f'<pre style="background:#282c34;color:#abb2bf;padding:16px;'
-            f'border-radius:6px;overflow-x:auto;font-size:13px;line-height:1.6;'
-            f'max-width:calc(100vw-24px);">'
-            f'{lang_tag}<code>{escaped}</code></pre>\n'
+            f'border-radius:6px;overflow-x:auto;font-size:13px;line-height:1.6;">'
+            f'<code>{escaped}</code></pre>\n'
         )
 
     def codespan(self, text):
         return (
             f'<code style="background:#f0f0f0;color:#c7254e;padding:2px 6px;'
-            f'border-radius:3px;font-family:monospace;font-size:13px;word-break:break-all;">{text}</code>'
+            f'border-radius:3px;font-family:monospace;font-size:13px;">{text}</code>'
         )
 
     def blockquote(self, text):
@@ -325,12 +323,10 @@ class WeChatRenderer(mistune.HTMLRenderer):
         )
 
     def link(self, text, url, title=None):
-        title_attr = f' title="{title}"' if title else ''
-        return f'<a href="{url}"{title_attr} style="color:#576b95;text-decoration:none;">{text}</a>'
+        return f'<a href="{url}" style="color:#576b95;text-decoration:none;">{text}</a>'
 
     def image(self, src, alt="", title=None):
-        title_attr = f' title="{title}"' if title else ''
-        return f'<img src="{src}" alt="{alt}"{title_attr} style="max-width:100%;border-radius:6px;display:block;margin:16px auto;">'
+        return f'<img src="{src}" alt="{alt}" style="max-width:100%;border-radius:6px;display:block;margin:16px auto;">'
 
     def list_item(self, text, *args, **attrs):
         return f'<li style="margin:6px 0;font-size:15px;color:#3f3f3f;line-height:1.8;">{text}</li>\n'
@@ -339,7 +335,7 @@ class WeChatRenderer(mistune.HTMLRenderer):
         return '<hr style="border:none;border-top:1px solid #e8e8e8;margin:28px 0;">\n'
 
     def strong(self, text):
-        return f'<strong style="color:#3f3f3f;">{text}</strong>'
+        return f'<strong>{text}</strong>'
 
     def emphasis(self, text):
         return f'<em style="color:#888;">{text}</em>'
@@ -349,10 +345,7 @@ class WeChatRenderer(mistune.HTMLRenderer):
         return f'<{tag} style="padding-left:24px;margin:12px 0;">\n{text}</{tag}>\n'
 
     def table(self, text):
-        return (
-            f'<table style="width:100%;border-collapse:collapse;margin:16px 0;'
-            f'font-size:14px;overflow-x:auto;display:block;">\n{text}</table>\n'
-        )
+        return f'<table style="width:100%;border-collapse:collapse;margin:16px 0;font-size:14px;">\n{text}</table>\n'
 
     def table_head(self, text):
         return f'<thead>\n{text}</thead>\n'
@@ -372,36 +365,11 @@ class WeChatRenderer(mistune.HTMLRenderer):
         return ''
 
 
-_EMOJI_RE = re.compile(r'[\U0001F300-\U0001FAD6'
-    r'\U0001F600-\U0001F64F'
-    r'\U0001F680-\U0001F6FF'
-    r'\U0001F1E0-\U0001F1FF'
-    r'\U00002702-\U000027B0'
-    r'\U000024C2-\U0001F251'
-    r'\U0001F900-\U0001F9FF'
-    r'\U0001FA00-\U0001FAFF'
-    r'\U00002600-\U000026FF'
-    r'\U0000FE00-\U0000FE0F'
-    r'\U00002300-\U000023FF'
-    r'\U00002B50\U0001F004\U0001F0CF\U0001F18E'
-    r'⭐'
-    r']+')
-
-
-def clean_markdown(md_text):
-    """预处理 Markdown：去除 emoji、修复 LLM 常见格式问题"""
-    t = _EMOJI_RE.sub('', md_text)
-    t = re.sub(r'[‍️]', '', t)
-    t = re.sub(r'(^|\n)([一二三四五六七八九十]、)\s*', r'\1\2 ', t)
-    return t.strip()
-
-
 def md_to_wechat_html(md_text, article_url=""):
-    """纯 Markdown → HTML 转换（不添加模板首尾，由 wrap_wechat_html 统一处理）"""
-    cleaned = clean_markdown(md_text)
+    """Markdown → 微信兼容 HTML（不预处理内容——信任 mistune 和 LLM 输出）"""
     renderer = WeChatRenderer()
     parser = mistune.Markdown(renderer)
-    return parser(cleaned)
+    return parser(md_text)
 
 
 # ============================================================
