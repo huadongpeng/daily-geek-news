@@ -541,7 +541,7 @@ def auto_search_context(query):
     """全网主动检索补充深度背景"""
     try:
         print(f"   🔍 正在全网主动检索: {query[:60]}...")
-        results = DDGS().text(query, max_results=5)
+        results = DDGS().text(query, max_results=10)
         context = ""
         for r in results:
             context += f"-[外网检索] {r['title']}: {r['body']}\n"
@@ -560,7 +560,7 @@ def auto_search_pain_points(query):
         ]
         context = ""
         for pq in pain_queries:
-            results = DDGS().text(pq, max_results=3)
+            results = DDGS().text(pq, max_results=5)
             for r in results:
                 context += f"-[痛点挖掘] {r['title']}: {r['body']}\n"
         return context
@@ -596,12 +596,12 @@ def _fetch_one_feed(url):
     with _FEED_CACHE_LOCK:
         _FEED_OK += 1
     entries = []
-    for entry in feed.entries[:3]:
+    for entry in feed.entries[:10]:
         desc = ""
         if hasattr(entry, 'description') and entry.description:
-            desc = re.sub('<[^<]+>', '', entry.description)[:200]
+            desc = re.sub('<[^<]+>', '', entry.description)[:500]
         elif hasattr(entry, 'summary') and entry.summary:
-            desc = re.sub('<[^<]+>', '', entry.summary)[:200]
+            desc = re.sub('<[^<]+>', '', entry.summary)[:500]
         entries.append(f"标题: {entry.title}\n摘要: {desc}")
     with _FEED_CACHE_LOCK:
         _FEED_CACHE[url] = (time.time(), entries)
