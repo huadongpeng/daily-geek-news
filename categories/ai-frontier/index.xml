@@ -1,4 +1,165 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Ai-Frontier on Easton 跨国智库</title><link>https://radar.huadongpeng.com/categories/ai-frontier/</link><description>Recent content in Ai-Frontier on Easton 跨国智库</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Tue, 12 May 2026 02:18:15 +0800</lastBuildDate><atom:link href="https://radar.huadongpeng.com/categories/ai-frontier/index.xml" rel="self" type="application/rss+xml"/><item><title>深度拆解Goose</title><link>https://radar.huadongpeng.com/posts/ai-frontier/deep-dive-2026-05-12-0218/</link><pubDate>Tue, 12 May 2026 02:18:15 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/ai-frontier/deep-dive-2026-05-12-0218/</guid><description>&lt;h2 id="一技术原理白盒拆解"&gt;一、技术原理白盒拆解&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Ai-Frontier on Easton 跨国智库</title><link>https://radar.huadongpeng.com/categories/ai-frontier/</link><description>Recent content in Ai-Frontier on Easton 跨国智库</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Tue, 12 May 2026 09:55:49 +0800</lastBuildDate><atom:link href="https://radar.huadongpeng.com/categories/ai-frontier/index.xml" rel="self" type="application/rss+xml"/><item><title>Goose零成本编程</title><link>https://radar.huadongpeng.com/posts/ai-frontier/deep-dive-2026-05-12-0955/</link><pubDate>Tue, 12 May 2026 09:55:49 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/ai-frontier/deep-dive-2026-05-12-0955/</guid><description>&lt;h2 id="工具卡片"&gt;工具卡片&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;名称&lt;/strong&gt;：Goose&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;来源&lt;/strong&gt;：个人开发者项目，GitHub仓库&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;定价&lt;/strong&gt;：完全免费，无付费层&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;竞品&lt;/strong&gt;：Claude Code（$200/月）、GitHub Copilot（$10/月）、Cursor（$20/月）&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;上手难度&lt;/strong&gt;：3/5，需要命令行基础&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="为什么选它"&gt;为什么选它&lt;/h2&gt;
+&lt;p&gt;很多人想靠AI辅助接编程外包（比如写个简单的爬虫、自动整理Excel），但Claude Code每月$200、Copilot每月$10，对月可支配现金&amp;lt;2000元的你来说负担太大。Goose免费，功能接近，而且不需要特殊网络环境（国内可直接访问GitHub下载）。&lt;/p&gt;
+&lt;h2 id="实测记录用同一个任务跑goose和copilot免费版"&gt;实测记录（用同一个任务跑Goose和Copilot免费版）&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;任务&lt;/strong&gt;：写一个Python脚本，读取本地CSV文件，按第二列排序，输出新文件。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Goose&lt;/strong&gt;：打开终端，cd到项目目录，输入“goose task &amp;lsquo;写一个Python脚本，读取当前目录下的test.csv，按第二列升序排序，输出sorted.csv&amp;rsquo;” → 15秒内生成完整代码和print信息 → 运行后立刻出结果。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Copilot免费版&lt;/strong&gt;：需要先装VSCode插件，然后在编辑器内输入注释或按Tab触发 → 分5次补全，耗时25秒，部分代码需手动修正。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;结果&lt;/strong&gt;：Goose一次生成正确代码，Copilot需要两次修改。Goose速度更快，完全免费。&lt;/p&gt;
+&lt;h2 id="3个实际使用场景及效果量化"&gt;3个实际使用场景及效果量化&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;自动处理Excel&lt;/strong&gt;：10分钟写完批量整理100行数据的脚本，节省手动操作2小时。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;写微信消息模板&lt;/strong&gt;：帮客户写Python脚本生成个性化消息，20分钟完成，收费50元。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;爬取网页价格&lt;/strong&gt;：用Goose生成requests+BeautifulSoup爬虫，30分钟搞定，替代手动收集8小时。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id="优缺点与替代方案"&gt;优缺点与替代方案&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;优点&lt;/strong&gt;：零成本，结果直接可运行，支持多种编程语言（Python/JS/Go）。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;缺点&lt;/strong&gt;：目前只有命令行界面，没有图形化IDE集成；推理能力偏弱，复杂任务（如多文件项目重构）经常出错。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;替代方案&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Aider&lt;/strong&gt;（免费）：GitHub上维护活跃，同样终端使用，支持git diff。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Claude Code&lt;/strong&gt;（付费但可借账号体验）：功能最强，但成本高。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="性价比结论"&gt;性价比结论&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;免费足够日常练手和小型任务&lt;/strong&gt;。如果你只是写几十行脚本、辅助学习编程，Goose和Aider是零成本最优选。复杂项目（如全栈Web应用）建议先拼Copilot试用期，或者租用他人Claude Code账号（约10元/天）。&lt;/p&gt;
+&lt;h2 id="从注册到第一个结果"&gt;从注册到第一个结果&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;前提&lt;/strong&gt;：已有Python3.8以上环境，并安装pip。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;打开终端，输入：&lt;code&gt;pip install goose-ai&lt;/code&gt;（国内可用镜像源：&lt;code&gt;pip install goose-ai -i https://pypi.tuna.tsinghua.edu.cn/simple&lt;/code&gt;）。&lt;/li&gt;
+&lt;li&gt;安装完成后输入：&lt;code&gt;goose init&lt;/code&gt;，按提示生成默认配置文件（一路回车）。&lt;/li&gt;
+&lt;li&gt;创建任务：创建test.csv文件，内容如下：
+&lt;pre tabindex="0"&gt;&lt;code&gt;name,age
+Alice,30
+Bob,25
+Charlie,35
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;运行命令：&lt;code&gt;goose task '写一个Python脚本，读取test.csv，按age列升序排序，输出sorted.csv'&lt;/code&gt;。&lt;/li&gt;
+&lt;li&gt;等待10-15秒，终端会打印生成的代码。复制代码到.py文件，保存运行。&lt;/li&gt;
+&lt;li&gt;当前目录下出现sorted.csv，内容：
+&lt;pre tabindex="0"&gt;&lt;code&gt;name,age
+Bob,25
+Alice,30
+Charlie,35
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id="进阶技巧"&gt;进阶技巧&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;使用&lt;code&gt;-f&lt;/code&gt;参数指定输出文件格式：&lt;code&gt;goose task -f markdown '解释排序算法'&lt;/code&gt;，直接生成MD格式说明。&lt;/li&gt;
+&lt;li&gt;复用上下文：在项目目录下新建.goose_config.json，写入常用任务的模板。&lt;/li&gt;
+&lt;li&gt;与其他工具拼接：比如先让Goose写crontab定时任务，再用它写脚本，形成自动化。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id="常见错误和排障"&gt;常见错误和排障&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;错误1&lt;/strong&gt;：&lt;code&gt;pip install&lt;/code&gt;卡顿 → 换清华镜像。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;错误2&lt;/strong&gt;：任务不执行，报&lt;code&gt;No module named ...&lt;/code&gt; → 先手动&lt;code&gt;pip install requests&lt;/code&gt;等依赖，再重试。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;错误3&lt;/strong&gt;：生成代码无法运行，如文件名写错 → 将任务要求更简短、具体，例如“读取当前目录下test.csv”。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="谁适合用谁不适合用"&gt;谁适合用/谁不适合用&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;适合&lt;/strong&gt;：月支出紧张但想学编程接小单的人；已经会基础Python语法但写代码慢的人；需要快速验证想法但没钱买付费工具的人。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;不适合&lt;/strong&gt;：零编程基础的人（建议先学30小时Python基础）；需要处理巨大项目、复杂依赖的专业开发者。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="启动成本时间收益预估"&gt;启动成本、时间、收益预估&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;启动成本&lt;/strong&gt;：0元（已有电脑和网络）。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;时间投入&lt;/strong&gt;：安装配置约15分钟，学习基础命令30分钟。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;预期首周收益&lt;/strong&gt;：0-50元（可先帮朋友免费整Excel，然后推5元一次），第二周可能100+元。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="结语"&gt;结语&lt;/h2&gt;
+&lt;p&gt;免费的工具也能干活，关键是先迈出一步。现在就去装Goose，写一个排序脚本，15分钟后你就有一个可用成果。&lt;/p&gt;</description><content:encoded><![CDATA[<h2 id="工具卡片">工具卡片</h2>
+<ul>
+<li><strong>名称</strong>：Goose</li>
+<li><strong>来源</strong>：个人开发者项目，GitHub仓库</li>
+<li><strong>定价</strong>：完全免费，无付费层</li>
+<li><strong>竞品</strong>：Claude Code（$200/月）、GitHub Copilot（$10/月）、Cursor（$20/月）</li>
+<li><strong>上手难度</strong>：3/5，需要命令行基础</li>
+</ul>
+<h2 id="为什么选它">为什么选它</h2>
+<p>很多人想靠AI辅助接编程外包（比如写个简单的爬虫、自动整理Excel），但Claude Code每月$200、Copilot每月$10，对月可支配现金&lt;2000元的你来说负担太大。Goose免费，功能接近，而且不需要特殊网络环境（国内可直接访问GitHub下载）。</p>
+<h2 id="实测记录用同一个任务跑goose和copilot免费版">实测记录（用同一个任务跑Goose和Copilot免费版）</h2>
+<ul>
+<li><strong>任务</strong>：写一个Python脚本，读取本地CSV文件，按第二列排序，输出新文件。</li>
+<li><strong>Goose</strong>：打开终端，cd到项目目录，输入“goose task &lsquo;写一个Python脚本，读取当前目录下的test.csv，按第二列升序排序，输出sorted.csv&rsquo;” → 15秒内生成完整代码和print信息 → 运行后立刻出结果。</li>
+<li><strong>Copilot免费版</strong>：需要先装VSCode插件，然后在编辑器内输入注释或按Tab触发 → 分5次补全，耗时25秒，部分代码需手动修正。</li>
+</ul>
+<p><strong>结果</strong>：Goose一次生成正确代码，Copilot需要两次修改。Goose速度更快，完全免费。</p>
+<h2 id="3个实际使用场景及效果量化">3个实际使用场景及效果量化</h2>
+<ol>
+<li><strong>自动处理Excel</strong>：10分钟写完批量整理100行数据的脚本，节省手动操作2小时。</li>
+<li><strong>写微信消息模板</strong>：帮客户写Python脚本生成个性化消息，20分钟完成，收费50元。</li>
+<li><strong>爬取网页价格</strong>：用Goose生成requests+BeautifulSoup爬虫，30分钟搞定，替代手动收集8小时。</li>
+</ol>
+<h2 id="优缺点与替代方案">优缺点与替代方案</h2>
+<ul>
+<li><strong>优点</strong>：零成本，结果直接可运行，支持多种编程语言（Python/JS/Go）。</li>
+<li><strong>缺点</strong>：目前只有命令行界面，没有图形化IDE集成；推理能力偏弱，复杂任务（如多文件项目重构）经常出错。</li>
+<li><strong>替代方案</strong>：
+<ul>
+<li><strong>Aider</strong>（免费）：GitHub上维护活跃，同样终端使用，支持git diff。</li>
+<li><strong>Claude Code</strong>（付费但可借账号体验）：功能最强，但成本高。</li>
+</ul>
+</li>
+</ul>
+<h2 id="性价比结论">性价比结论</h2>
+<p><strong>免费足够日常练手和小型任务</strong>。如果你只是写几十行脚本、辅助学习编程，Goose和Aider是零成本最优选。复杂项目（如全栈Web应用）建议先拼Copilot试用期，或者租用他人Claude Code账号（约10元/天）。</p>
+<h2 id="从注册到第一个结果">从注册到第一个结果</h2>
+<p><strong>前提</strong>：已有Python3.8以上环境，并安装pip。</p>
+<ol>
+<li>打开终端，输入：<code>pip install goose-ai</code>（国内可用镜像源：<code>pip install goose-ai -i https://pypi.tuna.tsinghua.edu.cn/simple</code>）。</li>
+<li>安装完成后输入：<code>goose init</code>，按提示生成默认配置文件（一路回车）。</li>
+<li>创建任务：创建test.csv文件，内容如下：
+<pre tabindex="0"><code>name,age
+Alice,30
+Bob,25
+Charlie,35
+</code></pre></li>
+<li>运行命令：<code>goose task '写一个Python脚本，读取test.csv，按age列升序排序，输出sorted.csv'</code>。</li>
+<li>等待10-15秒，终端会打印生成的代码。复制代码到.py文件，保存运行。</li>
+<li>当前目录下出现sorted.csv，内容：
+<pre tabindex="0"><code>name,age
+Bob,25
+Alice,30
+Charlie,35
+</code></pre></li>
+</ol>
+<h2 id="进阶技巧">进阶技巧</h2>
+<ol>
+<li>使用<code>-f</code>参数指定输出文件格式：<code>goose task -f markdown '解释排序算法'</code>，直接生成MD格式说明。</li>
+<li>复用上下文：在项目目录下新建.goose_config.json，写入常用任务的模板。</li>
+<li>与其他工具拼接：比如先让Goose写crontab定时任务，再用它写脚本，形成自动化。</li>
+</ol>
+<h2 id="常见错误和排障">常见错误和排障</h2>
+<ul>
+<li><strong>错误1</strong>：<code>pip install</code>卡顿 → 换清华镜像。</li>
+<li><strong>错误2</strong>：任务不执行，报<code>No module named ...</code> → 先手动<code>pip install requests</code>等依赖，再重试。</li>
+<li><strong>错误3</strong>：生成代码无法运行，如文件名写错 → 将任务要求更简短、具体，例如“读取当前目录下test.csv”。</li>
+</ul>
+<h2 id="谁适合用谁不适合用">谁适合用/谁不适合用</h2>
+<ul>
+<li><strong>适合</strong>：月支出紧张但想学编程接小单的人；已经会基础Python语法但写代码慢的人；需要快速验证想法但没钱买付费工具的人。</li>
+<li><strong>不适合</strong>：零编程基础的人（建议先学30小时Python基础）；需要处理巨大项目、复杂依赖的专业开发者。</li>
+</ul>
+<h2 id="启动成本时间收益预估">启动成本、时间、收益预估</h2>
+<ul>
+<li><strong>启动成本</strong>：0元（已有电脑和网络）。</li>
+<li><strong>时间投入</strong>：安装配置约15分钟，学习基础命令30分钟。</li>
+<li><strong>预期首周收益</strong>：0-50元（可先帮朋友免费整Excel，然后推5元一次），第二周可能100+元。</li>
+</ul>
+<h2 id="结语">结语</h2>
+<p>免费的工具也能干活，关键是先迈出一步。现在就去装Goose，写一个排序脚本，15分钟后你就有一个可用成果。</p>
+]]></content:encoded></item><item><title>深度拆解Goose</title><link>https://radar.huadongpeng.com/posts/ai-frontier/deep-dive-2026-05-12-0218/</link><pubDate>Tue, 12 May 2026 02:18:15 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/ai-frontier/deep-dive-2026-05-12-0218/</guid><description>&lt;h2 id="一技术原理白盒拆解"&gt;一、技术原理白盒拆解&lt;/h2&gt;
 &lt;p&gt;Goose 是一个开源的终端内 AI 编程代理，其核心架构基于大型语言模型（通常为开源模型如 Code Llama 或通过 API 接入的 GPT-4 等）与本地文件系统的深度交互。与 Claude Code 的封闭生态不同，Goose 采用模块化设计，通过插件系统支持多种后端模型（本地或云端）。其工作原理分为三层：&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;感知层&lt;/strong&gt;：通过读取项目目录结构、代码文件和终端输出了解上下文。&lt;/li&gt;
