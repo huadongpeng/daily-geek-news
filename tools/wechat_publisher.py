@@ -335,7 +335,7 @@ class WeChatRenderer(mistune.HTMLRenderer):
         return '<hr style="border:none;border-top:1px solid #e8e8e8;margin:28px 0;">\n'
 
     def strong(self, text):
-        return f'<strong>{text}</strong>'
+        return f'<strong style="font-weight:bold;color:#3f3f3f;">{text}</strong>'
 
     def emphasis(self, text):
         return f'<em style="color:#888;">{text}</em>'
@@ -365,7 +365,7 @@ class WeChatRenderer(mistune.HTMLRenderer):
         return ''
 
 
-def md_to_wechat_html(md_text, article_url=""):
+def md_to_wechat_html(md_text):
     """Markdown → 微信兼容 HTML（不预处理内容——信任 mistune 和 LLM 输出）"""
     renderer = WeChatRenderer()
     parser = mistune.Markdown(renderer)
@@ -474,7 +474,7 @@ def find_articles(date_str=None):
 
 
 
-def wrap_wechat_html(body_html, article_url=""):
+def wrap_wechat_html(body_html):
     """用固定的品牌首尾包裹微信文章正文——唯一模板入口"""
     header = (
         f'<section style="text-align:center;padding:12px 0 20px;margin-bottom:8px;">'
@@ -491,13 +491,9 @@ def wrap_wechat_html(body_html, article_url=""):
         f'<p style="font-size:12px;color:#888;margin:0 0 12px;">'
         f'套利雷达 | AI 实战 | 信息差 | 出海工具 | 效率自动化</p>'
     )
-    if article_url:
-        footer += (
-            f'<p style="margin:0 0 8px;">'
-            f'<a href="{article_url}" style="color:#576b95;font-size:13px;text-decoration:none;">'
-            f'在网站上阅读（含代码高亮和目录导航）</a></p>'
-        )
     footer += (
+        f'<p style="font-size:12px;color:#888;margin:8px 0 4px;">'
+        f'radar.huadongpeng.com</p>'
         f'<p style="font-size:11px;color:#b0b0b0;margin:0;">hdop1993@gmail.com</p>'
         f'</section>'
     )
@@ -531,7 +527,7 @@ def process_article(token, article, args):
 
     # ---- Markdown → 微信 HTML + 品牌首尾模板 ----
     body_html = md_to_wechat_html(body)
-    html_content = wrap_wechat_html(body_html, article_url)
+    html_content = wrap_wechat_html(body_html)
 
     # ---- 封面图生成（双引擎）----
     cover_path = None
