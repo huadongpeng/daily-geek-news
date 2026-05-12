@@ -332,7 +332,7 @@ class WeChatRenderer(mistune.HTMLRenderer):
         title_attr = f' title="{title}"' if title else ''
         return f'<img src="{src}" alt="{alt}"{title_attr} style="max-width:100%;border-radius:6px;display:block;margin:16px auto;">'
 
-    def list_item(self, text, loose=False, **attrs):
+    def list_item(self, text, *args, **attrs):
         return f'<li style="margin:6px 0;font-size:15px;color:#3f3f3f;line-height:1.8;">{text}</li>\n'
 
     def thematic_break(self):
@@ -344,7 +344,7 @@ class WeChatRenderer(mistune.HTMLRenderer):
     def emphasis(self, text):
         return f'<em style="color:#888;">{text}</em>'
 
-    def list(self, text, ordered, **attrs):
+    def list(self, text, ordered, *args, **attrs):
         tag = 'ol' if ordered else 'ul'
         return f'<{tag} style="padding-left:24px;margin:12px 0;">\n{text}</{tag}>\n'
 
