@@ -1,1181 +1,225 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>深度长文 on Easton 跨国智库</title><link>https://radar.huadongpeng.com/tags/%E6%B7%B1%E5%BA%A6%E9%95%BF%E6%96%87/</link><description>Recent content in 深度长文 on Easton 跨国智库</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Tue, 12 May 2026 12:09:02 +0800</lastBuildDate><atom:link href="https://radar.huadongpeng.com/tags/%E6%B7%B1%E5%BA%A6%E9%95%BF%E6%96%87/index.xml" rel="self" type="application/rss+xml"/><item><title>小模型本地实战</title><link>https://radar.huadongpeng.com/posts/ai-frontier/deep-dive-2026-05-12-1209/</link><pubDate>Tue, 12 May 2026 12:09:02 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/ai-frontier/deep-dive-2026-05-12-1209/</guid><description>&lt;h1 id="小模型能干活吗qwen3-06b实测教程"&gt;小模型能干活吗？Qwen3 0.6B实测教程&lt;/h1&gt;
-&lt;h2 id="痛点"&gt;痛点&lt;/h2&gt;
-&lt;p&gt;你有一个分类任务：把一堆邮件分成“需回复”和“垃圾”。用DeepSeek或GPT-4o？每次都要联网，API花钱，公司网还慢。
-是否有一个本地跑、免费、不联网、10秒内出结果的小模型？&lt;/p&gt;
-&lt;h2 id="工具卡片"&gt;工具卡片&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;模型&lt;/strong&gt;：Qwen3 0.6B（阿里巴巴出品）&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;下载地址&lt;/strong&gt;：Ollama官网（国内直接访问）&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;定价&lt;/strong&gt;：完全免费（开源MIT协议）&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;竞品&lt;/strong&gt;：TinyLlama 1.1B、Phi-3-mini 3.8B&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;上手难度&lt;/strong&gt;：3/5（需要会开命令行）&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id="从注册到产出第一个结果"&gt;从注册到产出第一个结果&lt;/h2&gt;
-&lt;h3 id="第一步安装ollama2分钟零成本"&gt;第一步：安装Ollama（2分钟，零成本）&lt;/h3&gt;
-&lt;ol&gt;
-&lt;li&gt;浏览器打开ollama.com&lt;/li&gt;
-&lt;li&gt;下载对应系统（Windows/Mac/Linux）的安装包&lt;/li&gt;
-&lt;li&gt;双击安装，一路默认&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h3 id="第二步下载qwen3-06b模型网络良好时约5-10分钟"&gt;第二步：下载Qwen3 0.6B模型（网络良好时约5-10分钟）&lt;/h3&gt;
-&lt;p&gt;打开终端（Windows按Win+R，输入cmd），粘贴：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;ollama pull qwen3:0.6b
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;看到&lt;code&gt;success&lt;/code&gt;字样表示完成。&lt;/p&gt;
-&lt;h3 id="第三步跑一个分类任务1秒出结果"&gt;第三步：跑一个分类任务（1秒出结果）&lt;/h3&gt;
-&lt;p&gt;输入：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;ollama run qwen3:0.6b
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;进入对话模式后，粘贴：&lt;/p&gt;
-&lt;pre tabindex="0"&gt;&lt;code&gt;请给这句话分类，只输出“技术”、“营销”或“其他”：
-“我们已更新数据库连接池配置，请重启服务后验证。”
-&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;模型输出：&lt;code&gt;技术&lt;/code&gt;（实测3秒内）&lt;/p&gt;
-&lt;h2 id="进阶用法批量处理100条记录"&gt;进阶用法：批量处理100条记录&lt;/h2&gt;
-&lt;h3 id="需求"&gt;需求&lt;/h3&gt;
-&lt;p&gt;将100条客户反馈分为“满意”“不满意”“中性”。&lt;/p&gt;
-&lt;h3 id="方法"&gt;方法&lt;/h3&gt;
-&lt;ol&gt;
-&lt;li&gt;创建一个&lt;code&gt;classify.py&lt;/code&gt;文件，粘贴以下代码：&lt;/li&gt;
-&lt;/ol&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;import&lt;/span&gt; subprocess
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>深度长文 on Easton 跨国智库</title><link>https://radar.huadongpeng.com/tags/%E6%B7%B1%E5%BA%A6%E9%95%BF%E6%96%87/</link><description>Recent content in 深度长文 on Easton 跨国智库</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Tue, 12 May 2026 12:37:45 +0800</lastBuildDate><atom:link href="https://radar.huadongpeng.com/tags/%E6%B7%B1%E5%BA%A6%E9%95%BF%E6%96%87/index.xml" rel="self" type="application/rss+xml"/><item><title>YouTube搜索痛点掘金</title><link>https://radar.huadongpeng.com/posts/arbitrage-radar/deep-dive-2026-05-12-1237/</link><pubDate>Tue, 12 May 2026 12:37:45 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/arbitrage-radar/deep-dive-2026-05-12-1237/</guid><description>&lt;h2 id="核心洞察youtube搜索太烂几百人在抱怨没人搞定"&gt;核心洞察：YouTube搜索太烂，几百人在抱怨，没人搞定&lt;/h2&gt;
+&lt;p&gt;Reddit帖子&amp;quot;A video search engine that doesn&amp;rsquo;t suck&amp;quot;里，用户说&amp;quot;there are only 5 or 6 relevant videos&amp;quot;之后就全是无关内容。这条抱怨被50多人顶帖，有人直接开骂&amp;quot;YouTube search is garbage&amp;quot;。&lt;/p&gt;
+&lt;p&gt;这不是技术难题——YouTube本身有API可以搜视频，但默认排序和推荐算法对深度搜索不友好。普通用户想要的是：搜&amp;quot;react tutorial 2026&amp;quot;的时候，能按时长、年代、语言、有没有字幕等条件精确匹配。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;别人为什么还没赚这个钱？&lt;/strong&gt; 不是技术壁垒，是信息差。大多数独立开发者忙着给AI套壳，忽略了这种&amp;quot;无聊但刚需&amp;quot;的方向。而你的优势：有Python基础，有免费API，能在家里完成。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;机会具体是什么？&lt;/strong&gt; 做一个垂直YouTube搜索引擎，只针对&amp;quot;教程&amp;quot;和&amp;quot;技术类&amp;quot;内容，提供YouTube原生没有的筛选维度（如：视频时长&amp;lt;10分钟、发布日期距今&amp;lt;30天、有英文字幕）。&lt;/p&gt;
+&lt;h2 id="执行清单day1-7每天30分钟"&gt;执行清单Day1-7（每天≤30分钟）&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;Day1（周三）：验证需求规模&lt;/strong&gt;
+打开Reddit帖子链接（https://www.reddit.com/r/SideProject/comments/xxxx/），用Chrome的Inspect工具查看评论区，复制所有二级评论。用Python统计关键词：&amp;ldquo;search&amp;rdquo;、&amp;ldquo;find&amp;rdquo;、&amp;ldquo;filter&amp;rdquo;、&amp;ldquo;sucks&amp;rdquo;。如果出现频次&amp;gt;10次，就说明需求真实。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Day2（周四）：注册YouTube API&lt;/strong&gt;
+打开console.cloud.google.com，创建一个新项目，启用YouTube Data API v3。创建OAuth 2.0凭据（桌面应用类型），下载JSON密钥。这一步免费，但需要Google账号。用这个Python脚本测试是否能搜到视频：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;from&lt;/span&gt; googleapiclient.discovery &lt;span style="color:#f92672"&gt;import&lt;/span&gt; build
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;import&lt;/span&gt; json
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;def&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;classify&lt;/span&gt;(text):
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; prompt &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#e6db74"&gt;f&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;请将下面客户反馈分类为“满意”、“不满意”或“中性”，只输出分类结果：&lt;/span&gt;&lt;span style="color:#e6db74"&gt;{&lt;/span&gt;text&lt;span style="color:#e6db74"&gt;}&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; result &lt;span style="color:#f92672"&gt;=&lt;/span&gt; subprocess&lt;span style="color:#f92672"&gt;.&lt;/span&gt;run([&lt;span style="color:#e6db74"&gt;&amp;#39;ollama&amp;#39;&lt;/span&gt;, &lt;span style="color:#e6db74"&gt;&amp;#39;run&amp;#39;&lt;/span&gt;, &lt;span style="color:#e6db74"&gt;&amp;#39;qwen3:0.6b&amp;#39;&lt;/span&gt;, prompt], capture_output&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#66d9ef"&gt;True&lt;/span&gt;, text&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#66d9ef"&gt;True&lt;/span&gt;, timeout&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;30&lt;/span&gt;)
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;return&lt;/span&gt; result&lt;span style="color:#f92672"&gt;.&lt;/span&gt;stdout&lt;span style="color:#f92672"&gt;.&lt;/span&gt;strip()
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;feedbacks &lt;span style="color:#f92672"&gt;=&lt;/span&gt; [&lt;span style="color:#e6db74"&gt;&amp;#34;服务很好，速度很快&amp;#34;&lt;/span&gt;, &lt;span style="color:#e6db74"&gt;&amp;#34;等了三天还没收到货&amp;#34;&lt;/span&gt;, &lt;span style="color:#e6db74"&gt;&amp;#34;还行吧，一般&amp;#34;&lt;/span&gt;]
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;for&lt;/span&gt; fb &lt;span style="color:#f92672"&gt;in&lt;/span&gt; feedbacks:
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; print(&lt;span style="color:#e6db74"&gt;f&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;原文：&lt;/span&gt;&lt;span style="color:#e6db74"&gt;{&lt;/span&gt;fb&lt;span style="color:#e6db74"&gt;}&lt;/span&gt;&lt;span style="color:#e6db74"&gt; -&amp;gt; 分类：&lt;/span&gt;&lt;span style="color:#e6db74"&gt;{&lt;/span&gt;classify(fb)&lt;span style="color:#e6db74"&gt;}&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;&lt;/span&gt;)
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ol start="2"&gt;
-&lt;li&gt;运行：&lt;code&gt;python classify.py&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;结果：
-&lt;ul&gt;
-&lt;li&gt;&amp;ldquo;服务很好，速度很快&amp;rdquo; -&amp;gt; 满意&lt;/li&gt;
-&lt;li&gt;&amp;ldquo;等了三天还没收到货&amp;rdquo; -&amp;gt; 不满意&lt;/li&gt;
-&lt;li&gt;&amp;ldquo;还行吧，一般&amp;rdquo; -&amp;gt; 中性&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h3 id="量化效果"&gt;量化效果&lt;/h3&gt;
-&lt;p&gt;手动分类100条需要20分钟，0.6B模型处理100条约5分钟（含网络延迟到本地），节省75%时间。&lt;/p&gt;</description><content:encoded><![CDATA[<h1 id="小模型能干活吗qwen3-06b实测教程">小模型能干活吗？Qwen3 0.6B实测教程</h1>
-<h2 id="痛点">痛点</h2>
-<p>你有一个分类任务：把一堆邮件分成“需回复”和“垃圾”。用DeepSeek或GPT-4o？每次都要联网，API花钱，公司网还慢。
-是否有一个本地跑、免费、不联网、10秒内出结果的小模型？</p>
-<h2 id="工具卡片">工具卡片</h2>
-<ul>
-<li><strong>模型</strong>：Qwen3 0.6B（阿里巴巴出品）</li>
-<li><strong>下载地址</strong>：Ollama官网（国内直接访问）</li>
-<li><strong>定价</strong>：完全免费（开源MIT协议）</li>
-<li><strong>竞品</strong>：TinyLlama 1.1B、Phi-3-mini 3.8B</li>
-<li><strong>上手难度</strong>：3/5（需要会开命令行）</li>
-</ul>
-<h2 id="从注册到产出第一个结果">从注册到产出第一个结果</h2>
-<h3 id="第一步安装ollama2分钟零成本">第一步：安装Ollama（2分钟，零成本）</h3>
-<ol>
-<li>浏览器打开ollama.com</li>
-<li>下载对应系统（Windows/Mac/Linux）的安装包</li>
-<li>双击安装，一路默认</li>
-</ol>
-<h3 id="第二步下载qwen3-06b模型网络良好时约5-10分钟">第二步：下载Qwen3 0.6B模型（网络良好时约5-10分钟）</h3>
-<p>打开终端（Windows按Win+R，输入cmd），粘贴：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>ollama pull qwen3:0.6b
-</span></span></code></pre></div><p>看到<code>success</code>字样表示完成。</p>
-<h3 id="第三步跑一个分类任务1秒出结果">第三步：跑一个分类任务（1秒出结果）</h3>
-<p>输入：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>ollama run qwen3:0.6b
-</span></span></code></pre></div><p>进入对话模式后，粘贴：</p>
-<pre tabindex="0"><code>请给这句话分类，只输出“技术”、“营销”或“其他”：
-“我们已更新数据库连接池配置，请重启服务后验证。”
-</code></pre><p>模型输出：<code>技术</code>（实测3秒内）</p>
-<h2 id="进阶用法批量处理100条记录">进阶用法：批量处理100条记录</h2>
-<h3 id="需求">需求</h3>
-<p>将100条客户反馈分为“满意”“不满意”“中性”。</p>
-<h3 id="方法">方法</h3>
-<ol>
-<li>创建一个<code>classify.py</code>文件，粘贴以下代码：</li>
-</ol>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> subprocess
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;api_key &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;YOUR_API_KEY&amp;#34;&lt;/span&gt; &lt;span style="color:#75715e"&gt;# 在凭据页面创建API key&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;youtube &lt;span style="color:#f92672"&gt;=&lt;/span&gt; build(&lt;span style="color:#e6db74"&gt;&amp;#39;youtube&amp;#39;&lt;/span&gt;, &lt;span style="color:#e6db74"&gt;&amp;#39;v3&amp;#39;&lt;/span&gt;, developerKey&lt;span style="color:#f92672"&gt;=&lt;/span&gt;api_key)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;request &lt;span style="color:#f92672"&gt;=&lt;/span&gt; youtube&lt;span style="color:#f92672"&gt;.&lt;/span&gt;search()&lt;span style="color:#f92672"&gt;.&lt;/span&gt;list(
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; q&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;react tutorial 2026&amp;#39;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; part&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;snippet&amp;#39;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; maxResults&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#ae81ff"&gt;10&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; type&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;video&amp;#39;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; order&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;viewCount&amp;#39;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;response &lt;span style="color:#f92672"&gt;=&lt;/span&gt; request&lt;span style="color:#f92672"&gt;.&lt;/span&gt;execute()
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;for&lt;/span&gt; item &lt;span style="color:#f92672"&gt;in&lt;/span&gt; response[&lt;span style="color:#e6db74"&gt;&amp;#39;items&amp;#39;&lt;/span&gt;]:
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; print(item[&lt;span style="color:#e6db74"&gt;&amp;#39;snippet&amp;#39;&lt;/span&gt;][&lt;span style="color:#e6db74"&gt;&amp;#39;title&amp;#39;&lt;/span&gt;], item[&lt;span style="color:#e6db74"&gt;&amp;#39;id&amp;#39;&lt;/span&gt;][&lt;span style="color:#e6db74"&gt;&amp;#39;videoId&amp;#39;&lt;/span&gt;])
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;&lt;strong&gt;Day3（周五）：添加筛选条件&lt;/strong&gt;
+修改脚本，加入&amp;quot;videoDuration&amp;quot;参数（long/medium/short），筛选5-15分钟长度的教程。再加&amp;quot;publishedBefore&amp;quot;和&amp;quot;publishedAfter&amp;quot;，筛出近30天的视频。输出结果为CSV文件：标题、链接、时长、发布日期。&lt;/p&gt;</description><content:encoded><![CDATA[<h2 id="核心洞察youtube搜索太烂几百人在抱怨没人搞定">核心洞察：YouTube搜索太烂，几百人在抱怨，没人搞定</h2>
+<p>Reddit帖子&quot;A video search engine that doesn&rsquo;t suck&quot;里，用户说&quot;there are only 5 or 6 relevant videos&quot;之后就全是无关内容。这条抱怨被50多人顶帖，有人直接开骂&quot;YouTube search is garbage&quot;。</p>
+<p>这不是技术难题——YouTube本身有API可以搜视频，但默认排序和推荐算法对深度搜索不友好。普通用户想要的是：搜&quot;react tutorial 2026&quot;的时候，能按时长、年代、语言、有没有字幕等条件精确匹配。</p>
+<p><strong>别人为什么还没赚这个钱？</strong> 不是技术壁垒，是信息差。大多数独立开发者忙着给AI套壳，忽略了这种&quot;无聊但刚需&quot;的方向。而你的优势：有Python基础，有免费API，能在家里完成。</p>
+<p><strong>机会具体是什么？</strong> 做一个垂直YouTube搜索引擎，只针对&quot;教程&quot;和&quot;技术类&quot;内容，提供YouTube原生没有的筛选维度（如：视频时长&lt;10分钟、发布日期距今&lt;30天、有英文字幕）。</p>
+<h2 id="执行清单day1-7每天30分钟">执行清单Day1-7（每天≤30分钟）</h2>
+<p><strong>Day1（周三）：验证需求规模</strong>
+打开Reddit帖子链接（https://www.reddit.com/r/SideProject/comments/xxxx/），用Chrome的Inspect工具查看评论区，复制所有二级评论。用Python统计关键词：&ldquo;search&rdquo;、&ldquo;find&rdquo;、&ldquo;filter&rdquo;、&ldquo;sucks&rdquo;。如果出现频次&gt;10次，就说明需求真实。</p>
+<p><strong>Day2（周四）：注册YouTube API</strong>
+打开console.cloud.google.com，创建一个新项目，启用YouTube Data API v3。创建OAuth 2.0凭据（桌面应用类型），下载JSON密钥。这一步免费，但需要Google账号。用这个Python脚本测试是否能搜到视频：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> googleapiclient.discovery <span style="color:#f92672">import</span> build
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> json
 </span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">classify</span>(text):
-</span></span><span style="display:flex;"><span>    prompt <span style="color:#f92672">=</span> <span style="color:#e6db74">f</span><span style="color:#e6db74">&#39;请将下面客户反馈分类为“满意”、“不满意”或“中性”，只输出分类结果：</span><span style="color:#e6db74">{</span>text<span style="color:#e6db74">}</span><span style="color:#e6db74">&#39;</span>
-</span></span><span style="display:flex;"><span>    result <span style="color:#f92672">=</span> subprocess<span style="color:#f92672">.</span>run([<span style="color:#e6db74">&#39;ollama&#39;</span>, <span style="color:#e6db74">&#39;run&#39;</span>, <span style="color:#e6db74">&#39;qwen3:0.6b&#39;</span>, prompt], capture_output<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>, text<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>, timeout<span style="color:#f92672">=</span><span style="color:#ae81ff">30</span>)
-</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> result<span style="color:#f92672">.</span>stdout<span style="color:#f92672">.</span>strip()
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>feedbacks <span style="color:#f92672">=</span> [<span style="color:#e6db74">&#34;服务很好，速度很快&#34;</span>, <span style="color:#e6db74">&#34;等了三天还没收到货&#34;</span>, <span style="color:#e6db74">&#34;还行吧，一般&#34;</span>]
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> fb <span style="color:#f92672">in</span> feedbacks:
-</span></span><span style="display:flex;"><span>    print(<span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;原文：</span><span style="color:#e6db74">{</span>fb<span style="color:#e6db74">}</span><span style="color:#e6db74"> -&gt; 分类：</span><span style="color:#e6db74">{</span>classify(fb)<span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;</span>)
-</span></span></code></pre></div><ol start="2">
-<li>运行：<code>python classify.py</code></li>
-<li>结果：
-<ul>
-<li>&ldquo;服务很好，速度很快&rdquo; -&gt; 满意</li>
-<li>&ldquo;等了三天还没收到货&rdquo; -&gt; 不满意</li>
-<li>&ldquo;还行吧，一般&rdquo; -&gt; 中性</li>
-</ul>
-</li>
-</ol>
-<h3 id="量化效果">量化效果</h3>
-<p>手动分类100条需要20分钟，0.6B模型处理100条约5分钟（含网络延迟到本地），节省75%时间。</p>
-<h2 id="优缺点清单">优缺点清单</h2>
-<p><strong>优点：</strong></p>
-<ul>
-<li>完全免费，无需网络（除第一次下载）</li>
-<li>隐私安全（数据不出设备）</li>
-<li>能在2018年后的普通笔记本上运行（4GB内存即可）</li>
-</ul>
-<p><strong>缺点：</strong></p>
-<ul>
-<li>英文推理能力弱于中文（中文分类准确率约85%，英文约70%）</li>
-<li>创意生成任务几乎不可用（会生成无意义循环）</li>
-<li>不支持多轮复杂对话</li>
-</ul>
-<p><strong>替代方案：</strong></p>
-<ul>
-<li>需要更好中文：Qwen3 4B（1.5GB显存，免费）</li>
-<li>需要更好英文：TinyLlama 1.1B（CPU也能跑，免费）</li>
-</ul>
-<h2 id="谁适合用谁不适合用">谁适合用/谁不适合用</h2>
-<p><strong>适合：</strong></p>
-<ul>
-<li>需要做文本分类、标签提取、简单问答的普通用户</li>
-<li>预算为零、需要离线使用的开发者</li>
-<li>处理大量重复性文本工作的运营/客服人员</li>
-</ul>
-<p><strong>不适合：</strong></p>
-<ul>
-<li>写论文、写小说等需要创意生成的场景</li>
-<li>对准确率要求100%的正式业务（建议用GPT-4o API）</li>
-<li>需要处理图片/音频的多模态场景</li>
-</ul>
-<h2 id="性价比结论">性价比结论</h2>
-<p><strong>免费完全够用</strong>。如果只是做文本分类和简单提取，0.6B模型每月帮你省下至少100元的API费用。</p>
-]]></content:encoded></item><item><title>Zepto代运营教程</title><link>https://radar.huadongpeng.com/posts/china-going-global/deep-dive-2026-05-12-1149/</link><pubDate>Tue, 12 May 2026 11:49:17 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/china-going-global/deep-dive-2026-05-12-1149/</guid><description>&lt;h1 id="zepto代运营从零到月入5000元指南"&gt;Zepto代运营从零到月入5000元指南&lt;/h1&gt;
-&lt;h2 id="目标市场画像"&gt;目标市场画像&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;为什么选Zepto？Zepto是印度即时零售龙头，覆盖18个城市，日订单超50万，客单价约300-500卢比（25-42元人民币）。竞争比外卖低，且有佣金补贴期。&lt;/li&gt;
-&lt;li&gt;适合卖什么？1）高毛利快消品（零食、饮料），2）日杂百货（卫生纸、清洁剂），3）本地特产（手工零食、香料包）。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id="从零到上线的每一步"&gt;从零到上线的每一步&lt;/h2&gt;
-&lt;h3 id="step-1注册商家账号"&gt;Step 1：注册商家账号&lt;/h3&gt;
-&lt;ol&gt;
-&lt;li&gt;打开Zepto商家注册页面：https://partner.zepto.com/&lt;/li&gt;
-&lt;li&gt;点击“Start Selling”按钮。&lt;/li&gt;
-&lt;li&gt;填写邮箱（用Gmail或Outlook），设置密码，完成邮箱验证（点击验证邮件内的链接）。&lt;/li&gt;
-&lt;li&gt;上传营业执照（印度或国际公司，国内个体户可用，需翻译为英文，JPG格式&amp;lt;2MB）。&lt;/li&gt;
-&lt;li&gt;选择类目“FMCG”，填写仓库地址（可用第三方仓库，如Shiprocket的）。&lt;/li&gt;
-&lt;li&gt;提交后2-3个工作日审核，期间保持电话畅通。&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h3 id="step-2配置商品"&gt;Step 2：配置商品&lt;/h3&gt;
-&lt;ol&gt;
-&lt;li&gt;登录后台，点击“Add Product”。&lt;/li&gt;
-&lt;li&gt;上传商品图片（白底，至少800x800像素），填写标题（英文，含关键词如“Organic Snacks”）。&lt;/li&gt;
-&lt;li&gt;设置定价：成本价+20%毛利，注意平台抽成10-15%。&lt;/li&gt;
-&lt;li&gt;设置库存：建议首单上架10-20个SKU。&lt;/li&gt;
-&lt;li&gt;常见坑：图片不能有水印，描述不能有虚假宣传。&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h3 id="step-3上架与审核"&gt;Step 3：上架与审核&lt;/h3&gt;
-&lt;ol&gt;
-&lt;li&gt;点击“Publish”，商品进入审核队列。&lt;/li&gt;
-&lt;li&gt;审核时效8-24小时，被拒常见原因：图片不符、标题违规、无FSSAI许可证（印度食品要求）。&lt;/li&gt;
-&lt;li&gt;替代方案：如无FSSAI，先上非食品类（日用品）。&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h3 id="step-4接单与收款"&gt;Step 4：接单与收款&lt;/h3&gt;
-&lt;ol&gt;
-&lt;li&gt;订单会在后台显示，需在60分钟内发货（可通过合作物流Shiprocket）。&lt;/li&gt;
-&lt;li&gt;收款：绑定印度银行账户或Paytm Business（需印度身份）。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;替代方案&lt;/strong&gt;：中国卖家通过Lazada或Shopee印度站中转，收款用Payoneer。&lt;/li&gt;
-&lt;li&gt;回款周期：T+7天，手续费1%。&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h2 id="工具链推荐"&gt;工具链推荐&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Shiprocket&lt;/strong&gt;（免费起步）— 物流管理，支持180+城市。替代品：Delhivery。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Canva&lt;/strong&gt;（免费版）— 商品图片设计。替代品：Figma。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Google Translate&lt;/strong&gt;（免费）— 商品描述翻译。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id="避坑清单"&gt;避坑清单&lt;/h2&gt;
-&lt;ol&gt;
-&lt;li&gt;库存过少：保持至少5天安全库存，否则被下架。&lt;/li&gt;
-&lt;li&gt;定价低于成本：注意汇率波动，设10%缓冲。&lt;/li&gt;
-&lt;li&gt;客户投诉：24小时内回复，否则扣分封号。&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h2 id="成本拆解"&gt;成本拆解&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;启动成本：0元（注册免费），如用第三方物流需预充值200元。&lt;/li&gt;
-&lt;li&gt;月度运营成本：150元（物流+包装）。&lt;/li&gt;
-&lt;li&gt;预期首周收益：50-100元（前7天测试单），1个月后稳定500-2000元。&lt;/li&gt;
-&lt;/ul&gt;</description><content:encoded><![CDATA[<h1 id="zepto代运营从零到月入5000元指南">Zepto代运营从零到月入5000元指南</h1>
-<h2 id="目标市场画像">目标市场画像</h2>
-<ul>
-<li>为什么选Zepto？Zepto是印度即时零售龙头，覆盖18个城市，日订单超50万，客单价约300-500卢比（25-42元人民币）。竞争比外卖低，且有佣金补贴期。</li>
-<li>适合卖什么？1）高毛利快消品（零食、饮料），2）日杂百货（卫生纸、清洁剂），3）本地特产（手工零食、香料包）。</li>
-</ul>
-<h2 id="从零到上线的每一步">从零到上线的每一步</h2>
-<h3 id="step-1注册商家账号">Step 1：注册商家账号</h3>
-<ol>
-<li>打开Zepto商家注册页面：https://partner.zepto.com/</li>
-<li>点击“Start Selling”按钮。</li>
-<li>填写邮箱（用Gmail或Outlook），设置密码，完成邮箱验证（点击验证邮件内的链接）。</li>
-<li>上传营业执照（印度或国际公司，国内个体户可用，需翻译为英文，JPG格式&lt;2MB）。</li>
-<li>选择类目“FMCG”，填写仓库地址（可用第三方仓库，如Shiprocket的）。</li>
-<li>提交后2-3个工作日审核，期间保持电话畅通。</li>
-</ol>
-<h3 id="step-2配置商品">Step 2：配置商品</h3>
-<ol>
-<li>登录后台，点击“Add Product”。</li>
-<li>上传商品图片（白底，至少800x800像素），填写标题（英文，含关键词如“Organic Snacks”）。</li>
-<li>设置定价：成本价+20%毛利，注意平台抽成10-15%。</li>
-<li>设置库存：建议首单上架10-20个SKU。</li>
-<li>常见坑：图片不能有水印，描述不能有虚假宣传。</li>
-</ol>
-<h3 id="step-3上架与审核">Step 3：上架与审核</h3>
-<ol>
-<li>点击“Publish”，商品进入审核队列。</li>
-<li>审核时效8-24小时，被拒常见原因：图片不符、标题违规、无FSSAI许可证（印度食品要求）。</li>
-<li>替代方案：如无FSSAI，先上非食品类（日用品）。</li>
-</ol>
-<h3 id="step-4接单与收款">Step 4：接单与收款</h3>
-<ol>
-<li>订单会在后台显示，需在60分钟内发货（可通过合作物流Shiprocket）。</li>
-<li>收款：绑定印度银行账户或Paytm Business（需印度身份）。</li>
-<li><strong>替代方案</strong>：中国卖家通过Lazada或Shopee印度站中转，收款用Payoneer。</li>
-<li>回款周期：T+7天，手续费1%。</li>
-</ol>
-<h2 id="工具链推荐">工具链推荐</h2>
-<ul>
-<li><strong>Shiprocket</strong>（免费起步）— 物流管理，支持180+城市。替代品：Delhivery。</li>
-<li><strong>Canva</strong>（免费版）— 商品图片设计。替代品：Figma。</li>
-<li><strong>Google Translate</strong>（免费）— 商品描述翻译。</li>
-</ul>
-<h2 id="避坑清单">避坑清单</h2>
-<ol>
-<li>库存过少：保持至少5天安全库存，否则被下架。</li>
-<li>定价低于成本：注意汇率波动，设10%缓冲。</li>
-<li>客户投诉：24小时内回复，否则扣分封号。</li>
-</ol>
-<h2 id="成本拆解">成本拆解</h2>
-<ul>
-<li>启动成本：0元（注册免费），如用第三方物流需预充值200元。</li>
-<li>月度运营成本：150元（物流+包装）。</li>
-<li>预期首周收益：50-100元（前7天测试单），1个月后稳定500-2000元。</li>
-</ul>
-]]></content:encoded></item><item><title>Goose免费编程测评</title><link>https://radar.huadongpeng.com/posts/ai-frontier/deep-dive-2026-05-12-1147/</link><pubDate>Tue, 12 May 2026 11:47:20 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/ai-frontier/deep-dive-2026-05-12-1147/</guid><description>&lt;h1 id="goose零成本替代claude-code的ai编程工具实测"&gt;Goose：零成本替代Claude Code的AI编程工具实测&lt;/h1&gt;
-&lt;h2 id="工具卡片"&gt;工具卡片&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;名称：Goose&lt;/li&gt;
-&lt;li&gt;网址：github.com/block/goose&lt;/li&gt;
-&lt;li&gt;定价：完全免费（开源）&lt;/li&gt;
-&lt;li&gt;竞品：Claude Code（$200/月）、GitHub Copilot（$10/月）、Cursor（$20/月）&lt;/li&gt;
-&lt;li&gt;上手难度：3/5（需要基础命令行知识）&lt;/li&gt;
-&lt;li&gt;免费额度：无限使用，无任何限制&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id="痛点与解决"&gt;痛点与解决&lt;/h2&gt;
-&lt;p&gt;你会写点JavaScript或Python，但老板让你一周改三个bug，而你完全没有头绪。Claude Code要200美元一个月，你连试都不想试。Goose就是答案——免费、开源、直接在终端里工作，像Claude Code一样能读代码、改代码、跑测试，但一分钱不花。&lt;/p&gt;
-&lt;h2 id="实测记录同一个任务在goose-vs-手写"&gt;实测记录：同一个任务在Goose vs 手写&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;任务&lt;/strong&gt;：用Python写一个函数，读取CSV文件并计算每列平均值。&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;手写时间&lt;/strong&gt;：15分钟（找库、查语法、调试）
-&lt;strong&gt;Goose用时&lt;/strong&gt;：3分钟（写提示、看结果、微调）&lt;/p&gt;
-&lt;h3 id="操作步骤从安装到出结果"&gt;操作步骤（从安装到出结果）：&lt;/h3&gt;
-&lt;ol&gt;
-&lt;li&gt;打开终端，执行：&lt;code&gt;npm install -g @block/goose&lt;/code&gt;（需要Node.js 16+，没有的话先装Node.js）&lt;/li&gt;
-&lt;li&gt;进入项目文件夹：&lt;code&gt;cd my-project&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;创建或打开一个空文件：&lt;code&gt;touch analyze.py&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;运行Goose：&lt;code&gt;goose code&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;输入提示（英文或中文）：&amp;ldquo;Write a Python function to read a CSV file named data.csv and print the average of each numeric column&amp;rdquo;&lt;/li&gt;
-&lt;li&gt;Goose生成代码到analyze.py&lt;/li&gt;
-&lt;li&gt;检查代码，如果有安装缺失（如pandas），看它自动提示，手动安装后再跑&lt;/li&gt;
-&lt;li&gt;执行：&lt;code&gt;python analyze.py&lt;/code&gt;，看控制台输出&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h3 id="进阶技巧3个高效用法"&gt;进阶技巧：3个高效用法&lt;/h3&gt;
-&lt;ol&gt;
-&lt;li&gt;&lt;strong&gt;多文件修改&lt;/strong&gt;：先告诉Goose项目结构，再下命令&amp;quot;在app.js末尾添加一个路由处理GET /user&amp;quot;，它自动读取上下文，不改其他地方。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;修复bug&lt;/strong&gt;：运行程序报错后，把错误信息粘贴给Goose，说&amp;quot;这个报错怎么修&amp;quot;，它会解析错误并给出修改建议。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;文档生成&lt;/strong&gt;：对已有代码说&amp;quot;给这段代码写docstring&amp;quot;，它直接插入注释，节省半小时。&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h2 id="对比表goose-vs-claude-code-vs-github-copilot"&gt;对比表：Goose vs Claude Code vs GitHub Copilot&lt;/h2&gt;
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;维度&lt;/th&gt;
-&lt;th&gt;Goose&lt;/th&gt;
-&lt;th&gt;Claude Code&lt;/th&gt;
-&lt;th&gt;GitHub Copilot&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;价格&lt;/td&gt;
-&lt;td&gt;免费&lt;/td&gt;
-&lt;td&gt;$200/月&lt;/td&gt;
-&lt;td&gt;$10/月&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;速度&lt;/td&gt;
-&lt;td&gt;中等（约5秒生成）&lt;/td&gt;
-&lt;td&gt;快（约2秒）&lt;/td&gt;
-&lt;td&gt;快（实时）&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;中文支持&lt;/td&gt;
-&lt;td&gt;好（可输入中文提示）&lt;/td&gt;
-&lt;td&gt;好&lt;/td&gt;
-&lt;td&gt;一般（英文为主）&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;离线能力&lt;/td&gt;
-&lt;td&gt;需要网络&lt;/td&gt;
-&lt;td&gt;需要网络&lt;/td&gt;
-&lt;td&gt;需要网络&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;开源&lt;/td&gt;
-&lt;td&gt;是&lt;/td&gt;
-&lt;td&gt;否&lt;/td&gt;
-&lt;td&gt;否&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;API可用性&lt;/td&gt;
-&lt;td&gt;无&lt;/td&gt;
-&lt;td&gt;有&lt;/td&gt;
-&lt;td&gt;有&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;p&gt;&lt;strong&gt;五维度评分（10分制）&lt;/strong&gt;：&lt;/p&gt;</description><content:encoded><![CDATA[<h1 id="goose零成本替代claude-code的ai编程工具实测">Goose：零成本替代Claude Code的AI编程工具实测</h1>
-<h2 id="工具卡片">工具卡片</h2>
-<ul>
-<li>名称：Goose</li>
-<li>网址：github.com/block/goose</li>
-<li>定价：完全免费（开源）</li>
-<li>竞品：Claude Code（$200/月）、GitHub Copilot（$10/月）、Cursor（$20/月）</li>
-<li>上手难度：3/5（需要基础命令行知识）</li>
-<li>免费额度：无限使用，无任何限制</li>
-</ul>
-<h2 id="痛点与解决">痛点与解决</h2>
-<p>你会写点JavaScript或Python，但老板让你一周改三个bug，而你完全没有头绪。Claude Code要200美元一个月，你连试都不想试。Goose就是答案——免费、开源、直接在终端里工作，像Claude Code一样能读代码、改代码、跑测试，但一分钱不花。</p>
-<h2 id="实测记录同一个任务在goose-vs-手写">实测记录：同一个任务在Goose vs 手写</h2>
-<p><strong>任务</strong>：用Python写一个函数，读取CSV文件并计算每列平均值。</p>
-<p><strong>手写时间</strong>：15分钟（找库、查语法、调试）
-<strong>Goose用时</strong>：3分钟（写提示、看结果、微调）</p>
-<h3 id="操作步骤从安装到出结果">操作步骤（从安装到出结果）：</h3>
-<ol>
-<li>打开终端，执行：<code>npm install -g @block/goose</code>（需要Node.js 16+，没有的话先装Node.js）</li>
-<li>进入项目文件夹：<code>cd my-project</code></li>
-<li>创建或打开一个空文件：<code>touch analyze.py</code></li>
-<li>运行Goose：<code>goose code</code></li>
-<li>输入提示（英文或中文）：&ldquo;Write a Python function to read a CSV file named data.csv and print the average of each numeric column&rdquo;</li>
-<li>Goose生成代码到analyze.py</li>
-<li>检查代码，如果有安装缺失（如pandas），看它自动提示，手动安装后再跑</li>
-<li>执行：<code>python analyze.py</code>，看控制台输出</li>
-</ol>
-<h3 id="进阶技巧3个高效用法">进阶技巧：3个高效用法</h3>
-<ol>
-<li><strong>多文件修改</strong>：先告诉Goose项目结构，再下命令&quot;在app.js末尾添加一个路由处理GET /user&quot;，它自动读取上下文，不改其他地方。</li>
-<li><strong>修复bug</strong>：运行程序报错后，把错误信息粘贴给Goose，说&quot;这个报错怎么修&quot;，它会解析错误并给出修改建议。</li>
-<li><strong>文档生成</strong>：对已有代码说&quot;给这段代码写docstring&quot;，它直接插入注释，节省半小时。</li>
-</ol>
-<h2 id="对比表goose-vs-claude-code-vs-github-copilot">对比表：Goose vs Claude Code vs GitHub Copilot</h2>
-<table>
-  <thead>
-      <tr>
-          <th>维度</th>
-          <th>Goose</th>
-          <th>Claude Code</th>
-          <th>GitHub Copilot</th>
-      </tr>
-  </thead>
-  <tbody>
-      <tr>
-          <td>价格</td>
-          <td>免费</td>
-          <td>$200/月</td>
-          <td>$10/月</td>
-      </tr>
-      <tr>
-          <td>速度</td>
-          <td>中等（约5秒生成）</td>
-          <td>快（约2秒）</td>
-          <td>快（实时）</td>
-      </tr>
-      <tr>
-          <td>中文支持</td>
-          <td>好（可输入中文提示）</td>
-          <td>好</td>
-          <td>一般（英文为主）</td>
-      </tr>
-      <tr>
-          <td>离线能力</td>
-          <td>需要网络</td>
-          <td>需要网络</td>
-          <td>需要网络</td>
-      </tr>
-      <tr>
-          <td>开源</td>
-          <td>是</td>
-          <td>否</td>
-          <td>否</td>
-      </tr>
-      <tr>
-          <td>API可用性</td>
-          <td>无</td>
-          <td>有</td>
-          <td>有</td>
-      </tr>
-  </tbody>
-</table>
-<p><strong>五维度评分（10分制）</strong>：</p>
-<ul>
-<li>功能：7（对比Claude Code缺高级调试）</li>
-<li>价格：10</li>
-<li>速度：6</li>
-<li>中文支持：8</li>
-<li>API可用性：0</li>
-</ul>
-<h2 id="3个实际使用场景及效果量化">3个实际使用场景及效果量化</h2>
-<ol>
-<li><strong>修复Python脚本bug</strong>：原先0.5小时→现在5分钟，节省25分钟</li>
-<li><strong>生成Dockerfile</strong>：原先手写20分钟→2分钟提示，结果可用但需微调</li>
-<li><strong>写单元测试</strong>：原先1小时写20个测试→10分钟生成基础框架，然后手动补逻辑</li>
-</ol>
-<h2 id="优缺点清单">优缺点清单</h2>
-<h3 id="优点">优点</h3>
-<ul>
-<li>完全免费，无限次数</li>
-<li>开源，社区活跃，不会突然收费</li>
-<li>支持中文提示，对非英语开发者友好</li>
-<li>直接在终端工作，不干扰编辑器</li>
-</ul>
-<h3 id="缺点">缺点</h3>
-<ul>
-<li>速度比商业产品慢</li>
-<li>没有集成IDE，需要手动把代码复制到编辑器</li>
-<li>对复杂项目有时理解不全，需要多次提示</li>
-<li>不支持API集成（不能做批量任务）</li>
-</ul>
-<h3 id="替代方案">替代方案</h3>
-<p>如果Goose不能满足，可以尝试以下免费选项：</p>
-<ul>
-<li><strong>Tabi</strong>（tabi.sh）：免费AI编程，有网页版，无需命令行</li>
-<li><strong>Continue.dev</strong>（continue.dev）：开源IDE插件，免费，需配合自己的API key</li>
-<li><strong>AiCoder</strong>（github.com/aicoder）：另一个开源终端AI助手，功能相似</li>
-</ul>
-<h2 id="谁适合用谁不适合用">谁适合用/谁不适合用</h2>
-<p><strong>适合人群</strong>：</p>
-<ul>
-<li>会一点命令行（cd、npm install）的初级程序员</li>
-<li>想做副业但不想花钱买工具的人</li>
-<li>需要快速写小脚本或改bug的全职打工人</li>
-</ul>
-<p><strong>不适合人群</strong>：</p>
-<ul>
-<li>完全不会用终端的纯产品经理</li>
-<li>需要实时代码补全（像Copilot那样边写边提示）的人</li>
-<li>项目依赖复杂、需要AI理解大型框架的人</li>
-</ul>
-<h2 id="性价比结论">性价比结论</h2>
-<p>性价比天花板。启动成本0元，时间投入1-2小时学习安装和基础用法，预期首周收益：省下$20（不用买Copilot）或省下3-5小时加班时间。对于月可支配现金&lt;2000元的人，这是目前最好的入门工具。</p>
-]]></content:encoded></item><item><title>卖Sheet月入300</title><link>https://radar.huadongpeng.com/posts/arbitrage-radar/deep-dive-2026-05-12-1147/</link><pubDate>Tue, 12 May 2026 11:47:18 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/arbitrage-radar/deep-dive-2026-05-12-1147/</guid><description>&lt;h2 id="核心洞察为什么卖sheet能月入333"&gt;核心洞察：为什么卖Sheet能月入$333？&lt;/h2&gt;
-&lt;p&gt;最新贴（r/SaaS, 2026-05-12）里，一个独立开发者卖一个名为Write It Down的Google Sheet，14个月收入$5K，最近一个月$333。反馈显示：用户愿意为&lt;strong&gt;一次性付费&lt;/strong&gt;（$5.99）代替月费SaaS。这不是高大上的代码，是Google Sheet公式+设计。为什么别人没赚到？不是技术壁垒，是&lt;strong&gt;懒惰和信息差&lt;/strong&gt;。&lt;/p&gt;
-&lt;h3 id="抱怨原文"&gt;抱怨原文&lt;/h3&gt;
-&lt;blockquote&gt;
-&lt;p&gt;“I didn’t want another finance subscription. It’s a Google Sheet that costs $5.99 once.”&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;p&gt;Reddit帖里还有用户评论：“Why pay $20/mo when I can buy this once?” 超过80%的评论表示想要类似的记账/项目管理模板。&lt;/p&gt;
-&lt;h2 id="执行清单day1-7"&gt;执行清单Day1-7&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;Day1（周一）：&lt;/strong&gt; 打开write-it-down.com→查看产品描述和定价页→截图模板预览。用Chrom扩展“Wappalyzer”分析网站堆栈（提示：纯Google Sheet+简单着陆页）。&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Day2（周二）：&lt;/strong&gt; 注册Gumroad（国内可访问）→在Gumroad搜索“Google Sheet template”分析前5名畅销品（标题、价格、描述模式）。每模板至少记录3个重复的付费功能。&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Day3（周三）：&lt;/strong&gt; 打开Google Sheets→从空白创建新表格→制作“简单记账”模板：3列（日期、类别、金额）+SUM公式+饼图（用插入图表功能）。用时约30分钟。&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Day4（周四）：&lt;/strong&gt; 录制10秒演示视频（用OBS免费版）→上传到YouTube（设为不公开）。&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Day5（周五）：&lt;/strong&gt; 在Gumroad创建产品页：标题“Personal Finance Tracker - One Time Payment”，描述包含“No subscription, just formulas”，定价$5.99。添加YouTube视频链接。&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Day6（周六）：&lt;/strong&gt; 发布到ProductHunt“Upcoming”列表→同时发帖到Reddit r/SaaS和r/FinancialPlanning（标题“Made a $5.99 sheet that tracks everything”）。&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Day7（周日）：&lt;/strong&gt; 监测点赞和评论。如果首日&amp;lt;5个赞，修改定价（降为$3.99）或修改描述（强调“SaaS替代品”）。&lt;/p&gt;
-&lt;h2 id="工具清单"&gt;工具清单&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;Gumroad：销售平台，免费注册，扣除10%佣金&lt;/li&gt;
-&lt;li&gt;Google Sheets：免费&lt;/li&gt;
-&lt;li&gt;OBS Studio：免费录屏&lt;/li&gt;
-&lt;li&gt;Canva：免费设计封面图&lt;/li&gt;
-&lt;li&gt;ProductHunt：免费发布，无费用&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id="收益预估三档"&gt;收益预估（三档）&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;保守：&lt;/strong&gt; 首月卖出5份→$29.95（约210元）。计算逻辑：日出勤1小时，获ProductHunt10个赞。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;中等：&lt;/strong&gt; 首月卖出15份→$89.85（约630元）。计算逻辑：帖在Reddit收获100+赞，日卖0.5单。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;乐观：&lt;/strong&gt; 首月卖出50份→$299.50（约2100元）。计算逻辑：Reddit首页或产品被其他网站转载，日卖1.6单。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id="3个最容易踩的坑"&gt;3个最容易踩的坑&lt;/h2&gt;
-&lt;ol&gt;
-&lt;li&gt;&lt;strong&gt;定价过高：&lt;/strong&gt; 模仿帖里$5.99，不能超过$9.99（用户潜意识认为Sheet不值钱）。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;无演示：&lt;/strong&gt; 没视频或截图，用户不信任。Day5必须上传视频。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;忽略SEO：&lt;/strong&gt; Gumroad搜索关键词要用“finance template”而不是“money tracker”。&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h2 id="延伸资源"&gt;延伸资源&lt;/h2&gt;
-&lt;ol&gt;
-&lt;li&gt;B站：搜“Google Sheets 记账模板教程”，看up主“小小函数”视频。&lt;/li&gt;
-&lt;li&gt;公众号：关注“独立开发者工具”，阅读《如何在1小时做出付费模板》。&lt;/li&gt;
-&lt;li&gt;PDF：下载《100个销售模板合集》从Gumroad博客免费下载。&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;注意：所有工具国内可直连（Gumroad有时需梯子，备选使用爱发电平台）。&lt;/p&gt;</description><content:encoded><![CDATA[<h2 id="核心洞察为什么卖sheet能月入333">核心洞察：为什么卖Sheet能月入$333？</h2>
-<p>最新贴（r/SaaS, 2026-05-12）里，一个独立开发者卖一个名为Write It Down的Google Sheet，14个月收入$5K，最近一个月$333。反馈显示：用户愿意为<strong>一次性付费</strong>（$5.99）代替月费SaaS。这不是高大上的代码，是Google Sheet公式+设计。为什么别人没赚到？不是技术壁垒，是<strong>懒惰和信息差</strong>。</p>
-<h3 id="抱怨原文">抱怨原文</h3>
-<blockquote>
-<p>“I didn’t want another finance subscription. It’s a Google Sheet that costs $5.99 once.”</p>
-</blockquote>
-<p>Reddit帖里还有用户评论：“Why pay $20/mo when I can buy this once?” 超过80%的评论表示想要类似的记账/项目管理模板。</p>
-<h2 id="执行清单day1-7">执行清单Day1-7</h2>
-<p><strong>Day1（周一）：</strong> 打开write-it-down.com→查看产品描述和定价页→截图模板预览。用Chrom扩展“Wappalyzer”分析网站堆栈（提示：纯Google Sheet+简单着陆页）。</p>
-<p><strong>Day2（周二）：</strong> 注册Gumroad（国内可访问）→在Gumroad搜索“Google Sheet template”分析前5名畅销品（标题、价格、描述模式）。每模板至少记录3个重复的付费功能。</p>
-<p><strong>Day3（周三）：</strong> 打开Google Sheets→从空白创建新表格→制作“简单记账”模板：3列（日期、类别、金额）+SUM公式+饼图（用插入图表功能）。用时约30分钟。</p>
-<p><strong>Day4（周四）：</strong> 录制10秒演示视频（用OBS免费版）→上传到YouTube（设为不公开）。</p>
-<p><strong>Day5（周五）：</strong> 在Gumroad创建产品页：标题“Personal Finance Tracker - One Time Payment”，描述包含“No subscription, just formulas”，定价$5.99。添加YouTube视频链接。</p>
-<p><strong>Day6（周六）：</strong> 发布到ProductHunt“Upcoming”列表→同时发帖到Reddit r/SaaS和r/FinancialPlanning（标题“Made a $5.99 sheet that tracks everything”）。</p>
-<p><strong>Day7（周日）：</strong> 监测点赞和评论。如果首日&lt;5个赞，修改定价（降为$3.99）或修改描述（强调“SaaS替代品”）。</p>
+</span></span><span style="display:flex;"><span>api_key <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;YOUR_API_KEY&#34;</span> <span style="color:#75715e"># 在凭据页面创建API key</span>
+</span></span><span style="display:flex;"><span>youtube <span style="color:#f92672">=</span> build(<span style="color:#e6db74">&#39;youtube&#39;</span>, <span style="color:#e6db74">&#39;v3&#39;</span>, developerKey<span style="color:#f92672">=</span>api_key)
+</span></span><span style="display:flex;"><span>request <span style="color:#f92672">=</span> youtube<span style="color:#f92672">.</span>search()<span style="color:#f92672">.</span>list(
+</span></span><span style="display:flex;"><span>    q<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;react tutorial 2026&#39;</span>,
+</span></span><span style="display:flex;"><span>    part<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;snippet&#39;</span>,
+</span></span><span style="display:flex;"><span>    maxResults<span style="color:#f92672">=</span><span style="color:#ae81ff">10</span>,
+</span></span><span style="display:flex;"><span>    type<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;video&#39;</span>,
+</span></span><span style="display:flex;"><span>    order<span style="color:#f92672">=</span><span style="color:#e6db74">&#39;viewCount&#39;</span>
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>response <span style="color:#f92672">=</span> request<span style="color:#f92672">.</span>execute()
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">for</span> item <span style="color:#f92672">in</span> response[<span style="color:#e6db74">&#39;items&#39;</span>]:
+</span></span><span style="display:flex;"><span>    print(item[<span style="color:#e6db74">&#39;snippet&#39;</span>][<span style="color:#e6db74">&#39;title&#39;</span>], item[<span style="color:#e6db74">&#39;id&#39;</span>][<span style="color:#e6db74">&#39;videoId&#39;</span>])
+</span></span></code></pre></div><p><strong>Day3（周五）：添加筛选条件</strong>
+修改脚本，加入&quot;videoDuration&quot;参数（long/medium/short），筛选5-15分钟长度的教程。再加&quot;publishedBefore&quot;和&quot;publishedAfter&quot;，筛出近30天的视频。输出结果为CSV文件：标题、链接、时长、发布日期。</p>
+<p><strong>Day4（周六）：做展示页面</strong>
+用Flask或FastAPI写个简单的Web界面，只有一个搜索框。用户输入关键词后，后端调用API返回结果。部署到Render（免费版）。域名可以不买，用render的免费子域名。</p>
+<p><strong>Day5（周日）：发布到V2EX和Reddit</strong>
+在V2EX的&quot;分享创造&quot;板块发帖，标题&quot;做了个YouTube教程搜索工具，能按时长日期筛选&quot;。同时去Reddit原帖下回复&quot;I built a simple demo for this&quot;加链接。目标：收集10个用户反馈。</p>
+<p><strong>Day6（周一）：收集需求迭代</strong>
+分析用户反馈，重点关注&quot;还缺什么&quot;。常见需求可能是：按频道筛选、按语言筛选、支持下载字幕。把最热门的需求加入下一个版本。</p>
+<p><strong>Day7（周二）：加入变现尝试</strong>
+在页面底部加一个&quot;赞助&quot;按钮，通过Patreon或Buy Me a Coffee链接（免费注册）。不强制收费，但告诉用户&quot;如果你觉得有用，请请我喝咖啡&quot;。同时发到Product Hunt（免费）做暴露。</p>
 <h2 id="工具清单">工具清单</h2>
 <ul>
-<li>Gumroad：销售平台，免费注册，扣除10%佣金</li>
-<li>Google Sheets：免费</li>
-<li>OBS Studio：免费录屏</li>
-<li>Canva：免费设计封面图</li>
-<li>ProductHunt：免费发布，无费用</li>
+<li>YouTube Data API v3：免费，配额每天10000个单位（每次搜索消耗100个单位，可搜100次/天）</li>
+<li>Google Cloud Console：免费注册，需要信用卡但不会自动扣费</li>
+<li>Python 3.8+：免费，本地安装</li>
+<li>Flask：开源免费</li>
+<li>Render：免费版支持Flask部署，无需信用卡</li>
+<li>Buy Me a Coffee：免费注册，提现手续费较低</li>
 </ul>
 <h2 id="收益预估三档">收益预估（三档）</h2>
 <ul>
-<li><strong>保守：</strong> 首月卖出5份→$29.95（约210元）。计算逻辑：日出勤1小时，获ProductHunt10个赞。</li>
-<li><strong>中等：</strong> 首月卖出15份→$89.85（约630元）。计算逻辑：帖在Reddit收获100+赞，日卖0.5单。</li>
-<li><strong>乐观：</strong> 首月卖出50份→$299.50（约2100元）。计算逻辑：Reddit首页或产品被其他网站转载，日卖1.6单。</li>
+<li><strong>保守（首月0元）</strong>：工具只有你一个人用，没有外网获客。但积累了技能和代码库，下次做类似的东西能快50%。</li>
+<li><strong>中等（首月200元）</strong>：在Reddit和V2EX各获得50个访客，其中有10%的人通过&quot;Buy Me a Coffee&quot;赞助了10元。计算逻辑：100访客×10%转化率×10元=100元，加上可能有用户主动问定制服务的付费（200元）。</li>
+<li><strong>乐观（首月1000元）</strong>：踩中Product Hunt首页展示，获得5000访客。5%的人点击了&quot;赞助&quot;，每人5元=1250元。或者有人直接邮件问&quot;能不能定制一个XX领域的搜索引擎&quot;，价200元/个。</li>
 </ul>
+<p><strong>注意：</strong> 这个工具不太可能月入上万。它的真正价值是：</p>
+<ol>
+<li>用零成本验证了&quot;从抱怨中找产品方向&quot;的方法论</li>
+<li>建立了一个垂直YouTube索引API，可后续商业化（如按调用次数收费）</li>
+<li>积累了Python+Flask+API开发经验，可用于接外包</li>
+</ol>
 <h2 id="3个最容易踩的坑">3个最容易踩的坑</h2>
-<ol>
-<li><strong>定价过高：</strong> 模仿帖里$5.99，不能超过$9.99（用户潜意识认为Sheet不值钱）。</li>
-<li><strong>无演示：</strong> 没视频或截图，用户不信任。Day5必须上传视频。</li>
-<li><strong>忽略SEO：</strong> Gumroad搜索关键词要用“finance template”而不是“money tracker”。</li>
-</ol>
+<p><strong>坑1：过度优化功能才上线</strong>
+错误做法：做成了&quot;完美版&quot;才发布，但发现用户根本不来。正确做法：Day5必须上线最小原型（只有搜索+显示结果），上线后再根据反馈加功能。每多一天不上线，就少一天知道真实需求。</p>
+<p><strong>坑2：依赖API配额不够用</strong>
+YouTube API免费配额每天10000单元，每次搜索消耗100单元。如果你做了&quot;无限滚动&quot;，用户每次滚动都是新搜索。正确做法：前端缓存搜索结果，同一关键词重复搜索不调用API；或者限制免费用户每天搜5次，可付费解锁更多次数。</p>
+<p><strong>坑3：卖功能而不是卖解决方案</strong>
+如果只是说&quot;我的搜索器能筛选时长&quot;，用户不会付钱。要说&quot;帮你5分钟内找到2026年最新讲解视频，不比每天刷YouTube浪费时间&quot;。在页面文案里突出&quot;时间节省&quot;，而不是&quot;功能列表&quot;。</p>
 <h2 id="延伸资源">延伸资源</h2>
 <ol>
-<li>B站：搜“Google Sheets 记账模板教程”，看up主“小小函数”视频。</li>
-<li>公众号：关注“独立开发者工具”，阅读《如何在1小时做出付费模板》。</li>
-<li>PDF：下载《100个销售模板合集》从Gumroad博客免费下载。</li>
+<li><strong>YouTube Data API官方文档</strong>：developers.google.com/youtube/v3/guides/implementation/search（免费，国内可访问，需梯子）</li>
+<li><strong>Flask官方教程</strong>：flask.palletsprojects.com（免费，无需梯子，有中文社区翻译版）</li>
+<li><strong>B站搜索&quot;YouTube API Python&quot;</strong>：搜索&quot;Python YouTube API 爬虫&quot;找到实战教程（免费，中文，无需梯子）</li>
 </ol>
-<p>注意：所有工具国内可直连（Gumroad有时需梯子，备选使用爱发电平台）。</p>
-]]></content:encoded></item><item><title>AI代理追踪</title><link>https://radar.huadongpeng.com/posts/cross-border-insights/deep-dive-2026-05-12-1147/</link><pubDate>Tue, 12 May 2026 11:47:15 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/cross-border-insights/deep-dive-2026-05-12-1147/</guid><description>&lt;h2 id="源头还原"&gt;源头还原&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;什么产品/模式/服务？&lt;/strong&gt;
-Known Agents（knownagents.com）是一个网站工具，能自动识别并追踪所有访问你网站的AI代理和机器人。它显示哪些AI公司（如OpenAI、Anthropic、Google）的爬虫访问了你的页面、频率、消耗的带宽。核心功能：仪表盘展示AI代理流量占比、按公司分类统计、实时警报。&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;哪个国家/平台？谁在做？什么数据？&lt;/strong&gt;
-美国创业团队，创始人之前在Cloudflare做安全产品。2026年4月上线，两周内获得约3000个注册用户，免费版覆盖小型网站。目前没有公开收入数据，但类似SaaS工具定价为每月29-99美元。&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;为什么在海外成立？&lt;/strong&gt;&lt;/p&gt;
+]]></content:encoded></item><item><title>AI代写SQL</title><link>https://radar.huadongpeng.com/posts/developer-goldmine/deep-dive-2026-05-12-1237/</link><pubDate>Tue, 12 May 2026 12:37:14 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/developer-goldmine/deep-dive-2026-05-12-1237/</guid><description>&lt;h2 id="效率痛点100字"&gt;效率痛点（100字）&lt;/h2&gt;
+&lt;p&gt;你每天花20分钟手写SQL查报表，一周就是100分钟，一个月浪费7小时。更惨的是，突然要查你不熟的关联表、窗口函数，卡住30分钟才憋出来。一个外包群SQL代写单子50元/条，你本来能接，却因为效率低错过。&lt;/p&gt;
+&lt;h2 id="自动化提效方案"&gt;自动化/提效方案&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;工具链架构&lt;/strong&gt;：Ollama（本地大模型）+ LangChain（AI框架）+ PostgreSQL（数据库）。Ollama在你的电脑上跑AI，LangChain把自然语言翻译成SQL，直接执行返回结果。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;从安装到首次运行的完整步骤&lt;/strong&gt;：&lt;/p&gt;
 &lt;ol&gt;
-&lt;li&gt;海外网站主对AI爬虫的版权和内容安全高度敏感（训练数据争议、内容被抄袭）。&lt;/li&gt;
-&lt;li&gt;海外SEO社区活跃，站长习惯用工具分析流量来源。&lt;/li&gt;
-&lt;li&gt;海外企业AI代理使用率高，需要监控这些代理的行为。&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p&gt;&lt;strong&gt;为什么国内没人做/做不好？&lt;/strong&gt;&lt;/p&gt;
+&lt;li&gt;
+&lt;p&gt;安装Ollama&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;真壁垒：需要能解析并识别自定义User-Agent字符串的规则库，以及维护爬虫指纹数据库。AI代理变种快，需要持续投入。&lt;/li&gt;
-&lt;li&gt;伪壁垒：站长普遍意识到AI机器人在爬自己网站但不知道如何监控。国内没有类似工具完全是因为没人想到做这个细分市场。&lt;/li&gt;
+&lt;li&gt;Mac：&lt;code&gt;brew install ollama&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;Windows：下载ollama.com的安装包，双击运行&lt;/li&gt;
+&lt;li&gt;启动服务：&lt;code&gt;ollama serve&lt;/code&gt;（新终端窗口）&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id="搬运路径"&gt;搬运路径&lt;/h2&gt;
-&lt;h3 id="最小搬运方案适配3个关键点"&gt;最小搬运方案：适配3个关键点&lt;/h3&gt;
-&lt;ol&gt;
-&lt;li&gt;语言与本地化：将界面和报告翻译成中文，聚焦国内站长关心的AI代理（如文心一言、Kimi、通义千问的爬虫特征）。&lt;/li&gt;
-&lt;li&gt;部署方式：从SaaS改为WordPress插件形式，因为国内站长大多用WordPress搭建企业站，插件安装门槛低。&lt;/li&gt;
-&lt;li&gt;变现方式：基础版免费+专业版按网站月PV收费，而非按月订阅，更符合国内站长付费习惯。&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h3 id="day1-3验证清单"&gt;Day1-3验证清单&lt;/h3&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;下载模型（推荐qwen2.5-coder:7b，中文好且轻量）&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Day1&lt;/strong&gt;：打开Known Agents官网，注册免费账号，随便输入一个你自己的个人网站域名，看它返回什么信息。观察它的功能是否简单实用。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Day2&lt;/strong&gt;：用Chrome开发者工具（F12）查看Known Agents的请求包，了解它如何获取数据。同时，在WordPress插件市场搜索AI bot monitor tracking，看有没有类似插件。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Day3&lt;/strong&gt;：在公众号或知乎发表文章《我的网站每天都在被哪些AI机器人爬？实测发现惊人》，观察阅读量和评论。如果有人追问怎么查，就是需求验证通过。&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;ollama pull qwen2.5-coder:7b&lt;/code&gt; （等待5-15分钟）&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h3 id="工具和平台"&gt;工具和平台&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;推荐平台&lt;/strong&gt;：WordPress插件开发，搭配码市或猪八戒接外包定制单。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;注册步骤&lt;/strong&gt;：1. 注册一个WordPress.org开发者账号（免费）。2. 安装本地开发环境（如Local by Flywheel）。3. 下载Known Agents的免费版或试用版，查看其功能结构。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id="变现路径"&gt;变现路径&lt;/h2&gt;
-&lt;h3 id="路径一wordpress插件免费增值"&gt;路径一：WordPress插件免费+增值&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;启动成本&lt;/strong&gt;：0元（自有电脑+时间）&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;时间投入&lt;/strong&gt;：初始开发约20小时，之后每月维护5小时&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;预期时间线&lt;/strong&gt;：第1-2周开发核心功能，第3周上架，第4周开始有收入&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;预期首周收益&lt;/strong&gt;：0元（验证期），首月收益预估0-500元（若成功带来20个网站安装广告显示）&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;操作步骤：&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;开发一个WordPress插件，功能：在后台仪表盘显示过去7天内AI爬虫访问次数、排名前三的AI公司、占用带宽。&lt;/li&gt;
-&lt;li&gt;免费版只显示最近48小时数据，专业版显示全部历史（定价49元/年）。&lt;/li&gt;
-&lt;li&gt;上传至WordPress插件市场，同时写宣传文章发到微信公众号。&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h3 id="路径二网站安全咨询与报告"&gt;路径二：网站安全咨询与报告&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;启动成本&lt;/strong&gt;：0元（利用已知客户）&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;时间投入&lt;/strong&gt;：每单1-3小时&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;预期时间线&lt;/strong&gt;：有人询问后立即开始&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;预期首周收益&lt;/strong&gt;：0元（需先获信任），第一单可收200-500元&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;操作步骤：&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;主动联系朋友或本地小微企业的网站，用Known Agents免费版扫描他们的网站。&lt;/li&gt;
-&lt;li&gt;出具一份简单的PDF报告，告诉他们有哪些AI爬虫在监控他们。&lt;/li&gt;
-&lt;li&gt;告知问题严重性，提供定制拦截脚本或规则服务，开价200元。&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h2 id="风险提示"&gt;风险提示&lt;/h2&gt;
-&lt;ol&gt;
-&lt;li&gt;&lt;strong&gt;政策风险&lt;/strong&gt;：WordPress插件需要备案主体才能上架。一旦插件收集用户网站访问日志，需注意《网络安全法》关于个人信息和日志留存的规定。规避办法：明在插件说明中写清只统计User-Agent和ip段，不存储页面内容。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;平台风险&lt;/strong&gt;：WordPress插件市场审核日趋严格，如果功能太像监控工具可能被拒。对策：先以“流量统计增强”名义上报，通过后更新添加AI爬虫细分功能。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;竞争风险&lt;/strong&gt;：国内站长生态不如海外活跃，核心用户可能只有几千人。但现在完全没有竞品，只要能在知乎SEO关键字“AI爬虫监控”做到第一就有稳定流量。&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h2 id="你现在就能做的事"&gt;你现在就能做的事&lt;/h2&gt;
-&lt;p&gt;打开Known Agents官网（knownagents.com），免费注册，随便输入一个你自己的网站域名，看看有什么结果。然后去WordPress插件市场搜AI bot monitor，确认国内没有同类免费插件。&lt;/p&gt;</description><content:encoded><![CDATA[<h2 id="源头还原">源头还原</h2>
-<p><strong>什么产品/模式/服务？</strong>
-Known Agents（knownagents.com）是一个网站工具，能自动识别并追踪所有访问你网站的AI代理和机器人。它显示哪些AI公司（如OpenAI、Anthropic、Google）的爬虫访问了你的页面、频率、消耗的带宽。核心功能：仪表盘展示AI代理流量占比、按公司分类统计、实时警报。</p>
-<p><strong>哪个国家/平台？谁在做？什么数据？</strong>
-美国创业团队，创始人之前在Cloudflare做安全产品。2026年4月上线，两周内获得约3000个注册用户，免费版覆盖小型网站。目前没有公开收入数据，但类似SaaS工具定价为每月29-99美元。</p>
-<p><strong>为什么在海外成立？</strong></p>
-<ol>
-<li>海外网站主对AI爬虫的版权和内容安全高度敏感（训练数据争议、内容被抄袭）。</li>
-<li>海外SEO社区活跃，站长习惯用工具分析流量来源。</li>
-<li>海外企业AI代理使用率高，需要监控这些代理的行为。</li>
-</ol>
-<p><strong>为什么国内没人做/做不好？</strong></p>
-<ul>
-<li>真壁垒：需要能解析并识别自定义User-Agent字符串的规则库，以及维护爬虫指纹数据库。AI代理变种快，需要持续投入。</li>
-<li>伪壁垒：站长普遍意识到AI机器人在爬自己网站但不知道如何监控。国内没有类似工具完全是因为没人想到做这个细分市场。</li>
-</ul>
-<h2 id="搬运路径">搬运路径</h2>
-<h3 id="最小搬运方案适配3个关键点">最小搬运方案：适配3个关键点</h3>
-<ol>
-<li>语言与本地化：将界面和报告翻译成中文，聚焦国内站长关心的AI代理（如文心一言、Kimi、通义千问的爬虫特征）。</li>
-<li>部署方式：从SaaS改为WordPress插件形式，因为国内站长大多用WordPress搭建企业站，插件安装门槛低。</li>
-<li>变现方式：基础版免费+专业版按网站月PV收费，而非按月订阅，更符合国内站长付费习惯。</li>
-</ol>
-<h3 id="day1-3验证清单">Day1-3验证清单</h3>
-<ul>
-<li><strong>Day1</strong>：打开Known Agents官网，注册免费账号，随便输入一个你自己的个人网站域名，看它返回什么信息。观察它的功能是否简单实用。</li>
-<li><strong>Day2</strong>：用Chrome开发者工具（F12）查看Known Agents的请求包，了解它如何获取数据。同时，在WordPress插件市场搜索AI bot monitor tracking，看有没有类似插件。</li>
-<li><strong>Day3</strong>：在公众号或知乎发表文章《我的网站每天都在被哪些AI机器人爬？实测发现惊人》，观察阅读量和评论。如果有人追问怎么查，就是需求验证通过。</li>
-</ul>
-<h3 id="工具和平台">工具和平台</h3>
-<ul>
-<li><strong>推荐平台</strong>：WordPress插件开发，搭配码市或猪八戒接外包定制单。</li>
-<li><strong>注册步骤</strong>：1. 注册一个WordPress.org开发者账号（免费）。2. 安装本地开发环境（如Local by Flywheel）。3. 下载Known Agents的免费版或试用版，查看其功能结构。</li>
-</ul>
-<h2 id="变现路径">变现路径</h2>
-<h3 id="路径一wordpress插件免费增值">路径一：WordPress插件免费+增值</h3>
-<ul>
-<li><strong>启动成本</strong>：0元（自有电脑+时间）</li>
-<li><strong>时间投入</strong>：初始开发约20小时，之后每月维护5小时</li>
-<li><strong>预期时间线</strong>：第1-2周开发核心功能，第3周上架，第4周开始有收入</li>
-<li><strong>预期首周收益</strong>：0元（验证期），首月收益预估0-500元（若成功带来20个网站安装广告显示）</li>
-</ul>
-<p>操作步骤：</p>
-<ol>
-<li>开发一个WordPress插件，功能：在后台仪表盘显示过去7天内AI爬虫访问次数、排名前三的AI公司、占用带宽。</li>
-<li>免费版只显示最近48小时数据，专业版显示全部历史（定价49元/年）。</li>
-<li>上传至WordPress插件市场，同时写宣传文章发到微信公众号。</li>
-</ol>
-<h3 id="路径二网站安全咨询与报告">路径二：网站安全咨询与报告</h3>
-<ul>
-<li><strong>启动成本</strong>：0元（利用已知客户）</li>
-<li><strong>时间投入</strong>：每单1-3小时</li>
-<li><strong>预期时间线</strong>：有人询问后立即开始</li>
-<li><strong>预期首周收益</strong>：0元（需先获信任），第一单可收200-500元</li>
-</ul>
-<p>操作步骤：</p>
-<ol>
-<li>主动联系朋友或本地小微企业的网站，用Known Agents免费版扫描他们的网站。</li>
-<li>出具一份简单的PDF报告，告诉他们有哪些AI爬虫在监控他们。</li>
-<li>告知问题严重性，提供定制拦截脚本或规则服务，开价200元。</li>
-</ol>
-<h2 id="风险提示">风险提示</h2>
-<ol>
-<li><strong>政策风险</strong>：WordPress插件需要备案主体才能上架。一旦插件收集用户网站访问日志，需注意《网络安全法》关于个人信息和日志留存的规定。规避办法：明在插件说明中写清只统计User-Agent和ip段，不存储页面内容。</li>
-<li><strong>平台风险</strong>：WordPress插件市场审核日趋严格，如果功能太像监控工具可能被拒。对策：先以“流量统计增强”名义上报，通过后更新添加AI爬虫细分功能。</li>
-<li><strong>竞争风险</strong>：国内站长生态不如海外活跃，核心用户可能只有几千人。但现在完全没有竞品，只要能在知乎SEO关键字“AI爬虫监控”做到第一就有稳定流量。</li>
-</ol>
-<h2 id="你现在就能做的事">你现在就能做的事</h2>
-<p>打开Known Agents官网（knownagents.com），免费注册，随便输入一个你自己的网站域名，看看有什么结果。然后去WordPress插件市场搜AI bot monitor，确认国内没有同类免费插件。</p>
-]]></content:encoded></item><item><title>可灵AI视频制作</title><link>https://radar.huadongpeng.com/posts/china-going-global/deep-dive-2026-05-12-1129/</link><pubDate>Tue, 12 May 2026 11:29:53 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/china-going-global/deep-dive-2026-05-12-1129/</guid><description>&lt;h2 id="目标市场画像"&gt;目标市场画像&lt;/h2&gt;
-&lt;p&gt;快手旗下的可灵AI（Kling AI）是一款专注AI视频生成的工具，2026年5月传出计划分拆独立融资20亿美元。&lt;strong&gt;为什么选这个平台：&lt;/strong&gt; 它面向全球用户（尤其中国和东南亚），支持文本/图片生成视频，操作门槛极低（手机或电脑皆可）。目前竞争度低——相比Runway等海外工具，可灵AI免费额度更足（每天3条视频）。适合卖什么？1）短视频营销素材：给淘宝卖家生成产品演示视频（客单价50-200元）；2）动态头像/表情包：在闲鱼或微信接单（单价5-20元）；3）自媒体内容：生成搞笑/科普短视频，发布到抖音赚流量。&lt;/p&gt;
-&lt;h2 id="从零到上线的每一步"&gt;从零到上线的每一步&lt;/h2&gt;
-&lt;h3 id="step-1注册"&gt;Step 1：注册&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;用国内手机号注册快手账号，或直接访问可灵AI官网（ling.kuaishou.com）。&lt;/li&gt;
-&lt;li&gt;需要：手机号 + 验证码，无需身份证。&lt;/li&gt;
-&lt;li&gt;截图步骤：打开官网 → 点击“开始创作” → 输入手机号 → 获取验证码 → 设置密码。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id="step-2配置"&gt;Step 2：配置&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;登录后进入“文生视频”或“图生视频”界面。&lt;/li&gt;
-&lt;li&gt;设置：选择“创意模式”，输入提示词（如“一只猫在键盘上跳舞”），生成时长选5秒。&lt;/li&gt;
-&lt;li&gt;常见坑：提示词不要太长（25字以内），否则生成混乱。用中文或英文均可，英文更稳定。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id="step-3上架发布"&gt;Step 3：上架/发布&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;生成的视频可直接下载（MP4格式，1080p）。&lt;/li&gt;
-&lt;li&gt;审核：无需审核，生成即出。仅需注意不要生成涉及政治/色情内容，否则账号会封禁。&lt;/li&gt;
-&lt;li&gt;时效：生成1条视频平均耗时2分钟。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id="step-4接单收款"&gt;Step 4：接单/收款&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;接单渠道：&lt;/strong&gt; 闲鱼（搜索“AI视频制作”参考同行定价）或淘宝（开店定价9.9元/条）。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;收款：&lt;/strong&gt; 闲鱼支持支付宝，淘宝支持支付宝和银行卡。回款周期：买家收货后即时到账。手续费：闲鱼0.6%，支付宝免费。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;高客单价路径：&lt;/strong&gt; 在Fiverr（翻墙注册）卖“AI Product Video”，定价5-20美元/条，通过Payoneer提现至国内银行卡（手续费1%）。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id="工具链推荐"&gt;工具链推荐&lt;/h2&gt;
-&lt;ol&gt;
-&lt;li&gt;&lt;strong&gt;可灵AI（免费）&lt;/strong&gt;：生成视频主体。替代品：剪映AI（免费，但功能弱）。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;讯飞语音合成（免费）&lt;/strong&gt;：为视频配音。用途：添加中文或英文旁白。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;CapCut（剪映国际版，免费）&lt;/strong&gt;：剪辑视频，添加字幕和背景音乐。替代品：DaVinci Resolve（免费，但学习曲线陡）。&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h2 id="避坑清单"&gt;避坑清单&lt;/h2&gt;
-&lt;ol&gt;
-&lt;li&gt;&lt;strong&gt;账号封禁&lt;/strong&gt;：不要生成涉及名人、政治、暴力内容。每天生成数限制为3条连续禁止会导致临时封禁（24小时解封）。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;版权问题&lt;/strong&gt;：若生成视频含明显商标（如可口可乐标志），发布后可能被投诉删除。避免商业元素。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;接单诈骗&lt;/strong&gt;：闲鱼上常有买家说“你视频水印太重”。生成时默认无水印，但建议在剪辑时加自己logo防盗。&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h2 id="成本拆解"&gt;成本拆解&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;启动成本：0元&lt;/strong&gt;（手机号即可）。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;月度运营成本：0元&lt;/strong&gt;（免费额度足够，若需大量生成可买会员：19元/月）。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;预期回本周期：&lt;/strong&gt; 第一天即可开始接单。假设每天生成3条视频，发布到闲鱼，若每条定价10元，日收入30元，3天回本（若买会员）。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;预期首周收益：210元&lt;/strong&gt;（假设每天卖出3条），需投入时间每天1-2小时。&lt;/li&gt;
-&lt;/ul&gt;</description><content:encoded><![CDATA[<h2 id="目标市场画像">目标市场画像</h2>
-<p>快手旗下的可灵AI（Kling AI）是一款专注AI视频生成的工具，2026年5月传出计划分拆独立融资20亿美元。<strong>为什么选这个平台：</strong> 它面向全球用户（尤其中国和东南亚），支持文本/图片生成视频，操作门槛极低（手机或电脑皆可）。目前竞争度低——相比Runway等海外工具，可灵AI免费额度更足（每天3条视频）。适合卖什么？1）短视频营销素材：给淘宝卖家生成产品演示视频（客单价50-200元）；2）动态头像/表情包：在闲鱼或微信接单（单价5-20元）；3）自媒体内容：生成搞笑/科普短视频，发布到抖音赚流量。</p>
-<h2 id="从零到上线的每一步">从零到上线的每一步</h2>
-<h3 id="step-1注册">Step 1：注册</h3>
-<ul>
-<li>用国内手机号注册快手账号，或直接访问可灵AI官网（ling.kuaishou.com）。</li>
-<li>需要：手机号 + 验证码，无需身份证。</li>
-<li>截图步骤：打开官网 → 点击“开始创作” → 输入手机号 → 获取验证码 → 设置密码。</li>
-</ul>
-<h3 id="step-2配置">Step 2：配置</h3>
-<ul>
-<li>登录后进入“文生视频”或“图生视频”界面。</li>
-<li>设置：选择“创意模式”，输入提示词（如“一只猫在键盘上跳舞”），生成时长选5秒。</li>
-<li>常见坑：提示词不要太长（25字以内），否则生成混乱。用中文或英文均可，英文更稳定。</li>
-</ul>
-<h3 id="step-3上架发布">Step 3：上架/发布</h3>
-<ul>
-<li>生成的视频可直接下载（MP4格式，1080p）。</li>
-<li>审核：无需审核，生成即出。仅需注意不要生成涉及政治/色情内容，否则账号会封禁。</li>
-<li>时效：生成1条视频平均耗时2分钟。</li>
-</ul>
-<h3 id="step-4接单收款">Step 4：接单/收款</h3>
-<ul>
-<li><strong>接单渠道：</strong> 闲鱼（搜索“AI视频制作”参考同行定价）或淘宝（开店定价9.9元/条）。</li>
-<li><strong>收款：</strong> 闲鱼支持支付宝，淘宝支持支付宝和银行卡。回款周期：买家收货后即时到账。手续费：闲鱼0.6%，支付宝免费。</li>
-<li><strong>高客单价路径：</strong> 在Fiverr（翻墙注册）卖“AI Product Video”，定价5-20美元/条，通过Payoneer提现至国内银行卡（手续费1%）。</li>
-</ul>
-<h2 id="工具链推荐">工具链推荐</h2>
-<ol>
-<li><strong>可灵AI（免费）</strong>：生成视频主体。替代品：剪映AI（免费，但功能弱）。</li>
-<li><strong>讯飞语音合成（免费）</strong>：为视频配音。用途：添加中文或英文旁白。</li>
-<li><strong>CapCut（剪映国际版，免费）</strong>：剪辑视频，添加字幕和背景音乐。替代品：DaVinci Resolve（免费，但学习曲线陡）。</li>
-</ol>
-<h2 id="避坑清单">避坑清单</h2>
-<ol>
-<li><strong>账号封禁</strong>：不要生成涉及名人、政治、暴力内容。每天生成数限制为3条连续禁止会导致临时封禁（24小时解封）。</li>
-<li><strong>版权问题</strong>：若生成视频含明显商标（如可口可乐标志），发布后可能被投诉删除。避免商业元素。</li>
-<li><strong>接单诈骗</strong>：闲鱼上常有买家说“你视频水印太重”。生成时默认无水印，但建议在剪辑时加自己logo防盗。</li>
-</ol>
-<h2 id="成本拆解">成本拆解</h2>
-<ul>
-<li><strong>启动成本：0元</strong>（手机号即可）。</li>
-<li><strong>月度运营成本：0元</strong>（免费额度足够，若需大量生成可买会员：19元/月）。</li>
-<li><strong>预期回本周期：</strong> 第一天即可开始接单。假设每天生成3条视频，发布到闲鱼，若每条定价10元，日收入30元，3天回本（若买会员）。</li>
-<li><strong>预期首周收益：210元</strong>（假设每天卖出3条），需投入时间每天1-2小时。</li>
-</ul>
-]]></content:encoded></item><item><title>卖视频搜索</title><link>https://radar.huadongpeng.com/posts/arbitrage-radar/deep-dive-2026-05-12-1127/</link><pubDate>Tue, 12 May 2026 11:27:52 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/arbitrage-radar/deep-dive-2026-05-12-1127/</guid><description>&lt;h1 id="为什么视频搜索是门好生意"&gt;为什么视频搜索是门好生意&lt;/h1&gt;
-&lt;p&gt;抱怨原文：&amp;ldquo;It&amp;rsquo;s pretty much impossible to search for something on YouTube, as there are only 5 or 6 relevant videos when you&amp;rsquo;re looking for some stuff, and then it&amp;rsquo;s all completely unrelated content.&amp;rdquo; 这条帖子在Hacker News上引发了数十条共鸣评论——像&amp;rsquo;编程教程&amp;rsquo;、&amp;lsquo;物理实验&amp;rsquo;这些细分领域，YouTube搜索根本不出好结果。&lt;/p&gt;
-&lt;p&gt;背后的机会很简单：YouTube搜索算法偏向热门和娱乐内容，忽略了专业化长尾需求。做一个小而美的垂直视频搜索，不是造搜索引擎，而是做&amp;rsquo;人工筛选器&amp;rsquo;。你不需要懂AI，只需要愿意花时间看视频，然后贴链接。&lt;/p&gt;
-&lt;h2 id="day1-7-执行"&gt;Day1-7 执行&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;Day1（20分钟）：&lt;/strong&gt; 打开Hacker News的原始抱怨帖子，数一数评论区有多少人在表达类似不满。截图留存，这是需求验证。&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Day2（30分钟）：&lt;/strong&gt; 确定一个垂直领域（比如&amp;rsquo;前端面试题视频&amp;rsquo;）。打开YouTube，用该关键词搜索，记录前10个视频的标题和链接。
-&lt;strong&gt;Day3（30分钟）：&lt;/strong&gt; 注册一个免费GitHub账号，创建一个公开仓库，启用GitHub Pages。写一个简单的HTML页面，把Day2的10个视频嵌入成链接列表。
-&lt;strong&gt;Day4（30分钟）：&lt;/strong&gt; 在页面底部加一个表单（可用Google Forms或JotForm免费版），收集用户请求：“你想要的视频没找到？告诉我关键词”。
-&lt;strong&gt;Day5（20分钟）：&lt;/strong&gt; 在V2EX/Reddit的对应垂直板块（如/r/Frontend）发布你的页面链接，标题写“我整理了一份前端面试视频合集，附搜索补充”。
-&lt;strong&gt;Day6（30分钟）：&lt;/strong&gt; 查看表单反馈，把用户提到最多的关键词，再去YouTube搜一遍，更新到页面。
-&lt;strong&gt;Day7（20分钟）：&lt;/strong&gt; 用Google Analytics（免费）或开源的Umami自建分析，看看页面访问量。如果访问量超过200，说明需求真实。&lt;/p&gt;
-&lt;h2 id="工具清单"&gt;工具清单&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;GitHub Pages：免费，国内可访问&lt;/li&gt;
-&lt;li&gt;YouTube API：免费，需申请密钥，也可手动复制链接&lt;/li&gt;
-&lt;li&gt;JotForm免费版：每月100次表单提交&lt;/li&gt;
-&lt;li&gt;Google Analytics：免费&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;如果付费：无必要，全部免费。&lt;/p&gt;
-&lt;h2 id="收益预估"&gt;收益预估&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;保守（做对但无运气）：&lt;/strong&gt; 首月0元。但积累了100个真实公众号/群聊私域用户，可卖广告位或接视频制作需求。
-计算逻辑：每天坚持更新1次，3个月后能稳定100次访问/天，10元/周的广告费，月入40元。&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;中等（一般情况）：&lt;/strong&gt; 首月200元。通过页面打赏（爱发电）或视频制作代找服务，收费5元/次。
-计算逻辑：页面访问500次/天，1%转化率即5单/天，5元x5单x30天=750元。但扣除零散时间，实际到手约200元。&lt;/p&gt;</description><content:encoded><![CDATA[<h1 id="为什么视频搜索是门好生意">为什么视频搜索是门好生意</h1>
-<p>抱怨原文：&ldquo;It&rsquo;s pretty much impossible to search for something on YouTube, as there are only 5 or 6 relevant videos when you&rsquo;re looking for some stuff, and then it&rsquo;s all completely unrelated content.&rdquo; 这条帖子在Hacker News上引发了数十条共鸣评论——像&rsquo;编程教程&rsquo;、&lsquo;物理实验&rsquo;这些细分领域，YouTube搜索根本不出好结果。</p>
-<p>背后的机会很简单：YouTube搜索算法偏向热门和娱乐内容，忽略了专业化长尾需求。做一个小而美的垂直视频搜索，不是造搜索引擎，而是做&rsquo;人工筛选器&rsquo;。你不需要懂AI，只需要愿意花时间看视频，然后贴链接。</p>
-<h2 id="day1-7-执行">Day1-7 执行</h2>
-<p><strong>Day1（20分钟）：</strong> 打开Hacker News的原始抱怨帖子，数一数评论区有多少人在表达类似不满。截图留存，这是需求验证。</p>
-<p><strong>Day2（30分钟）：</strong> 确定一个垂直领域（比如&rsquo;前端面试题视频&rsquo;）。打开YouTube，用该关键词搜索，记录前10个视频的标题和链接。
-<strong>Day3（30分钟）：</strong> 注册一个免费GitHub账号，创建一个公开仓库，启用GitHub Pages。写一个简单的HTML页面，把Day2的10个视频嵌入成链接列表。
-<strong>Day4（30分钟）：</strong> 在页面底部加一个表单（可用Google Forms或JotForm免费版），收集用户请求：“你想要的视频没找到？告诉我关键词”。
-<strong>Day5（20分钟）：</strong> 在V2EX/Reddit的对应垂直板块（如/r/Frontend）发布你的页面链接，标题写“我整理了一份前端面试视频合集，附搜索补充”。
-<strong>Day6（30分钟）：</strong> 查看表单反馈，把用户提到最多的关键词，再去YouTube搜一遍，更新到页面。
-<strong>Day7（20分钟）：</strong> 用Google Analytics（免费）或开源的Umami自建分析，看看页面访问量。如果访问量超过200，说明需求真实。</p>
-<h2 id="工具清单">工具清单</h2>
-<ul>
-<li>GitHub Pages：免费，国内可访问</li>
-<li>YouTube API：免费，需申请密钥，也可手动复制链接</li>
-<li>JotForm免费版：每月100次表单提交</li>
-<li>Google Analytics：免费</li>
-</ul>
-<p>如果付费：无必要，全部免费。</p>
-<h2 id="收益预估">收益预估</h2>
-<p><strong>保守（做对但无运气）：</strong> 首月0元。但积累了100个真实公众号/群聊私域用户，可卖广告位或接视频制作需求。
-计算逻辑：每天坚持更新1次，3个月后能稳定100次访问/天，10元/周的广告费，月入40元。</p>
-<p><strong>中等（一般情况）：</strong> 首月200元。通过页面打赏（爱发电）或视频制作代找服务，收费5元/次。
-计算逻辑：页面访问500次/天，1%转化率即5单/天，5元x5单x30天=750元。但扣除零散时间，实际到手约200元。</p>
-<p><strong>乐观（踩中风口）：</strong> 首月1000元。你的垂直领域被某个大V发现并转发，日访问量破万，接软文广告。
-计算逻辑：广告主愿花500元/次，接2次/月，外加用户视频制作订单（50元/部×10部=500元）。</p>
-<h2 id="3个最易踩坑">3个最易踩坑</h2>
-<ol>
-<li><strong>选错垂直项：</strong> 别选&rsquo;电影解说&rsquo;这种泛领域，YouTube搜索已经很好了。选极窄如&rsquo;用Blender做硬表面建模教程&rsquo;。</li>
-<li><strong>过早开发：</strong> 别一上来就写数据库和后端。用纯静态页面+手动更新，能撑住100个视频没问题。</li>
-<li><strong>不收集反馈：</strong> 做了页面就停止更新是最常见的死法。必须每天看表单，补用户要的内容。</li>
-</ol>
-<h2 id="延伸资源">延伸资源</h2>
-<ol>
-<li>YouTube频道：&ldquo;Ali Abdaal&rdquo; 的《How to Start a Niche Website》系列，B站有搬运。</li>
-<li>免费课程：《Learn HTML &amp; CSS》 on freeCodeCamp B站频道。</li>
-<li>社群：V2EX的&rsquo;创业&rsquo;节点，每周都有真实需求讨论。</li>
-</ol>
-]]></content:encoded></item><item><title>Goose免费AI编程</title><link>https://radar.huadongpeng.com/posts/ai-frontier/deep-dive-2026-05-12-1127/</link><pubDate>Tue, 12 May 2026 11:27:40 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/ai-frontier/deep-dive-2026-05-12-1127/</guid><description>&lt;h2 id="工具卡片"&gt;工具卡片&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;名称：Goose&lt;/li&gt;
-&lt;li&gt;网址：GitHub搜索Goose AI&lt;/li&gt;
-&lt;li&gt;定价：完全免费&lt;/li&gt;
-&lt;li&gt;竞品：Claude Code（$200/月）、GitHub Copilot（$10/月）&lt;/li&gt;
-&lt;li&gt;上手难度：2/5（需基础命令行操作）&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id="goose能做什么"&gt;Goose能做什么？&lt;/h2&gt;
-&lt;p&gt;Goose是一个终端AI代理，可以用自然语言让你编写、调试、部署代码。它直接运行在终端，不需要额外IDE插件。对于28-38岁有编程基础但失业或焦虑的开发者，这是零成本建立AI辅助编程能力的好机会。&lt;/p&gt;
-&lt;h3 id="解决什么痛点"&gt;解决什么痛点&lt;/h3&gt;
-&lt;p&gt;你正在处理一个项目，需要快速写一个脚本或修复一个bug。传统做法：谷歌搜索→复制代码→调试。半小时起步。Goose：你说需求→它直接执行→出结果。节省时间至少70%。&lt;/p&gt;
-&lt;h3 id="完整上手流程"&gt;完整上手流程&lt;/h3&gt;
-&lt;ol&gt;
-&lt;li&gt;打开GitHub，搜索&amp;quot;Goose AI&amp;quot;，进入官方仓库&lt;/li&gt;
-&lt;li&gt;根据你的系统（Windows/macOS/Linux）下载安装包&lt;/li&gt;
-&lt;li&gt;安装完成后，打开终端（Windows用PowerShell，macOS/Linux用Terminal）&lt;/li&gt;
-&lt;li&gt;输入&lt;code&gt;goose&lt;/code&gt;启动&lt;/li&gt;
-&lt;li&gt;输入你的需求，比如&amp;quot;写一个Python脚本，读取当前文件夹所有CSV文件，合并成一个Excel&amp;quot;&lt;/li&gt;
-&lt;li&gt;它会自动安装依赖、写代码、运行并输出结果&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h3 id="三个进阶技巧"&gt;三个进阶技巧&lt;/h3&gt;
-&lt;ol&gt;
-&lt;li&gt;&lt;strong&gt;指定模型&lt;/strong&gt;：Goose默认用本地模型，但你可以配置它调用免费API（如OpenRouter）以获得更稳定输出&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;多步任务&lt;/strong&gt;：一次对话可以完成多个步骤，比如&amp;quot;先下载数据，然后清洗，最后画图&amp;quot;&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;调试模式&lt;/strong&gt;：如果代码出错，直接说&amp;quot;修复这个错误&amp;quot;，Goose会自动分析错误日志并修正&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h3 id="常见错误排障"&gt;常见错误排障&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;错误：找不到命令&lt;/strong&gt; → 检查是否添加到系统PATH&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;错误：网络超时&lt;/strong&gt; → 使用国内镜像源（在配置文件中添加镜像地址）&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;错误：模型下载慢&lt;/strong&gt; → 使用HuggingFace镜像（在环境变量设置HF_MIRROR）&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id="适合谁不适合谁"&gt;适合谁/不适合谁&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;适合&lt;/strong&gt;：有基础代码能力、愿意学习新工具、预算紧张的开发者&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;不适合&lt;/strong&gt;：完全不会命令行、期望一键生成复杂生产级应用的人&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id="对比竞品"&gt;对比竞品&lt;/h3&gt;
-&lt;table&gt;
-&lt;thead&gt;
-&lt;tr&gt;
-&lt;th&gt;维度&lt;/th&gt;
-&lt;th&gt;Goose&lt;/th&gt;
-&lt;th&gt;Claude Code&lt;/th&gt;
-&lt;th&gt;GitHub Copilot&lt;/th&gt;
-&lt;/tr&gt;
-&lt;/thead&gt;
-&lt;tbody&gt;
-&lt;tr&gt;
-&lt;td&gt;价格&lt;/td&gt;
-&lt;td&gt;免费&lt;/td&gt;
-&lt;td&gt;$200/月&lt;/td&gt;
-&lt;td&gt;$10/月&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;功能&lt;/td&gt;
-&lt;td&gt;写/调试/部署&lt;/td&gt;
-&lt;td&gt;同&lt;/td&gt;
-&lt;td&gt;代码补全&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;速度&lt;/td&gt;
-&lt;td&gt;中（依赖网络）&lt;/td&gt;
-&lt;td&gt;快&lt;/td&gt;
-&lt;td&gt;极快&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;上手&lt;/td&gt;
-&lt;td&gt;终端操作&lt;/td&gt;
-&lt;td&gt;终端操作&lt;/td&gt;
-&lt;td&gt;IDE集成&lt;/td&gt;
-&lt;/tr&gt;
-&lt;tr&gt;
-&lt;td&gt;中文支持&lt;/td&gt;
-&lt;td&gt;好（模型决定）&lt;/td&gt;
-&lt;td&gt;好&lt;/td&gt;
-&lt;td&gt;好&lt;/td&gt;
-&lt;/tr&gt;
-&lt;/tbody&gt;
-&lt;/table&gt;
-&lt;h3 id="性价比结论"&gt;性价比结论&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;完全免费，功能对标付费产品。&lt;/strong&gt; 对于预算紧张的开发者，这是当前最佳选择。建议先花30分钟熟悉基础操作，每天用它完成一个小任务，一周内效率明显提升。启动成本：0元。时间投入：30分钟。首周预期收益：省去试错时间价值约200元（按小时换算）。&lt;/p&gt;</description><content:encoded><![CDATA[<h2 id="工具卡片">工具卡片</h2>
-<ul>
-<li>名称：Goose</li>
-<li>网址：GitHub搜索Goose AI</li>
-<li>定价：完全免费</li>
-<li>竞品：Claude Code（$200/月）、GitHub Copilot（$10/月）</li>
-<li>上手难度：2/5（需基础命令行操作）</li>
-</ul>
-<h2 id="goose能做什么">Goose能做什么？</h2>
-<p>Goose是一个终端AI代理，可以用自然语言让你编写、调试、部署代码。它直接运行在终端，不需要额外IDE插件。对于28-38岁有编程基础但失业或焦虑的开发者，这是零成本建立AI辅助编程能力的好机会。</p>
-<h3 id="解决什么痛点">解决什么痛点</h3>
-<p>你正在处理一个项目，需要快速写一个脚本或修复一个bug。传统做法：谷歌搜索→复制代码→调试。半小时起步。Goose：你说需求→它直接执行→出结果。节省时间至少70%。</p>
-<h3 id="完整上手流程">完整上手流程</h3>
-<ol>
-<li>打开GitHub，搜索&quot;Goose AI&quot;，进入官方仓库</li>
-<li>根据你的系统（Windows/macOS/Linux）下载安装包</li>
-<li>安装完成后，打开终端（Windows用PowerShell，macOS/Linux用Terminal）</li>
-<li>输入<code>goose</code>启动</li>
-<li>输入你的需求，比如&quot;写一个Python脚本，读取当前文件夹所有CSV文件，合并成一个Excel&quot;</li>
-<li>它会自动安装依赖、写代码、运行并输出结果</li>
-</ol>
-<h3 id="三个进阶技巧">三个进阶技巧</h3>
-<ol>
-<li><strong>指定模型</strong>：Goose默认用本地模型，但你可以配置它调用免费API（如OpenRouter）以获得更稳定输出</li>
-<li><strong>多步任务</strong>：一次对话可以完成多个步骤，比如&quot;先下载数据，然后清洗，最后画图&quot;</li>
-<li><strong>调试模式</strong>：如果代码出错，直接说&quot;修复这个错误&quot;，Goose会自动分析错误日志并修正</li>
-</ol>
-<h3 id="常见错误排障">常见错误排障</h3>
-<ul>
-<li><strong>错误：找不到命令</strong> → 检查是否添加到系统PATH</li>
-<li><strong>错误：网络超时</strong> → 使用国内镜像源（在配置文件中添加镜像地址）</li>
-<li><strong>错误：模型下载慢</strong> → 使用HuggingFace镜像（在环境变量设置HF_MIRROR）</li>
-</ul>
-<h3 id="适合谁不适合谁">适合谁/不适合谁</h3>
-<ul>
-<li><strong>适合</strong>：有基础代码能力、愿意学习新工具、预算紧张的开发者</li>
-<li><strong>不适合</strong>：完全不会命令行、期望一键生成复杂生产级应用的人</li>
-</ul>
-<h3 id="对比竞品">对比竞品</h3>
-<table>
-  <thead>
-      <tr>
-          <th>维度</th>
-          <th>Goose</th>
-          <th>Claude Code</th>
-          <th>GitHub Copilot</th>
-      </tr>
-  </thead>
-  <tbody>
-      <tr>
-          <td>价格</td>
-          <td>免费</td>
-          <td>$200/月</td>
-          <td>$10/月</td>
-      </tr>
-      <tr>
-          <td>功能</td>
-          <td>写/调试/部署</td>
-          <td>同</td>
-          <td>代码补全</td>
-      </tr>
-      <tr>
-          <td>速度</td>
-          <td>中（依赖网络）</td>
-          <td>快</td>
-          <td>极快</td>
-      </tr>
-      <tr>
-          <td>上手</td>
-          <td>终端操作</td>
-          <td>终端操作</td>
-          <td>IDE集成</td>
-      </tr>
-      <tr>
-          <td>中文支持</td>
-          <td>好（模型决定）</td>
-          <td>好</td>
-          <td>好</td>
-      </tr>
-  </tbody>
-</table>
-<h3 id="性价比结论">性价比结论</h3>
-<p><strong>完全免费，功能对标付费产品。</strong> 对于预算紧张的开发者，这是当前最佳选择。建议先花30分钟熟悉基础操作，每天用它完成一个小任务，一周内效率明显提升。启动成本：0元。时间投入：30分钟。首周预期收益：省去试错时间价值约200元（按小时换算）。</p>
-]]></content:encoded></item><item><title>Novastack路由</title><link>https://radar.huadongpeng.com/posts/developer-goldmine/deep-dive-2026-05-12-1127/</link><pubDate>Tue, 12 May 2026 11:27:36 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/developer-goldmine/deep-dive-2026-05-12-1127/</guid><description>&lt;h2 id="效率痛点"&gt;效率痛点&lt;/h2&gt;
-&lt;p&gt;每天花15分钟手动切换不同的AI模型API（Claude、GPT、Gemini）——修改参数、复制密钥、维护不同客户端库。一个月下来，这种重复操作消耗掉5个小时，相当于白白损失了500元（按100元/小时外包行情估算）。&lt;/p&gt;
-&lt;h2 id="自动化方案"&gt;自动化方案&lt;/h2&gt;
-&lt;h3 id="工具链架构"&gt;工具链架构&lt;/h3&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Novastack&lt;/strong&gt;：统一路由层，通过配置文件管理所有模型。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Python 3.8+&lt;/strong&gt;：运行环境。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h3 id="安装到首次运行"&gt;安装到首次运行&lt;/h3&gt;
-&lt;ol&gt;
-&lt;li&gt;安装Python 3.8+（如果已装则跳过）。&lt;/li&gt;
-&lt;li&gt;打开终端，执行：
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;pip install novastack
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;安装Python依赖&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;pip install langchain langchain-community psycopg2-binary
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
-&lt;li&gt;在项目目录创建文件&lt;code&gt;router.py&lt;/code&gt;：
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;from&lt;/span&gt; novastack &lt;span style="color:#f92672"&gt;import&lt;/span&gt; Router
+&lt;li&gt;
+&lt;p&gt;创建脚本 &lt;code&gt;sql_agent.py&lt;/code&gt;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;from&lt;/span&gt; langchain_community.llms &lt;span style="color:#f92672"&gt;import&lt;/span&gt; Ollama
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;from&lt;/span&gt; langchain_community.utilities &lt;span style="color:#f92672"&gt;import&lt;/span&gt; SQLDatabase
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;from&lt;/span&gt; langchain_community.agent_toolkits &lt;span style="color:#f92672"&gt;import&lt;/span&gt; create_sql_agent
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 配置密钥（从环境变量读取更安全）&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;router &lt;span style="color:#f92672"&gt;=&lt;/span&gt; Router({
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#e6db74"&gt;&amp;#39;openai&amp;#39;&lt;/span&gt;: {&lt;span style="color:#e6db74"&gt;&amp;#39;api_key&amp;#39;&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#39;sk-xxx&amp;#39;&lt;/span&gt;},
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#e6db74"&gt;&amp;#39;anthropic&amp;#39;&lt;/span&gt;: {&lt;span style="color:#e6db74"&gt;&amp;#39;api_key&amp;#39;&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#39;sk-ant-xxx&amp;#39;&lt;/span&gt;}
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;})
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 连接你的本地数据库&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;db &lt;span style="color:#f92672"&gt;=&lt;/span&gt; SQLDatabase&lt;span style="color:#f92672"&gt;.&lt;/span&gt;from_uri(&lt;span style="color:#e6db74"&gt;&amp;#34;postgresql://user:pass@localhost/dbname&amp;#34;&lt;/span&gt;)
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 定义任务&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;task &lt;span style="color:#f92672"&gt;=&lt;/span&gt; {&lt;span style="color:#e6db74"&gt;&amp;#39;prompt&amp;#39;&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#39;解释量子纠缠&amp;#39;&lt;/span&gt;, &lt;span style="color:#e6db74"&gt;&amp;#39;model&amp;#39;&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#39;gpt-4&amp;#39;&lt;/span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 加载本地模型&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;llm &lt;span style="color:#f92672"&gt;=&lt;/span&gt; Ollama(model&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;qwen2.5-coder:7b&amp;#34;&lt;/span&gt;)
 &lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 自动路由到GPT-4&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;result &lt;span style="color:#f92672"&gt;=&lt;/span&gt; router&lt;span style="color:#f92672"&gt;.&lt;/span&gt;route(task)
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;print(result[&lt;span style="color:#e6db74"&gt;&amp;#39;content&amp;#39;&lt;/span&gt;])
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 创建AI数据库助手&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;agent_executor &lt;span style="color:#f92672"&gt;=&lt;/span&gt; create_sql_agent(llm, db&lt;span style="color:#f92672"&gt;=&lt;/span&gt;db, verbose&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#66d9ef"&gt;True&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 开始对话&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;agent_executor&lt;span style="color:#f92672"&gt;.&lt;/span&gt;run(&lt;span style="color:#e6db74"&gt;&amp;#34;2026年5月的总销售额是多少？按月分组&amp;#34;&lt;/span&gt;)
 &lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/li&gt;
-&lt;li&gt;运行：&lt;code&gt;python router.py&lt;/code&gt;。&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;运行：&lt;code&gt;python sql_agent.py&lt;/code&gt;&lt;/p&gt;
+&lt;/li&gt;
 &lt;/ol&gt;
-&lt;h3 id="核心配置代码"&gt;核心配置代码&lt;/h3&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# router.py - 完整示例&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;from&lt;/span&gt; novastack &lt;span style="color:#f92672"&gt;import&lt;/span&gt; Router
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;router &lt;span style="color:#f92672"&gt;=&lt;/span&gt; Router({
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#e6db74"&gt;&amp;#39;openai&amp;#39;&lt;/span&gt;: {&lt;span style="color:#e6db74"&gt;&amp;#39;api_key&amp;#39;&lt;/span&gt;: os&lt;span style="color:#f92672"&gt;.&lt;/span&gt;environ[&lt;span style="color:#e6db74"&gt;&amp;#39;OPENAI_KEY&amp;#39;&lt;/span&gt;]}, &lt;span style="color:#75715e"&gt;# 从环境变量加载&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#e6db74"&gt;&amp;#39;anthropic&amp;#39;&lt;/span&gt;: {&lt;span style="color:#e6db74"&gt;&amp;#39;api_key&amp;#39;&lt;/span&gt;: os&lt;span style="color:#f92672"&gt;.&lt;/span&gt;environ[&lt;span style="color:#e6db74"&gt;&amp;#39;ANTHROPIC_KEY&amp;#39;&lt;/span&gt;]}
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;})
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 根据模型名动态选择&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;task &lt;span style="color:#f92672"&gt;=&lt;/span&gt; {
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#e6db74"&gt;&amp;#39;prompt&amp;#39;&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#39;写一封求职信&amp;#39;&lt;/span&gt;,
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#e6db74"&gt;&amp;#39;model&amp;#39;&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#39;claude-3-opus-20240229&amp;#39;&lt;/span&gt; &lt;span style="color:#75715e"&gt;# 换这里就能切换模型&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;response &lt;span style="color:#f92672"&gt;=&lt;/span&gt; router&lt;span style="color:#f92672"&gt;.&lt;/span&gt;route(task)
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;print(response[&lt;span style="color:#e6db74"&gt;&amp;#39;content&amp;#39;&lt;/span&gt;])
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id="效果量化"&gt;效果量化&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;核心配置说明&lt;/strong&gt;：把&amp;rsquo;user:pass&amp;rsquo;换成你的数据库用户名密码，&amp;rsquo;localhost/dbname&amp;rsquo;换成主机名和数据库名。&lt;/p&gt;
+&lt;h2 id="效果量化"&gt;效果量化&lt;/h2&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;优化前&lt;/strong&gt;：每次调用需手动编写请求代码+处理API错误。按每天调用10次，每次1.5分钟算：1.5分钟 × 10次/天 = 15分钟/天 = 5小时/月。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;优化后&lt;/strong&gt;：一次配置，每次调用只需改&lt;code&gt;model&lt;/code&gt;字段，30秒/次：0.5分钟 × 10次/天 = 5分钟/天 = 1.67小时/月。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;节省&lt;/strong&gt;：3.33小时/月，如果用来接外包（按100元/小时），价值333元/月。&lt;/li&gt;
+&lt;li&gt;优化前：20分钟/次 × 5次/天 = 100分钟/天 = 30小时/月&lt;/li&gt;
+&lt;li&gt;优化后：1分钟输入问题 + 2分钟等待 = 3分钟/次 × 5次/天 = 15分钟/天 = 7.5小时/月&lt;/li&gt;
+&lt;li&gt;节省：22.5小时/月 = 如果接外包SQL代写（50元/条）≈ 赚 3750元&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id="进阶技巧"&gt;进阶技巧&lt;/h2&gt;
 &lt;ol&gt;
-&lt;li&gt;&lt;strong&gt;负载均衡&lt;/strong&gt;：设置&lt;code&gt;weight&lt;/code&gt;参数按比例分配请求：&lt;code&gt;{'gpt-4': 0.7, 'claude-3': 0.3}&lt;/code&gt;，避免单个模型超限。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;自动重试&lt;/strong&gt;：启用&lt;code&gt;retry=True&lt;/code&gt;，当模型返回速率限制错误时自动换另一个模型重试，保证任务不中断。&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;回滚策略&lt;/strong&gt;：在配置中加&lt;code&gt;fallback&lt;/code&gt;字段，当首选模型失败时切换到低成本模型（如&lt;code&gt;gpt-3.5-turbo&lt;/code&gt;）。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;指定输出格式&lt;/strong&gt;：在问题后加“输出为表格”，AI会自动把结果排整齐。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;让AI解释SQL&lt;/strong&gt;：问“解释你生成的SQL”，就能拆解逻辑，顺便学语法。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;限制执行范围&lt;/strong&gt;：加提示词“只允许SELECT查”，防止AI误删数据。&lt;/li&gt;
 &lt;/ol&gt;
 &lt;h2 id="常见排障"&gt;常见排障&lt;/h2&gt;
 &lt;ol&gt;
-&lt;li&gt;&lt;strong&gt;导入失败&lt;/strong&gt;: &lt;code&gt;ModuleNotFoundError: No module named 'novastack'&lt;/code&gt;
-&lt;ul&gt;
-&lt;li&gt;解决：确认pip安装成功，或尝试&lt;code&gt;python -m pip install --upgrade novastack&lt;/code&gt;。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;模型名不识别&lt;/strong&gt;: 使用&lt;code&gt;claude-3-5-haiku&lt;/code&gt;但报错
-&lt;ul&gt;
-&lt;li&gt;解决：去Novastack官方文档查最新模型列表，注意版本号格式（如&lt;code&gt;claude-3-5-haiku-20241022&lt;/code&gt;）。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;环境变量未加载&lt;/strong&gt;: 密钥为空报401
-&lt;ul&gt;
-&lt;li&gt;解决：检查终端是否设置变量，或在代码里硬编码（仅测试用）。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h2 id="启动成本"&gt;启动成本&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;启动成本：0元（软件全免费，API密钥需注册但免费额度够测试）。&lt;/li&gt;
-&lt;li&gt;时间投入：安装+配置约30分钟。&lt;/li&gt;
-&lt;li&gt;预期首周收益：省下1小时重复劳动。&lt;/li&gt;
-&lt;/ul&gt;</description><content:encoded><![CDATA[<h2 id="效率痛点">效率痛点</h2>
-<p>每天花15分钟手动切换不同的AI模型API（Claude、GPT、Gemini）——修改参数、复制密钥、维护不同客户端库。一个月下来，这种重复操作消耗掉5个小时，相当于白白损失了500元（按100元/小时外包行情估算）。</p>
-<h2 id="自动化方案">自动化方案</h2>
-<h3 id="工具链架构">工具链架构</h3>
-<ul>
-<li><strong>Novastack</strong>：统一路由层，通过配置文件管理所有模型。</li>
-<li><strong>Python 3.8+</strong>：运行环境。</li>
-</ul>
-<h3 id="安装到首次运行">安装到首次运行</h3>
+&lt;li&gt;&lt;strong&gt;Ollama报错“connection refused”&lt;/strong&gt;：确认&lt;code&gt;ollama serve&lt;/code&gt;已运行在另一个终端。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;中文提问返回英文SQL&lt;/strong&gt;：换模型为&lt;code&gt;qwen2.5-coder:7b&lt;/code&gt;，它在中文场景表现更好。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;数据库连接失败&lt;/strong&gt;：检查PostgreSQL是否运行：&lt;code&gt;pg_isready&lt;/code&gt;，确认用户有远程登录权限。&lt;/li&gt;
+&lt;/ol&gt;</description><content:encoded><![CDATA[<h2 id="效率痛点100字">效率痛点（100字）</h2>
+<p>你每天花20分钟手写SQL查报表，一周就是100分钟，一个月浪费7小时。更惨的是，突然要查你不熟的关联表、窗口函数，卡住30分钟才憋出来。一个外包群SQL代写单子50元/条，你本来能接，却因为效率低错过。</p>
+<h2 id="自动化提效方案">自动化/提效方案</h2>
+<p><strong>工具链架构</strong>：Ollama（本地大模型）+ LangChain（AI框架）+ PostgreSQL（数据库）。Ollama在你的电脑上跑AI，LangChain把自然语言翻译成SQL，直接执行返回结果。</p>
+<p><strong>从安装到首次运行的完整步骤</strong>：</p>
 <ol>
-<li>安装Python 3.8+（如果已装则跳过）。</li>
-<li>打开终端，执行：
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>pip install novastack
-</span></span></code></pre></div></li>
-<li>在项目目录创建文件<code>router.py</code>：
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> novastack <span style="color:#f92672">import</span> Router
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 配置密钥（从环境变量读取更安全）</span>
-</span></span><span style="display:flex;"><span>router <span style="color:#f92672">=</span> Router({
-</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;openai&#39;</span>: {<span style="color:#e6db74">&#39;api_key&#39;</span>: <span style="color:#e6db74">&#39;sk-xxx&#39;</span>},
-</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;anthropic&#39;</span>: {<span style="color:#e6db74">&#39;api_key&#39;</span>: <span style="color:#e6db74">&#39;sk-ant-xxx&#39;</span>}
-</span></span><span style="display:flex;"><span>})
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 定义任务</span>
-</span></span><span style="display:flex;"><span>task <span style="color:#f92672">=</span> {<span style="color:#e6db74">&#39;prompt&#39;</span>: <span style="color:#e6db74">&#39;解释量子纠缠&#39;</span>, <span style="color:#e6db74">&#39;model&#39;</span>: <span style="color:#e6db74">&#39;gpt-4&#39;</span>}
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 自动路由到GPT-4</span>
-</span></span><span style="display:flex;"><span>result <span style="color:#f92672">=</span> router<span style="color:#f92672">.</span>route(task)
-</span></span><span style="display:flex;"><span>print(result[<span style="color:#e6db74">&#39;content&#39;</span>])
-</span></span></code></pre></div></li>
-<li>运行：<code>python router.py</code>。</li>
-</ol>
-<h3 id="核心配置代码">核心配置代码</h3>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#75715e"># router.py - 完整示例</span>
-</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> novastack <span style="color:#f92672">import</span> Router
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>router <span style="color:#f92672">=</span> Router({
-</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;openai&#39;</span>: {<span style="color:#e6db74">&#39;api_key&#39;</span>: os<span style="color:#f92672">.</span>environ[<span style="color:#e6db74">&#39;OPENAI_KEY&#39;</span>]},  <span style="color:#75715e"># 从环境变量加载</span>
-</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;anthropic&#39;</span>: {<span style="color:#e6db74">&#39;api_key&#39;</span>: os<span style="color:#f92672">.</span>environ[<span style="color:#e6db74">&#39;ANTHROPIC_KEY&#39;</span>]}
-</span></span><span style="display:flex;"><span>})
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span><span style="color:#75715e"># 根据模型名动态选择</span>
-</span></span><span style="display:flex;"><span>task <span style="color:#f92672">=</span> {
-</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;prompt&#39;</span>: <span style="color:#e6db74">&#39;写一封求职信&#39;</span>,
-</span></span><span style="display:flex;"><span>    <span style="color:#e6db74">&#39;model&#39;</span>: <span style="color:#e6db74">&#39;claude-3-opus-20240229&#39;</span>  <span style="color:#75715e"># 换这里就能切换模型</span>
-</span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span>
-</span></span><span style="display:flex;"><span>response <span style="color:#f92672">=</span> router<span style="color:#f92672">.</span>route(task)
-</span></span><span style="display:flex;"><span>print(response[<span style="color:#e6db74">&#39;content&#39;</span>])
-</span></span></code></pre></div><h2 id="效果量化">效果量化</h2>
+<li>
+<p>安装Ollama</p>
 <ul>
-<li><strong>优化前</strong>：每次调用需手动编写请求代码+处理API错误。按每天调用10次，每次1.5分钟算：1.5分钟 × 10次/天 = 15分钟/天 = 5小时/月。</li>
-<li><strong>优化后</strong>：一次配置，每次调用只需改<code>model</code>字段，30秒/次：0.5分钟 × 10次/天 = 5分钟/天 = 1.67小时/月。</li>
-<li><strong>节省</strong>：3.33小时/月，如果用来接外包（按100元/小时），价值333元/月。</li>
+<li>Mac：<code>brew install ollama</code></li>
+<li>Windows：下载ollama.com的安装包，双击运行</li>
+<li>启动服务：<code>ollama serve</code>（新终端窗口）</li>
+</ul>
+</li>
+<li>
+<p>下载模型（推荐qwen2.5-coder:7b，中文好且轻量）</p>
+<ul>
+<li><code>ollama pull qwen2.5-coder:7b</code> （等待5-15分钟）</li>
+</ul>
+</li>
+<li>
+<p>安装Python依赖</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>pip install langchain langchain-community psycopg2-binary
+</span></span></code></pre></div></li>
+<li>
+<p>创建脚本 <code>sql_agent.py</code></p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> langchain_community.llms <span style="color:#f92672">import</span> Ollama
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> langchain_community.utilities <span style="color:#f92672">import</span> SQLDatabase
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> langchain_community.agent_toolkits <span style="color:#f92672">import</span> create_sql_agent
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 连接你的本地数据库</span>
+</span></span><span style="display:flex;"><span>db <span style="color:#f92672">=</span> SQLDatabase<span style="color:#f92672">.</span>from_uri(<span style="color:#e6db74">&#34;postgresql://user:pass@localhost/dbname&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 加载本地模型</span>
+</span></span><span style="display:flex;"><span>llm <span style="color:#f92672">=</span> Ollama(model<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;qwen2.5-coder:7b&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 创建AI数据库助手</span>
+</span></span><span style="display:flex;"><span>agent_executor <span style="color:#f92672">=</span> create_sql_agent(llm, db<span style="color:#f92672">=</span>db, verbose<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 开始对话</span>
+</span></span><span style="display:flex;"><span>agent_executor<span style="color:#f92672">.</span>run(<span style="color:#e6db74">&#34;2026年5月的总销售额是多少？按月分组&#34;</span>) 
+</span></span></code></pre></div></li>
+<li>
+<p>运行：<code>python sql_agent.py</code></p>
+</li>
+</ol>
+<p><strong>核心配置说明</strong>：把&rsquo;user:pass&rsquo;换成你的数据库用户名密码，&rsquo;localhost/dbname&rsquo;换成主机名和数据库名。</p>
+<h2 id="效果量化">效果量化</h2>
+<ul>
+<li>优化前：20分钟/次 × 5次/天 = 100分钟/天 = 30小时/月</li>
+<li>优化后：1分钟输入问题 + 2分钟等待 = 3分钟/次 × 5次/天 = 15分钟/天 = 7.5小时/月</li>
+<li>节省：22.5小时/月 = 如果接外包SQL代写（50元/条）≈ 赚 3750元</li>
 </ul>
 <h2 id="进阶技巧">进阶技巧</h2>
 <ol>
-<li><strong>负载均衡</strong>：设置<code>weight</code>参数按比例分配请求：<code>{'gpt-4': 0.7, 'claude-3': 0.3}</code>，避免单个模型超限。</li>
-<li><strong>自动重试</strong>：启用<code>retry=True</code>，当模型返回速率限制错误时自动换另一个模型重试，保证任务不中断。</li>
-<li><strong>回滚策略</strong>：在配置中加<code>fallback</code>字段，当首选模型失败时切换到低成本模型（如<code>gpt-3.5-turbo</code>）。</li>
+<li><strong>指定输出格式</strong>：在问题后加“输出为表格”，AI会自动把结果排整齐。</li>
+<li><strong>让AI解释SQL</strong>：问“解释你生成的SQL”，就能拆解逻辑，顺便学语法。</li>
+<li><strong>限制执行范围</strong>：加提示词“只允许SELECT查”，防止AI误删数据。</li>
 </ol>
 <h2 id="常见排障">常见排障</h2>
 <ol>
-<li><strong>导入失败</strong>: <code>ModuleNotFoundError: No module named 'novastack'</code>
-<ul>
-<li>解决：确认pip安装成功，或尝试<code>python -m pip install --upgrade novastack</code>。</li>
-</ul>
-</li>
-<li><strong>模型名不识别</strong>: 使用<code>claude-3-5-haiku</code>但报错
-<ul>
-<li>解决：去Novastack官方文档查最新模型列表，注意版本号格式（如<code>claude-3-5-haiku-20241022</code>）。</li>
-</ul>
-</li>
-<li><strong>环境变量未加载</strong>: 密钥为空报401
-<ul>
-<li>解决：检查终端是否设置变量，或在代码里硬编码（仅测试用）。</li>
-</ul>
-</li>
+<li><strong>Ollama报错“connection refused”</strong>：确认<code>ollama serve</code>已运行在另一个终端。</li>
+<li><strong>中文提问返回英文SQL</strong>：换模型为<code>qwen2.5-coder:7b</code>，它在中文场景表现更好。</li>
+<li><strong>数据库连接失败</strong>：检查PostgreSQL是否运行：<code>pg_isready</code>，确认用户有远程登录权限。</li>
 </ol>
-<h2 id="启动成本">启动成本</h2>
-<ul>
-<li>启动成本：0元（软件全免费，API密钥需注册但免费额度够测试）。</li>
-<li>时间投入：安装+配置约30分钟。</li>
-<li>预期首周收益：省下1小时重复劳动。</li>
-</ul>
 ]]></content:encoded></item></channel></rss>
