@@ -798,12 +798,12 @@ def deep_dive_worker(category_name, config):
 
     print(f"[{category_name}] 唤醒 DeepSeek...", flush=True)
 
-    # 去重：读取近 7 天已覆盖话题，强约束避免选题重复
-    recent = get_recent_titles(category_name, days=7)
+    # 去重：读取近 3 天已覆盖话题，避免选题重复
+    recent = get_recent_titles(category_name, days=3)
     dedup_hint = ""
     if recent:
-        dedup_hint = f"\n\n【去重硬约束——违反将导致输出无效】以下话题已在近 7 天内深度覆盖。你必须选择一个与以下所有话题明显不同的新话题。如果资料库中所有话题都与以下列表高度相似，则 deep_dive 必须填 null。\n" + \
-                     "\n".join(f"- {t}" for t in recent[:30])
+        dedup_hint = f"\n\n【去重提醒】以下话题已在近 3 天内覆盖过。优先选择不同角度或新话题；如果确有重大更新或完全不同的切入点，仍然可以生成。\n" + \
+                     "\n".join(f"- {t}" for t in recent[:20])
 
     # 判断该引擎是否支持 deep_dive
     deep_dive_prompt = config.get('deep_dive_prompt', '')
@@ -814,7 +814,7 @@ def deep_dive_worker(category_name, config):
 【深度长文任务——仅在资料库有足够操作价值时生成】
 {deep_dive_prompt}
 """
-        deep_dive_instruction = "深度长文宁缺毋滥——没有真正可操作的话题就填 null。所有引擎总计产出 2-3 篇真正有用的实操指南即可，不求数量。"
+        deep_dive_instruction = "如果你找到了一个真正可操作、读者看完就能动手的话题，就放心生成 1 篇深度长文。每个引擎独立决策，不需要考虑其他引擎。宁可少而精。"
     else:
         deep_dive_section = ""
         deep_dive_instruction = "本引擎不生成深度长文。deep_dive 字段必须填 null。"
