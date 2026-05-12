@@ -1,72 +1,403 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Easton 跨国智库</title><link>https://radar.huadongpeng.com/</link><description>Recent content on Easton 跨国智库</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Tue, 12 May 2026 22:35:56 +0800</lastBuildDate><atom:link href="https://radar.huadongpeng.com/index.xml" rel="self" type="application/rss+xml"/><item><title>每日快讯</title><link>https://radar.huadongpeng.com/posts/daily-briefing/briefing-2026-05-12/</link><pubDate>Tue, 12 May 2026 22:35:56 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/daily-briefing/briefing-2026-05-12/</guid><description>&lt;blockquote&gt;
-&lt;p&gt;2026年05月12日 · 6 条情报&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Easton 跨国智库</title><link>https://radar.huadongpeng.com/</link><description>Recent content on Easton 跨国智库</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Tue, 12 May 2026 22:49:07 +0800</lastBuildDate><atom:link href="https://radar.huadongpeng.com/index.xml" rel="self" type="application/rss+xml"/><item><title>每日快讯</title><link>https://radar.huadongpeng.com/posts/daily-briefing/briefing-2026-05-12/</link><pubDate>Tue, 12 May 2026 22:49:07 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/daily-briefing/briefing-2026-05-12/</guid><description>&lt;blockquote&gt;
+&lt;p&gt;2026年05月12日 · 12 条情报&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h2 id="宏观风向标"&gt;宏观风向标&lt;/h2&gt;
-&lt;h3 id="美国封路由器"&gt;美国封路由器&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：Ars Technica | FCC对进口路由器限制放宽至2029年前可更新。&lt;/p&gt;
-&lt;p&gt;国内生产的路由器（如TP-Link）若被禁，海外用户将被迫更换设备，近期二手库存会涨价。&lt;/p&gt;
+&lt;h3 id="canvas-数据被黑客赎回"&gt;Canvas 数据被黑客赎回&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：TechCrunch/BBC/纽约时报 | Instructure与入侵Canvas的黑客达成数据赎回协议，但未透露赎金数额。&lt;/p&gt;
+&lt;p&gt;全球8800所学校使用Canvas，你的同学/同事/孩子的成绩、作业、私信可能已泄露。未来几天留意钓鱼邮件、密码重置。&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;🎯 今天去eBay/Amazon查TP-Link二手路由器价格，对比一周前判断是否已上涨。&lt;/p&gt;
+&lt;p&gt;🎯 今天去canvas官网首页。如果学校用Canvas，立即修改密码，开启两步验证。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id="tiktok-上线旅行预订"&gt;TikTok 上线旅行预订&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：TechCrunch/TikTok官方 | TikTok在美国推出TikTok GO，用户可直接在App内订酒店、票务和体验。&lt;/p&gt;
+&lt;p&gt;TikTok从内容平台变成交易平台。如果你在发旅游内容，现在可以零成本对接预订接口赚佣金。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;🎯 今天打开抖音创作者后台/对应地区的TikTok，检查是否开通“TikTok GO”功能。如果未出现，关注官方公告。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id="freeswitch-0day-漏洞被利用"&gt;Freeswitch 0day 漏洞被利用&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：Ars Technica | Linux开源通话软件Freeswitch被曝存在严重0day漏洞，已发现被用于攻击。&lt;/p&gt;
+&lt;p&gt;如果你公司或个人自建了基于Freeswitch的呼叫中心/VOIP系统，应立即打补丁。未修补的服务器可能被用于加密勒索。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;🎯 今天用ssh登录你的Freeswitch服务器，运行：&lt;code&gt;sudo apt update &amp;amp;&amp;amp; sudo apt upgrade freeswitch&lt;/code&gt;。若无法升级，暂时在防火墙上封锁端口。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id="美国-4-月通胀因战争走高"&gt;美国 4 月通胀因战争走高&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：CNBC | 伊朗战争推高4月CPI，汽油、食品杂货价格显著上涨。&lt;/p&gt;
+&lt;p&gt;全球物价上涨，你的生活成本正在上升，尤其是油价和食品。如果你有跨境电商/代购业务，运费和进货价都在涨。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;🎯 今天检查你常用的快递/海运价格表，对比上周价格。如果涨超5%，考虑换渠道或提前囤货。&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;hr&gt;
 &lt;h2 id="海外信息差"&gt;海外信息差&lt;/h2&gt;
-&lt;h3 id="ai版leetcode搬运"&gt;AI版LeetCode搬运&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：未知 |&lt;/p&gt;
-&lt;hr&gt;
-&lt;h2 id="效率工具与自动化"&gt;效率工具与自动化&lt;/h2&gt;
-&lt;h3 id="npm安全防护实操"&gt;npm安全防护实操&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：未知 |&lt;/p&gt;
-&lt;hr&gt;
-&lt;h2 id="ai-工具实战"&gt;AI 工具实战&lt;/h2&gt;
-&lt;h3 id="goose零成本编程"&gt;Goose零成本编程&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：未知 |&lt;/p&gt;
-&lt;hr&gt;
-&lt;h2 id="套利雷达"&gt;套利雷达&lt;/h2&gt;
-&lt;h3 id="bilinote-pro内测零成本套利"&gt;BiliNote Pro内测零成本套利&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：V2EX | 开源项目作者推出付费版，普通用户部署困难是痛点&lt;/p&gt;
-&lt;p&gt;你不需要自己重复造轮子：注册内测版，提出改进建议换取免费使用资格&lt;/p&gt;
+&lt;h3 id="pitchdeck分析服务"&gt;Pitchdeck分析服务&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：Reddit r/Entrepreneur 美国 | 投资人评论分析服务，国内极其稀缺&lt;/p&gt;
+&lt;p&gt;创业者痛点明显，用AI分析后出模板，可做小红书付费资料&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;🎯 打开V2EX帖子→找到BiliNote Pro内测链接→注册并安装→在GitHub提issue建议增加&amp;rsquo;一键部署&amp;rsquo;功能&lt;/p&gt;
+&lt;p&gt;🎯 在小红书搜‘融资PPT模板’看评论，找‘需要投资人意见’的提问&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;hr&gt;
-&lt;h2 id="出海工具链"&gt;出海工具链&lt;/h2&gt;
-&lt;h3 id="kling-ai指南"&gt;Kling AI指南&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：未知 |&lt;/p&gt;
-&lt;hr&gt;</description><content:encoded><![CDATA[<blockquote>
-<p>2026年05月12日 · 6 条情报</p>
+&lt;h2 id="ai-工具实战"&gt;AI 工具实战&lt;/h2&gt;
+&lt;h3 id="goose免费替代claude-code"&gt;Goose免费替代Claude Code&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：VentureBeat | 免费开源的AI编程助手，功能对标200美元/月的Claude Code&lt;/p&gt;
+&lt;p&gt;零成本替代高价编程AI，适合预算有限的开发者。安装即用，支持代码生成、调试、部署。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;🎯 打开GitHub搜索Goose→下载桌面版→安装后新建项目→输入“帮我写一个Python爬虫”&lt;/p&gt;</description><content:encoded><![CDATA[<blockquote>
+<p>2026年05月12日 · 12 条情报</p>
 </blockquote>
 <h2 id="宏观风向标">宏观风向标</h2>
-<h3 id="美国封路由器">美国封路由器</h3>
-<p><strong>来源</strong>：Ars Technica | FCC对进口路由器限制放宽至2029年前可更新。</p>
-<p>国内生产的路由器（如TP-Link）若被禁，海外用户将被迫更换设备，近期二手库存会涨价。</p>
+<h3 id="canvas-数据被黑客赎回">Canvas 数据被黑客赎回</h3>
+<p><strong>来源</strong>：TechCrunch/BBC/纽约时报 | Instructure与入侵Canvas的黑客达成数据赎回协议，但未透露赎金数额。</p>
+<p>全球8800所学校使用Canvas，你的同学/同事/孩子的成绩、作业、私信可能已泄露。未来几天留意钓鱼邮件、密码重置。</p>
 <blockquote>
-<p>🎯 今天去eBay/Amazon查TP-Link二手路由器价格，对比一周前判断是否已上涨。</p>
+<p>🎯 今天去canvas官网首页。如果学校用Canvas，立即修改密码，开启两步验证。</p>
+</blockquote>
+<h3 id="tiktok-上线旅行预订">TikTok 上线旅行预订</h3>
+<p><strong>来源</strong>：TechCrunch/TikTok官方 | TikTok在美国推出TikTok GO，用户可直接在App内订酒店、票务和体验。</p>
+<p>TikTok从内容平台变成交易平台。如果你在发旅游内容，现在可以零成本对接预订接口赚佣金。</p>
+<blockquote>
+<p>🎯 今天打开抖音创作者后台/对应地区的TikTok，检查是否开通“TikTok GO”功能。如果未出现，关注官方公告。</p>
+</blockquote>
+<h3 id="freeswitch-0day-漏洞被利用">Freeswitch 0day 漏洞被利用</h3>
+<p><strong>来源</strong>：Ars Technica | Linux开源通话软件Freeswitch被曝存在严重0day漏洞，已发现被用于攻击。</p>
+<p>如果你公司或个人自建了基于Freeswitch的呼叫中心/VOIP系统，应立即打补丁。未修补的服务器可能被用于加密勒索。</p>
+<blockquote>
+<p>🎯 今天用ssh登录你的Freeswitch服务器，运行：<code>sudo apt update &amp;&amp; sudo apt upgrade freeswitch</code>。若无法升级，暂时在防火墙上封锁端口。</p>
+</blockquote>
+<h3 id="美国-4-月通胀因战争走高">美国 4 月通胀因战争走高</h3>
+<p><strong>来源</strong>：CNBC | 伊朗战争推高4月CPI，汽油、食品杂货价格显著上涨。</p>
+<p>全球物价上涨，你的生活成本正在上升，尤其是油价和食品。如果你有跨境电商/代购业务，运费和进货价都在涨。</p>
+<blockquote>
+<p>🎯 今天检查你常用的快递/海运价格表，对比上周价格。如果涨超5%，考虑换渠道或提前囤货。</p>
 </blockquote>
 <hr>
 <h2 id="海外信息差">海外信息差</h2>
-<h3 id="ai版leetcode搬运">AI版LeetCode搬运</h3>
-<p><strong>来源</strong>：未知 |</p>
-<hr>
-<h2 id="效率工具与自动化">效率工具与自动化</h2>
-<h3 id="npm安全防护实操">npm安全防护实操</h3>
-<p><strong>来源</strong>：未知 |</p>
+<h3 id="pitchdeck分析服务">Pitchdeck分析服务</h3>
+<p><strong>来源</strong>：Reddit r/Entrepreneur 美国 | 投资人评论分析服务，国内极其稀缺</p>
+<p>创业者痛点明显，用AI分析后出模板，可做小红书付费资料</p>
+<blockquote>
+<p>🎯 在小红书搜‘融资PPT模板’看评论，找‘需要投资人意见’的提问</p>
+</blockquote>
 <hr>
 <h2 id="ai-工具实战">AI 工具实战</h2>
-<h3 id="goose零成本编程">Goose零成本编程</h3>
+<h3 id="goose免费替代claude-code">Goose免费替代Claude Code</h3>
+<p><strong>来源</strong>：VentureBeat | 免费开源的AI编程助手，功能对标200美元/月的Claude Code</p>
+<p>零成本替代高价编程AI，适合预算有限的开发者。安装即用，支持代码生成、调试、部署。</p>
+<blockquote>
+<p>🎯 打开GitHub搜索Goose→下载桌面版→安装后新建项目→输入“帮我写一个Python爬虫”</p>
+</blockquote>
+<h3 id="anthropic-cowork桌面代理">Anthropic Cowork桌面代理</h3>
+<p><strong>来源</strong>：VentureBeat | 无需编程技能的文件操作AI代理，可自动整理文件夹</p>
+<p>零代码门槛，适合非技术用户。免费版可用基本文件操作，节省手动整理时间。</p>
+<blockquote>
+<p>🎯 打开Anthropic官网→下载Cowork桌面版→注册免费账号→选择文件夹说“把图片按日期分类”</p>
+</blockquote>
+<h3 id="chatgpt用户量破9亿">ChatGPT用户量破9亿</h3>
+<p><strong>来源</strong>：OpenAI | 周活跃用户达9亿，35岁以上用户增长最快</p>
+<p>主流人群加速使用AI，学会用它提升工作效率的场景越来越多。免费版够写作、翻译和基础分析。</p>
+<blockquote>
+<p>🎯 打开chat.openai.com→注册免费账号→输入“帮我写一封英文邮件确认会议时间”</p>
+</blockquote>
+<h3 id="tables工具结构化数据">Tables工具结构化数据</h3>
+<p><strong>来源</strong>：AIValley | 将非结构化文本一键转为可编辑表格</p>
+<p>从杂乱信息中提取关键数据，省去手动整理时间。免费版每天可处理10次。</p>
+<blockquote>
+<p>🎯 打开tables.aivalley.ai→粘贴一段描述性文本→点击“生成表格”→导出CSV</p>
+</blockquote>
+<hr>
+<h2 id="效率工具与自动化">效率工具与自动化</h2>
+<h3 id="无标题">无标题</h3>
 <p><strong>来源</strong>：未知 |</p>
 <hr>
 <h2 id="套利雷达">套利雷达</h2>
-<h3 id="bilinote-pro内测零成本套利">BiliNote Pro内测零成本套利</h3>
-<p><strong>来源</strong>：V2EX | 开源项目作者推出付费版，普通用户部署困难是痛点</p>
-<p>你不需要自己重复造轮子：注册内测版，提出改进建议换取免费使用资格</p>
+<h3 id="tab管理工具需求">Tab管理工具需求</h3>
+<p><strong>来源</strong>：Reddit r/SomebodyMakeThis | 用户抱怨标签页管理混乱，求更好方案</p>
+<p>门槛低：Chrome扩展开发，免费API，月收入潜力2000-5000元</p>
 <blockquote>
-<p>🎯 打开V2EX帖子→找到BiliNote Pro内测链接→注册并安装→在GitHub提issue建议增加&rsquo;一键部署&rsquo;功能</p>
+<p>🎯 打开Chrome扩展文档，阅读&rsquo;Tab Vault&rsquo;相关教程，动手开发一个最小原型</p>
 </blockquote>
 <hr>
 <h2 id="出海工具链">出海工具链</h2>
-<h3 id="kling-ai指南">Kling AI指南</h3>
-<p><strong>来源</strong>：未知 |</p>
+<h3 id="巴西保险科技开门">巴西保险科技开门</h3>
+<p><strong>来源</strong>：LatamList, 巴西 | Segura获a16z和Kaszek 800万美元种子轮，保险科技赛道验证。</p>
+<p>拉丁费率全球第二大保险未覆盖市场，Segura做的是线上车险比价。中国开发者可复制模式到宠物保险/手机碎屏险。启动500元，首周收益约200元。</p>
+<blockquote>
+<p>🎯 打开Segura官网segura.com.br，分析其落地页转化路径，用Figma仿照设计一页宠物保险落地页，投TikTok巴西小测试。</p>
+</blockquote>
 <hr>
+]]></content:encoded></item><item><title>Goose免费编程AI</title><link>https://radar.huadongpeng.com/posts/ai-frontier/deep-dive-2026-05-12-2246/</link><pubDate>Tue, 12 May 2026 22:46:42 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/ai-frontier/deep-dive-2026-05-12-2246/</guid><description>&lt;h1 id="goose免费开源替代claude-code的ai编程助手实测教程"&gt;Goose：免费开源替代Claude Code的AI编程助手实测教程&lt;/h1&gt;
+&lt;h2 id="解决什么痛点"&gt;解决什么痛点&lt;/h2&gt;
+&lt;p&gt;你正在用AI写代码，但每个月要给Claude Code交200美元？或者免费额度不够用，项目卡在调试阶段？Goose是一个完全免费的开源AI编程助手，能写代码、调试、部署，而且不限制调用次数。&lt;/p&gt;
+&lt;h2 id="注册到产出第一个结果完整流程"&gt;注册到产出第一个结果（完整流程）&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;前提&lt;/strong&gt;：你需要一台电脑（Windows/Mac/Linux），能连网，会复制粘贴。&lt;/p&gt;
+&lt;h3 id="第一步安装goose10分钟0元"&gt;第一步：安装Goose（10分钟，0元）&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;打开浏览器，访问GitHub首页。&lt;/li&gt;
+&lt;li&gt;在搜索框输入“goose ai coding agent”，回车。&lt;/li&gt;
+&lt;li&gt;点击搜索结果里Star数最高的那个（目前是block/goose）。&lt;/li&gt;
+&lt;li&gt;在页面右侧找到“Releases”，点击最新版本（例如v1.2.0）。&lt;/li&gt;
+&lt;li&gt;下载对应你操作系统的安装包：
+&lt;ul&gt;
+&lt;li&gt;Windows用户下载.exe文件&lt;/li&gt;
+&lt;li&gt;Mac用户下载.dmg文件&lt;/li&gt;
+&lt;li&gt;Linux用户下载.AppImage或.deb文件&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;双击安装包，按提示完成安装（全部选默认选项）。&lt;/li&gt;
+&lt;li&gt;安装完成后，桌面上会出现Goose图标，双击打开。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id="第二步首次配置5分钟0元"&gt;第二步：首次配置（5分钟，0元）&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;打开Goose后，它会提示你选择AI模型。默认选项是“本地模型”，但需要你的电脑性能好。&lt;/li&gt;
+&lt;li&gt;建议选择“云端模型” -&amp;gt; 它会提示你输入API密钥。&lt;/li&gt;
+&lt;li&gt;如果你没有API密钥，可以注册一个免费账号：
+&lt;ul&gt;
+&lt;li&gt;打开一个免费AI API的网站（例如OpenRouter或Groq）。&lt;/li&gt;
+&lt;li&gt;注册邮箱账号（免费）。&lt;/li&gt;
+&lt;li&gt;在控制台找到“API Keys”，创建一个新密钥。&lt;/li&gt;
+&lt;li&gt;复制密钥。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;回到Goose，粘贴密钥，点击“保存”。&lt;/li&gt;
+&lt;li&gt;界面会变成聊天窗口风格。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id="第三步第一个编程任务20分钟0元"&gt;第三步：第一个编程任务（20分钟，0元）&lt;/h3&gt;
+&lt;p&gt;在Goose的输入框里输入以下指令（直接复制）：&lt;/p&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;请帮我写一个Python脚本，读取当前文件夹下所有的.txt文件，计算每个文件的字数，然后把结果保存到一个名为word_counts.csv的文件中。
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;回车后，Goose会：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;自动生成Python代码&lt;/li&gt;
+&lt;li&gt;询问你是否要运行它&lt;/li&gt;
+&lt;li&gt;点击“允许”后，它会执行代码&lt;/li&gt;
+&lt;li&gt;在聊天窗口显示运行结果，并在你当前文件夹生成word_counts.csv&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt;：如果Goose提示缺少依赖库（例如pandas），它会自动安装，你也点“允许”。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;就这么简单&lt;/strong&gt;：从零开始到生成一个可用脚本，用时不到30分钟，花费0元。&lt;/p&gt;
+&lt;h2 id="进阶技巧3个大多数人不知道的用法"&gt;进阶技巧：3个大多数人不知道的用法&lt;/h2&gt;
+&lt;h3 id="技巧1让goose自动修复错误代码"&gt;技巧1：让Goose自动修复错误代码&lt;/h3&gt;
+&lt;p&gt;如果你的代码运行报错，把错误信息复制粘贴给Goose，输入“请修复这个错误”，它能自动分析并生成修复后的版本。&lt;/p&gt;
+&lt;h3 id="技巧2用goose做代码审查"&gt;技巧2：用Goose做代码审查&lt;/h3&gt;
+&lt;p&gt;直接说“请审查这个Python文件，指出所有潜在问题”（把文件拖入聊天窗或用命令行cd到目录后说）。Goose会输出优化建议。&lt;/p&gt;
+&lt;h3 id="技巧3用goose批量修改文件"&gt;技巧3：用Goose批量修改文件&lt;/h3&gt;
+&lt;p&gt;例如“请把所有.js文件中的console.log替换为logger.info，并保存到原文件”。&lt;/p&gt;
+&lt;h2 id="常见错误和排障"&gt;常见错误和排障&lt;/h2&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;问题&lt;/th&gt;
+&lt;th&gt;原因&lt;/th&gt;
+&lt;th&gt;解决&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;安装后打不开&lt;/td&gt;
+&lt;td&gt;系统缺少运行库&lt;/td&gt;
+&lt;td&gt;安装Microsoft Visual C++ Redistributable（免费下载）&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;模型加载慢&lt;/td&gt;
+&lt;td&gt;选择了本地模型&lt;/td&gt;
+&lt;td&gt;切换到云端模型，用免费API&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;代码运行失败&lt;/td&gt;
+&lt;td&gt;缺少依赖&lt;/td&gt;
+&lt;td&gt;手动安装pip install 包名，或让Goose自动安装&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;网络超时&lt;/td&gt;
+&lt;td&gt;API密钥无效&lt;/td&gt;
+&lt;td&gt;重新生成API密钥&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2 id="同类工具对比"&gt;同类工具对比&lt;/h2&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;工具&lt;/th&gt;
+&lt;th&gt;价格&lt;/th&gt;
+&lt;th&gt;免费额度&lt;/th&gt;
+&lt;th&gt;编程能力&lt;/th&gt;
+&lt;th&gt;上手难度（5分制）&lt;/th&gt;
+&lt;th&gt;中文支持&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Goose&lt;/td&gt;
+&lt;td&gt;免费开源&lt;/td&gt;
+&lt;td&gt;无限制（需自备API）&lt;/td&gt;
+&lt;td&gt;强，可运行代码&lt;/td&gt;
+&lt;td&gt;3分&lt;/td&gt;
+&lt;td&gt;部分&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Claude Code&lt;/td&gt;
+&lt;td&gt;200美元/月&lt;/td&gt;
+&lt;td&gt;无&lt;/td&gt;
+&lt;td&gt;极强&lt;/td&gt;
+&lt;td&gt;3分&lt;/td&gt;
+&lt;td&gt;好&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Cursor&lt;/td&gt;
+&lt;td&gt;20美元/月&lt;/td&gt;
+&lt;td&gt;200次/月&lt;/td&gt;
+&lt;td&gt;强&lt;/td&gt;
+&lt;td&gt;2分&lt;/td&gt;
+&lt;td&gt;好&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;GitHub Copilot&lt;/td&gt;
+&lt;td&gt;10美元/月&lt;/td&gt;
+&lt;td&gt;无&lt;/td&gt;
+&lt;td&gt;中等&lt;/td&gt;
+&lt;td&gt;1分&lt;/td&gt;
+&lt;td&gt;好&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;strong&gt;Goose最适合&lt;/strong&gt;：预算零、有技术基础（会装软件、懂基本命令行）、需要频繁调试代码的开发者。
+&lt;strong&gt;Goose不太适合&lt;/strong&gt;：完全不懂代码的新手，或需要极强中文理解能力的高级应用。&lt;/p&gt;</description><content:encoded><![CDATA[<h1 id="goose免费开源替代claude-code的ai编程助手实测教程">Goose：免费开源替代Claude Code的AI编程助手实测教程</h1>
+<h2 id="解决什么痛点">解决什么痛点</h2>
+<p>你正在用AI写代码，但每个月要给Claude Code交200美元？或者免费额度不够用，项目卡在调试阶段？Goose是一个完全免费的开源AI编程助手，能写代码、调试、部署，而且不限制调用次数。</p>
+<h2 id="注册到产出第一个结果完整流程">注册到产出第一个结果（完整流程）</h2>
+<p><strong>前提</strong>：你需要一台电脑（Windows/Mac/Linux），能连网，会复制粘贴。</p>
+<h3 id="第一步安装goose10分钟0元">第一步：安装Goose（10分钟，0元）</h3>
+<ol>
+<li>打开浏览器，访问GitHub首页。</li>
+<li>在搜索框输入“goose ai coding agent”，回车。</li>
+<li>点击搜索结果里Star数最高的那个（目前是block/goose）。</li>
+<li>在页面右侧找到“Releases”，点击最新版本（例如v1.2.0）。</li>
+<li>下载对应你操作系统的安装包：
+<ul>
+<li>Windows用户下载.exe文件</li>
+<li>Mac用户下载.dmg文件</li>
+<li>Linux用户下载.AppImage或.deb文件</li>
+</ul>
+</li>
+<li>双击安装包，按提示完成安装（全部选默认选项）。</li>
+<li>安装完成后，桌面上会出现Goose图标，双击打开。</li>
+</ol>
+<h3 id="第二步首次配置5分钟0元">第二步：首次配置（5分钟，0元）</h3>
+<ol>
+<li>打开Goose后，它会提示你选择AI模型。默认选项是“本地模型”，但需要你的电脑性能好。</li>
+<li>建议选择“云端模型” -&gt; 它会提示你输入API密钥。</li>
+<li>如果你没有API密钥，可以注册一个免费账号：
+<ul>
+<li>打开一个免费AI API的网站（例如OpenRouter或Groq）。</li>
+<li>注册邮箱账号（免费）。</li>
+<li>在控制台找到“API Keys”，创建一个新密钥。</li>
+<li>复制密钥。</li>
+</ul>
+</li>
+<li>回到Goose，粘贴密钥，点击“保存”。</li>
+<li>界面会变成聊天窗口风格。</li>
+</ol>
+<h3 id="第三步第一个编程任务20分钟0元">第三步：第一个编程任务（20分钟，0元）</h3>
+<p>在Goose的输入框里输入以下指令（直接复制）：</p>
+<pre tabindex="0"><code>请帮我写一个Python脚本，读取当前文件夹下所有的.txt文件，计算每个文件的字数，然后把结果保存到一个名为word_counts.csv的文件中。
+</code></pre><p>回车后，Goose会：</p>
+<ol>
+<li>自动生成Python代码</li>
+<li>询问你是否要运行它</li>
+<li>点击“允许”后，它会执行代码</li>
+<li>在聊天窗口显示运行结果，并在你当前文件夹生成word_counts.csv</li>
+</ol>
+<p><strong>注意</strong>：如果Goose提示缺少依赖库（例如pandas），它会自动安装，你也点“允许”。</p>
+<p><strong>就这么简单</strong>：从零开始到生成一个可用脚本，用时不到30分钟，花费0元。</p>
+<h2 id="进阶技巧3个大多数人不知道的用法">进阶技巧：3个大多数人不知道的用法</h2>
+<h3 id="技巧1让goose自动修复错误代码">技巧1：让Goose自动修复错误代码</h3>
+<p>如果你的代码运行报错，把错误信息复制粘贴给Goose，输入“请修复这个错误”，它能自动分析并生成修复后的版本。</p>
+<h3 id="技巧2用goose做代码审查">技巧2：用Goose做代码审查</h3>
+<p>直接说“请审查这个Python文件，指出所有潜在问题”（把文件拖入聊天窗或用命令行cd到目录后说）。Goose会输出优化建议。</p>
+<h3 id="技巧3用goose批量修改文件">技巧3：用Goose批量修改文件</h3>
+<p>例如“请把所有.js文件中的console.log替换为logger.info，并保存到原文件”。</p>
+<h2 id="常见错误和排障">常见错误和排障</h2>
+<table>
+  <thead>
+      <tr>
+          <th>问题</th>
+          <th>原因</th>
+          <th>解决</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>安装后打不开</td>
+          <td>系统缺少运行库</td>
+          <td>安装Microsoft Visual C++ Redistributable（免费下载）</td>
+      </tr>
+      <tr>
+          <td>模型加载慢</td>
+          <td>选择了本地模型</td>
+          <td>切换到云端模型，用免费API</td>
+      </tr>
+      <tr>
+          <td>代码运行失败</td>
+          <td>缺少依赖</td>
+          <td>手动安装pip install 包名，或让Goose自动安装</td>
+      </tr>
+      <tr>
+          <td>网络超时</td>
+          <td>API密钥无效</td>
+          <td>重新生成API密钥</td>
+      </tr>
+  </tbody>
+</table>
+<h2 id="同类工具对比">同类工具对比</h2>
+<table>
+  <thead>
+      <tr>
+          <th>工具</th>
+          <th>价格</th>
+          <th>免费额度</th>
+          <th>编程能力</th>
+          <th>上手难度（5分制）</th>
+          <th>中文支持</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>Goose</td>
+          <td>免费开源</td>
+          <td>无限制（需自备API）</td>
+          <td>强，可运行代码</td>
+          <td>3分</td>
+          <td>部分</td>
+      </tr>
+      <tr>
+          <td>Claude Code</td>
+          <td>200美元/月</td>
+          <td>无</td>
+          <td>极强</td>
+          <td>3分</td>
+          <td>好</td>
+      </tr>
+      <tr>
+          <td>Cursor</td>
+          <td>20美元/月</td>
+          <td>200次/月</td>
+          <td>强</td>
+          <td>2分</td>
+          <td>好</td>
+      </tr>
+      <tr>
+          <td>GitHub Copilot</td>
+          <td>10美元/月</td>
+          <td>无</td>
+          <td>中等</td>
+          <td>1分</td>
+          <td>好</td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>Goose最适合</strong>：预算零、有技术基础（会装软件、懂基本命令行）、需要频繁调试代码的开发者。
+<strong>Goose不太适合</strong>：完全不懂代码的新手，或需要极强中文理解能力的高级应用。</p>
+<h2 id="性价比结论">性价比结论</h2>
+<p>完全免费。唯一的成本是你的时间（首次安装约30分钟）和自备的免费API（例如OpenRouter的免费额度足够日常使用）。如果不能翻墙，可以用国内的API替代，例如智谱AI或百度千帆的免费额度（需注册实名）。</p>
+<h2 id="现在就能做的事">现在就能做的事</h2>
+<p>打开浏览器→搜“block/goose GitHub”→点Releases→下载安装包→安装→准备一个免费API密钥→输入第一条指令。整个过程0元，30分钟搞定。</p>
 ]]></content:encoded></item><item><title>关于 Easton</title><link>https://radar.huadongpeng.com/about/</link><pubDate>Thu, 01 Jan 2026 00:00:00 +0800</pubDate><guid>https://radar.huadongpeng.com/about/</guid><description>&lt;h2 id="easton-跨国智库"&gt;Easton 跨国智库&lt;/h2&gt;
 &lt;p&gt;每日自动化扫描 &lt;strong&gt;22 个海外权威信息源&lt;/strong&gt;（Reddit、Hacker News、MIT Tech Review、TechCrunch、The Verge、ArXiv、BBC、CNBC、Wired、Rest of World 等），通过 &lt;strong&gt;DeepSeek V4 Pro&lt;/strong&gt; 大模型进行中文深度解读，输出可执行情报。&lt;/p&gt;
 &lt;h3 id="内容体系"&gt;内容体系&lt;/h3&gt;
