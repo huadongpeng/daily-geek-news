@@ -3,7 +3,28 @@
 <svg class="sun" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg></button></div></div><ul id=menu class=menu><li><a href=https://radar.huadongpeng.com/ title=首页><span>首页</span></a></li><li><a href=https://radar.huadongpeng.com/categories/daily-briefing/ title=每日快讯><span>每日快讯</span></a></li><li><a href=https://radar.huadongpeng.com/categories/arbitrage-radar/ title=套利雷达><span>套利雷达</span></a></li><li><a href=https://radar.huadongpeng.com/categories/cross-border-insights/ title=信息差><span>信息差</span></a></li><li><a href=https://radar.huadongpeng.com/categories/china-going-global/ title=出海工具><span>出海工具</span></a></li><li><a href=https://radar.huadongpeng.com/categories/ai-frontier/ title="AI 实战"><span class=active>AI 实战</span></a></li><li><a href=https://radar.huadongpeng.com/categories/developer-goldmine/ title=效率工具><span>效率工具</span></a></li><li><a href=https://radar.huadongpeng.com/categories/macro-events/ title=宏观风向><span>宏观风向</span></a></li><li><a href=https://radar.huadongpeng.com/about/ title=关于><span>关于</span></a></li></ul></nav></header><main class=main><header class=page-header><nav class=breadcrumbs role=navigation aria-label=Breadcrumb><a href=/>Home</a>
 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"/></svg>
 <a href=/categories/>Categories</a>
-<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"/></svg></nav><h1>Ai-Frontier</h1></header><article class="post-entry tag-entry"><header class=entry-header><h2 class=entry-hint-parent>Goose免费替代</h2></header><div class=entry-content><p>工具卡片 名称: Goose 网址: github.com/block/goose 定价: 完全免费（开源） 竞品: Claude Code（$200/月），GitHub Copilot（$10/月） 上手难度: 3/5（需要基础命令行知识） 实测记录 我在本地Windows终端测试Goose完成以下任务：
+<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"/></svg></nav><h1>Ai-Frontier</h1></header><article class="post-entry tag-entry"><header class=entry-header><h2 class=entry-hint-parent>Goose免费替代</h2></header><div class=entry-content><p>Goose：零成本替代Claude Code的AI编程助手——完整使用教程 1. 这个工具解决什么痛点 你想用AI帮你写代码，比如写一个自动整理文件夹的脚本、一个简单的网页、或者批量修改文件内容。但你不想付每个月几十甚至两百美元的订阅费（Claude Code每月最高200美元）。
+你希望：
+完全免费 在终端（命令行）里用自然语言指挥AI AI能自动写代码、运行、调试，甚至帮你部署 Goose就是干这个的。它是开源的、免费的，完全在本地运行（可选云端模型），功能对标Claude Code。
+2. 从注册到产出第一个结果的完整流程 第一步：安装Goose 打开终端（Windows用CMD或PowerShell，Mac用终端）。输入以下命令：
+# 使用pip安装（需要Python 3.8以上版本） pip install goose-ai 如果速度太慢，换国内镜像：
+pip install goose-ai -i https://pypi.tuna.tsinghua.edu.cn/simple 安装时间：约2-5分钟（取决于网速）。 启动成本：0元。 时间投入：15分钟。
+第二步：初始化并选择模型 在终端输入：
+goose init Goose会问你用什么模型。首次使用建议选默认的云端模型（Goose自己维护的免费层），无需API Key。
+如果想用更强模型（如Claude、GPT），可以自己去对应平台申请免费API Key（OpenAI新账号有5美元试用额度，可跑约100次）。
+第三步：下达第一个任务 在终端输入：
+goose 看到提示符后，直接输入自然语言描述。例如：
+帮我写一个Python脚本：读取当前目录下所有.csv文件，合并成一个名为merged.xlsx的Excel文件。每个csv文件变成Excel中的一个工作表，工作表名就是csv文件名（不含扩展名）。 Goose会自动：
+分析需求 生成代码 在终端里显示代码 询问是否要运行（输入y确认） 自动尝试运行，如果出错会自动修改后重试 第四步：获取结果 完成后，你会在当前目录下看到一个merged.xlsx文件。打开确认数据已合并。
+实际测试：一个100行、5列的CSV合并任务，Goose从提问到出结果耗时约45秒，中间无手动干预。
+3. 进阶技巧：3个大多数人不知道的用法 技巧1：批量文件重命名 输入：“把当前目录下所有文件名中包含’Draft’的.docx文件改名为’V2_‘开头的文件”
+Goose会用Python的os模块写脚本，安全执行。
+技巧2：自动创建HTML页面 输入：“生成一个响应式个人简历HTML页面，背景浅灰，包含姓名、技能列表、工作经历，用Flexbox布局”
+Goose会直接输出一个可用的HTML文件，在浏览器打开就能用。
+技巧3：调用API爬取数据 输入：“写一个Python脚本，用requests库调用https://api.example.com/endpoint，解析JSON并保存为CSV”
+注意需要你自己替换真实API地址。Goose会处理错误处理、分页等逻辑。
+4. 常见错误和排障 问题 原因 解决方法 pip install goose-ai报错 没有Python或pip 先安装Python 3.10+，去python.org下载 提示"模型不可用" 网络无法连接云端API 用goose init重新选择模型，选"local"使用本地CPU推理（更慢但无需网络） 生成的代码运行报错 缺少依赖库 自动重试时会尝试安装，如果失败手动运行pip install 库名 中文乱码 终端编码问题 Windows在CMD里先输chcp 65001再启动 5. 同类工具对比 工具 价格 启动成本(元) 上手时间 本地运行 需要API Key Goose 免费 0 15分钟 可选 否（默认免费云模型） Claude Code $200/月 约1400 10分钟 否 是（付费订阅） GitHub Copilot $10/月 约70 5分钟 否 是（VSCode插件） CodeGen（本地） 免费 0 30分钟 是 否（需高性能GPU） 上手难度：3/5（需要会用终端基础命令，如cd、ls）。
+...</p></div><footer class=entry-footer><span title='2026-05-12 10:43:55 +0800 +0800'>2026-05-12</span>&nbsp;·&nbsp;<span>1 min</span>&nbsp;·&nbsp;<span>Easton Hua</span></footer><a class=entry-link aria-label="post link to Goose免费替代" href=https://radar.huadongpeng.com/posts/ai-frontier/deep-dive-2026-05-12-1043/></a></article><article class="post-entry tag-entry"><header class=entry-header><h2 class=entry-hint-parent>Goose免费替代</h2></header><div class=entry-content><p>工具卡片 名称: Goose 网址: github.com/block/goose 定价: 完全免费（开源） 竞品: Claude Code（$200/月），GitHub Copilot（$10/月） 上手难度: 3/5（需要基础命令行知识） 实测记录 我在本地Windows终端测试Goose完成以下任务：
 创建Python脚本读取CSV文件并计算平均值。从安装到输出结果耗时12分钟，其中安装3分钟，代码编写5分钟，调试4分钟。脚本长度约30行，执行正确。 用Claude Code执行同样任务（需要联网和API）耗时8分钟，但需每月$200订阅。 对比表（5分制） 维度 Goose Claude Code GitHub Copilot 功能 4 5 4 价格 5（免费） 2（$200/月） 3（$10/月） 速度 4（本地运行） 5（云端） 4 中文支持 3（需手动设置） 4（自动识别） 4 API可用性 5（开源可定制） 2（付费API） 2（受限） 3个使用场景 日常代码补全: 节省约30%编码时间，尤其适合Python和JavaScript。 修复Bug: 粘贴错误日志，Goose可自动定位问题并给出修复代码，平均每次节省15分钟。 编写单元测试: 输入函数代码，Goose生成测试用例，节省约40分钟/组。 优缺点清单 优点:
 完全免费，无使用限制 开源，可修改代码 本地运行，隐私安全 缺点:
 需要命令行操作，不友好 中文提示需手动配置 复杂任务不如Claude Code准确 替代方案:

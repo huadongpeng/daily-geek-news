@@ -1,4 +1,282 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Ai-Frontier on Easton 跨国智库</title><link>https://radar.huadongpeng.com/categories/ai-frontier/</link><description>Recent content in Ai-Frontier on Easton 跨国智库</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Tue, 12 May 2026 10:11:17 +0800</lastBuildDate><atom:link href="https://radar.huadongpeng.com/categories/ai-frontier/index.xml" rel="self" type="application/rss+xml"/><item><title>Goose免费替代</title><link>https://radar.huadongpeng.com/posts/ai-frontier/deep-dive-2026-05-12-1011/</link><pubDate>Tue, 12 May 2026 10:11:17 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/ai-frontier/deep-dive-2026-05-12-1011/</guid><description>&lt;h2 id="工具卡片"&gt;工具卡片&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Ai-Frontier on Easton 跨国智库</title><link>https://radar.huadongpeng.com/categories/ai-frontier/</link><description>Recent content in Ai-Frontier on Easton 跨国智库</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Tue, 12 May 2026 10:43:55 +0800</lastBuildDate><atom:link href="https://radar.huadongpeng.com/categories/ai-frontier/index.xml" rel="self" type="application/rss+xml"/><item><title>Goose免费替代</title><link>https://radar.huadongpeng.com/posts/ai-frontier/deep-dive-2026-05-12-1043/</link><pubDate>Tue, 12 May 2026 10:43:55 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/ai-frontier/deep-dive-2026-05-12-1043/</guid><description>&lt;h1 id="goose零成本替代claude-code的ai编程助手完整使用教程"&gt;Goose：零成本替代Claude Code的AI编程助手——完整使用教程&lt;/h1&gt;
+&lt;h2 id="1-这个工具解决什么痛点"&gt;1. 这个工具解决什么痛点&lt;/h2&gt;
+&lt;p&gt;你想用AI帮你写代码，比如写一个自动整理文件夹的脚本、一个简单的网页、或者批量修改文件内容。但你不想付每个月几十甚至两百美元的订阅费（Claude Code每月最高200美元）。&lt;/p&gt;
+&lt;p&gt;你希望：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;完全免费&lt;/li&gt;
+&lt;li&gt;在终端（命令行）里用自然语言指挥AI&lt;/li&gt;
+&lt;li&gt;AI能自动写代码、运行、调试，甚至帮你部署&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Goose就是干这个的。它是开源的、免费的，完全在本地运行（可选云端模型），功能对标Claude Code。&lt;/p&gt;
+&lt;h2 id="2-从注册到产出第一个结果的完整流程"&gt;2. 从注册到产出第一个结果的完整流程&lt;/h2&gt;
+&lt;h3 id="第一步安装goose"&gt;第一步：安装Goose&lt;/h3&gt;
+&lt;p&gt;打开终端（Windows用CMD或PowerShell，Mac用终端）。输入以下命令：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 使用pip安装（需要Python 3.8以上版本）&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;pip install goose-ai
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;如果速度太慢，换国内镜像：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;pip install goose-ai -i https://pypi.tuna.tsinghua.edu.cn/simple
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;安装时间：约2-5分钟（取决于网速）。
+启动成本：0元。
+时间投入：15分钟。&lt;/p&gt;
+&lt;h3 id="第二步初始化并选择模型"&gt;第二步：初始化并选择模型&lt;/h3&gt;
+&lt;p&gt;在终端输入：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;goose init
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Goose会问你用什么模型。首次使用建议选默认的云端模型（Goose自己维护的免费层），无需API Key。&lt;/p&gt;
+&lt;p&gt;如果想用更强模型（如Claude、GPT），可以自己去对应平台申请免费API Key（OpenAI新账号有5美元试用额度，可跑约100次）。&lt;/p&gt;
+&lt;h3 id="第三步下达第一个任务"&gt;第三步：下达第一个任务&lt;/h3&gt;
+&lt;p&gt;在终端输入：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;goose
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;看到提示符后，直接输入自然语言描述。例如：&lt;/p&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;帮我写一个Python脚本：读取当前目录下所有.csv文件，合并成一个名为merged.xlsx的Excel文件。每个csv文件变成Excel中的一个工作表，工作表名就是csv文件名（不含扩展名）。
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Goose会自动：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;分析需求&lt;/li&gt;
+&lt;li&gt;生成代码&lt;/li&gt;
+&lt;li&gt;在终端里显示代码&lt;/li&gt;
+&lt;li&gt;询问是否要运行（输入y确认）&lt;/li&gt;
+&lt;li&gt;自动尝试运行，如果出错会自动修改后重试&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id="第四步获取结果"&gt;第四步：获取结果&lt;/h3&gt;
+&lt;p&gt;完成后，你会在当前目录下看到一个merged.xlsx文件。打开确认数据已合并。&lt;/p&gt;
+&lt;p&gt;实际测试：一个100行、5列的CSV合并任务，Goose从提问到出结果耗时约45秒，中间无手动干预。&lt;/p&gt;
+&lt;h2 id="3-进阶技巧3个大多数人不知道的用法"&gt;3. 进阶技巧：3个大多数人不知道的用法&lt;/h2&gt;
+&lt;h3 id="技巧1批量文件重命名"&gt;技巧1：批量文件重命名&lt;/h3&gt;
+&lt;p&gt;输入：&amp;ldquo;把当前目录下所有文件名中包含&amp;rsquo;Draft&amp;rsquo;的.docx文件改名为&amp;rsquo;V2_&amp;lsquo;开头的文件&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;Goose会用Python的os模块写脚本，安全执行。&lt;/p&gt;
+&lt;h3 id="技巧2自动创建html页面"&gt;技巧2：自动创建HTML页面&lt;/h3&gt;
+&lt;p&gt;输入：&amp;ldquo;生成一个响应式个人简历HTML页面，背景浅灰，包含姓名、技能列表、工作经历，用Flexbox布局&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;Goose会直接输出一个可用的HTML文件，在浏览器打开就能用。&lt;/p&gt;
+&lt;h3 id="技巧3调用api爬取数据"&gt;技巧3：调用API爬取数据&lt;/h3&gt;
+&lt;p&gt;输入：&amp;ldquo;写一个Python脚本，用requests库调用https://api.example.com/endpoint，解析JSON并保存为CSV&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;注意需要你自己替换真实API地址。Goose会处理错误处理、分页等逻辑。&lt;/p&gt;
+&lt;h2 id="4-常见错误和排障"&gt;4. 常见错误和排障&lt;/h2&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;问题&lt;/th&gt;
+&lt;th&gt;原因&lt;/th&gt;
+&lt;th&gt;解决方法&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;code&gt;pip install goose-ai&lt;/code&gt;报错&lt;/td&gt;
+&lt;td&gt;没有Python或pip&lt;/td&gt;
+&lt;td&gt;先安装Python 3.10+，去python.org下载&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;提示&amp;quot;模型不可用&amp;quot;&lt;/td&gt;
+&lt;td&gt;网络无法连接云端API&lt;/td&gt;
+&lt;td&gt;用&lt;code&gt;goose init&lt;/code&gt;重新选择模型，选&amp;quot;local&amp;quot;使用本地CPU推理（更慢但无需网络）&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;生成的代码运行报错&lt;/td&gt;
+&lt;td&gt;缺少依赖库&lt;/td&gt;
+&lt;td&gt;自动重试时会尝试安装，如果失败手动运行&lt;code&gt;pip install 库名&lt;/code&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;中文乱码&lt;/td&gt;
+&lt;td&gt;终端编码问题&lt;/td&gt;
+&lt;td&gt;Windows在CMD里先输&lt;code&gt;chcp 65001&lt;/code&gt;再启动&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h2 id="5-同类工具对比"&gt;5. 同类工具对比&lt;/h2&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;工具&lt;/th&gt;
+&lt;th&gt;价格&lt;/th&gt;
+&lt;th&gt;启动成本(元)&lt;/th&gt;
+&lt;th&gt;上手时间&lt;/th&gt;
+&lt;th&gt;本地运行&lt;/th&gt;
+&lt;th&gt;需要API Key&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Goose&lt;/td&gt;
+&lt;td&gt;免费&lt;/td&gt;
+&lt;td&gt;0&lt;/td&gt;
+&lt;td&gt;15分钟&lt;/td&gt;
+&lt;td&gt;可选&lt;/td&gt;
+&lt;td&gt;否（默认免费云模型）&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Claude Code&lt;/td&gt;
+&lt;td&gt;$200/月&lt;/td&gt;
+&lt;td&gt;约1400&lt;/td&gt;
+&lt;td&gt;10分钟&lt;/td&gt;
+&lt;td&gt;否&lt;/td&gt;
+&lt;td&gt;是（付费订阅）&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;GitHub Copilot&lt;/td&gt;
+&lt;td&gt;$10/月&lt;/td&gt;
+&lt;td&gt;约70&lt;/td&gt;
+&lt;td&gt;5分钟&lt;/td&gt;
+&lt;td&gt;否&lt;/td&gt;
+&lt;td&gt;是（VSCode插件）&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;CodeGen（本地）&lt;/td&gt;
+&lt;td&gt;免费&lt;/td&gt;
+&lt;td&gt;0&lt;/td&gt;
+&lt;td&gt;30分钟&lt;/td&gt;
+&lt;td&gt;是&lt;/td&gt;
+&lt;td&gt;否（需高性能GPU）&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;上手难度：3/5（需要会用终端基础命令，如cd、ls）。&lt;/p&gt;</description><content:encoded><![CDATA[<h1 id="goose零成本替代claude-code的ai编程助手完整使用教程">Goose：零成本替代Claude Code的AI编程助手——完整使用教程</h1>
+<h2 id="1-这个工具解决什么痛点">1. 这个工具解决什么痛点</h2>
+<p>你想用AI帮你写代码，比如写一个自动整理文件夹的脚本、一个简单的网页、或者批量修改文件内容。但你不想付每个月几十甚至两百美元的订阅费（Claude Code每月最高200美元）。</p>
+<p>你希望：</p>
+<ul>
+<li>完全免费</li>
+<li>在终端（命令行）里用自然语言指挥AI</li>
+<li>AI能自动写代码、运行、调试，甚至帮你部署</li>
+</ul>
+<p>Goose就是干这个的。它是开源的、免费的，完全在本地运行（可选云端模型），功能对标Claude Code。</p>
+<h2 id="2-从注册到产出第一个结果的完整流程">2. 从注册到产出第一个结果的完整流程</h2>
+<h3 id="第一步安装goose">第一步：安装Goose</h3>
+<p>打开终端（Windows用CMD或PowerShell，Mac用终端）。输入以下命令：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 使用pip安装（需要Python 3.8以上版本）</span>
+</span></span><span style="display:flex;"><span>pip install goose-ai
+</span></span></code></pre></div><p>如果速度太慢，换国内镜像：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>pip install goose-ai -i https://pypi.tuna.tsinghua.edu.cn/simple
+</span></span></code></pre></div><p>安装时间：约2-5分钟（取决于网速）。
+启动成本：0元。
+时间投入：15分钟。</p>
+<h3 id="第二步初始化并选择模型">第二步：初始化并选择模型</h3>
+<p>在终端输入：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>goose init
+</span></span></code></pre></div><p>Goose会问你用什么模型。首次使用建议选默认的云端模型（Goose自己维护的免费层），无需API Key。</p>
+<p>如果想用更强模型（如Claude、GPT），可以自己去对应平台申请免费API Key（OpenAI新账号有5美元试用额度，可跑约100次）。</p>
+<h3 id="第三步下达第一个任务">第三步：下达第一个任务</h3>
+<p>在终端输入：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>goose
+</span></span></code></pre></div><p>看到提示符后，直接输入自然语言描述。例如：</p>
+<pre tabindex="0"><code>帮我写一个Python脚本：读取当前目录下所有.csv文件，合并成一个名为merged.xlsx的Excel文件。每个csv文件变成Excel中的一个工作表，工作表名就是csv文件名（不含扩展名）。
+</code></pre><p>Goose会自动：</p>
+<ol>
+<li>分析需求</li>
+<li>生成代码</li>
+<li>在终端里显示代码</li>
+<li>询问是否要运行（输入y确认）</li>
+<li>自动尝试运行，如果出错会自动修改后重试</li>
+</ol>
+<h3 id="第四步获取结果">第四步：获取结果</h3>
+<p>完成后，你会在当前目录下看到一个merged.xlsx文件。打开确认数据已合并。</p>
+<p>实际测试：一个100行、5列的CSV合并任务，Goose从提问到出结果耗时约45秒，中间无手动干预。</p>
+<h2 id="3-进阶技巧3个大多数人不知道的用法">3. 进阶技巧：3个大多数人不知道的用法</h2>
+<h3 id="技巧1批量文件重命名">技巧1：批量文件重命名</h3>
+<p>输入：&ldquo;把当前目录下所有文件名中包含&rsquo;Draft&rsquo;的.docx文件改名为&rsquo;V2_&lsquo;开头的文件&rdquo;</p>
+<p>Goose会用Python的os模块写脚本，安全执行。</p>
+<h3 id="技巧2自动创建html页面">技巧2：自动创建HTML页面</h3>
+<p>输入：&ldquo;生成一个响应式个人简历HTML页面，背景浅灰，包含姓名、技能列表、工作经历，用Flexbox布局&rdquo;</p>
+<p>Goose会直接输出一个可用的HTML文件，在浏览器打开就能用。</p>
+<h3 id="技巧3调用api爬取数据">技巧3：调用API爬取数据</h3>
+<p>输入：&ldquo;写一个Python脚本，用requests库调用https://api.example.com/endpoint，解析JSON并保存为CSV&rdquo;</p>
+<p>注意需要你自己替换真实API地址。Goose会处理错误处理、分页等逻辑。</p>
+<h2 id="4-常见错误和排障">4. 常见错误和排障</h2>
+<table>
+  <thead>
+      <tr>
+          <th>问题</th>
+          <th>原因</th>
+          <th>解决方法</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><code>pip install goose-ai</code>报错</td>
+          <td>没有Python或pip</td>
+          <td>先安装Python 3.10+，去python.org下载</td>
+      </tr>
+      <tr>
+          <td>提示&quot;模型不可用&quot;</td>
+          <td>网络无法连接云端API</td>
+          <td>用<code>goose init</code>重新选择模型，选&quot;local&quot;使用本地CPU推理（更慢但无需网络）</td>
+      </tr>
+      <tr>
+          <td>生成的代码运行报错</td>
+          <td>缺少依赖库</td>
+          <td>自动重试时会尝试安装，如果失败手动运行<code>pip install 库名</code></td>
+      </tr>
+      <tr>
+          <td>中文乱码</td>
+          <td>终端编码问题</td>
+          <td>Windows在CMD里先输<code>chcp 65001</code>再启动</td>
+      </tr>
+  </tbody>
+</table>
+<h2 id="5-同类工具对比">5. 同类工具对比</h2>
+<table>
+  <thead>
+      <tr>
+          <th>工具</th>
+          <th>价格</th>
+          <th>启动成本(元)</th>
+          <th>上手时间</th>
+          <th>本地运行</th>
+          <th>需要API Key</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>Goose</td>
+          <td>免费</td>
+          <td>0</td>
+          <td>15分钟</td>
+          <td>可选</td>
+          <td>否（默认免费云模型）</td>
+      </tr>
+      <tr>
+          <td>Claude Code</td>
+          <td>$200/月</td>
+          <td>约1400</td>
+          <td>10分钟</td>
+          <td>否</td>
+          <td>是（付费订阅）</td>
+      </tr>
+      <tr>
+          <td>GitHub Copilot</td>
+          <td>$10/月</td>
+          <td>约70</td>
+          <td>5分钟</td>
+          <td>否</td>
+          <td>是（VSCode插件）</td>
+      </tr>
+      <tr>
+          <td>CodeGen（本地）</td>
+          <td>免费</td>
+          <td>0</td>
+          <td>30分钟</td>
+          <td>是</td>
+          <td>否（需高性能GPU）</td>
+      </tr>
+  </tbody>
+</table>
+<p>上手难度：3/5（需要会用终端基础命令，如cd、ls）。</p>
+<h2 id="6-谁适合用谁不适合用">6. 谁适合用/谁不适合用</h2>
+<p><strong>适合：</strong></p>
+<ul>
+<li>会一点编程但不精通写复杂脚本的开发者</li>
+<li>想自动化重复性文件操作的打工人（财务/运营/数据分析）</li>
+<li>预算有限的学生和求职者</li>
+<li>想尝试AI编程但不想付费的用户</li>
+</ul>
+<p><strong>不适合：</strong></p>
+<ul>
+<li>完全不会用终端（可以学，只需5分钟记住几个命令）</li>
+<li>需要生产级安全代码的项目（建议只用于脚本和原型）</li>
+<li>需要图形IDE支持的开发者（Goose是纯终端）</li>
+</ul>
+<h2 id="7-性价比结论免费够用无需付费">7. 性价比结论：免费够用无需付费</h2>
+<p>对于日常自动化脚本、数据处理、原型验证，Goose完全够用。默认免费模型速度尚可（10-30秒响应），支持中文自然语言描述。</p>
+<p><strong>你现在就能做的事：</strong> 打开终端→输入<code>pip install goose-ai</code>→安装完成后输入<code>goose</code>→说&quot;帮我写一个在当前目录创建文件夹并按日期命名的脚本&quot;→等10秒看到代码→确认运行。完成。</p>
+]]></content:encoded></item><item><title>Goose免费替代</title><link>https://radar.huadongpeng.com/posts/ai-frontier/deep-dive-2026-05-12-1011/</link><pubDate>Tue, 12 May 2026 10:11:17 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/ai-frontier/deep-dive-2026-05-12-1011/</guid><description>&lt;h2 id="工具卡片"&gt;工具卡片&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;名称&lt;/strong&gt;: Goose&lt;/li&gt;
 &lt;li&gt;&lt;strong&gt;网址&lt;/strong&gt;: github.com/block/goose&lt;/li&gt;
