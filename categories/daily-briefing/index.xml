@@ -1,54 +1,70 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Daily-Briefing on Easton 跨国智库</title><link>https://radar.huadongpeng.com/categories/daily-briefing/</link><description>Recent content in Daily-Briefing on Easton 跨国智库</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Tue, 12 May 2026 17:10:23 +0800</lastBuildDate><atom:link href="https://radar.huadongpeng.com/categories/daily-briefing/index.xml" rel="self" type="application/rss+xml"/><item><title>每日快讯</title><link>https://radar.huadongpeng.com/posts/daily-briefing/briefing-2026-05-12/</link><pubDate>Tue, 12 May 2026 17:10:23 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/daily-briefing/briefing-2026-05-12/</guid><description>&lt;blockquote&gt;
-&lt;p&gt;2026年05月12日 · 5 条情报&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Daily-Briefing on Easton 跨国智库</title><link>https://radar.huadongpeng.com/categories/daily-briefing/</link><description>Recent content in Daily-Briefing on Easton 跨国智库</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Tue, 12 May 2026 17:19:14 +0800</lastBuildDate><atom:link href="https://radar.huadongpeng.com/categories/daily-briefing/index.xml" rel="self" type="application/rss+xml"/><item><title>每日快讯</title><link>https://radar.huadongpeng.com/posts/daily-briefing/briefing-2026-05-12/</link><pubDate>Tue, 12 May 2026 17:19:14 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/daily-briefing/briefing-2026-05-12/</guid><description>&lt;blockquote&gt;
+&lt;p&gt;2026年05月12日 · 6 条情报&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h2 id="宏观风向标"&gt;宏观风向标&lt;/h2&gt;
-&lt;h3 id="韩国拟征ai红利税分给百姓"&gt;韩国拟征AI红利税分给百姓&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：Bloomberg | 韩国官员提议用AI利润税发全民分红&lt;/p&gt;
-&lt;p&gt;AI财富分配争议进入政策层面，影响所有靠AI赚差价的人（政策讨论期6-12个月）。&lt;/p&gt;
+&lt;h3 id="fcc延长路由器更新"&gt;FCC延长路由器更新&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：Ars Technica | FCC允许外国路由器更新至2029年。&lt;/p&gt;
+&lt;p&gt;已购买外国路由器的用户可获补丁至2029年，短期避免断网风险。不必急于更换设备。&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;🎯 今天搜&amp;rsquo;AI tax South Korea&amp;rsquo;，把政策原文存下来，下次吹水时当谈资。&lt;/p&gt;
+&lt;p&gt;🎯 今天检查自家路由器品牌，在设置里查看‘系统更新’，手动触发一次固件检查。免费，10分钟。&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;hr&gt;
 &lt;h2 id="效率工具与自动化"&gt;效率工具与自动化&lt;/h2&gt;
-&lt;h3 id="检查npm供应链安全"&gt;检查npm供应链安全&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：未知 |&lt;/p&gt;
-&lt;hr&gt;
-&lt;h2 id="套利雷达"&gt;套利雷达&lt;/h2&gt;
-&lt;h3 id="替代包零成本赚首金"&gt;替代包零成本赚首金&lt;/h3&gt;
+&lt;h3 id="无标题"&gt;无标题&lt;/h3&gt;
 &lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：未知 |&lt;/p&gt;
 &lt;hr&gt;
 &lt;h2 id="ai-工具实战"&gt;AI 工具实战&lt;/h2&gt;
-&lt;h3 id="goose零成本ai编程"&gt;Goose零成本AI编程&lt;/h3&gt;
+&lt;h3 id="免费ai编码替代方案"&gt;免费AI编码替代方案&lt;/h3&gt;
 &lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：未知 |&lt;/p&gt;
 &lt;hr&gt;
+&lt;h2 id="套利雷达"&gt;套利雷达&lt;/h2&gt;
+&lt;h3 id="npm漏洞清洁工"&gt;npm漏洞清洁工&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：未知 |&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="海外信息差"&gt;海外信息差&lt;/h2&gt;
+&lt;h3 id="零成本客户审计法"&gt;零成本客户审计法&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：Small Biz Thoughts Blog-美国 | 通过‘首次报价过程’就能自动过滤劣质客户的实战技巧&lt;/p&gt;
+&lt;p&gt;国内几乎没有‘报价阶段筛选客户’的方法论，完全是信息差，直接复制即可&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;🎯 打开小红书，搜‘客户问价就不理我’看大家怎么回复&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;hr&gt;
 &lt;h2 id="出海工具链"&gt;出海工具链&lt;/h2&gt;
-&lt;h3 id="krikey动画出海"&gt;Krikey动画出海&lt;/h3&gt;
+&lt;h3 id="qclaw注册指南"&gt;QClaw注册指南&lt;/h3&gt;
 &lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：未知 |&lt;/p&gt;
 &lt;hr&gt;</description><content:encoded><![CDATA[<blockquote>
-<p>2026年05月12日 · 5 条情报</p>
+<p>2026年05月12日 · 6 条情报</p>
 </blockquote>
 <h2 id="宏观风向标">宏观风向标</h2>
-<h3 id="韩国拟征ai红利税分给百姓">韩国拟征AI红利税分给百姓</h3>
-<p><strong>来源</strong>：Bloomberg | 韩国官员提议用AI利润税发全民分红</p>
-<p>AI财富分配争议进入政策层面，影响所有靠AI赚差价的人（政策讨论期6-12个月）。</p>
+<h3 id="fcc延长路由器更新">FCC延长路由器更新</h3>
+<p><strong>来源</strong>：Ars Technica | FCC允许外国路由器更新至2029年。</p>
+<p>已购买外国路由器的用户可获补丁至2029年，短期避免断网风险。不必急于更换设备。</p>
 <blockquote>
-<p>🎯 今天搜&rsquo;AI tax South Korea&rsquo;，把政策原文存下来，下次吹水时当谈资。</p>
+<p>🎯 今天检查自家路由器品牌，在设置里查看‘系统更新’，手动触发一次固件检查。免费，10分钟。</p>
 </blockquote>
 <hr>
 <h2 id="效率工具与自动化">效率工具与自动化</h2>
-<h3 id="检查npm供应链安全">检查npm供应链安全</h3>
-<p><strong>来源</strong>：未知 |</p>
-<hr>
-<h2 id="套利雷达">套利雷达</h2>
-<h3 id="替代包零成本赚首金">替代包零成本赚首金</h3>
+<h3 id="无标题">无标题</h3>
 <p><strong>来源</strong>：未知 |</p>
 <hr>
 <h2 id="ai-工具实战">AI 工具实战</h2>
-<h3 id="goose零成本ai编程">Goose零成本AI编程</h3>
+<h3 id="免费ai编码替代方案">免费AI编码替代方案</h3>
 <p><strong>来源</strong>：未知 |</p>
 <hr>
+<h2 id="套利雷达">套利雷达</h2>
+<h3 id="npm漏洞清洁工">npm漏洞清洁工</h3>
+<p><strong>来源</strong>：未知 |</p>
+<hr>
+<h2 id="海外信息差">海外信息差</h2>
+<h3 id="零成本客户审计法">零成本客户审计法</h3>
+<p><strong>来源</strong>：Small Biz Thoughts Blog-美国 | 通过‘首次报价过程’就能自动过滤劣质客户的实战技巧</p>
+<p>国内几乎没有‘报价阶段筛选客户’的方法论，完全是信息差，直接复制即可</p>
+<blockquote>
+<p>🎯 打开小红书，搜‘客户问价就不理我’看大家怎么回复</p>
+</blockquote>
+<hr>
 <h2 id="出海工具链">出海工具链</h2>
-<h3 id="krikey动画出海">Krikey动画出海</h3>
+<h3 id="qclaw注册指南">QClaw注册指南</h3>
 <p><strong>来源</strong>：未知 |</p>
 <hr>
 ]]></content:encoded></item></channel></rss>
