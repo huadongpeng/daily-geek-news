@@ -125,7 +125,7 @@ AGENTS = {
     ],
     "tg_brief": "Telegram 推送用（200字内，编号列表，每条含核心操作指引）"
   },
-  "deep_dive": "⚠️请生成完整deep_dive对象（含title/tg_summary/content_md），不要填null。如确实无话题可写才填null。"
+  "deep_dive": { "title": "深度长文标题", "tg_summary": "一句话概述", "content_md": "完整Markdown正文..." }
 }
 
 优先选择有具体操作路径的话题，写出读者能直接照做的步骤。
@@ -216,7 +216,7 @@ content_md 自由结构，但必须包含以下内容（不用固定章节标题
     ],
     "tg_brief": "Telegram 推送用（200字内，编号列表）"
   },
-  "deep_dive": "⚠️请生成完整deep_dive对象（含title/tg_summary/content_md），不要填null。如确实无话题可写才填null。"
+  "deep_dive": { "title": "深度长文标题", "tg_summary": "一句话概述", "content_md": "完整Markdown正文..." }
 }
 
 优先选择有实用价值的话题，写出读者能跟着做的教程或测评。""",
@@ -292,7 +292,7 @@ content_md 自由结构，二选一：
     ],
     "tg_brief": "Telegram 推送用（200字内，编号列表）"
   },
-  "deep_dive": "⚠️请生成完整deep_dive对象（含title/tg_summary/content_md），不要填null。如确实无话题可写才填null。"
+  "deep_dive": { "title": "深度长文标题", "tg_summary": "一句话概述", "content_md": "完整Markdown正文..." }
 }
 
 优先选择有国内可行性或可模仿的角度，写出具体操作方案。""",
@@ -416,7 +416,7 @@ content_md 自由结构，必须包含：
     ],
     "tg_brief": "Telegram 推送用（200字内，编号列表）"
   },
-  "deep_dive": "⚠️请生成完整deep_dive对象（含title/tg_summary/content_md），不要填null。如确实无话题可写才填null。"
+  "deep_dive": { "title": "深度长文标题", "tg_summary": "一句话概述", "content_md": "完整Markdown正文..." }
 }
 
 优先选择有实操价值的出海工具或平台，写出详细上手指南。""",
@@ -491,7 +491,7 @@ content_md 自由结构，必须包含：
     ],
     "tg_brief": "Telegram 推送用（200字内，编号列表）"
   },
-  "deep_dive": "⚠️请生成完整deep_dive对象（含title/tg_summary/content_md），不要填null。如确实无话题可写才填null。"
+  "deep_dive": { "title": "深度长文标题", "tg_summary": "一句话概述", "content_md": "完整Markdown正文..." }
 }
 
 优先选择有教学价值的工具或方案，写出读者能快速上手的指南。""",
@@ -541,7 +541,7 @@ def auto_search_context(query):
     """全网主动检索补充深度背景"""
     try:
         print(f"   🔍 正在全网主动检索: {query[:60]}...")
-        results = DDGS().text(query, max_results=20)
+        results = DDGS().text(query, max_results=5)
         context = ""
         for r in results:
             context += f"-[外网检索] {r['title']}: {r['body']}\n"
@@ -560,7 +560,7 @@ def auto_search_pain_points(query):
         ]
         context = ""
         for pq in pain_queries:
-            results = DDGS().text(pq, max_results=10)
+            results = DDGS().text(pq, max_results=3)
             for r in results:
                 context += f"-[痛点挖掘] {r['title']}: {r['body']}\n"
         return context
@@ -596,12 +596,12 @@ def _fetch_one_feed(url):
     with _FEED_CACHE_LOCK:
         _FEED_OK += 1
     entries = []
-    for entry in feed.entries:
+    for entry in feed.entries[:5]:
         desc = ""
         if hasattr(entry, 'description') and entry.description:
-            desc = re.sub('<[^<]+>', '', entry.description)
+            desc = re.sub('<[^<]+>', '', entry.description)[:250]
         elif hasattr(entry, 'summary') and entry.summary:
-            desc = re.sub('<[^<]+>', '', entry.summary)
+            desc = re.sub('<[^<]+>', '', entry.summary)[:250]
         link = getattr(entry, 'link', '')
         entries.append(f"标题: {entry.title}\n来源: {link}\n摘要: {desc}")
     with _FEED_CACHE_LOCK:
@@ -628,24 +628,22 @@ def fetch_and_augment(feeds):
 
     base_context = "\n".join(raw_articles)
 
-    # 对前 8 个最具代表性的标题做深度全网检索
-    target_titles = all_titles[:8]
+    # DEBUG临时：减少检索量精确定位问题
+    target_titles = all_titles[:3]
     deep_context = ""
     pain_context = ""
 
     if target_titles:
-        with concurrent.futures.ThreadPoolExecutor(max_workers=6) as pool:
+        with concurrent.futures.ThreadPoolExecutor(max_workers=3) as pool:
             futures = {}
             for i, t in enumerate(target_titles):
                 futures[pool.submit(auto_search_context, t)] = ("bg", t)
-                if i > 0 and i % 3 == 0:
-                    time.sleep(0.5)  # 每 3 个标题稍息避免触发 DDG 频率限制
                 futures[pool.submit(auto_search_pain_points, t)] = ("pain", t)
                 try:
                     futures[pool.submit(
                         lambda q=t: "\n".join(
                             f"-[中国市场关联] {r['title']}: {r['body']}"
-                            for r in DDGS().text(f"{q} 中国 替代 市场", max_results=5)
+                            for r in DDGS().text(f"{q} 中国 替代 市场", max_results=3)
                         )
                     )] = ("cn", t)
                 except Exception:
@@ -903,8 +901,14 @@ def deep_dive_worker(category_name, config):
         final_text = response.json()['choices'][0]['message']['content']
         result = _extract_json(final_text)
         has_brief = bool(result.get("briefing"))
-        has_deep = bool(result.get("deep_dive") and result["deep_dive"].get("title"))
-        print(f"[{category_name}] API {t_api-t_api_start:.0f}s | 快讯:{has_brief} 深度:{has_deep}", flush=True)
+        dd = result.get("deep_dive")
+        has_deep = bool(dd and dd.get("title"))
+        # DEBUG: 打印模型返回的 deep_dive 原始值和类型
+        dd_preview = str(dd)[:200] if dd else "null/None"
+        print(f"[{category_name}] API {t_api-t_api_start:.0f}s | 快讯:{has_brief} 深度:{has_deep} | deep_dive={dd_preview} (type={type(dd).__name__})", flush=True)
+        # DEBUG: 如果深度为 False，打印原始响应的最后300字符帮助排查
+        if not has_deep:
+            print(f"   [DEBUG] 原始响应尾段(300chars): ...{final_text[-300:]}", flush=True)
         return category_name, result
 
     except Exception as e:
