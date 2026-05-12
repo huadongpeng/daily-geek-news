@@ -1,4 +1,85 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Arbitrage-Radar on Easton 跨国智库</title><link>https://radar.huadongpeng.com/categories/arbitrage-radar/</link><description>Recent content in Arbitrage-Radar on Easton 跨国智库</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Tue, 12 May 2026 13:20:42 +0800</lastBuildDate><atom:link href="https://radar.huadongpeng.com/categories/arbitrage-radar/index.xml" rel="self" type="application/rss+xml"/><item><title>自动化逃税催款</title><link>https://radar.huadongpeng.com/posts/arbitrage-radar/deep-dive-2026-05-12-1320/</link><pubDate>Tue, 12 May 2026 13:20:42 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/arbitrage-radar/deep-dive-2026-05-12-1320/</guid><description>&lt;h2 id="核心洞察"&gt;核心洞察&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Arbitrage-Radar on Easton 跨国智库</title><link>https://radar.huadongpeng.com/categories/arbitrage-radar/</link><description>Recent content in Arbitrage-Radar on Easton 跨国智库</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Tue, 12 May 2026 13:31:14 +0800</lastBuildDate><atom:link href="https://radar.huadongpeng.com/categories/arbitrage-radar/index.xml" rel="self" type="application/rss+xml"/><item><title>开发启动模板</title><link>https://radar.huadongpeng.com/posts/arbitrage-radar/deep-dive-2026-05-12-1331/</link><pubDate>Tue, 12 May 2026 13:31:14 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/arbitrage-radar/deep-dive-2026-05-12-1331/</guid><description>&lt;h2 id="核心洞察"&gt;核心洞察&lt;/h2&gt;
+&lt;p&gt;Reddit用户说：‘我有6个副项目，每个都在域名、落地页、邮件序列上卡一天’。这不是一个人的烦恼。搜索‘side project boilerplate’有上百条类似抱怨。现有方案要么太通用（create-react-app），要么收费（$50+的模板）。没人愿意为‘设置10分钟就省一天’这件事掏钱——但如果你把这个变成一键脚本，就能赚到钱。&lt;/p&gt;
+&lt;h2 id="执行清单-day1-7"&gt;执行清单 Day1-7&lt;/h2&gt;
+&lt;h3 id="day1周一打开github搜索side-project-boilerplatetop5结果用star数排序记录每个模板的特点依赖stars数看评论区有没有人抱怨配置太复杂"&gt;Day1（周一）：打开GitHub，搜索‘side project boilerplate’，top5结果用star数排序，记录每个模板的特点、依赖、Stars数。看评论区有没有人抱怨配置太复杂。&lt;/h3&gt;
+&lt;h3 id="day2周二打开vercel或netlify免费账户用day1选出的最流行的模板试用部署一次记录每个手动步骤git初始化域名绑定环境变量分析工具"&gt;Day2（周二）：打开Vercel或Netlify免费账户。用Day1选出的最流行的模板，试用部署一次，记录每个手动步骤：Git初始化、域名绑定、环境变量、分析工具。&lt;/h3&gt;
+&lt;h3 id="day3周三写一个shell脚本maclinux用户自动运行所有day2的步骤脚本里包含git-clone模板仓库npm-install创建env文件部署到vercel"&gt;Day3（周三）：写一个Shell脚本（Mac/Linux用户），自动运行所有Day2的步骤。脚本里包含：git clone模板仓库、npm install、创建.env文件、部署到Vercel。&lt;/h3&gt;
+&lt;h3 id="day4周四把脚本发布到github作为新仓库readme写清楚一键部署你的副项目域名邮件列表分析"&gt;Day4（周四）：把脚本发布到GitHub作为新仓库。README写清楚：‘一键部署你的副项目：域名+邮件列表+分析’。&lt;/h3&gt;
+&lt;h3 id="day5周五开发一个简单的nodejs-cli工具替代shell脚本支持选择模板"&gt;Day5（周五）：开发一个简单的Node.js CLI工具，替代Shell脚本，支持选择模板。&lt;/h3&gt;
+&lt;h3 id="day6周六写一篇博客我如何用5个步骤一键启动副项目发布到v2ex和掘金附上github链接"&gt;Day6（周六）：写一篇博客《我如何用5个步骤一键启动副项目》，发布到V2EX和掘金。附上GitHub链接。&lt;/h3&gt;
+&lt;h3 id="day7周日在producthunt提交你的工具同时在reddit-rsaas和rwebdev发帖我写了一个免费cli一键帮你跳过配置地狱"&gt;Day7（周日）：在ProductHunt提交你的工具。同时在Reddit r/SaaS和r/webdev发帖‘我写了一个免费CLI，一键帮你跳过配置地狱’。&lt;/h3&gt;
+&lt;h2 id="工具清单"&gt;工具清单&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Git：git-scm.com，免费&lt;/li&gt;
+&lt;li&gt;GitHub：github.com，免费账户&lt;/li&gt;
+&lt;li&gt;Vercel：vercel.com，免费计划足够&lt;/li&gt;
+&lt;li&gt;Node.js：nodejs.org，免费&lt;/li&gt;
+&lt;li&gt;Text editor：VS Code，免费&lt;/li&gt;
+&lt;li&gt;Hugo/Jekyll（可选模板）：hugo.io，免费&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="收益预估"&gt;收益预估&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;保守：100个star，0收入。&lt;/li&gt;
+&lt;li&gt;中等：100次下载，每月来自GitHub Sponsors的$10捐赠。&lt;/li&gt;
+&lt;li&gt;乐观：上ProductHunt每周Top10后，可接受定制项目（如企业版），$200/份。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;计算逻辑：中等情况每月下载100次，1%捐赠，平均$10/人。&lt;/p&gt;
+&lt;h2 id="3个最容易踩的坑"&gt;3个最容易踩的坑&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;脚本写得太复杂&lt;/strong&gt;：使用Zsh等不可移植特性 → 用Bash，并测试bin/sh兼容性。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;只支持Linux&lt;/strong&gt;：Mac用户最多 → 测试BSD/macOS的sed、awk差异。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;没加安全提示&lt;/strong&gt;：脚本删除目录或安装全局包出问题 → 加入‘确认执行’步骤和备份提示。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id="延伸资源"&gt;延伸资源&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;YouTube搜索‘building CLI tools in Node.js’，免费教程。&lt;/li&gt;
+&lt;li&gt;B站搜索‘前端脚手架实现’，有中文教程。&lt;/li&gt;
+&lt;li&gt;官网：github.com/tj/commander.js（CLI框架）。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;启动成本：0元（仅靠自己编写的2-3天时间，折算为市场价约200元/天）
+时间投入：每天30分钟到1小时，共约5小时
+预期首周收益：0元（需要1个月积累用户后才可能有捐赠）&lt;/p&gt;</description><content:encoded><![CDATA[<h2 id="核心洞察">核心洞察</h2>
+<p>Reddit用户说：‘我有6个副项目，每个都在域名、落地页、邮件序列上卡一天’。这不是一个人的烦恼。搜索‘side project boilerplate’有上百条类似抱怨。现有方案要么太通用（create-react-app），要么收费（$50+的模板）。没人愿意为‘设置10分钟就省一天’这件事掏钱——但如果你把这个变成一键脚本，就能赚到钱。</p>
+<h2 id="执行清单-day1-7">执行清单 Day1-7</h2>
+<h3 id="day1周一打开github搜索side-project-boilerplatetop5结果用star数排序记录每个模板的特点依赖stars数看评论区有没有人抱怨配置太复杂">Day1（周一）：打开GitHub，搜索‘side project boilerplate’，top5结果用star数排序，记录每个模板的特点、依赖、Stars数。看评论区有没有人抱怨配置太复杂。</h3>
+<h3 id="day2周二打开vercel或netlify免费账户用day1选出的最流行的模板试用部署一次记录每个手动步骤git初始化域名绑定环境变量分析工具">Day2（周二）：打开Vercel或Netlify免费账户。用Day1选出的最流行的模板，试用部署一次，记录每个手动步骤：Git初始化、域名绑定、环境变量、分析工具。</h3>
+<h3 id="day3周三写一个shell脚本maclinux用户自动运行所有day2的步骤脚本里包含git-clone模板仓库npm-install创建env文件部署到vercel">Day3（周三）：写一个Shell脚本（Mac/Linux用户），自动运行所有Day2的步骤。脚本里包含：git clone模板仓库、npm install、创建.env文件、部署到Vercel。</h3>
+<h3 id="day4周四把脚本发布到github作为新仓库readme写清楚一键部署你的副项目域名邮件列表分析">Day4（周四）：把脚本发布到GitHub作为新仓库。README写清楚：‘一键部署你的副项目：域名+邮件列表+分析’。</h3>
+<h3 id="day5周五开发一个简单的nodejs-cli工具替代shell脚本支持选择模板">Day5（周五）：开发一个简单的Node.js CLI工具，替代Shell脚本，支持选择模板。</h3>
+<h3 id="day6周六写一篇博客我如何用5个步骤一键启动副项目发布到v2ex和掘金附上github链接">Day6（周六）：写一篇博客《我如何用5个步骤一键启动副项目》，发布到V2EX和掘金。附上GitHub链接。</h3>
+<h3 id="day7周日在producthunt提交你的工具同时在reddit-rsaas和rwebdev发帖我写了一个免费cli一键帮你跳过配置地狱">Day7（周日）：在ProductHunt提交你的工具。同时在Reddit r/SaaS和r/webdev发帖‘我写了一个免费CLI，一键帮你跳过配置地狱’。</h3>
+<h2 id="工具清单">工具清单</h2>
+<ul>
+<li>Git：git-scm.com，免费</li>
+<li>GitHub：github.com，免费账户</li>
+<li>Vercel：vercel.com，免费计划足够</li>
+<li>Node.js：nodejs.org，免费</li>
+<li>Text editor：VS Code，免费</li>
+<li>Hugo/Jekyll（可选模板）：hugo.io，免费</li>
+</ul>
+<h2 id="收益预估">收益预估</h2>
+<ul>
+<li>保守：100个star，0收入。</li>
+<li>中等：100次下载，每月来自GitHub Sponsors的$10捐赠。</li>
+<li>乐观：上ProductHunt每周Top10后，可接受定制项目（如企业版），$200/份。</li>
+</ul>
+<p>计算逻辑：中等情况每月下载100次，1%捐赠，平均$10/人。</p>
+<h2 id="3个最容易踩的坑">3个最容易踩的坑</h2>
+<ol>
+<li><strong>脚本写得太复杂</strong>：使用Zsh等不可移植特性 → 用Bash，并测试bin/sh兼容性。</li>
+<li><strong>只支持Linux</strong>：Mac用户最多 → 测试BSD/macOS的sed、awk差异。</li>
+<li><strong>没加安全提示</strong>：脚本删除目录或安装全局包出问题 → 加入‘确认执行’步骤和备份提示。</li>
+</ol>
+<h2 id="延伸资源">延伸资源</h2>
+<ol>
+<li>YouTube搜索‘building CLI tools in Node.js’，免费教程。</li>
+<li>B站搜索‘前端脚手架实现’，有中文教程。</li>
+<li>官网：github.com/tj/commander.js（CLI框架）。</li>
+</ol>
+<p>启动成本：0元（仅靠自己编写的2-3天时间，折算为市场价约200元/天）
+时间投入：每天30分钟到1小时，共约5小时
+预期首周收益：0元（需要1个月积累用户后才可能有捐赠）</p>
+]]></content:encoded></item><item><title>自动化逃税催款</title><link>https://radar.huadongpeng.com/posts/arbitrage-radar/deep-dive-2026-05-12-1320/</link><pubDate>Tue, 12 May 2026 13:20:42 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/arbitrage-radar/deep-dive-2026-05-12-1320/</guid><description>&lt;h2 id="核心洞察"&gt;核心洞察&lt;/h2&gt;
 &lt;p&gt;这条机会来自Reddit上一条抱怨：“小企业失去大量时间在无聊的行政工作：发票催款、付款提醒……”评论区一片附和。为什么别人没赚到这个钱？因为大多数独立开发者追求“性感玩具”，觉得后台自动化太low。但实际上，这类工具需求明确、开发逻辑简单、替代门槛极低——现有方案（如QuickBooks）功能过重且价格高，小老板只需要一个能自动发邮件的定时脚本。&lt;strong&gt;这是信息差+行动差：大家知道但懒得做。&lt;/strong&gt;&lt;/p&gt;
 &lt;h2 id="执行清单-day1-7"&gt;执行清单 Day1-7&lt;/h2&gt;
 &lt;p&gt;&lt;strong&gt;Day1（周一）：&lt;/strong&gt; 打开Reddit r/SmallBusiness→搜索“invoice reminder”和“payment follow up”→截图点赞超过20的帖子，记录10条具体抱怨原文（复制英文）。
