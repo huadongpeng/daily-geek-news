@@ -47,7 +47,7 @@
 ## 本地运行
 
 ```bash
-pip install feedparser requests duckduckgo-search
+pip install feedparser requests ddgs
 
 # 环境变量
 export DEEPSEEK_API_KEY="sk-xxx"

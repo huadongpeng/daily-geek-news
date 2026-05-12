@@ -11,7 +11,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with th
 ## Commands
 
 ```bash
-pip install feedparser requests duckduckgo-search  # pipeline dependencies
+pip install feedparser requests ddgs  # pipeline dependencies
 pip install -r tools/requirements_wechat.txt        # WeChat publisher dependencies (mistune)
 python purifier.py        # Run pipeline → content/posts/
 hugo serve                # Local preview

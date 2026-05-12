@@ -8,7 +8,7 @@ import re
 import threading
 from datetime import datetime, timezone, timedelta
 import concurrent.futures
-from duckduckgo_search import DDGS
+from ddgs import DDGS
 
 # GitHub Actions 使用 UTC，统一转为北京时间
 BJT = timezone(timedelta(hours=8))
@@ -727,20 +727,23 @@ def _extract_json(text):
     # 通用修复函数
     def _repair(raw):
         """逐步修复常见 LLM JSON 格式错误（启发式，不保证处理嵌套字符串）"""
-        raw = re.sub(r',\s*([}\]])', r'\1', raw)                         # 尾随逗号（不会意外匹配字符串内的 \}, -- LLM 极少输出此模式）
+        raw = re.sub(r'\\(?!["\\/bfnrtu])', r'\\\\', raw)              # 非法转义（\_ \* \p 等）→ 双写反斜杠字面量
+        raw = re.sub(r',\s*([}\]])', r'\1', raw)                         # 尾随逗号
         raw = re.sub(r'(^|[{\[,:\s\n])([a-zA-Z_][a-zA-Z0-9_]*)\s*:', r'\1"\2":', raw)  # 无引号键
         raw = re.sub(r"'([^']*)':", r'"\1":', raw)                     # 单引号键
         raw = re.sub(r":\s*'([^']*)'", r': "\1"', raw)                 # 单引号值
-        raw = raw.replace('“', '"').replace('”', '"')                 # 中文双引号（Unicode 转义形式，避免源码被 linter 损坏）
-        raw = raw.replace('‘', "'").replace('’', "'")                 # 中文单引号
-        raw = re.sub(r'"\s*\n\s*"', '", "', raw)                       # 缺失逗号
-        raw = re.sub(r'([}\]\d])\s*\n\s*"', r'\1,\n"', raw)            # 缺失逗号(续)
+        raw = raw.replace('“', '"').replace('”', '"')        # 中文双引号
+        raw = raw.replace('‘', "'").replace('’', "'")        # 中文单引号
+        raw = re.sub(r'"\s*\n\s*"', '", "', raw)                       # 两个相邻字符串中间缺逗号
+        raw = re.sub(r'([}\]\d])\s*\n\s*"', r'\1,\n"', raw)            # }/]/数字后换行接字符串缺逗号
+        raw = re.sub(r'([}\]"\d])\s*\n\s*\{', r'\1,\n{', raw)          # }/]/"/数字后换行接对象缺逗号
+        raw = re.sub(r'"\s+(")', r'", \1', raw)                         # 同行两个字符串中间缺逗号
         return raw
 
     # 对每个候选尝试解析，优先返回含 briefing+deep_dive 的有效 JSON
     errors = []
     for cand in reversed(candidates):
-        for attempt in range(3):
+        for attempt in range(4):
             try:
                 obj = json.loads(cand)
             except json.JSONDecodeError as e:
@@ -750,15 +753,33 @@ def _extract_json(text):
                 elif attempt == 1:
                     cand = re.sub(r'\n\s*', ' ', cand)
                     continue
+                elif attempt == 2:
+                    cand = _repair(cand)
+                    continue
                 else:
                     errors.append(str(e))
                     break
             else:
                 if isinstance(obj, dict) and "briefing" in obj:
                     return obj
-                else:
-                    errors.append(f"跳过(缺briefing键): {list(obj.keys())[:3]}")
-                    break
+                # 模型输出了有效 JSON 但缺少 briefing 键，尝试结构修复
+                if isinstance(obj, dict):
+                    wraps = []
+                    if "items" in obj:
+                        # briefing 对象缺外层 {"briefing": ...}
+                        wraps.append({"briefing": obj, "deep_dive": None})
+                    # 单条新闻条目 → 包裹为 items 列表
+                    wraps.append({"briefing": {"items": [obj]}, "deep_dive": None})
+                    for w in wraps:
+                        w_json = json.dumps(w, ensure_ascii=False)
+                        try:
+                            w_obj = json.loads(w_json)
+                            if isinstance(w_obj, dict) and "briefing" in w_obj:
+                                return w_obj
+                        except json.JSONDecodeError:
+                            pass
+                errors.append(f"跳过(缺briefing键): {list(obj.keys())[:3]}")
+                break
 
     raise ValueError(f"JSON 提取失败: {'; '.join(errors[-3:])}")
 
@@ -806,10 +827,22 @@ def deep_dive_worker(category_name, config):
 {config['briefing_prompt']}
 {deep_dive_section}
 
-你的输出必须是纯净 JSON 对象（不要代码块外壳），包含 briefing 和 deep_dive 字段。
+你的输出**必须**严格遵循以下 JSON Schema，只输出一个 JSON 对象（不加 ```json 代码块外壳）：
+
+    {{
+      "briefing": {{
+        "title": "快讯标题（≤10中文字）",
+        "tg_brief": "Telegram 摘要（≤200字）",
+        "items": [
+          {{"title": "条目标题", "source": "来源", "one_liner": "一句话摘要", "why_matters": "为什么重要", "zero_cost_angle": "零成本切入点"}}
+        ]
+      }},
+      "deep_dive": null
+    }}
+
 {deep_dive_instruction}
 
-硬性约束：
+硬性约束（违反导致 JSON 解析失败即视为无效输出）：
 - 所有 title 字段严格不超过 10 个中文字
 - 全文零 emoji，零网络用语，拒绝 AI 套话和空洞排比
 - 深度长文必须是实操指南而非行业分析——读者看完能跟着做
