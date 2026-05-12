@@ -329,6 +329,9 @@ class WeChatRenderer(mistune.HTMLRenderer):
         return f'<img src="{src}" alt="{alt}" style="max-width:100%;border-radius:6px;display:block;margin:16px auto;">'
 
     def list_item(self, text, *args, **attrs):
+        # Strip <p> wrapping inside list items — mistune adds it for longer text,
+        # but WeChat renders <p> inside <li> with extra margin = blank lines
+        text = re.sub(r'^<p[^>]*>(.*?)</p>\s*$', r'\1', text.strip(), flags=re.DOTALL)
         return f'<li style="margin:6px 0;font-size:15px;color:#3f3f3f;line-height:1.8;">{text}</li>\n'
 
     def thematic_break(self):
@@ -477,24 +480,26 @@ def find_articles(date_str=None):
 def wrap_wechat_html(body_html):
     """用固定的品牌首尾包裹微信文章正文——唯一模板入口"""
     header = (
-        f'<section style="text-align:center;padding:12px 0 20px;margin-bottom:8px;">'
-        f'<p style="font-size:12px;color:#b0b0b0;margin:0 0 4px;letter-spacing:2px;">老花有话说</p>'
-        f'<p style="font-size:11px;color:#c0c0c0;margin:0;">海外情报 · 机会发掘 · 实操指南</p>'
+        f'<section style="text-align:center;padding:16px 0 24px;margin-bottom:12px;'
+        f'border-bottom:1px solid #e8e8e8;">'
+        f'<p style="font-size:18px;color:#3f3f3f;margin:0 0 6px;font-weight:bold;'
+        f'letter-spacing:1px;">老花有话说</p>'
+        f'<p style="font-size:13px;color:#888;margin:0;letter-spacing:0.5px;">'
+        f'每天扫描全球信息源 · 找到零成本可验证的机会</p>'
         f'</section>'
     )
     footer = (
-        f'<hr style="border:none;border-top:1px solid #e8e8e8;margin:32px 0 20px;">'
-        f'<section style="text-align:center;padding:12px 0;">'
-        f'<p style="font-size:14px;color:#3f3f3f;margin:0 0 8px;">感谢阅读 · 老花有话说</p>'
-        f'<p style="font-size:12px;color:#888;margin:0 0 4px;line-height:1.8;">'
-        f'独立开发者 · 跨国信息差套利 · AI 工具提效</p>'
-        f'<p style="font-size:12px;color:#888;margin:0 0 12px;">'
-        f'套利雷达 | AI 实战 | 信息差 | 出海工具 | 效率自动化</p>'
-    )
-    footer += (
-        f'<p style="font-size:12px;color:#888;margin:8px 0 4px;">'
+        f'<hr style="border:none;border-top:1px solid #e8e8e8;margin:32px 0 24px;">'
+        f'<section style="text-align:center;padding:16px 0 8px;">'
+        f'<p style="font-size:16px;color:#3f3f3f;margin:0 0 12px;font-weight:bold;">'
+        f'关注「老花有话说」每天获取机会情报</p>'
+        f'<p style="font-size:13px;color:#888;margin:0 0 6px;line-height:1.8;">'
+        f'被AI冲击不是终点，是重新出发的起点</p>'
+        f'<p style="font-size:13px;color:#888;margin:0 0 16px;line-height:1.8;">'
+        f'零成本启动 · 实操步骤 · 收益测算</p>'
+        f'<p style="font-size:13px;color:#576b95;margin:0 0 4px;">'
         f'radar.huadongpeng.com</p>'
-        f'<p style="font-size:11px;color:#b0b0b0;margin:0;">hdop1993@gmail.com</p>'
+        f'<p style="font-size:12px;color:#b0b0b0;margin:0;">hdop1993@gmail.com</p>'
         f'</section>'
     )
     return f'<section style="padding:0 16px;">\n{header}\n{body_html}\n{footer}\n</section>'
