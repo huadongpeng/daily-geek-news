@@ -5,6 +5,7 @@ import time
 import feedparser
 import requests
 import re
+import threading
 from datetime import datetime, timezone, timedelta
 import concurrent.futures
 from duckduckgo_search import DDGS
@@ -567,18 +568,20 @@ def auto_search_pain_points(query):
         return ""
 
 
-_FEED_CACHE = {}  # URL → (timestamp, parsed_feed) 防止同一次运行中重复抓取
+_FEED_CACHE = {}  # URL → (timestamp, parsed_feed)
+_FEED_CACHE_LOCK = threading.Lock()
 
 _FEED_OK = 0
 _FEED_FAIL = 0
 
 def _fetch_one_feed(url):
-    """抓取单个 RSS feed，带缓存去重"""
+    """抓取单个 RSS feed，带缓存去重（线程安全）"""
     global _FEED_OK, _FEED_FAIL
-    if url in _FEED_CACHE:
-        ts, cached = _FEED_CACHE[url]
-        if time.time() - ts < 300:
-            return cached
+    with _FEED_CACHE_LOCK:
+        if url in _FEED_CACHE:
+            ts, cached = _FEED_CACHE[url]
+            if time.time() - ts < 300:
+                return cached
     feed = feedparser.parse(url)
     if feed.bozo and not feed.entries:
         try:
@@ -587,9 +590,11 @@ def _fetch_one_feed(url):
         except Exception:
             pass
     if not feed.entries:
-        _FEED_FAIL += 1
+        with _FEED_CACHE_LOCK:
+            _FEED_FAIL += 1
         return []
-    _FEED_OK += 1
+    with _FEED_CACHE_LOCK:
+        _FEED_OK += 1
     entries = []
     for entry in feed.entries[:3]:
         desc = ""
@@ -598,7 +603,8 @@ def _fetch_one_feed(url):
         elif hasattr(entry, 'summary') and entry.summary:
             desc = re.sub('<[^<]+>', '', entry.summary)[:200]
         entries.append(f"标题: {entry.title}\n摘要: {desc}")
-    _FEED_CACHE[url] = (time.time(), entries)
+    with _FEED_CACHE_LOCK:
+        _FEED_CACHE[url] = (time.time(), entries)
     return entries
 
 
@@ -620,26 +626,38 @@ def fetch_and_augment(feeds):
 
     base_context = "\n".join(raw_articles)
 
-    # 正面搜索：补充背景
-    deep_context = auto_search_context(top_title) if top_title else ""
-
-    # 负面信号挖掘：搜索抱怨/替代品/对比 + 搜索"有人在做吗"
+    # 并行执行三个独立搜索：背景补充 + 痛点挖掘 + 中国市场检查
+    deep_context = ""
     pain_context = ""
     if top_title:
-        pain_context = auto_search_pain_points(top_title)
-        # 额外搜索：这个领域有没有中国人在做？
-        try:
-            cn_check = DDGS().text(f"{top_title} 中国 替代", max_results=2)
-            for r in cn_check:
-                pain_context += f"-[中国市场检查] {r['title']}: {r['body']}\n"
-        except Exception:
-            pass
+        with concurrent.futures.ThreadPoolExecutor(max_workers=3) as pool:
+            f_bg = pool.submit(auto_search_context, top_title)
+            f_pain = pool.submit(auto_search_pain_points, top_title)
+            f_cn = pool.submit(lambda: None)  # placeholder
+            try:
+                f_cn = pool.submit(
+                    lambda t=top_title: "\n".join(
+                        f"-[中国市场检查] {r['title']}: {r['body']}"
+                        for r in DDGS().text(f"{t} 中国 替代", max_results=2)
+                    )
+                )
+            except Exception:
+                pass
+            deep_context = f_bg.result() or ""
+            pain_context = f_pain.result() or ""
+            try:
+                cn_text = f_cn.result() or ""
+                if cn_text:
+                    pain_context += "\n" + cn_text
+            except Exception:
+                pass
 
-    return (
-        base_context +
-        "\n\n【主动全网检索扩充资料】:\n" + deep_context +
-        "\n\n【负面信号挖掘——抱怨、替代品、痛点】:\n" + pain_context
-    )
+    parts = [base_context]
+    if deep_context:
+        parts.append("\n\n【主动全网检索扩充资料】:\n" + deep_context)
+    if pain_context:
+        parts.append("\n\n【负面信号挖掘——抱怨、替代品、痛点】:\n" + pain_context)
+    return "".join(parts)
 
 
 # ============================================================
@@ -708,13 +726,13 @@ def _extract_json(text):
 
     # 通用修复函数
     def _repair(raw):
-        """逐步修复常见 LLM JSON 格式错误"""
-        raw = re.sub(r',\s*([}\]])', r'\1', raw)                         # 尾随逗号
+        """逐步修复常见 LLM JSON 格式错误（启发式，不保证处理嵌套字符串）"""
+        raw = re.sub(r',\s*([}\]])', r'\1', raw)                         # 尾随逗号（不会意外匹配字符串内的 \}, -- LLM 极少输出此模式）
         raw = re.sub(r'(^|[{\[,:\s\n])([a-zA-Z_][a-zA-Z0-9_]*)\s*:', r'\1"\2":', raw)  # 无引号键
         raw = re.sub(r"'([^']*)':", r'"\1":', raw)                     # 单引号键
         raw = re.sub(r":\s*'([^']*)'", r': "\1"', raw)                 # 单引号值
-        raw = raw.replace('"', '"').replace('"', '"')                 # 中文双引号
-        raw = raw.replace(''', "'").replace(''', "'")                 # 中文单引号
+        raw = raw.replace('“', '"').replace('”', '"')                 # 中文双引号（Unicode 转义形式，避免源码被 linter 损坏）
+        raw = raw.replace('‘', "'").replace('’', "'")                 # 中文单引号
         raw = re.sub(r'"\s*\n\s*"', '", "', raw)                       # 缺失逗号
         raw = re.sub(r'([}\]\d])\s*\n\s*"', r'\1,\n"', raw)            # 缺失逗号(续)
         return raw
@@ -751,11 +769,13 @@ def deep_dive_worker(category_name, config):
     context = fetch_and_augment(config['feeds'])
     t1 = time.time()
     entry_count = context.count("标题:")
-    print(f"[{category_name}] 获取 {entry_count} 条摘要 ({t1-t0:.0f}s)，唤醒 DeepSeek...", flush=True)
+    print(f"[{category_name}] 获取 {entry_count} 条摘要 ({t1-t0:.0f}s)", flush=True)
 
     if entry_count == 0:
-        print(f"[{category_name}] 无有效数据，跳过", flush=True)
+        print(f"[{category_name}] 无有效数据，跳过 DeepSeek 调用", flush=True)
         return category_name, None
+
+    print(f"[{category_name}] 唤醒 DeepSeek...", flush=True)
 
     # 去重：读取近 7 天已覆盖话题，强约束避免选题重复
     recent = get_recent_titles(category_name, days=7)

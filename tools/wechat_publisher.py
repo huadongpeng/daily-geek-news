@@ -372,29 +372,27 @@ class WeChatRenderer(mistune.HTMLRenderer):
         return ''
 
 
+_EMOJI_RE = re.compile(r'[\U0001F300-\U0001FAD6'
+    r'\U0001F600-\U0001F64F'
+    r'\U0001F680-\U0001F6FF'
+    r'\U0001F1E0-\U0001F1FF'
+    r'\U00002702-\U000027B0'
+    r'\U000024C2-\U0001F251'
+    r'\U0001F900-\U0001F9FF'
+    r'\U0001FA00-\U0001FAFF'
+    r'\U00002600-\U000026FF'
+    r'\U0000FE00-\U0000FE0F'
+    r'\U00002300-\U000023FF'
+    r'\U00002B50\U0001F004\U0001F0CF\U0001F18E'
+    r'⭐'
+    r']+')
+
+
 def clean_markdown(md_text):
     """预处理 Markdown：去除 emoji、修复 LLM 常见格式问题"""
-    import re as _re
-    t = md_text
-    # 去除常见 emoji
-    t = _re.sub(r'[\U0001F300-\U0001FAD6'
-                r'\U0001F600-\U0001F64F'
-                r'\U0001F680-\U0001F6FF'
-                r'\U0001F1E0-\U0001F1FF'
-                r'\U00002702-\U000027B0'
-                r'\U000024C2-\U0001F251'
-                r'\U0001F900-\U0001F9FF'
-                r'\U0001FA00-\U0001FAFF'
-                r'\U00002600-\U000026FF'
-                r'\U0000FE00-\U0000FE0F'
-                r'\U00002300-\U000023FF'
-                r'\U00002B50\U0001F004\U0001F0CF\U0001F18E'
-                r'⭐'
-                r']+', '', t)
-    # 去除零宽连接符和变体选择符
-    t = _re.sub(r'[‍️]', '', t)
-    # 修复中文编号后的格式
-    t = _re.sub(r'(^|\n)([一二三四五六七八九十]、)\s*', r'\1\2 ', t)
+    t = _EMOJI_RE.sub('', md_text)
+    t = re.sub(r'[‍️]', '', t)
+    t = re.sub(r'(^|\n)([一二三四五六七八九十]、)\s*', r'\1\2 ', t)
     return t.strip()
 
 
@@ -454,19 +452,20 @@ def find_articles(date_str=None):
     published = _load_published()
     articles = []
     for md_file in sorted(CONTENT_DIR.rglob(f"*{date_str}*.md")):
-        # 仅处理分类子目录下的文章，跳过 posts/ 根目录的旧版文件
         relative = md_file.relative_to(CONTENT_DIR)
         if len(relative.parts) < 2:
             continue
+        # 先检查去重，跳过已推送的（避免不必要的文件 I/O）
+        if _published_key(md_file) in published:
+            continue
+
         category = relative.parts[0]
         is_briefing = "briefing" in md_file.name
         is_deep = "deep-dive" in md_file.name
 
-        # 读取内容
         with open(md_file, "r", encoding="utf-8") as f:
             raw = f.read()
 
-        # 提取 frontmatter
         body = raw
         frontmatter = {}
         if raw.startswith("---"):
