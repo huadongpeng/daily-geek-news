@@ -1,102 +1,78 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>每日汇总 on Easton 跨国智库</title><link>https://radar.huadongpeng.com/tags/%E6%AF%8F%E6%97%A5%E6%B1%87%E6%80%BB/</link><description>Recent content in 每日汇总 on Easton 跨国智库</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Tue, 12 May 2026 15:03:41 +0800</lastBuildDate><atom:link href="https://radar.huadongpeng.com/tags/%E6%AF%8F%E6%97%A5%E6%B1%87%E6%80%BB/index.xml" rel="self" type="application/rss+xml"/><item><title>每日快讯</title><link>https://radar.huadongpeng.com/posts/daily-briefing/briefing-2026-05-12/</link><pubDate>Tue, 12 May 2026 15:03:41 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/daily-briefing/briefing-2026-05-12/</guid><description>&lt;blockquote&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>每日汇总 on Easton 跨国智库</title><link>https://radar.huadongpeng.com/tags/%E6%AF%8F%E6%97%A5%E6%B1%87%E6%80%BB/</link><description>Recent content in 每日汇总 on Easton 跨国智库</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Tue, 12 May 2026 15:15:43 +0800</lastBuildDate><atom:link href="https://radar.huadongpeng.com/tags/%E6%AF%8F%E6%97%A5%E6%B1%87%E6%80%BB/index.xml" rel="self" type="application/rss+xml"/><item><title>每日快讯</title><link>https://radar.huadongpeng.com/posts/daily-briefing/briefing-2026-05-12/</link><pubDate>Tue, 12 May 2026 15:15:43 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/daily-briefing/briefing-2026-05-12/</guid><description>&lt;blockquote&gt;
 &lt;p&gt;2026年05月12日 · 6 条情报&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h2 id="海外信息差"&gt;海外信息差&lt;/h2&gt;
-&lt;h3 id="非洲新闻搬运工"&gt;非洲新闻搬运工&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：TikTok+非洲 | 非洲年轻人做新闻解说号揽流量卖广告，国内空白&lt;/p&gt;
-&lt;p&gt;模仿非洲模式，翻译搬运海外新闻到B站，挣平台分成&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;🎯 去TikTok搜&amp;rsquo;Africa news creator&amp;rsquo;看账号模板&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;hr&gt;
-&lt;h2 id="效率工具与自动化"&gt;效率工具与自动化&lt;/h2&gt;
-&lt;h3 id="恶意包扩散范围"&gt;恶意包扩散范围&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：Snyk | 已影响UiPath、DraftLab等多家维护者&lt;/p&gt;
-&lt;p&gt;蠕虫状传播，自带有效SLSA认证。开锁即查相关依赖清单可避免被连带。&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;🎯 运行npm audit &amp;ndash;json | grep malicious 检查当前项目&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;hr&gt;
 &lt;h2 id="宏观风向标"&gt;宏观风向标&lt;/h2&gt;
-&lt;h3 id="美伊和平希望降"&gt;美伊和平希望降&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：CNBC | 美伊和平谈判无望，欧洲股市开盘下跌。&lt;/p&gt;
-&lt;p&gt;直接影响你：能源股可能波动，但和你的月薪暂无直接关系。已发生。&lt;/p&gt;
+&lt;h3 id="工人被ai管理风险"&gt;工人被AI管理风险&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：BBC | AI对工人的真正威胁不是失业，而是监控和管理。&lt;/p&gt;
+&lt;p&gt;AI监控工具将渗入更多岗位，劳动者隐私和自主权受损，预计半年内普及至物流、客服行业。&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;🎯 今天打开炒股软件，看看你关注的股票有无异动。0元，2分钟。&lt;/p&gt;
+&lt;p&gt;🎯 今天搜索“worker surveillance tools”了解常见监控方式，提前学习如何保护个人数据。&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;hr&gt;
 &lt;h2 id="ai-工具实战"&gt;AI 工具实战&lt;/h2&gt;
-&lt;h3 id="listen-labs获资6900万"&gt;Listen Labs获资6900万&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：科技媒体 | AI做客户访谈的工具融资6900万美元&lt;/p&gt;
-&lt;p&gt;雇主正用AI辅助用户调研，你学会AI访谈技巧可赚外包费。&lt;/p&gt;
+&lt;h3 id="3d场景生成"&gt;3D场景生成&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：World Labs | AI将普通照片转化为3D世界&lt;/p&gt;
+&lt;p&gt;零基础创建3D内容，适合做虚拟场景/游戏资产，免费试用&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;🎯 去Listen Labs官网试用Demo→用真实问题录一段AI访谈→看结果是否满意&lt;/p&gt;
+&lt;p&gt;🎯 打开worldlabs.ai→上传一张风景照片→等待3分钟→下载基础3D模型&lt;/p&gt;
 &lt;/blockquote&gt;
+&lt;hr&gt;
+&lt;h2 id="效率工具与自动化"&gt;效率工具与自动化&lt;/h2&gt;
+&lt;h3 id="自托管ai编码代理"&gt;自托管AI编码代理&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：未知 |&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="海外信息差"&gt;海外信息差&lt;/h2&gt;
+&lt;h3 id="ai客户流失分析"&gt;AI客户流失分析&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：未知 |&lt;/p&gt;
 &lt;hr&gt;
 &lt;h2 id="套利雷达"&gt;套利雷达&lt;/h2&gt;
-&lt;h3 id="脱机页面存书签"&gt;脱机页面存书签&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：Reddit / r/SomebodyMakeThis | ADHD用户需要保存网页离线库，但现有扩展太复杂。&lt;/p&gt;
-&lt;p&gt;你懂Chrome扩展开发，可做一键保存/搜索的免费插件。&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;🎯 打开Chrome开发者文档→复制官方保存页面的示例代码→修改为自动生成标题标签→提交到Chrome商店&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;h3 id="无标题"&gt;无标题&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：未知 |&lt;/p&gt;
 &lt;hr&gt;
 &lt;h2 id="出海工具链"&gt;出海工具链&lt;/h2&gt;
-&lt;h3 id="科威特ai基金"&gt;科威特AI基金&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：CoinDesk+中东 | 科威特设立1.5亿美元AI基金，吸引全球开发者入驻&lt;/p&gt;
-&lt;p&gt;中东政府资金入局AI，个人可针对本地化需求开发阿拉伯语AI工具，月成本&amp;lt;200元&lt;/p&gt;
+&lt;h3 id="快手可灵ai分拆"&gt;快手可灵AI分拆&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：快手+中国 | 快手考虑分拆Kling AI进行IPO，预计融资20亿美元。&lt;/p&gt;
+&lt;p&gt;独立后可能推出开发者API或免费层，个人可接入视频生成模型，制作AI短视频或广告素材。&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;🎯 用腾讯云免费额度部署一个阿拉伯语Chatbot，通过Upwork接科威特当地小企业单&lt;/p&gt;
+&lt;p&gt;🎯 关注Kling AI官网开放注册，用个人邮箱申请内测，测试文字生成短视频功能。&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;hr&gt;</description><content:encoded><![CDATA[<blockquote>
 <p>2026年05月12日 · 6 条情报</p>
 </blockquote>
-<h2 id="海外信息差">海外信息差</h2>
-<h3 id="非洲新闻搬运工">非洲新闻搬运工</h3>
-<p><strong>来源</strong>：TikTok+非洲 | 非洲年轻人做新闻解说号揽流量卖广告，国内空白</p>
-<p>模仿非洲模式，翻译搬运海外新闻到B站，挣平台分成</p>
-<blockquote>
-<p>🎯 去TikTok搜&rsquo;Africa news creator&rsquo;看账号模板</p>
-</blockquote>
-<hr>
-<h2 id="效率工具与自动化">效率工具与自动化</h2>
-<h3 id="恶意包扩散范围">恶意包扩散范围</h3>
-<p><strong>来源</strong>：Snyk | 已影响UiPath、DraftLab等多家维护者</p>
-<p>蠕虫状传播，自带有效SLSA认证。开锁即查相关依赖清单可避免被连带。</p>
-<blockquote>
-<p>🎯 运行npm audit &ndash;json | grep malicious 检查当前项目</p>
-</blockquote>
-<hr>
 <h2 id="宏观风向标">宏观风向标</h2>
-<h3 id="美伊和平希望降">美伊和平希望降</h3>
-<p><strong>来源</strong>：CNBC | 美伊和平谈判无望，欧洲股市开盘下跌。</p>
-<p>直接影响你：能源股可能波动，但和你的月薪暂无直接关系。已发生。</p>
+<h3 id="工人被ai管理风险">工人被AI管理风险</h3>
+<p><strong>来源</strong>：BBC | AI对工人的真正威胁不是失业，而是监控和管理。</p>
+<p>AI监控工具将渗入更多岗位，劳动者隐私和自主权受损，预计半年内普及至物流、客服行业。</p>
 <blockquote>
-<p>🎯 今天打开炒股软件，看看你关注的股票有无异动。0元，2分钟。</p>
+<p>🎯 今天搜索“worker surveillance tools”了解常见监控方式，提前学习如何保护个人数据。</p>
 </blockquote>
 <hr>
 <h2 id="ai-工具实战">AI 工具实战</h2>
-<h3 id="listen-labs获资6900万">Listen Labs获资6900万</h3>
-<p><strong>来源</strong>：科技媒体 | AI做客户访谈的工具融资6900万美元</p>
-<p>雇主正用AI辅助用户调研，你学会AI访谈技巧可赚外包费。</p>
+<h3 id="3d场景生成">3D场景生成</h3>
+<p><strong>来源</strong>：World Labs | AI将普通照片转化为3D世界</p>
+<p>零基础创建3D内容，适合做虚拟场景/游戏资产，免费试用</p>
 <blockquote>
-<p>🎯 去Listen Labs官网试用Demo→用真实问题录一段AI访谈→看结果是否满意</p>
+<p>🎯 打开worldlabs.ai→上传一张风景照片→等待3分钟→下载基础3D模型</p>
 </blockquote>
+<hr>
+<h2 id="效率工具与自动化">效率工具与自动化</h2>
+<h3 id="自托管ai编码代理">自托管AI编码代理</h3>
+<p><strong>来源</strong>：未知 |</p>
+<hr>
+<h2 id="海外信息差">海外信息差</h2>
+<h3 id="ai客户流失分析">AI客户流失分析</h3>
+<p><strong>来源</strong>：未知 |</p>
 <hr>
 <h2 id="套利雷达">套利雷达</h2>
-<h3 id="脱机页面存书签">脱机页面存书签</h3>
-<p><strong>来源</strong>：Reddit / r/SomebodyMakeThis | ADHD用户需要保存网页离线库，但现有扩展太复杂。</p>
-<p>你懂Chrome扩展开发，可做一键保存/搜索的免费插件。</p>
-<blockquote>
-<p>🎯 打开Chrome开发者文档→复制官方保存页面的示例代码→修改为自动生成标题标签→提交到Chrome商店</p>
-</blockquote>
+<h3 id="无标题">无标题</h3>
+<p><strong>来源</strong>：未知 |</p>
 <hr>
 <h2 id="出海工具链">出海工具链</h2>
-<h3 id="科威特ai基金">科威特AI基金</h3>
-<p><strong>来源</strong>：CoinDesk+中东 | 科威特设立1.5亿美元AI基金，吸引全球开发者入驻</p>
-<p>中东政府资金入局AI，个人可针对本地化需求开发阿拉伯语AI工具，月成本&lt;200元</p>
+<h3 id="快手可灵ai分拆">快手可灵AI分拆</h3>
+<p><strong>来源</strong>：快手+中国 | 快手考虑分拆Kling AI进行IPO，预计融资20亿美元。</p>
+<p>独立后可能推出开发者API或免费层，个人可接入视频生成模型，制作AI短视频或广告素材。</p>
 <blockquote>
-<p>🎯 用腾讯云免费额度部署一个阿拉伯语Chatbot，通过Upwork接科威特当地小企业单</p>
+<p>🎯 关注Kling AI官网开放注册，用个人邮箱申请内测，测试文字生成短视频功能。</p>
 </blockquote>
 <hr>
 ]]></content:encoded></item></channel></rss>
