@@ -1,284 +1,70 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Posts on Easton 跨国智库</title><link>https://radar.huadongpeng.com/posts/</link><description>Recent content in Posts on Easton 跨国智库</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Tue, 12 May 2026 15:15:43 +0800</lastBuildDate><atom:link href="https://radar.huadongpeng.com/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>每日快讯</title><link>https://radar.huadongpeng.com/posts/daily-briefing/briefing-2026-05-12/</link><pubDate>Tue, 12 May 2026 15:15:43 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/daily-briefing/briefing-2026-05-12/</guid><description>&lt;blockquote&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Posts on Easton 跨国智库</title><link>https://radar.huadongpeng.com/posts/</link><description>Recent content in Posts on Easton 跨国智库</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Tue, 12 May 2026 15:55:43 +0800</lastBuildDate><atom:link href="https://radar.huadongpeng.com/posts/index.xml" rel="self" type="application/rss+xml"/><item><title>每日快讯</title><link>https://radar.huadongpeng.com/posts/daily-briefing/briefing-2026-05-12/</link><pubDate>Tue, 12 May 2026 15:55:43 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/daily-briefing/briefing-2026-05-12/</guid><description>&lt;blockquote&gt;
 &lt;p&gt;2026年05月12日 · 6 条情报&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h2 id="宏观风向标"&gt;宏观风向标&lt;/h2&gt;
-&lt;h3 id="工人被ai管理风险"&gt;工人被AI管理风险&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：BBC | AI对工人的真正威胁不是失业，而是监控和管理。&lt;/p&gt;
-&lt;p&gt;AI监控工具将渗入更多岗位，劳动者隐私和自主权受损，预计半年内普及至物流、客服行业。&lt;/p&gt;
+&lt;h2 id="效率工具与自动化"&gt;效率工具与自动化&lt;/h2&gt;
+&lt;h3 id="tabgroup-vault标签组管理"&gt;TabGroup Vault标签组管理&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：Product Hunt | 保存/搜索/恢复浏览器标签组，防丢失&lt;/p&gt;
+&lt;p&gt;每天打开10+标签页做研究却丢失分类，一次保存可节省5分钟重复查找时间&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;🎯 今天搜索“worker surveillance tools”了解常见监控方式，提前学习如何保护个人数据。&lt;/p&gt;
+&lt;p&gt;🎯 Chrome商店搜索TabGroup Vault→安装→打开一个标签组→点击插件图标→点击保存&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;hr&gt;
+&lt;h2 id="宏观风向标"&gt;宏观风向标&lt;/h2&gt;
+&lt;h3 id="欧洲股市重挫"&gt;欧洲股市重挫&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：CNBC | 欧洲股市因美伊和平希望破灭、特朗普-习近平会面在即而低开。&lt;/p&gt;
+&lt;p&gt;影响：A股和港股可能跟跌，持有ETF或股票者短期亏损。时间：今日开盘。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;🎯 今天打开同花顺或东方财富，查看你持仓的ETF，如跌幅&amp;gt;3%考虑减仓避险。&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;hr&gt;
 &lt;h2 id="ai-工具实战"&gt;AI 工具实战&lt;/h2&gt;
-&lt;h3 id="3d场景生成"&gt;3D场景生成&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：World Labs | AI将普通照片转化为3D世界&lt;/p&gt;
-&lt;p&gt;零基础创建3D内容，适合做虚拟场景/游戏资产，免费试用&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;🎯 打开worldlabs.ai→上传一张风景照片→等待3分钟→下载基础3D模型&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;hr&gt;
-&lt;h2 id="效率工具与自动化"&gt;效率工具与自动化&lt;/h2&gt;
-&lt;h3 id="自托管ai编码代理"&gt;自托管AI编码代理&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：未知 |&lt;/p&gt;
-&lt;hr&gt;
-&lt;h2 id="海外信息差"&gt;海外信息差&lt;/h2&gt;
-&lt;h3 id="ai客户流失分析"&gt;AI客户流失分析&lt;/h3&gt;
+&lt;h3 id="goose开源测评"&gt;Goose开源测评&lt;/h3&gt;
 &lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：未知 |&lt;/p&gt;
 &lt;hr&gt;
 &lt;h2 id="套利雷达"&gt;套利雷达&lt;/h2&gt;
-&lt;h3 id="无标题"&gt;无标题&lt;/h3&gt;
+&lt;h3 id="依赖安全检查"&gt;依赖安全检查&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：未知 |&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="海外信息差"&gt;海外信息差&lt;/h2&gt;
+&lt;h3 id="ai客服替人挨骂"&gt;AI客服替人挨骂&lt;/h3&gt;
 &lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：未知 |&lt;/p&gt;
 &lt;hr&gt;
 &lt;h2 id="出海工具链"&gt;出海工具链&lt;/h2&gt;
-&lt;h3 id="快手可灵ai分拆"&gt;快手可灵AI分拆&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：快手+中国 | 快手考虑分拆Kling AI进行IPO，预计融资20亿美元。&lt;/p&gt;
-&lt;p&gt;独立后可能推出开发者API或免费层，个人可接入视频生成模型，制作AI短视频或广告素材。&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;🎯 关注Kling AI官网开放注册，用个人邮箱申请内测，测试文字生成短视频功能。&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;h3 id="用可灵ai生成视频"&gt;用可灵AI生成视频&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：未知 |&lt;/p&gt;
 &lt;hr&gt;</description><content:encoded><![CDATA[<blockquote>
 <p>2026年05月12日 · 6 条情报</p>
 </blockquote>
-<h2 id="宏观风向标">宏观风向标</h2>
-<h3 id="工人被ai管理风险">工人被AI管理风险</h3>
-<p><strong>来源</strong>：BBC | AI对工人的真正威胁不是失业，而是监控和管理。</p>
-<p>AI监控工具将渗入更多岗位，劳动者隐私和自主权受损，预计半年内普及至物流、客服行业。</p>
+<h2 id="效率工具与自动化">效率工具与自动化</h2>
+<h3 id="tabgroup-vault标签组管理">TabGroup Vault标签组管理</h3>
+<p><strong>来源</strong>：Product Hunt | 保存/搜索/恢复浏览器标签组，防丢失</p>
+<p>每天打开10+标签页做研究却丢失分类，一次保存可节省5分钟重复查找时间</p>
 <blockquote>
-<p>🎯 今天搜索“worker surveillance tools”了解常见监控方式，提前学习如何保护个人数据。</p>
+<p>🎯 Chrome商店搜索TabGroup Vault→安装→打开一个标签组→点击插件图标→点击保存</p>
+</blockquote>
+<hr>
+<h2 id="宏观风向标">宏观风向标</h2>
+<h3 id="欧洲股市重挫">欧洲股市重挫</h3>
+<p><strong>来源</strong>：CNBC | 欧洲股市因美伊和平希望破灭、特朗普-习近平会面在即而低开。</p>
+<p>影响：A股和港股可能跟跌，持有ETF或股票者短期亏损。时间：今日开盘。</p>
+<blockquote>
+<p>🎯 今天打开同花顺或东方财富，查看你持仓的ETF，如跌幅&gt;3%考虑减仓避险。</p>
 </blockquote>
 <hr>
 <h2 id="ai-工具实战">AI 工具实战</h2>
-<h3 id="3d场景生成">3D场景生成</h3>
-<p><strong>来源</strong>：World Labs | AI将普通照片转化为3D世界</p>
-<p>零基础创建3D内容，适合做虚拟场景/游戏资产，免费试用</p>
-<blockquote>
-<p>🎯 打开worldlabs.ai→上传一张风景照片→等待3分钟→下载基础3D模型</p>
-</blockquote>
-<hr>
-<h2 id="效率工具与自动化">效率工具与自动化</h2>
-<h3 id="自托管ai编码代理">自托管AI编码代理</h3>
-<p><strong>来源</strong>：未知 |</p>
-<hr>
-<h2 id="海外信息差">海外信息差</h2>
-<h3 id="ai客户流失分析">AI客户流失分析</h3>
+<h3 id="goose开源测评">Goose开源测评</h3>
 <p><strong>来源</strong>：未知 |</p>
 <hr>
 <h2 id="套利雷达">套利雷达</h2>
-<h3 id="无标题">无标题</h3>
+<h3 id="依赖安全检查">依赖安全检查</h3>
+<p><strong>来源</strong>：未知 |</p>
+<hr>
+<h2 id="海外信息差">海外信息差</h2>
+<h3 id="ai客服替人挨骂">AI客服替人挨骂</h3>
 <p><strong>来源</strong>：未知 |</p>
 <hr>
 <h2 id="出海工具链">出海工具链</h2>
-<h3 id="快手可灵ai分拆">快手可灵AI分拆</h3>
-<p><strong>来源</strong>：快手+中国 | 快手考虑分拆Kling AI进行IPO，预计融资20亿美元。</p>
-<p>独立后可能推出开发者API或免费层，个人可接入视频生成模型，制作AI短视频或广告素材。</p>
-<blockquote>
-<p>🎯 关注Kling AI官网开放注册，用个人邮箱申请内测，测试文字生成短视频功能。</p>
-</blockquote>
+<h3 id="用可灵ai生成视频">用可灵AI生成视频</h3>
+<p><strong>来源</strong>：未知 |</p>
 <hr>
-]]></content:encoded></item><item><title>WordPress分时租赁</title><link>https://radar.huadongpeng.com/posts/china-going-global/deep-dive-2026-05-12-1355/</link><pubDate>Tue, 12 May 2026 13:55:32 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/china-going-global/deep-dive-2026-05-12-1355/</guid><description>&lt;h2 id="目标市场画像埃及及周边北非市场"&gt;目标市场画像：埃及（及周边北非市场）&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;为什么选埃及？&lt;/strong&gt; 埃及人口1.1亿，互联网渗透率76%，移动支付却仅28%（2025年数据）。大量房屋、汽车闲置，但缺乏信任化分时租赁平台。Partment（proptech startup）刚获融资验证模式合法性与市场需求。客单价：渡假屋单次租赁150-300美金，月活用户约50万。竞争度：仅有Airbnb覆盖高端，本地化分时平台几乎空白。&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;适合卖什么？&lt;/strong&gt;&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;&lt;strong&gt;度假别墅/公寓分时出租&lt;/strong&gt;（开罗周边度假村、红海沙姆沙伊赫短租）&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;家庭用品共享&lt;/strong&gt;（如儿童安全座椅、露营装备，按天出租）&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;车主空闲车位短租&lt;/strong&gt;（市中心办公楼旁车位，计费小时）&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h2 id="从零到上线的每一步"&gt;从零到上线的每一步&lt;/h2&gt;
-&lt;p&gt;&lt;strong&gt;Step 1：注册&lt;/strong&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;证件：无需实体，用国内手机号（+86）接收验证码，邮箱用Gmail/Outlook均可&lt;/li&gt;
-&lt;li&gt;支付方式：免费套餐无需绑定卡&lt;/li&gt;
-&lt;li&gt;步骤：打开WordPress.com → 点击「Start a site」→ 选择域名（可选免费的yourname.wordpress.com）→ 用手机/邮箱注册&lt;/li&gt;
-&lt;li&gt;截图参考：WordPress后台「My Home」页面&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;strong&gt;Step 2：配置&lt;/strong&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;主题：安装免费商务主题（如Astra或Blockbase）→ 设置首页为「Static page」→ 创建「Home」「Listings」「About」三个页面&lt;/li&gt;
-&lt;li&gt;插件：安装WooCommerce（免费）→ 创建产品类型→ 选择「Simple product」→ 设置价格（货币选EGP埃及磅）&lt;/li&gt;
-&lt;li&gt;常见坑：不要直接开「虚拟产品」属性；租赁业务需手动设定「库存」为1（每间/次只租一单）&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;strong&gt;Step 3：上架/发布&lt;/strong&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;第一个产品：添加照片（1-3张，从pexels.com找免费图）→ 标题「Red Sea Villa - 2 Nights」→ 描述写面积、设施、退订政策→ 定价150 EGP/夜→ 设置「Stock = 1」→ 发布&lt;/li&gt;
-&lt;li&gt;审核要求：WooCommerce不强制审核，但埃及当地要求遵守《消费者保护法》——需在「Terms &amp;amp; Conditions」页写清退订规则（24小时内免费取消）&lt;/li&gt;
-&lt;li&gt;被拒常见原因：照片有水印、标题有「guaranteed」等违规词、缺少联系方式&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;strong&gt;Step 4：接单/收款&lt;/strong&gt;&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;收款：安装Stripe网关（免费）→ 支持埃及本地借记卡（Meeza卡）及全球Visa/MC
-&lt;ul&gt;
-&lt;li&gt;注意：Stripe目前仅支持埃及商户注册，个人开发者可用PayPal Business作为替代：paypal.com/business → 注册「Egypt」→ 输入税号（可先用护照号）→ 测试&lt;/li&gt;
-&lt;/ul&gt;
-&lt;/li&gt;
-&lt;li&gt;回款周期：Stripe本地即时到账（T+0），海外卡T+2；PayPal T+2&lt;/li&gt;
-&lt;li&gt;手续费：Stripe 2.9% + 0.3美金；PayPal 4.4% + 0.3美金&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2 id="工具链推荐"&gt;工具链推荐&lt;/h2&gt;
-&lt;ol&gt;
-&lt;li&gt;&lt;strong&gt;WooCommerce&lt;/strong&gt;（免费）—— 核心电商引擎；替代：Easy Digital Downloads（免费，仅数字商品）&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Stripe&lt;/strong&gt;（免费注册，2.9%手续费）—— 收款网关；替代：PayPal Business（4.4%手续费）&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Google Analytics&lt;/strong&gt;（免费）—— 跟踪访客来源；替代：Matomo自建（需服务器）&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h2 id="避坑清单"&gt;避坑清单&lt;/h2&gt;
-&lt;ol&gt;
-&lt;li&gt;&lt;strong&gt;品牌侵权&lt;/strong&gt;：不要用“Partment”、“Airbnb”等名称写进标题或描述——用“Shared”、“Furnished”代替&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;虚假房源&lt;/strong&gt;：埃及法律禁止未经房主书面授权的租售——至少上传一张带&lt;!-- raw HTML omitted --&gt;水印的库存照片&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;退款纠纷&lt;/strong&gt;：开张前务必关闭「自动授权退款」——后台WooCommerce → Settings → Payments → 关闭「Automatically refund」&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h2 id="成本拆解"&gt;成本拆解&lt;/h2&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;启动成本&lt;/strong&gt;：0元（WordPress免费版 + 免费主题 + WooCommerce）&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;月度运营&lt;/strong&gt;：0-15美金（域名www.yoursite.com 一年约$12，免费子域名0元）&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;预期回本周期&lt;/strong&gt;：一个月内。假设发布3个实体租赁（自家空闲车位/朋友度假屋合作），每单抽佣10%，月出10单，收入150 EGP（约30元人民币）。&lt;/li&gt;
-&lt;/ul&gt;
-&lt;p&gt;&lt;strong&gt;核心操作总结：&lt;/strong&gt; 打开WordPress.com → 安装WooCommerce → 上传1件免费图片租赁商品 → 配置PayPal收款 → 上线并分享到Facebook本地群组。&lt;/p&gt;</description><content:encoded><![CDATA[<h2 id="目标市场画像埃及及周边北非市场">目标市场画像：埃及（及周边北非市场）</h2>
-<p><strong>为什么选埃及？</strong> 埃及人口1.1亿，互联网渗透率76%，移动支付却仅28%（2025年数据）。大量房屋、汽车闲置，但缺乏信任化分时租赁平台。Partment（proptech startup）刚获融资验证模式合法性与市场需求。客单价：渡假屋单次租赁150-300美金，月活用户约50万。竞争度：仅有Airbnb覆盖高端，本地化分时平台几乎空白。</p>
-<p><strong>适合卖什么？</strong></p>
-<ol>
-<li><strong>度假别墅/公寓分时出租</strong>（开罗周边度假村、红海沙姆沙伊赫短租）</li>
-<li><strong>家庭用品共享</strong>（如儿童安全座椅、露营装备，按天出租）</li>
-<li><strong>车主空闲车位短租</strong>（市中心办公楼旁车位，计费小时）</li>
-</ol>
-<h2 id="从零到上线的每一步">从零到上线的每一步</h2>
-<p><strong>Step 1：注册</strong></p>
-<ul>
-<li>证件：无需实体，用国内手机号（+86）接收验证码，邮箱用Gmail/Outlook均可</li>
-<li>支付方式：免费套餐无需绑定卡</li>
-<li>步骤：打开WordPress.com → 点击「Start a site」→ 选择域名（可选免费的yourname.wordpress.com）→ 用手机/邮箱注册</li>
-<li>截图参考：WordPress后台「My Home」页面</li>
-</ul>
-<p><strong>Step 2：配置</strong></p>
-<ul>
-<li>主题：安装免费商务主题（如Astra或Blockbase）→ 设置首页为「Static page」→ 创建「Home」「Listings」「About」三个页面</li>
-<li>插件：安装WooCommerce（免费）→ 创建产品类型→ 选择「Simple product」→ 设置价格（货币选EGP埃及磅）</li>
-<li>常见坑：不要直接开「虚拟产品」属性；租赁业务需手动设定「库存」为1（每间/次只租一单）</li>
-</ul>
-<p><strong>Step 3：上架/发布</strong></p>
-<ul>
-<li>第一个产品：添加照片（1-3张，从pexels.com找免费图）→ 标题「Red Sea Villa - 2 Nights」→ 描述写面积、设施、退订政策→ 定价150 EGP/夜→ 设置「Stock = 1」→ 发布</li>
-<li>审核要求：WooCommerce不强制审核，但埃及当地要求遵守《消费者保护法》——需在「Terms &amp; Conditions」页写清退订规则（24小时内免费取消）</li>
-<li>被拒常见原因：照片有水印、标题有「guaranteed」等违规词、缺少联系方式</li>
-</ul>
-<p><strong>Step 4：接单/收款</strong></p>
-<ul>
-<li>收款：安装Stripe网关（免费）→ 支持埃及本地借记卡（Meeza卡）及全球Visa/MC
-<ul>
-<li>注意：Stripe目前仅支持埃及商户注册，个人开发者可用PayPal Business作为替代：paypal.com/business → 注册「Egypt」→ 输入税号（可先用护照号）→ 测试</li>
-</ul>
-</li>
-<li>回款周期：Stripe本地即时到账（T+0），海外卡T+2；PayPal T+2</li>
-<li>手续费：Stripe 2.9% + 0.3美金；PayPal 4.4% + 0.3美金</li>
-</ul>
-<h2 id="工具链推荐">工具链推荐</h2>
-<ol>
-<li><strong>WooCommerce</strong>（免费）—— 核心电商引擎；替代：Easy Digital Downloads（免费，仅数字商品）</li>
-<li><strong>Stripe</strong>（免费注册，2.9%手续费）—— 收款网关；替代：PayPal Business（4.4%手续费）</li>
-<li><strong>Google Analytics</strong>（免费）—— 跟踪访客来源；替代：Matomo自建（需服务器）</li>
-</ol>
-<h2 id="避坑清单">避坑清单</h2>
-<ol>
-<li><strong>品牌侵权</strong>：不要用“Partment”、“Airbnb”等名称写进标题或描述——用“Shared”、“Furnished”代替</li>
-<li><strong>虚假房源</strong>：埃及法律禁止未经房主书面授权的租售——至少上传一张带<!-- raw HTML omitted -->水印的库存照片</li>
-<li><strong>退款纠纷</strong>：开张前务必关闭「自动授权退款」——后台WooCommerce → Settings → Payments → 关闭「Automatically refund」</li>
-</ol>
-<h2 id="成本拆解">成本拆解</h2>
-<ul>
-<li><strong>启动成本</strong>：0元（WordPress免费版 + 免费主题 + WooCommerce）</li>
-<li><strong>月度运营</strong>：0-15美金（域名www.yoursite.com 一年约$12，免费子域名0元）</li>
-<li><strong>预期回本周期</strong>：一个月内。假设发布3个实体租赁（自家空闲车位/朋友度假屋合作），每单抽佣10%，月出10单，收入150 EGP（约30元人民币）。</li>
-</ul>
-<p><strong>核心操作总结：</strong> 打开WordPress.com → 安装WooCommerce → 上传1件免费图片租赁商品 → 配置PayPal收款 → 上线并分享到Facebook本地群组。</p>
-]]></content:encoded></item><item><title>视频搜索淘金</title><link>https://radar.huadongpeng.com/posts/arbitrage-radar/deep-dive-2026-05-12-1353/</link><pubDate>Tue, 12 May 2026 13:53:24 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/arbitrage-radar/deep-dive-2026-05-12-1353/</guid><description>&lt;h3 id="核心洞察为什么这个钱别人还没赚到"&gt;核心洞察：为什么这个钱别人还没赚到？&lt;/h3&gt;
-&lt;p&gt;Reddit用户抱怨：&amp;ldquo;I realized that it&amp;rsquo;s pretty much impossible to search for something on YouTube, as there are only 5 or 6 relevant videos when you&amp;rsquo;re looking for some stuff, and then it&amp;rsquo;s all completely unrelated content.&amp;rdquo; 这条帖子获得200+赞，评论里全是 +1。现有方案如Yandex视频搜索不精准，Google视频搜索也是半成品。这是典型的信息差：你不需要做AI，只需调用免费API做一个垂直搜索页——比如只搜&amp;quot;Python爬虫教程&amp;quot;或&amp;quot;React组件库&amp;quot;，然后挂Google AdSense就能赚广告费。&lt;/p&gt;
-&lt;h3 id="day1-7执行清单"&gt;Day1-7执行清单&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;Day1（30分钟）&lt;/strong&gt;：打开console.cloud.google.com→用Gmail注册→创建新项目→搜索YouTube Data API v3→启用它→创建API密钥→复制密钥保存到txt。&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Day2（30分钟）&lt;/strong&gt;：打开youtube.com/feed/explore→手动记录你感兴趣的5个垂直领域（如&amp;quot;Linux教程&amp;quot;&amp;ldquo;吉他谱&amp;quot;&amp;ldquo;健康餐&amp;rdquo;）→每个领域搜索前10个视频→记下观看量、标题、时长。&lt;/p&gt;
-&lt;p&gt;&lt;strong&gt;Day3（30分钟）&lt;/strong&gt;：打开code.visualstudio.com→装VS Code→新建文件夹→创建index.html→粘贴以下代码并保存（替换YOUR_API_KEY）：&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-html" data-lang="html"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;&amp;lt;!DOCTYPE html&amp;gt;&lt;/span&gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&amp;lt;&lt;span style="color:#f92672"&gt;html&lt;/span&gt;&amp;gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&amp;lt;&lt;span style="color:#f92672"&gt;head&lt;/span&gt;&amp;gt;&amp;lt;&lt;span style="color:#f92672"&gt;title&lt;/span&gt;&amp;gt;我的垂直视频搜索&amp;lt;/&lt;span style="color:#f92672"&gt;title&lt;/span&gt;&amp;gt;&amp;lt;/&lt;span style="color:#f92672"&gt;head&lt;/span&gt;&amp;gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&amp;lt;&lt;span style="color:#f92672"&gt;body&lt;/span&gt;&amp;gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&amp;lt;&lt;span style="color:#f92672"&gt;input&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;id&lt;/span&gt;&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;q&amp;#34;&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;placeholder&lt;/span&gt;&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;搜索关键词&amp;#34;&lt;/span&gt;&amp;gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&amp;lt;&lt;span style="color:#f92672"&gt;button&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;onclick&lt;/span&gt;&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;search()&amp;#34;&lt;/span&gt;&amp;gt;搜&amp;lt;/&lt;span style="color:#f92672"&gt;button&lt;/span&gt;&amp;gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&amp;lt;&lt;span style="color:#f92672"&gt;div&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;id&lt;/span&gt;&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;results&amp;#34;&lt;/span&gt;&amp;gt;&amp;lt;/&lt;span style="color:#f92672"&gt;div&lt;/span&gt;&amp;gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&amp;lt;&lt;span style="color:#f92672"&gt;script&lt;/span&gt;&amp;gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#66d9ef"&gt;function&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;search&lt;/span&gt;() {
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;const&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;q&lt;/span&gt; &lt;span style="color:#f92672"&gt;=&lt;/span&gt; document.&lt;span style="color:#a6e22e"&gt;getElementById&lt;/span&gt;(&lt;span style="color:#e6db74"&gt;&amp;#39;q&amp;#39;&lt;/span&gt;).&lt;span style="color:#a6e22e"&gt;value&lt;/span&gt;;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;fetch&lt;/span&gt;(&lt;span style="color:#e6db74"&gt;`https://www.googleapis.com/youtube/v3/search?part=snippet&amp;amp;q=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;${&lt;/span&gt;&lt;span style="color:#a6e22e"&gt;q&lt;/span&gt;&lt;span style="color:#e6db74"&gt;}&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;amp;key=YOUR_API_KEY&amp;amp;maxResults=20`&lt;/span&gt;)
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; .&lt;span style="color:#a6e22e"&gt;then&lt;/span&gt;(&lt;span style="color:#a6e22e"&gt;r&lt;/span&gt;=&amp;gt;&lt;span style="color:#a6e22e"&gt;r&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;json&lt;/span&gt;())
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; .&lt;span style="color:#a6e22e"&gt;then&lt;/span&gt;(&lt;span style="color:#a6e22e"&gt;d&lt;/span&gt;=&amp;gt;{
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#66d9ef"&gt;let&lt;/span&gt; &lt;span style="color:#a6e22e"&gt;html&lt;/span&gt;&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#39;&amp;#39;&lt;/span&gt;;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;d&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;items&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;forEach&lt;/span&gt;(&lt;span style="color:#a6e22e"&gt;i&lt;/span&gt;=&amp;gt;{
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; &lt;span style="color:#a6e22e"&gt;html&lt;/span&gt;&lt;span style="color:#f92672"&gt;+=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;`&amp;lt;div&amp;gt;&amp;lt;a href=&amp;#34;https://youtube.com/watch?v=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;${&lt;/span&gt;&lt;span style="color:#a6e22e"&gt;i&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;id&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;videoId&lt;/span&gt;&lt;span style="color:#e6db74"&gt;}&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;&amp;gt;&lt;/span&gt;&lt;span style="color:#e6db74"&gt;${&lt;/span&gt;&lt;span style="color:#a6e22e"&gt;i&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;snippet&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;title&lt;/span&gt;&lt;span style="color:#e6db74"&gt;}&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;lt;/a&amp;gt;&amp;lt;p&amp;gt;&lt;/span&gt;&lt;span style="color:#e6db74"&gt;${&lt;/span&gt;&lt;span style="color:#a6e22e"&gt;i&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;snippet&lt;/span&gt;.&lt;span style="color:#a6e22e"&gt;description&lt;/span&gt;&lt;span style="color:#e6db74"&gt;}&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;lt;/p&amp;gt;&amp;lt;/div&amp;gt;`&lt;/span&gt;;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; });
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; document.&lt;span style="color:#a6e22e"&gt;getElementById&lt;/span&gt;(&lt;span style="color:#e6db74"&gt;&amp;#39;results&amp;#39;&lt;/span&gt;).&lt;span style="color:#a6e22e"&gt;innerHTML&lt;/span&gt;&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#a6e22e"&gt;html&lt;/span&gt;;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; });
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;}
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&amp;lt;/&lt;span style="color:#f92672"&gt;script&lt;/span&gt;&amp;gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&amp;lt;/&lt;span style="color:#f92672"&gt;body&lt;/span&gt;&amp;gt;
-&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&amp;lt;/&lt;span style="color:#f92672"&gt;html&lt;/span&gt;&amp;gt;
-&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;然后用浏览器打开index.html，输入关键词测试。&lt;/p&gt;</description><content:encoded><![CDATA[<h3 id="核心洞察为什么这个钱别人还没赚到">核心洞察：为什么这个钱别人还没赚到？</h3>
-<p>Reddit用户抱怨：&ldquo;I realized that it&rsquo;s pretty much impossible to search for something on YouTube, as there are only 5 or 6 relevant videos when you&rsquo;re looking for some stuff, and then it&rsquo;s all completely unrelated content.&rdquo; 这条帖子获得200+赞，评论里全是 +1。现有方案如Yandex视频搜索不精准，Google视频搜索也是半成品。这是典型的信息差：你不需要做AI，只需调用免费API做一个垂直搜索页——比如只搜&quot;Python爬虫教程&quot;或&quot;React组件库&quot;，然后挂Google AdSense就能赚广告费。</p>
-<h3 id="day1-7执行清单">Day1-7执行清单</h3>
-<p><strong>Day1（30分钟）</strong>：打开console.cloud.google.com→用Gmail注册→创建新项目→搜索YouTube Data API v3→启用它→创建API密钥→复制密钥保存到txt。</p>
-<p><strong>Day2（30分钟）</strong>：打开youtube.com/feed/explore→手动记录你感兴趣的5个垂直领域（如&quot;Linux教程&quot;&ldquo;吉他谱&quot;&ldquo;健康餐&rdquo;）→每个领域搜索前10个视频→记下观看量、标题、时长。</p>
-<p><strong>Day3（30分钟）</strong>：打开code.visualstudio.com→装VS Code→新建文件夹→创建index.html→粘贴以下代码并保存（替换YOUR_API_KEY）：</p>
-<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-html" data-lang="html"><span style="display:flex;"><span><span style="color:#75715e">&lt;!DOCTYPE html&gt;</span>
-</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">html</span>&gt;
-</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">head</span>&gt;&lt;<span style="color:#f92672">title</span>&gt;我的垂直视频搜索&lt;/<span style="color:#f92672">title</span>&gt;&lt;/<span style="color:#f92672">head</span>&gt;
-</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">body</span>&gt;
-</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">input</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;q&#34;</span> <span style="color:#a6e22e">placeholder</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;搜索关键词&#34;</span>&gt;
-</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">button</span> <span style="color:#a6e22e">onclick</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;search()&#34;</span>&gt;搜&lt;/<span style="color:#f92672">button</span>&gt;
-</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">div</span> <span style="color:#a6e22e">id</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#34;results&#34;</span>&gt;&lt;/<span style="color:#f92672">div</span>&gt;
-</span></span><span style="display:flex;"><span>&lt;<span style="color:#f92672">script</span>&gt;
-</span></span><span style="display:flex;"><span><span style="color:#66d9ef">function</span> <span style="color:#a6e22e">search</span>() {
-</span></span><span style="display:flex;"><span>  <span style="color:#66d9ef">const</span> <span style="color:#a6e22e">q</span> <span style="color:#f92672">=</span> document.<span style="color:#a6e22e">getElementById</span>(<span style="color:#e6db74">&#39;q&#39;</span>).<span style="color:#a6e22e">value</span>;
-</span></span><span style="display:flex;"><span>  <span style="color:#a6e22e">fetch</span>(<span style="color:#e6db74">`https://www.googleapis.com/youtube/v3/search?part=snippet&amp;q=</span><span style="color:#e6db74">${</span><span style="color:#a6e22e">q</span><span style="color:#e6db74">}</span><span style="color:#e6db74">&amp;key=YOUR_API_KEY&amp;maxResults=20`</span>)
-</span></span><span style="display:flex;"><span>    .<span style="color:#a6e22e">then</span>(<span style="color:#a6e22e">r</span>=&gt;<span style="color:#a6e22e">r</span>.<span style="color:#a6e22e">json</span>())
-</span></span><span style="display:flex;"><span>    .<span style="color:#a6e22e">then</span>(<span style="color:#a6e22e">d</span>=&gt;{
-</span></span><span style="display:flex;"><span>      <span style="color:#66d9ef">let</span> <span style="color:#a6e22e">html</span><span style="color:#f92672">=</span><span style="color:#e6db74">&#39;&#39;</span>;
-</span></span><span style="display:flex;"><span>      <span style="color:#a6e22e">d</span>.<span style="color:#a6e22e">items</span>.<span style="color:#a6e22e">forEach</span>(<span style="color:#a6e22e">i</span>=&gt;{
-</span></span><span style="display:flex;"><span>        <span style="color:#a6e22e">html</span><span style="color:#f92672">+=</span><span style="color:#e6db74">`&lt;div&gt;&lt;a href=&#34;https://youtube.com/watch?v=</span><span style="color:#e6db74">${</span><span style="color:#a6e22e">i</span>.<span style="color:#a6e22e">id</span>.<span style="color:#a6e22e">videoId</span><span style="color:#e6db74">}</span><span style="color:#e6db74">&#34;&gt;</span><span style="color:#e6db74">${</span><span style="color:#a6e22e">i</span>.<span style="color:#a6e22e">snippet</span>.<span style="color:#a6e22e">title</span><span style="color:#e6db74">}</span><span style="color:#e6db74">&lt;/a&gt;&lt;p&gt;</span><span style="color:#e6db74">${</span><span style="color:#a6e22e">i</span>.<span style="color:#a6e22e">snippet</span>.<span style="color:#a6e22e">description</span><span style="color:#e6db74">}</span><span style="color:#e6db74">&lt;/p&gt;&lt;/div&gt;`</span>;
-</span></span><span style="display:flex;"><span>      });
-</span></span><span style="display:flex;"><span>      document.<span style="color:#a6e22e">getElementById</span>(<span style="color:#e6db74">&#39;results&#39;</span>).<span style="color:#a6e22e">innerHTML</span><span style="color:#f92672">=</span><span style="color:#a6e22e">html</span>;
-</span></span><span style="display:flex;"><span>    });
-</span></span><span style="display:flex;"><span>}
-</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">script</span>&gt;
-</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">body</span>&gt;
-</span></span><span style="display:flex;"><span>&lt;/<span style="color:#f92672">html</span>&gt;
-</span></span></code></pre></div><p>然后用浏览器打开index.html，输入关键词测试。</p>
-<p><strong>Day4（30分钟）</strong>：打开netlify.com→用GitHub登录→点击New site from Git→上传index.html→获得可公开访问的URL→复制URL。</p>
-<p><strong>Day5（30分钟）</strong>：打开google.com/adsense→注册AdSense→等审核。同时发帖到V2EX/红迪：&ldquo;我做了个X（如Linux教程）垂直视频搜索，搜关键词比YouTube更准&rdquo;。</p>
-<p><strong>Day6（30分钟）</strong>：打开zhihu.com→搜&quot;视频搜索工具推荐&rdquo;→在问题下回答你的URL+说明优势。</p>
-<p><strong>Day7（30分钟）</strong>：打开plausible.io（有免费版）→注册→埋追踪脚本到你的搜索页→看前7天UV数据。</p>
-<h3 id="工具清单">工具清单</h3>
-<ul>
-<li>Google Cloud Console：免费，YouTube API每月免费1万次调用</li>
-<li>Netlify：免费部署静态页</li>
-<li>Google AdSense：审核通过后按点击付费</li>
-<li>VS Code：免费</li>
-<li>Plausible.io：免费版支持10000访问/月</li>
-</ul>
-<h3 id="收益预估">收益预估</h3>
-<ul>
-<li>保守（每天100访问，点击率1%，CPC $0.1）：首月收益≈100<em>0.01</em>0.1*30=30元</li>
-<li>中等（每天500访问，点击率2%，CPC $0.2）：首月收益≈500<em>0.02</em>0.2*30=240元</li>
-<li>乐观（被大V转发，每天2000访问，点击率3%，CPC $0.3）：首月收益≈2000<em>0.03</em>0.3*30=540元</li>
-</ul>
-<h3 id="3个最容易踩的坑">3个最容易踩的坑</h3>
-<ol>
-<li><strong>API超额收费</strong>：YouTube API免费调用1万次/天，超过会扣费（$5/1000次）。解决办法：在Google Cloud Console设置每日配额上限为9000次。</li>
-<li><strong>搜索结果为空</strong>：某些关键词如&quot;hantavirus&quot;没有视频。Day1先手动验证该垂直领域有足够内容再开发。</li>
-<li><strong>展示侵权</strong>：不要抓取并展示完整视频，只展示标题和链接（已嵌入搜索API官方规则）。</li>
-</ol>
-<h3 id="延伸资源">延伸资源</h3>
-<ol>
-<li>B站搜索&quot;YouTube API全教程&quot;（UP主：程序员鱼皮）</li>
-<li>YouTube频道&quot;The Net Ninja&quot;免费API教程</li>
-<li>知乎专栏&quot;独立开发者月入3000计划&quot;</li>
-</ol>
-<hr>
-<p>启动成本：0元（只需Gmail账号）
-时间投入：第一周每天30分钟，后续每周2小时维护
-预期首月收益：保守30元起步，乐观540元</p>
 ]]></content:encoded></item></channel></rss>

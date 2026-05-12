@@ -1,78 +1,70 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>快讯 on Easton 跨国智库</title><link>https://radar.huadongpeng.com/tags/%E5%BF%AB%E8%AE%AF/</link><description>Recent content in 快讯 on Easton 跨国智库</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Tue, 12 May 2026 15:15:43 +0800</lastBuildDate><atom:link href="https://radar.huadongpeng.com/tags/%E5%BF%AB%E8%AE%AF/index.xml" rel="self" type="application/rss+xml"/><item><title>每日快讯</title><link>https://radar.huadongpeng.com/posts/daily-briefing/briefing-2026-05-12/</link><pubDate>Tue, 12 May 2026 15:15:43 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/daily-briefing/briefing-2026-05-12/</guid><description>&lt;blockquote&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>快讯 on Easton 跨国智库</title><link>https://radar.huadongpeng.com/tags/%E5%BF%AB%E8%AE%AF/</link><description>Recent content in 快讯 on Easton 跨国智库</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Tue, 12 May 2026 15:55:43 +0800</lastBuildDate><atom:link href="https://radar.huadongpeng.com/tags/%E5%BF%AB%E8%AE%AF/index.xml" rel="self" type="application/rss+xml"/><item><title>每日快讯</title><link>https://radar.huadongpeng.com/posts/daily-briefing/briefing-2026-05-12/</link><pubDate>Tue, 12 May 2026 15:55:43 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/daily-briefing/briefing-2026-05-12/</guid><description>&lt;blockquote&gt;
 &lt;p&gt;2026年05月12日 · 6 条情报&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;h2 id="宏观风向标"&gt;宏观风向标&lt;/h2&gt;
-&lt;h3 id="工人被ai管理风险"&gt;工人被AI管理风险&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：BBC | AI对工人的真正威胁不是失业，而是监控和管理。&lt;/p&gt;
-&lt;p&gt;AI监控工具将渗入更多岗位，劳动者隐私和自主权受损，预计半年内普及至物流、客服行业。&lt;/p&gt;
+&lt;h2 id="效率工具与自动化"&gt;效率工具与自动化&lt;/h2&gt;
+&lt;h3 id="tabgroup-vault标签组管理"&gt;TabGroup Vault标签组管理&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：Product Hunt | 保存/搜索/恢复浏览器标签组，防丢失&lt;/p&gt;
+&lt;p&gt;每天打开10+标签页做研究却丢失分类，一次保存可节省5分钟重复查找时间&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;🎯 今天搜索“worker surveillance tools”了解常见监控方式，提前学习如何保护个人数据。&lt;/p&gt;
+&lt;p&gt;🎯 Chrome商店搜索TabGroup Vault→安装→打开一个标签组→点击插件图标→点击保存&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;hr&gt;
+&lt;h2 id="宏观风向标"&gt;宏观风向标&lt;/h2&gt;
+&lt;h3 id="欧洲股市重挫"&gt;欧洲股市重挫&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：CNBC | 欧洲股市因美伊和平希望破灭、特朗普-习近平会面在即而低开。&lt;/p&gt;
+&lt;p&gt;影响：A股和港股可能跟跌，持有ETF或股票者短期亏损。时间：今日开盘。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;🎯 今天打开同花顺或东方财富，查看你持仓的ETF，如跌幅&amp;gt;3%考虑减仓避险。&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;hr&gt;
 &lt;h2 id="ai-工具实战"&gt;AI 工具实战&lt;/h2&gt;
-&lt;h3 id="3d场景生成"&gt;3D场景生成&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：World Labs | AI将普通照片转化为3D世界&lt;/p&gt;
-&lt;p&gt;零基础创建3D内容，适合做虚拟场景/游戏资产，免费试用&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;🎯 打开worldlabs.ai→上传一张风景照片→等待3分钟→下载基础3D模型&lt;/p&gt;
-&lt;/blockquote&gt;
-&lt;hr&gt;
-&lt;h2 id="效率工具与自动化"&gt;效率工具与自动化&lt;/h2&gt;
-&lt;h3 id="自托管ai编码代理"&gt;自托管AI编码代理&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：未知 |&lt;/p&gt;
-&lt;hr&gt;
-&lt;h2 id="海外信息差"&gt;海外信息差&lt;/h2&gt;
-&lt;h3 id="ai客户流失分析"&gt;AI客户流失分析&lt;/h3&gt;
+&lt;h3 id="goose开源测评"&gt;Goose开源测评&lt;/h3&gt;
 &lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：未知 |&lt;/p&gt;
 &lt;hr&gt;
 &lt;h2 id="套利雷达"&gt;套利雷达&lt;/h2&gt;
-&lt;h3 id="无标题"&gt;无标题&lt;/h3&gt;
+&lt;h3 id="依赖安全检查"&gt;依赖安全检查&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：未知 |&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id="海外信息差"&gt;海外信息差&lt;/h2&gt;
+&lt;h3 id="ai客服替人挨骂"&gt;AI客服替人挨骂&lt;/h3&gt;
 &lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：未知 |&lt;/p&gt;
 &lt;hr&gt;
 &lt;h2 id="出海工具链"&gt;出海工具链&lt;/h2&gt;
-&lt;h3 id="快手可灵ai分拆"&gt;快手可灵AI分拆&lt;/h3&gt;
-&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：快手+中国 | 快手考虑分拆Kling AI进行IPO，预计融资20亿美元。&lt;/p&gt;
-&lt;p&gt;独立后可能推出开发者API或免费层，个人可接入视频生成模型，制作AI短视频或广告素材。&lt;/p&gt;
-&lt;blockquote&gt;
-&lt;p&gt;🎯 关注Kling AI官网开放注册，用个人邮箱申请内测，测试文字生成短视频功能。&lt;/p&gt;
-&lt;/blockquote&gt;
+&lt;h3 id="用可灵ai生成视频"&gt;用可灵AI生成视频&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：未知 |&lt;/p&gt;
 &lt;hr&gt;</description><content:encoded><![CDATA[<blockquote>
 <p>2026年05月12日 · 6 条情报</p>
 </blockquote>
-<h2 id="宏观风向标">宏观风向标</h2>
-<h3 id="工人被ai管理风险">工人被AI管理风险</h3>
-<p><strong>来源</strong>：BBC | AI对工人的真正威胁不是失业，而是监控和管理。</p>
-<p>AI监控工具将渗入更多岗位，劳动者隐私和自主权受损，预计半年内普及至物流、客服行业。</p>
+<h2 id="效率工具与自动化">效率工具与自动化</h2>
+<h3 id="tabgroup-vault标签组管理">TabGroup Vault标签组管理</h3>
+<p><strong>来源</strong>：Product Hunt | 保存/搜索/恢复浏览器标签组，防丢失</p>
+<p>每天打开10+标签页做研究却丢失分类，一次保存可节省5分钟重复查找时间</p>
 <blockquote>
-<p>🎯 今天搜索“worker surveillance tools”了解常见监控方式，提前学习如何保护个人数据。</p>
+<p>🎯 Chrome商店搜索TabGroup Vault→安装→打开一个标签组→点击插件图标→点击保存</p>
+</blockquote>
+<hr>
+<h2 id="宏观风向标">宏观风向标</h2>
+<h3 id="欧洲股市重挫">欧洲股市重挫</h3>
+<p><strong>来源</strong>：CNBC | 欧洲股市因美伊和平希望破灭、特朗普-习近平会面在即而低开。</p>
+<p>影响：A股和港股可能跟跌，持有ETF或股票者短期亏损。时间：今日开盘。</p>
+<blockquote>
+<p>🎯 今天打开同花顺或东方财富，查看你持仓的ETF，如跌幅&gt;3%考虑减仓避险。</p>
 </blockquote>
 <hr>
 <h2 id="ai-工具实战">AI 工具实战</h2>
-<h3 id="3d场景生成">3D场景生成</h3>
-<p><strong>来源</strong>：World Labs | AI将普通照片转化为3D世界</p>
-<p>零基础创建3D内容，适合做虚拟场景/游戏资产，免费试用</p>
-<blockquote>
-<p>🎯 打开worldlabs.ai→上传一张风景照片→等待3分钟→下载基础3D模型</p>
-</blockquote>
-<hr>
-<h2 id="效率工具与自动化">效率工具与自动化</h2>
-<h3 id="自托管ai编码代理">自托管AI编码代理</h3>
-<p><strong>来源</strong>：未知 |</p>
-<hr>
-<h2 id="海外信息差">海外信息差</h2>
-<h3 id="ai客户流失分析">AI客户流失分析</h3>
+<h3 id="goose开源测评">Goose开源测评</h3>
 <p><strong>来源</strong>：未知 |</p>
 <hr>
 <h2 id="套利雷达">套利雷达</h2>
-<h3 id="无标题">无标题</h3>
+<h3 id="依赖安全检查">依赖安全检查</h3>
+<p><strong>来源</strong>：未知 |</p>
+<hr>
+<h2 id="海外信息差">海外信息差</h2>
+<h3 id="ai客服替人挨骂">AI客服替人挨骂</h3>
 <p><strong>来源</strong>：未知 |</p>
 <hr>
 <h2 id="出海工具链">出海工具链</h2>
-<h3 id="快手可灵ai分拆">快手可灵AI分拆</h3>
-<p><strong>来源</strong>：快手+中国 | 快手考虑分拆Kling AI进行IPO，预计融资20亿美元。</p>
-<p>独立后可能推出开发者API或免费层，个人可接入视频生成模型，制作AI短视频或广告素材。</p>
-<blockquote>
-<p>🎯 关注Kling AI官网开放注册，用个人邮箱申请内测，测试文字生成短视频功能。</p>
-</blockquote>
+<h3 id="用可灵ai生成视频">用可灵AI生成视频</h3>
+<p><strong>来源</strong>：未知 |</p>
 <hr>
 ]]></content:encoded></item></channel></rss>
