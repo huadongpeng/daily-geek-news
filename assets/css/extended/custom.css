@@ -1,180 +1,127 @@
 /* ============================================================
-   Easton 跨国智库 — 全平台样式优化 v2
-   优先级：内联 > custom.css > PaperMod 主题
-   策略：使用高特异性选择器覆盖 PaperMod 默认样式
+   移动端样式优化
+   通过 PaperMod assets/css/extended/ 加载，天然滞后于主题 CSS
+   仅在必要时用 !important 覆盖 PaperMod 的高特异性规则
    ============================================================ */
 
-/* --- 全局基础 --- */
-html { scroll-behavior: smooth; }
-
-/* 确保自定义样式覆盖 PaperMod —— 使用双类名提高特异性 */
-.post-content .post-content { display: unset; }
-
 /* ============================================================
-   移动端 (< 768px) — 高优先级覆盖
+   移动端 (< 768px)
    ============================================================ */
 @media (max-width: 768px) {
 
-  /* 基础排版 — 使用高特异度选择器 */
-  body .main {
-    padding: 0 14px 85px 14px !important;
+  /* --- 内容区 --- */
+  .main {
+    padding: 0 16px 90px 16px;
   }
 
-  body .post-content {
-    font-size: 16.5px !important;
-    line-height: 1.9 !important;
-    word-break: break-word !important;
-    overflow-wrap: break-word !important;
+  .post-content {
+    font-size: 16px;
+    line-height: 1.85;
+    word-break: break-word;
   }
 
-  body .post-content h1 { font-size: 24px !important; margin: 28px 0 18px !important; }
-  body .post-content h2 {
-    font-size: 20px !important;
-    margin: 30px 0 16px !important;
-    padding-left: 12px !important;
-    border-left: 4px solid #576b95 !important;
+  .post-content h1 { font-size: 22px; margin: 24px 0 16px; }
+  .post-content h2 {
+    font-size: 19px;
+    margin: 28px 0 14px;
+    padding-left: 12px;
+    border-left: 4px solid #576b95;
   }
-  body .post-content h3 { font-size: 18px !important; margin: 24px 0 12px !important; }
-  body .post-content h4 { font-size: 17px !important; margin: 20px 0 10px !important; }
+  .post-content h3 { font-size: 17px; margin: 22px 0 10px; }
+  .post-content h4 { font-size: 16px; margin: 18px 0 8px; }
+  .post-content p  { margin: 12px 0; }
 
-  body .post-content p { margin: 14px 0 !important; }
-
-  /* 图片响应式 */
-  body .post-content img {
-    max-width: 100% !important;
-    height: auto !important;
-    border-radius: 6px !important;
-  }
-
-  body .post-content iframe,
-  body .post-content video {
-    max-width: 100% !important;
-    height: auto !important;
+  /* 图片 */
+  .post-content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 6px;
   }
 
-  /* 代码块 — 横向滚动 */
-  body .post-content pre,
-  body .post-content .highlight pre {
-    font-size: 13px !important;
-    padding: 14px !important;
-    border-radius: 8px !important;
-    overflow-x: auto !important;
-    -webkit-overflow-scrolling: touch !important;
-    max-width: calc(100vw - 28px) !important;
+  /* 代码块 */
+  .post-content pre {
+    font-size: 13px;
+    padding: 14px;
+    border-radius: 8px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    max-width: calc(100vw - 32px);
+  }
+  .post-content code { font-size: 13px; }
+
+  /* 表格 */
+  .post-content table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    font-size: 14px;
+    max-width: calc(100vw - 32px);
+  }
+  .post-content th, .post-content td {
+    padding: 8px 10px;
+    white-space: nowrap;
   }
 
-  body .post-content code {
-    font-size: 14px !important;
-    word-break: break-all !important;
-  }
-
-  /* 表格横向滚动 */
-  body .post-content table {
-    display: block !important;
-    overflow-x: auto !important;
-    -webkit-overflow-scrolling: touch !important;
-    font-size: 14px !important;
-    max-width: calc(100vw - 28px) !important;
-  }
-
-  body .post-content table th,
-  body .post-content table td {
-    padding: 8px 10px !important;
-    white-space: nowrap !important;
-  }
-
-  /* 引用块 */
-  body .post-content blockquote {
-    margin: 18px 0 !important;
-    padding: 12px 16px !important;
-    font-size: 15px !important;
+  /* 引用 */
+  .post-content blockquote {
+    margin: 16px 0;
+    padding: 10px 16px;
+    font-size: 14px;
   }
 
   /* 列表 */
-  body .post-content ul,
-  body .post-content ol {
-    padding-left: 24px !important;
+  .post-content ul, .post-content ol { padding-left: 22px; }
+  .post-content li { margin: 6px 0; line-height: 1.8; }
+
+  .post-content hr { margin: 24px 0; }
+
+  /* --- 顶部导航 --- */
+  .nav { flex-wrap: wrap; justify-content: center; gap: 2px; }
+  .nav a, #menu a {
+    font-size: 13px;
+    padding: 8px 8px;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+  .logo a { font-size: 20px; }
+  .header { padding: 16px 12px 8px; }
+
+  /* --- 文章列表 --- */
+  .post-entry { padding: 18px 0; }
+  .post-entry .entry-header h2 { font-size: 17px; line-height: 1.45; margin-bottom: 6px; }
+  .post-entry .entry-content { font-size: 14px; line-height: 1.65; }
+  .post-meta { font-size: 12px; flex-wrap: wrap; gap: 6px; }
+
+  /* --- 分页 --- */
+  .pagination { display: flex; justify-content: center; gap: 12px; padding: 20px 0; }
+  .pagination a {
+    font-size: 15px;
+    padding: 10px 18px;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    border-radius: 8px;
   }
 
-  body .post-content li {
-    margin: 8px 0 !important;
-    line-height: 1.8 !important;
+  /* --- 首页 --- */
+  .home-info { padding: 20px 16px; }
+  .home-info .entry-content { font-size: 15px; line-height: 1.8; }
+
+  /* --- 页脚 --- */
+  footer { padding: 20px 16px 90px; font-size: 13px; text-align: center; }
+
+  /* --- 面包屑 --- */
+  .breadcrumbs { font-size: 12px; padding: 8px 0; }
+
+  /* --- 分类/标签 --- */
+  .terms-tags a {
+    font-size: 13px; padding: 8px 12px;
+    min-height: 40px; display: inline-flex;
+    align-items: center; border-radius: 6px;
   }
 
-  body .post-content hr {
-    margin: 28px 0 !important;
-  }
-
-  /* ========= 导航栏触控优化 ========= */
-  body .nav {
-    flex-wrap: wrap !important;
-    justify-content: center !important;
-    gap: 2px !important;
-  }
-
-  body .nav a,
-  body #menu a {
-    font-size: 14px !important;
-    padding: 8px 10px !important;
-    min-height: 44px !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    text-decoration: none !important;
-  }
-
-  /* Logo 区域 */
-  body .header {
-    padding: 16px 12px 8px !important;
-  }
-
-  body .logo a {
-    font-size: 20px !important;
-  }
-
-  /* ========= 文章列表 ========= */
-  body .post-entry {
-    padding: 20px 0 !important;
-    border-bottom: 1px solid var(--border) !important;
-  }
-
-  body .post-entry .entry-header h2 {
-    font-size: 18px !important;
-    line-height: 1.5 !important;
-    margin-bottom: 8px !important;
-  }
-
-  body .post-entry .entry-content {
-    font-size: 15px !important;
-    line-height: 1.7 !important;
-  }
-
-  body .post-meta {
-    font-size: 13px !important;
-    flex-wrap: wrap !important;
-    gap: 8px !important;
-  }
-
-  /* ========= 分页触控优化 ========= */
-  body .pagination {
-    display: flex !important;
-    justify-content: center !important;
-    gap: 14px !important;
-    padding: 24px 0 !important;
-  }
-
-  body .pagination a {
-    font-size: 16px !important;
-    padding: 10px 20px !important;
-    min-height: 44px !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    background: var(--code-bg) !important;
-    border-radius: 8px !important;
-    text-decoration: none !important;
-    color: var(--primary) !important;
-  }
-
-  /* ========= 底部固定导航 ========= */
+  /* --- 底部导航（PaperMod 没有的元素，必须 !important） --- */
   #mobile-nav {
     position: fixed !important;
     bottom: 0 !important;
@@ -188,178 +135,38 @@ html { scroll-behavior: smooth; }
     z-index: 9999 !important;
     box-shadow: 0 -2px 12px rgba(0,0,0,0.06) !important;
     backdrop-filter: blur(10px) !important;
-    -webkit-backdrop-filter: blur(10px) !important;
   }
-
   #mobile-nav a {
-    font-size: 13px !important;
-    font-weight: 500 !important;
-    color: #555 !important;
-    text-decoration: none !important;
-    padding: 12px 4px !important;
-    min-width: 44px !important;
-    min-height: 44px !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    border-radius: 8px !important;
-    transition: background 0.15s !important;
+    font-size: 13px; font-weight: 500; color: #555;
+    text-decoration: none; padding: 10px 4px;
+    min-width: 44px; min-height: 44px;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: 8px;
   }
+  #mobile-nav a:active { color: #576b95; background: rgba(87,107,149,0.08); }
 
-  #mobile-nav a:active,
-  #mobile-nav a:hover {
-    color: #576b95 !important;
-    background: rgba(87,107,149,0.08) !important;
-    transform: scale(0.95) !important;
-  }
-
-  /* 暗黑模式底部导航 */
-  body.dark #mobile-nav {
-    background: rgba(30,30,30,0.95) !important;
-    border-top: 1px solid #333 !important;
-  }
-  body.dark #mobile-nav a {
-    color: #aaa !important;
-  }
-  body.dark #mobile-nav a:active,
-  body.dark #mobile-nav a:hover {
-    color: #6b8cce !important;
-    background: rgba(107,140,206,0.12) !important;
-  }
-
-  /* ========= 文章切换导航 ========= */
-  body .post-nav {
-    display: flex !important;
-    justify-content: space-between !important;
-    gap: 10px !important;
-    margin: 32px 0 !important;
-  }
-
-  body .post-nav a {
-    flex: 1 !important;
-    text-align: center !important;
-    padding: 14px 10px !important;
-    background: var(--code-bg) !important;
-    border-radius: 10px !important;
-    font-size: 15px !important;
-    font-weight: 500 !important;
-    text-decoration: none !important;
-    color: var(--primary) !important;
-    min-height: 44px !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-  }
-
-  body .post-nav a:active {
-    opacity: 0.7 !important;
-    transform: scale(0.97) !important;
-  }
-
-  /* ========= 首页信息区 ========= */
-  body .home-info {
-    padding: 24px 16px !important;
-  }
-
-  body .home-info .entry-content {
-    font-size: 16px !important;
-    line-height: 1.85 !important;
-  }
-
-  body .profile img {
-    width: 80px !important;
-    height: 80px !important;
-    border-radius: 50% !important;
-  }
-
-  /* ========= 页脚留出底部导航空间 ========= */
-  body footer {
-    padding: 24px 14px 90px !important;
-    font-size: 13px !important;
-    text-align: center !important;
-  }
-
-  body .busuanzi {
-    text-align: center !important;
-    font-size: 13px !important;
-    padding: 16px 0 !important;
-  }
-
-  /* ========= 面包屑 ========= */
-  body .breadcrumbs {
-    font-size: 13px !important;
-    padding: 10px 0 !important;
-    overflow-x: auto !important;
-    white-space: nowrap !important;
-    -webkit-overflow-scrolling: touch !important;
-  }
-
-  /* ========= 搜索框 ========= */
-  body #searchbox input {
-    font-size: 16px !important;
-    padding: 12px !important;
-    min-height: 44px !important;
-    width: 100% !important;
-    border-radius: 8px !important;
-  }
-
-  /* ========= 分类/标签 ========= */
-  body .terms-tags li {
-    margin: 6px !important;
-  }
-
-  body .terms-tags a {
-    font-size: 14px !important;
-    padding: 8px 14px !important;
-    min-height: 44px !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    border-radius: 8px !important;
-  }
-
-  /* ========= 归档列表 ========= */
-  body .archive-entry {
-    padding: 18px 0 !important;
-  }
+  /* --- 暗黑模式 --- */
+  body.dark #mobile-nav { background: rgba(30,30,30,0.95) !important; border-top-color: #333 !important; }
+  body.dark #mobile-nav a { color: #aaa; }
+  body.dark #mobile-nav a:active { color: #6b8cce; background: rgba(107,140,206,0.12); }
 }
 
 /* ============================================================
    桌面端 (>= 769px)
    ============================================================ */
 @media (min-width: 769px) {
-  #mobile-nav { display: none !important; }
-
-  body .main {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 0 20px 40px;
-  }
+  #mobile-nav { display: none; }
+  .main { max-width: 800px; margin: 0 auto; padding: 0 20px 40px; }
 }
 
-/* ============================================================
-   大屏幕 (>= 1200px)
-   ============================================================ */
 @media (min-width: 1200px) {
-  body .main {
-    max-width: 860px;
-  }
+  .main { max-width: 860px; }
 }
 
 /* ============================================================
-   打印样式
+   打印
    ============================================================ */
 @media print {
-  #mobile-nav, .post-nav, .pagination, .toc, .header nav, .busuanzi {
-    display: none !important;
-  }
-
-  body {
-    font-size: 12pt;
-    line-height: 1.6;
-  }
-
-  body .main {
-    max-width: 100%;
-    padding: 0;
-  }
+  #mobile-nav, .post-nav, .pagination, .toc, .header nav, .busuanzi { display: none; }
+  .main { max-width: 100%; padding: 0; }
 }
