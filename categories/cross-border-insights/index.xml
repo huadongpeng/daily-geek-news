@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Cross-Border-Insights on Easton 跨国智库</title><link>https://radar.huadongpeng.com/categories/cross-border-insights/</link><description>Recent content in Cross-Border-Insights on Easton 跨国智库</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Wed, 13 May 2026 09:17:27 +0800</lastBuildDate><atom:link href="https://radar.huadongpeng.com/categories/cross-border-insights/index.xml" rel="self" type="application/rss+xml"/><item><title>暗黑心理App</title><link>https://radar.huadongpeng.com/posts/cross-border-insights/deep-dive-2026-05-13-0917/</link><pubDate>Wed, 13 May 2026 09:17:27 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/cross-border-insights/deep-dive-2026-05-13-0917/</guid><description>&lt;h2 id="暗黑心理学斯多葛app搬运到国内的全流程操作指南"&gt;暗黑心理学+斯多葛App：搬运到国内的全流程操作指南&lt;/h2&gt;
+&lt;h3 id="源头还原"&gt;源头还原&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;什么产品/模式？&lt;/strong&gt; 一款结合&amp;quot;暗黑心理学&amp;quot;（Dark Psychology，包括操控识别、说服技巧）和斯多葛哲学（控制二分法、情绪韧性）的移动App。用户可与AI角色对话，讨论如何识破操控、如何变得不可动摇。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;海外平台与数据：&lt;/strong&gt; Reddit r/Entrepreneur上2026年5月有用户发帖询问是否应开发此类App，引发热烈讨论。App Store目前有类似&amp;quot;Stoic.&amp;quot;（评分4.6，下载量&amp;gt;100万），但单独&amp;quot;Dark Psychology+Stoic&amp;quot;的AI对话应用尚不存在。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;为何海外成立？&lt;/strong&gt;
+&lt;ol&gt;
+&lt;li&gt;心理健康意识强，&amp;ldquo;操控心理学&amp;quot;话题在TikTok/YouTube有百万播放量的热门标签。&lt;/li&gt;
+&lt;li&gt;西方读者对哲学实践有购书和付费App习惯（如Daily Stoic年收入超千万）。&lt;/li&gt;
+&lt;li&gt;隐私意识：原帖强调数据本地存储（连开发者也不能看），刚好契合欧美GDPR敏感。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;为何国内没人做？&lt;/strong&gt;
+&lt;ul&gt;
+&lt;li&gt;真壁垒：无。不是技术或资金壁垒。&lt;/li&gt;
+&lt;li&gt;伪壁垒：1. 认为&amp;quot;暗黑心理学&amp;quot;在国内不被允许。实际上，内容上以“识别操控、保护自己”为主，不教害人，完全合规。2. 认为哲学App没有付费意愿。其实是没人尝试过这单一细分组合。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="搬运路径"&gt;搬运路径&lt;/h3&gt;
+&lt;h4 id="最小搬运方案不做原生app先做微信小程序h5"&gt;最小搬运方案：不做原生App，先做微信小程序+H5&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;改3个点就够了：
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;平台&lt;/strong&gt;：从iOS（海外首选）改为微信小程序+小红书私域。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;AI角色&lt;/strong&gt;：从Epictetus/Marcus Aurelius换成老子/鬼谷子/王阳明——让中国用户能共鸣。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;营销语言&lt;/strong&gt;：从“Master dark psychology”变成“防PUA指南”“职场博弈论”——更接地气。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id="day1-3验证清单全部零成本"&gt;Day1-3验证清单（全部零成本）&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Day1&lt;/strong&gt;：在小红书搜索“暗黑心理学”“防PUA”“职场博弈”，记录关注量前10位的博主。用百度指数搜“暗黑心理学”确认搜索热度。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Day2&lt;/strong&gt;：用微信开发者工具创建一个简单的测试页面：放一个输入框，用户输入烦恼，调用免费版文心一言API（有新手免费额度）生成“哲人回复”。发布为体验版小程序，自己走一遍流程。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Day3&lt;/strong&gt;：在小红书发测试帖——“做了一个Ai哲人（王阳明口吻）解答你的职场矛盾，有兴趣的扣1”，统计评论数。如有10条以上，即可认为有需求。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h4 id="工具和平台"&gt;工具和平台&lt;/h4&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;开发平台&lt;/strong&gt;：微信小程序+文心一言API（免费额度，约5000次/月）。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;内容平台&lt;/strong&gt;：小红书为主，快手为辅。发帖建议：发古风哲人头像+1分钟AI对话视频（剪映免费做）。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;注册步骤&lt;/strong&gt;：
+&lt;ol&gt;
+&lt;li&gt;去微信开放平台注册成为小程序开发者（免费，需手机号）。&lt;/li&gt;
+&lt;li&gt;去百度智能云申请文心一言API（免费实名认证）。&lt;/li&gt;
+&lt;li&gt;去小红书注册创作者号（免费）。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="变现路径"&gt;变现路径&lt;/h3&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;路径&lt;/th&gt;
+&lt;th&gt;启动成本&lt;/th&gt;
+&lt;th&gt;预期时间线&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;1. 小程序付费咨询&lt;/strong&gt;：99元/次，用户付费获得“AI哲人一对一解答”（人工审后回复）&lt;/td&gt;
+&lt;td&gt;0元（仅利用免费API）&lt;/td&gt;
+&lt;td&gt;2周内可上线，首月可赚500-2000元&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;2. 社群付费订阅&lt;/strong&gt;：创建铁粉群，9.9元/月，每日推送“斯多葛格言+职场实操案例”，手动发&lt;/td&gt;
+&lt;td&gt;0元（微信群免费）&lt;/td&gt;
+&lt;td&gt;需1个月积累500粉丝，预计每月收益300-1000元&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;blockquote&gt;
+&lt;p&gt;首周预期收益：路径1若测试期有3人咨询，收入约297元。路径2此时暂无收入。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id="风险提示"&gt;风险提示&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;政策风险&lt;/strong&gt;：内容不可涉及“刻意害人/操控他人”的描述。全部改写为“识别他人操控、保护自己”，该方向完全合规。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;平台规则&lt;/strong&gt;：微信小程序审核过程中，“暗黑心理学”这类词可能被误拦。建议入口名称用“哲人说”“职场博弈论”，真实对话中保留洞察内容。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;竞争风险&lt;/strong&gt;：目前国内几乎无此类细分。唯一可能未来模仿者是大厂（如百度文心一言集成斯多葛角色），但大厂不可能先做这一细分。你有6-12个月的窗口期。已回本的社群基础能让你扎根。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id="你现在就能做的事"&gt;你现在就能做的事&lt;/h3&gt;
+&lt;p&gt;打开小红书，搜“暗黑心理学”“防PUA”。如果看到10个以上点赞过千的笔记，今天就开始写你的第一句AI Prompt：你是一个王阳明风格的哲人，请用50字内回答职场人如何在会议上不被同事带节奏。&lt;/p&gt;</description><content:encoded><![CDATA[<h2 id="暗黑心理学斯多葛app搬运到国内的全流程操作指南">暗黑心理学+斯多葛App：搬运到国内的全流程操作指南</h2>
+<h3 id="源头还原">源头还原</h3>
+<ul>
+<li><strong>什么产品/模式？</strong> 一款结合&quot;暗黑心理学&quot;（Dark Psychology，包括操控识别、说服技巧）和斯多葛哲学（控制二分法、情绪韧性）的移动App。用户可与AI角色对话，讨论如何识破操控、如何变得不可动摇。</li>
+<li><strong>海外平台与数据：</strong> Reddit r/Entrepreneur上2026年5月有用户发帖询问是否应开发此类App，引发热烈讨论。App Store目前有类似&quot;Stoic.&quot;（评分4.6，下载量&gt;100万），但单独&quot;Dark Psychology+Stoic&quot;的AI对话应用尚不存在。</li>
+<li><strong>为何海外成立？</strong>
+<ol>
+<li>心理健康意识强，&ldquo;操控心理学&quot;话题在TikTok/YouTube有百万播放量的热门标签。</li>
+<li>西方读者对哲学实践有购书和付费App习惯（如Daily Stoic年收入超千万）。</li>
+<li>隐私意识：原帖强调数据本地存储（连开发者也不能看），刚好契合欧美GDPR敏感。</li>
+</ol>
+</li>
+<li><strong>为何国内没人做？</strong>
+<ul>
+<li>真壁垒：无。不是技术或资金壁垒。</li>
+<li>伪壁垒：1. 认为&quot;暗黑心理学&quot;在国内不被允许。实际上，内容上以“识别操控、保护自己”为主，不教害人，完全合规。2. 认为哲学App没有付费意愿。其实是没人尝试过这单一细分组合。</li>
+</ul>
+</li>
+</ul>
+<h3 id="搬运路径">搬运路径</h3>
+<h4 id="最小搬运方案不做原生app先做微信小程序h5">最小搬运方案：不做原生App，先做微信小程序+H5</h4>
+<ul>
+<li>改3个点就够了：
+<ol>
+<li><strong>平台</strong>：从iOS（海外首选）改为微信小程序+小红书私域。</li>
+<li><strong>AI角色</strong>：从Epictetus/Marcus Aurelius换成老子/鬼谷子/王阳明——让中国用户能共鸣。</li>
+<li><strong>营销语言</strong>：从“Master dark psychology”变成“防PUA指南”“职场博弈论”——更接地气。</li>
+</ol>
+</li>
+</ul>
+<h4 id="day1-3验证清单全部零成本">Day1-3验证清单（全部零成本）</h4>
+<ul>
+<li><strong>Day1</strong>：在小红书搜索“暗黑心理学”“防PUA”“职场博弈”，记录关注量前10位的博主。用百度指数搜“暗黑心理学”确认搜索热度。</li>
+<li><strong>Day2</strong>：用微信开发者工具创建一个简单的测试页面：放一个输入框，用户输入烦恼，调用免费版文心一言API（有新手免费额度）生成“哲人回复”。发布为体验版小程序，自己走一遍流程。</li>
+<li><strong>Day3</strong>：在小红书发测试帖——“做了一个Ai哲人（王阳明口吻）解答你的职场矛盾，有兴趣的扣1”，统计评论数。如有10条以上，即可认为有需求。</li>
+</ul>
+<h4 id="工具和平台">工具和平台</h4>
+<ul>
+<li><strong>开发平台</strong>：微信小程序+文心一言API（免费额度，约5000次/月）。</li>
+<li><strong>内容平台</strong>：小红书为主，快手为辅。发帖建议：发古风哲人头像+1分钟AI对话视频（剪映免费做）。</li>
+<li><strong>注册步骤</strong>：
+<ol>
+<li>去微信开放平台注册成为小程序开发者（免费，需手机号）。</li>
+<li>去百度智能云申请文心一言API（免费实名认证）。</li>
+<li>去小红书注册创作者号（免费）。</li>
+</ol>
+</li>
+</ul>
+<h3 id="变现路径">变现路径</h3>
+<table>
+  <thead>
+      <tr>
+          <th>路径</th>
+          <th>启动成本</th>
+          <th>预期时间线</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>1. 小程序付费咨询</strong>：99元/次，用户付费获得“AI哲人一对一解答”（人工审后回复）</td>
+          <td>0元（仅利用免费API）</td>
+          <td>2周内可上线，首月可赚500-2000元</td>
+      </tr>
+      <tr>
+          <td><strong>2. 社群付费订阅</strong>：创建铁粉群，9.9元/月，每日推送“斯多葛格言+职场实操案例”，手动发</td>
+          <td>0元（微信群免费）</td>
+          <td>需1个月积累500粉丝，预计每月收益300-1000元</td>
+      </tr>
+  </tbody>
+</table>
+<blockquote>
+<p>首周预期收益：路径1若测试期有3人咨询，收入约297元。路径2此时暂无收入。</p>
+</blockquote>
+<h3 id="风险提示">风险提示</h3>
+<ol>
+<li><strong>政策风险</strong>：内容不可涉及“刻意害人/操控他人”的描述。全部改写为“识别他人操控、保护自己”，该方向完全合规。</li>
+<li><strong>平台规则</strong>：微信小程序审核过程中，“暗黑心理学”这类词可能被误拦。建议入口名称用“哲人说”“职场博弈论”，真实对话中保留洞察内容。</li>
+<li><strong>竞争风险</strong>：目前国内几乎无此类细分。唯一可能未来模仿者是大厂（如百度文心一言集成斯多葛角色），但大厂不可能先做这一细分。你有6-12个月的窗口期。已回本的社群基础能让你扎根。</li>
+</ol>
+<h3 id="你现在就能做的事">你现在就能做的事</h3>
+<p>打开小红书，搜“暗黑心理学”“防PUA”。如果看到10个以上点赞过千的笔记，今天就开始写你的第一句AI Prompt：你是一个王阳明风格的哲人，请用50字内回答职场人如何在会议上不被同事带节奏。</p>
+]]></content:encoded></item></channel></rss>

@@ -1,4 +1,120 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>China-Going-Global on Easton 跨国智库</title><link>https://radar.huadongpeng.com/categories/china-going-global/</link><description>Recent content in China-Going-Global on Easton 跨国智库</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Wed, 13 May 2026 06:28:49 +0800</lastBuildDate><atom:link href="https://radar.huadongpeng.com/categories/china-going-global/index.xml" rel="self" type="application/rss+xml"/><item><title>可灵AI出海</title><link>https://radar.huadongpeng.com/posts/china-going-global/deep-dive-2026-05-13-0628/</link><pubDate>Wed, 13 May 2026 06:28:49 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/china-going-global/deep-dive-2026-05-13-0628/</guid><description>&lt;h1 id="可灵ai出海指南零成本用ai视频素材赚钱"&gt;可灵AI出海指南：零成本用AI视频素材赚钱&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>China-Going-Global on Easton 跨国智库</title><link>https://radar.huadongpeng.com/categories/china-going-global/</link><description>Recent content in China-Going-Global on Easton 跨国智库</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Wed, 13 May 2026 09:19:47 +0800</lastBuildDate><atom:link href="https://radar.huadongpeng.com/categories/china-going-global/index.xml" rel="self" type="application/rss+xml"/><item><title>Qwen淘宝AI接单</title><link>https://radar.huadongpeng.com/posts/china-going-global/deep-dive-2026-05-13-0919/</link><pubDate>Wed, 13 May 2026 09:19:47 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/china-going-global/deep-dive-2026-05-13-0919/</guid><description>&lt;h2 id="用qwen-api开发ai导购工具零成本出海实操指南"&gt;用Qwen API开发AI导购工具：零成本出海实操指南&lt;/h2&gt;
+&lt;h3 id="目标市场画像"&gt;目标市场画像&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;为什么选这个市场？&lt;/strong&gt; 阿里Qwen与淘宝打通后，用户可以用自然语言完成购物全流程。但淘宝主要服务中文用户，英文跨境电商（AliExpress）还没深度接入。欧美、东南亚用户想比价、找商品、看评价，仍需手动操作。这中间有痛点：语言障碍 + 信息过载。你可以做一个“AI海外淘宝导购”小工具——用户用英文问需求，你调用Qwen API搜淘宝商品，返回英文结果。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;数据支撑&lt;/strong&gt;：淘宝月活超9亿，AliExpress在欧美月活5000万+，但AI购物体验集中在中文。竞争度低——目前英文AI导购插件几乎空白。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;适合卖什么？&lt;/strong&gt; 1) 代购比价服务（AI搜品+人工代下单） 2) 独立站导购插件（帮小电商自动生成推荐） 3) 跨境卖家选品工具（帮卖家从淘宝扒爆款货源）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="从零到上线的每一步"&gt;从零到上线的每一步&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;Step 1：注册Qwen API账号&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;打开阿里云官网 &lt;a href="https://www.aliyun.com/product/tongyi"&gt;https://www.aliyun.com/product/tongyi&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;用手机号注册（支持大陆、港澳台、海外手机号）&lt;/li&gt;
+&lt;li&gt;完成实名认证：上传身份证正反面JPG（小于2MB），1小时内审核通过&lt;/li&gt;
+&lt;li&gt;在控制台开启“千问模型”服务，获取API Key（AppKey + AppSecret）&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;注意&lt;/strong&gt;：新用户有100万Tokens免费额度，足够测试500次调用&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Step 2：配置开发环境&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;推荐用Python。在你的电脑上安装：pip install openai（兼容Qwen接口）&lt;/li&gt;
+&lt;li&gt;创建项目文件夹，写config.py：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;import&lt;/span&gt; os
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;os&lt;span style="color:#f92672"&gt;.&lt;/span&gt;environ[&lt;span style="color:#e6db74"&gt;&amp;#34;QWEN_API_KEY&amp;#34;&lt;/span&gt;] &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;your_app_key&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;os&lt;span style="color:#f92672"&gt;.&lt;/span&gt;environ[&lt;span style="color:#e6db74"&gt;&amp;#34;QWEN_API_SECRET&amp;#34;&lt;/span&gt;] &lt;span style="color:#f92672"&gt;=&lt;/span&gt; &lt;span style="color:#e6db74"&gt;&amp;#34;your_app_secret&amp;#34;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;测试联通：&lt;/li&gt;
+&lt;/ul&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-python" data-lang="python"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#f92672"&gt;from&lt;/span&gt; openai &lt;span style="color:#f92672"&gt;import&lt;/span&gt; OpenAI
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;client &lt;span style="color:#f92672"&gt;=&lt;/span&gt; OpenAI(api_key&lt;span style="color:#f92672"&gt;=&lt;/span&gt;os&lt;span style="color:#f92672"&gt;.&lt;/span&gt;getenv(&lt;span style="color:#e6db74"&gt;&amp;#34;QWEN_API_KEY&amp;#34;&lt;/span&gt;), base_url&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;https://dashscope-intl.aliyuncs.com/compatible-mode/v1&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;response &lt;span style="color:#f92672"&gt;=&lt;/span&gt; client&lt;span style="color:#f92672"&gt;.&lt;/span&gt;chat&lt;span style="color:#f92672"&gt;.&lt;/span&gt;completions&lt;span style="color:#f92672"&gt;.&lt;/span&gt;create(
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; model&lt;span style="color:#f92672"&gt;=&lt;/span&gt;&lt;span style="color:#e6db74"&gt;&amp;#34;qwen-max&amp;#34;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt; messages&lt;span style="color:#f92672"&gt;=&lt;/span&gt;[{&lt;span style="color:#e6db74"&gt;&amp;#34;role&amp;#34;&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;user&amp;#34;&lt;/span&gt;, &lt;span style="color:#e6db74"&gt;&amp;#34;content&amp;#34;&lt;/span&gt;: &lt;span style="color:#e6db74"&gt;&amp;#34;帮我找5个淘宝上适合送男友的机械键盘，200-300元&amp;#34;&lt;/span&gt;}]
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;print(response&lt;span style="color:#f92672"&gt;.&lt;/span&gt;choices[&lt;span style="color:#ae81ff"&gt;0&lt;/span&gt;]&lt;span style="color:#f92672"&gt;.&lt;/span&gt;message&lt;span style="color:#f92672"&gt;.&lt;/span&gt;content)
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;常见坑&lt;/strong&gt;：Qwen模型不支持直接调用淘宝商品接口，需要额外写爬虫或用淘宝开放平台API（免费，但需申请）。替代方案：用Qwen+淘宝搜索结果HTML解析。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Step 3：上架/发布&lt;/strong&gt;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;最低成本方式：做成Telegram机器人。搜索@BotFather，发送/start -&amp;gt; /newbot，取名“TaoMartBot”，获取Token。&lt;/li&gt;
+&lt;li&gt;用你的Python脚本监听用户消息，调Qwen API，返回商品英文描述和价格。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;审核要求&lt;/strong&gt;：Telegram Bot无人工审核。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;时效&lt;/strong&gt;：注册Bot 5分钟，部署脚本1小时。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;被拒原因&lt;/strong&gt;：不用审，但注意不要违反Telegram TOS（不能发诈骗链接）。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;Step 4：接单/收款&lt;/strong&gt;&lt;/p&gt;</description><content:encoded><![CDATA[<h2 id="用qwen-api开发ai导购工具零成本出海实操指南">用Qwen API开发AI导购工具：零成本出海实操指南</h2>
+<h3 id="目标市场画像">目标市场画像</h3>
+<ul>
+<li><strong>为什么选这个市场？</strong> 阿里Qwen与淘宝打通后，用户可以用自然语言完成购物全流程。但淘宝主要服务中文用户，英文跨境电商（AliExpress）还没深度接入。欧美、东南亚用户想比价、找商品、看评价，仍需手动操作。这中间有痛点：语言障碍 + 信息过载。你可以做一个“AI海外淘宝导购”小工具——用户用英文问需求，你调用Qwen API搜淘宝商品，返回英文结果。</li>
+<li><strong>数据支撑</strong>：淘宝月活超9亿，AliExpress在欧美月活5000万+，但AI购物体验集中在中文。竞争度低——目前英文AI导购插件几乎空白。</li>
+<li><strong>适合卖什么？</strong> 1) 代购比价服务（AI搜品+人工代下单） 2) 独立站导购插件（帮小电商自动生成推荐） 3) 跨境卖家选品工具（帮卖家从淘宝扒爆款货源）</li>
+</ul>
+<h3 id="从零到上线的每一步">从零到上线的每一步</h3>
+<p><strong>Step 1：注册Qwen API账号</strong></p>
+<ul>
+<li>打开阿里云官网 <a href="https://www.aliyun.com/product/tongyi">https://www.aliyun.com/product/tongyi</a></li>
+<li>用手机号注册（支持大陆、港澳台、海外手机号）</li>
+<li>完成实名认证：上传身份证正反面JPG（小于2MB），1小时内审核通过</li>
+<li>在控制台开启“千问模型”服务，获取API Key（AppKey + AppSecret）</li>
+<li><strong>注意</strong>：新用户有100万Tokens免费额度，足够测试500次调用</li>
+</ul>
+<p><strong>Step 2：配置开发环境</strong></p>
+<ul>
+<li>推荐用Python。在你的电脑上安装：pip install openai（兼容Qwen接口）</li>
+<li>创建项目文件夹，写config.py：</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> os
+</span></span><span style="display:flex;"><span>os<span style="color:#f92672">.</span>environ[<span style="color:#e6db74">&#34;QWEN_API_KEY&#34;</span>] <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;your_app_key&#34;</span>
+</span></span><span style="display:flex;"><span>os<span style="color:#f92672">.</span>environ[<span style="color:#e6db74">&#34;QWEN_API_SECRET&#34;</span>] <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;your_app_secret&#34;</span>
+</span></span></code></pre></div><ul>
+<li>测试联通：</li>
+</ul>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">from</span> openai <span style="color:#f92672">import</span> OpenAI
+</span></span><span style="display:flex;"><span>client <span style="color:#f92672">=</span> OpenAI(api_key<span style="color:#f92672">=</span>os<span style="color:#f92672">.</span>getenv(<span style="color:#e6db74">&#34;QWEN_API_KEY&#34;</span>), base_url<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;https://dashscope-intl.aliyuncs.com/compatible-mode/v1&#34;</span>)
+</span></span><span style="display:flex;"><span>response <span style="color:#f92672">=</span> client<span style="color:#f92672">.</span>chat<span style="color:#f92672">.</span>completions<span style="color:#f92672">.</span>create(
+</span></span><span style="display:flex;"><span>    model<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;qwen-max&#34;</span>,
+</span></span><span style="display:flex;"><span>    messages<span style="color:#f92672">=</span>[{<span style="color:#e6db74">&#34;role&#34;</span>: <span style="color:#e6db74">&#34;user&#34;</span>, <span style="color:#e6db74">&#34;content&#34;</span>: <span style="color:#e6db74">&#34;帮我找5个淘宝上适合送男友的机械键盘，200-300元&#34;</span>}]
+</span></span><span style="display:flex;"><span>)
+</span></span><span style="display:flex;"><span>print(response<span style="color:#f92672">.</span>choices[<span style="color:#ae81ff">0</span>]<span style="color:#f92672">.</span>message<span style="color:#f92672">.</span>content)
+</span></span></code></pre></div><ul>
+<li><strong>常见坑</strong>：Qwen模型不支持直接调用淘宝商品接口，需要额外写爬虫或用淘宝开放平台API（免费，但需申请）。替代方案：用Qwen+淘宝搜索结果HTML解析。</li>
+</ul>
+<p><strong>Step 3：上架/发布</strong></p>
+<ul>
+<li>最低成本方式：做成Telegram机器人。搜索@BotFather，发送/start -&gt; /newbot，取名“TaoMartBot”，获取Token。</li>
+<li>用你的Python脚本监听用户消息，调Qwen API，返回商品英文描述和价格。</li>
+<li><strong>审核要求</strong>：Telegram Bot无人工审核。</li>
+<li><strong>时效</strong>：注册Bot 5分钟，部署脚本1小时。</li>
+<li><strong>被拒原因</strong>：不用审，但注意不要违反Telegram TOS（不能发诈骗链接）。</li>
+</ul>
+<p><strong>Step 4：接单/收款</strong></p>
+<ul>
+<li>第一单：在海外华人论坛（如北美省钱快报、Reddit r/china)发帖：“免费试用AI淘宝导购，帮你找英文商品，现在免费”。</li>
+<li>回款：通过PayPal或Wise收款，手续费2.9%+$0.3。</li>
+<li>回款周期：即时到账，但Wise转国内银行需1-3工作日。</li>
+</ul>
+<h3 id="工具链推荐">工具链推荐</h3>
+<ol>
+<li><strong>Qwen API</strong>：免费额度内0成本，超出后￥0.012/千Tokens。替代：DeepSeek V3（更便宜，￥0.001/千T）</li>
+<li><strong>Telegram Bot API</strong>：完全免费。替代：微信群机器人（需要企业微信认证）</li>
+<li><strong>Wise</strong>：海外收款，开账户免费，提现到国内银行费率0.41%。替代：PayPal（更贵）</li>
+</ol>
+<h3 id="避坑清单">避坑清单</h3>
+<ol>
+<li><strong>封号原因</strong>：Qwen API调用时不要做刷单、爬取隐私数据。避免并发超过100次/秒。</li>
+<li><strong>封号原因</strong>：Telegram Bot如果发垃圾消息或诈骗内容，Bot会被删除。</li>
+<li><strong>封号原因</strong>：代购服务如果收钱不发货，被举报后平台封PayPal。建议每单控制在200元内试水。</li>
+</ol>
+<h3 id="成本拆解">成本拆解</h3>
+<ul>
+<li><strong>启动成本</strong>：0元（已有电脑，租一个月云服务器￥30，有免费方案推荐Oracle Cloud免费层）</li>
+<li><strong>月度运营成本</strong>：Qwen API费用约￥10/月（1000次调用），服务器￥0（用Oracle免费实例）</li>
+<li><strong>预期回本周期</strong>：第1天接1单免费试用；第3天收20元服务费；第7天预计赚500元（5单×100元服务费）</li>
+</ul>
+<h3 id="你现在就能做的事">你现在就能做的事</h3>
+<p>去 <a href="https://www.aliyun.com/product/tongyi">https://www.aliyun.com/product/tongyi</a> 用手机号注册，拿到API Key，然后跑通上面那10行Python代码。今晚就能让你的电脑变成一个AI导购机器人。</p>
+]]></content:encoded></item><item><title>可灵AI出海</title><link>https://radar.huadongpeng.com/posts/china-going-global/deep-dive-2026-05-13-0628/</link><pubDate>Wed, 13 May 2026 06:28:49 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/china-going-global/deep-dive-2026-05-13-0628/</guid><description>&lt;h1 id="可灵ai出海指南零成本用ai视频素材赚钱"&gt;可灵AI出海指南：零成本用AI视频素材赚钱&lt;/h1&gt;
 &lt;h2 id="目标市场画像"&gt;目标市场画像&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;为什么选这个市场？&lt;/strong&gt; 可灵AI（Kling AI）由快手开发，截至2026年已生成超1000万条视频，Q3 2025营收4200万美元，年化有望破1亿美元。海外AI视频素材需求激增，但高质量、低成本的中国AI工具供给稀缺。欧美YouTuber、TikToker每周需要3-5条短视频素材，一条15秒AI视频售价5-20美元。&lt;/li&gt;

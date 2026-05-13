@@ -1,4 +1,111 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Developer-Goldmine on Easton 跨国智库</title><link>https://radar.huadongpeng.com/categories/developer-goldmine/</link><description>Recent content in Developer-Goldmine on Easton 跨国智库</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Wed, 13 May 2026 06:27:30 +0800</lastBuildDate><atom:link href="https://radar.huadongpeng.com/categories/developer-goldmine/index.xml" rel="self" type="application/rss+xml"/><item><title>本地工具调用</title><link>https://radar.huadongpeng.com/posts/developer-goldmine/deep-dive-2026-05-13-0627/</link><pubDate>Wed, 13 May 2026 06:27:30 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/developer-goldmine/deep-dive-2026-05-13-0627/</guid><description>&lt;h1 id="用needle-26m在本地实现ai工具调用指南"&gt;用Needle 26M在本地实现AI工具调用指南&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Developer-Goldmine on Easton 跨国智库</title><link>https://radar.huadongpeng.com/categories/developer-goldmine/</link><description>Recent content in Developer-Goldmine on Easton 跨国智库</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Wed, 13 May 2026 09:17:16 +0800</lastBuildDate><atom:link href="https://radar.huadongpeng.com/categories/developer-goldmine/index.xml" rel="self" type="application/rss+xml"/><item><title>免费AI SEO审计指南</title><link>https://radar.huadongpeng.com/posts/developer-goldmine/deep-dive-2026-05-13-0917/</link><pubDate>Wed, 13 May 2026 09:17:16 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/developer-goldmine/deep-dive-2026-05-13-0917/</guid><description>&lt;h2 id="免费ai-seo审计指南让网站被ai搜索看见"&gt;免费AI SEO审计指南：让网站被AI搜索看见&lt;/h2&gt;
+&lt;h3 id="效率痛点"&gt;效率痛点&lt;/h3&gt;
+&lt;p&gt;如果你有个人博客或接外包项目，AI搜索引擎（如Google AI Overviews、Perplexity）正在成为主要流量入口。但多数人不知道自己的网站在AI眼中长什么样——可能内容正确但没被索引，结构混乱被忽略。手动检查每个页面需要每天花30分钟做重复操作，一个月浪费15小时。&lt;/p&gt;
+&lt;p&gt;不用这个工具的代价：你的优质内容永远排不到AI搜索结果前列，接单机会被其他更懂SEO的人抢走。&lt;/p&gt;
+&lt;h3 id="自动化提效方案"&gt;自动化/提效方案&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;工具链架构&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Free AI SEO Auditor&lt;/strong&gt;（开源）：扫描网站，生成AI搜索友好度报告&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Ahrefs免费SEO检查器&lt;/strong&gt;（可选）：补充关键词和反向链接数据&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;从安装到首次运行的完整步骤&lt;/strong&gt;：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;获取工具&lt;/strong&gt;：打开Free AI SEO Auditor的GitHub仓库（来源：ProductHunt），点击“Code”按钮，选择“Download ZIP”或者直接克隆：&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;git clone https://github.com/your-fork/ai-seo-auditor.git
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;cd ai-seo-auditor
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ol start="2"&gt;
+&lt;li&gt;&lt;strong&gt;安装依赖&lt;/strong&gt;：确保你有Python 3.8+，运行：&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;pip install -r requirements.txt
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ol start="3"&gt;
+&lt;li&gt;&lt;strong&gt;运行审计&lt;/strong&gt;：&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;python3 auditor.py --url https://你的网站.com
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;ol start="4"&gt;
+&lt;li&gt;&lt;strong&gt;查看结果&lt;/strong&gt;：工具会在当前目录生成一个audit_report.html，用浏览器打开：&lt;/li&gt;
+&lt;/ol&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;start audit_report.html &lt;span style="color:#75715e"&gt;# Windows&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;open audit_report.html &lt;span style="color:#75715e"&gt;# macOS&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;报告包含：页面加载速度、结构化数据缺失、关键词覆盖度、AI索引状态。&lt;/p&gt;
+&lt;h3 id="效果量化"&gt;效果量化&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;优化前：手动检查结构数据，每天30分钟 x 30天 = 15小时/月&lt;/li&gt;
+&lt;li&gt;优化后：运行脚本5分钟 x 1次/周 = 0.33小时/月&lt;/li&gt;
+&lt;li&gt;节省：14.67小时/月 = 如果接外包项目（按50元/小时计）值733元&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="进阶技巧"&gt;进阶技巧&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;批量扫描站点地图&lt;/strong&gt;：如果网站有sitemap.xml，用 &lt;code&gt;--sitemap https://你的网站.com/sitemap.xml&lt;/code&gt; 参数扫描所有页面&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;自定义AI引擎指标&lt;/strong&gt;：修改 &lt;code&gt;config.yaml&lt;/code&gt; 添加你目标AI平台（如BizBot、Perplexity）的特性要求&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;自动生成优化建议&lt;/strong&gt;：运行后工具会输出markdown文件，直接粘贴到项目工单中&lt;/p&gt;</description><content:encoded><![CDATA[<h2 id="免费ai-seo审计指南让网站被ai搜索看见">免费AI SEO审计指南：让网站被AI搜索看见</h2>
+<h3 id="效率痛点">效率痛点</h3>
+<p>如果你有个人博客或接外包项目，AI搜索引擎（如Google AI Overviews、Perplexity）正在成为主要流量入口。但多数人不知道自己的网站在AI眼中长什么样——可能内容正确但没被索引，结构混乱被忽略。手动检查每个页面需要每天花30分钟做重复操作，一个月浪费15小时。</p>
+<p>不用这个工具的代价：你的优质内容永远排不到AI搜索结果前列，接单机会被其他更懂SEO的人抢走。</p>
+<h3 id="自动化提效方案">自动化/提效方案</h3>
+<p><strong>工具链架构</strong>：</p>
+<ul>
+<li><strong>Free AI SEO Auditor</strong>（开源）：扫描网站，生成AI搜索友好度报告</li>
+<li><strong>Ahrefs免费SEO检查器</strong>（可选）：补充关键词和反向链接数据</li>
+</ul>
+<p><strong>从安装到首次运行的完整步骤</strong>：</p>
+<ol>
+<li><strong>获取工具</strong>：打开Free AI SEO Auditor的GitHub仓库（来源：ProductHunt），点击“Code”按钮，选择“Download ZIP”或者直接克隆：</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>git clone https://github.com/your-fork/ai-seo-auditor.git
+</span></span><span style="display:flex;"><span>cd ai-seo-auditor
+</span></span></code></pre></div><ol start="2">
+<li><strong>安装依赖</strong>：确保你有Python 3.8+，运行：</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>pip install -r requirements.txt
+</span></span></code></pre></div><ol start="3">
+<li><strong>运行审计</strong>：</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>python3 auditor.py --url https://你的网站.com
+</span></span></code></pre></div><ol start="4">
+<li><strong>查看结果</strong>：工具会在当前目录生成一个audit_report.html，用浏览器打开：</li>
+</ol>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>start audit_report.html  <span style="color:#75715e"># Windows</span>
+</span></span><span style="display:flex;"><span>open audit_report.html   <span style="color:#75715e"># macOS</span>
+</span></span></code></pre></div><p>报告包含：页面加载速度、结构化数据缺失、关键词覆盖度、AI索引状态。</p>
+<h3 id="效果量化">效果量化</h3>
+<ul>
+<li>优化前：手动检查结构数据，每天30分钟 x 30天 = 15小时/月</li>
+<li>优化后：运行脚本5分钟 x 1次/周 = 0.33小时/月</li>
+<li>节省：14.67小时/月 = 如果接外包项目（按50元/小时计）值733元</li>
+</ul>
+<h3 id="进阶技巧">进阶技巧</h3>
+<ol>
+<li>
+<p><strong>批量扫描站点地图</strong>：如果网站有sitemap.xml，用 <code>--sitemap https://你的网站.com/sitemap.xml</code> 参数扫描所有页面</p>
+</li>
+<li>
+<p><strong>自定义AI引擎指标</strong>：修改 <code>config.yaml</code> 添加你目标AI平台（如BizBot、Perplexity）的特性要求</p>
+</li>
+<li>
+<p><strong>自动生成优化建议</strong>：运行后工具会输出markdown文件，直接粘贴到项目工单中</p>
+</li>
+</ol>
+<h3 id="常见排障">常见排障</h3>
+<p><strong>问题1：扫描报错“timeout”</strong>
+解决方法：网站响应慢，增加超时参数：<code>python3 auditor.py --url https://你的网站.com --timeout 30</code></p>
+<p><strong>问题2：报告空白</strong>
+解决方法：确保网站公开可访问，不要在本地或需要登录的页面运行；如果用WSL或虚拟机，确认网络正确</p>
+<p><strong>问题3：依赖安装失败</strong>
+解决方法：创建虚拟环境 <code>python3 -m venv venv &amp;&amp; source venv/bin/activate</code>，再重装依赖</p>
+<h3 id="启动成本">启动成本</h3>
+<ul>
+<li>启动成本：0元（开源工具免费）</li>
+<li>时间投入：首次配置30分钟，后续每周5分钟</li>
+<li>预期收益：通过优化SEO，每周多获得10-50次AI搜索流量，按5%转化率，每月可能增加2-3个咨询单</li>
+</ul>
+<p>你现在就能做：打开Free AI SEO Auditor项目（从ProductHunt链接找到GitHub）→克隆仓库→运行 <code>pip install -r requirements.txt &amp;&amp; python3 auditor.py --url https://你的网站.com</code>→打开生成的报告→根据建议修改meta标签和结构化数据</p>
+]]></content:encoded></item><item><title>本地工具调用</title><link>https://radar.huadongpeng.com/posts/developer-goldmine/deep-dive-2026-05-13-0627/</link><pubDate>Wed, 13 May 2026 06:27:30 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/developer-goldmine/deep-dive-2026-05-13-0627/</guid><description>&lt;h1 id="用needle-26m在本地实现ai工具调用指南"&gt;用Needle 26M在本地实现AI工具调用指南&lt;/h1&gt;
 &lt;h2 id="效率痛点"&gt;效率痛点&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;场景&lt;/strong&gt;：你写Python脚本时经常需要调用外部API（天气查询、计算器、数据库查询），但每次都要手动构造请求、解析返回&lt;/li&gt;
