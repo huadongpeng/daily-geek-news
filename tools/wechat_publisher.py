@@ -32,6 +32,7 @@ import time
 import argparse
 import requests
 import mistune
+from bs4 import BeautifulSoup
 from datetime import datetime
 from pathlib import Path
 
@@ -376,7 +377,48 @@ def md_to_wechat_html(md_text):
     """Markdown → 微信兼容 HTML（不预处理内容——信任 mistune 和 LLM 输出）"""
     renderer = WeChatRenderer()
     parser = mistune.Markdown(renderer)
-    return parser(md_text)
+    html = parser(md_text)
+    return _inject_table_styles(html)
+
+
+def _inject_table_styles(html):
+    """BeautifulSoup 后处理：为表格注入微信安全的内联样式 + 移动端滚动容器"""
+    soup = BeautifulSoup(html, 'html.parser')
+
+    for table in soup.find_all('table'):
+        # 表格整体样式（覆盖 mistune 的 border 属性，WeChat 会丢弃 border="1"）
+        table['style'] = (
+            'border-collapse:collapse;width:100%;margin:12px 0;'
+            'font-size:14px;color:#3f3f3f;'
+        )
+        # 移除无效的 border/cellspacing HTML 属性
+        for attr in ['border', 'cellspacing', 'cellpadding']:
+            if attr in table.attrs:
+                del table[attr]
+
+        for th in table.find_all('th'):
+            th['style'] = (
+                'border:1px solid #e0e0e0;background-color:#f5f5f5;'
+                'padding:8px 12px;font-weight:bold;text-align:left;'
+            )
+            if not th.get_text(strip=True):
+                th.string = '\xa0'
+
+        for td in table.find_all('td'):
+            td['style'] = (
+                'border:1px solid #e0e0e0;padding:8px 12px;text-align:left;'
+            )
+            if not td.get_text(strip=True):
+                td.string = '\xa0'
+
+        # 外层包裹移动端横向滚动容器
+        wrapper = soup.new_tag('div', style=(
+            'width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;'
+            'margin:16px 0;'
+        ))
+        table.wrap(wrapper)
+
+    return str(soup)
 
 
 # ============================================================
