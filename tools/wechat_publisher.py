@@ -663,7 +663,7 @@ def main():
     parser.add_argument("--no-image", action="store_true", help="跳过封面图生成")
     parser.add_argument("--yesterday", action="store_true", help="推送前一天的文章")
     parser.add_argument("--include-briefings", action="store_true",
-                        help="同时推送每日快讯（默认仅推送精品深度长文）")
+                        help="已废弃：默认同时推送深度长文和每日快讯")
     args = parser.parse_args()
 
     if args.yesterday and args.date:
@@ -694,19 +694,15 @@ def main():
         print(f"❌ 未找到日期为 {date_label} 的文章")
         sys.exit(1)
 
-    # 精品筛选：默认仅 deep-dive（质量已由模型把关）
-    if not args.include_briefings:
-        articles = [a for a in articles if a["is_deep"]]
-
     if not articles:
-        print("✅ 今日无精品深度长文需要推送（快讯可通过 --include-briefings 开启）")
+        print("✅ 今日无文章需要推送")
         sys.exit(0)
 
     # 生图数量预估
     if not args.no_image:
         print(f"📊 今日预计生图: {len(articles)} 张（通义万相免费 200/月 + 智谱 100/月备选）")
 
-    print(f"📋 找到 {len(articles)} 篇精品文章")
+    print(f"📋 找到 {len(articles)} 篇文章")
     for a in articles:
         t = "深度长文" if a["is_deep"] else "快讯"
         print(f"   [{a['category']}] {t}: {a['title'][:40]}...")
