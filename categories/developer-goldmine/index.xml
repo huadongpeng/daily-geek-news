@@ -1,4 +1,196 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Developer-Goldmine on Easton 跨国智库</title><link>https://radar.huadongpeng.com/categories/developer-goldmine/</link><description>Recent content in Developer-Goldmine on Easton 跨国智库</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Wed, 13 May 2026 09:17:16 +0800</lastBuildDate><atom:link href="https://radar.huadongpeng.com/categories/developer-goldmine/index.xml" rel="self" type="application/rss+xml"/><item><title>免费AI SEO审计指南</title><link>https://radar.huadongpeng.com/posts/developer-goldmine/deep-dive-2026-05-13-0917/</link><pubDate>Wed, 13 May 2026 09:17:16 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/developer-goldmine/deep-dive-2026-05-13-0917/</guid><description>&lt;h2 id="免费ai-seo审计指南让网站被ai搜索看见"&gt;免费AI SEO审计指南：让网站被AI搜索看见&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Developer-Goldmine on Easton 跨国智库</title><link>https://radar.huadongpeng.com/categories/developer-goldmine/</link><description>Recent content in Developer-Goldmine on Easton 跨国智库</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Wed, 13 May 2026 09:34:04 +0800</lastBuildDate><atom:link href="https://radar.huadongpeng.com/categories/developer-goldmine/index.xml" rel="self" type="application/rss+xml"/><item><title>Needle本地部署</title><link>https://radar.huadongpeng.com/posts/developer-goldmine/deep-dive-2026-05-13-0934/</link><pubDate>Wed, 13 May 2026 09:34:04 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/developer-goldmine/deep-dive-2026-05-13-0934/</guid><description>&lt;h1 id="needle本地部署零成本跑通ai函数调用"&gt;Needle本地部署：零成本跑通AI函数调用&lt;/h1&gt;
+&lt;h2 id="效率痛点"&gt;效率痛点&lt;/h2&gt;
+&lt;p&gt;如果你是独立开发者或兼职接外包，经常需要写脚本调用API完成自动化任务（比如从邮件提取数据、生成报表、自动回复）。传统做法：要么每次写硬编码逻辑（每天30分钟），要么调用GPT-4 API（一次0.03美元，一个月100次就是60元）。对每月可支配现金不到2000元的人，这笔开销不小。而且网络不稳定时，依赖云端API就瘫痪了。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;不用这个方案的代价&lt;/strong&gt;：一个月浪费15小时写重复代码，多花至少60元API费。&lt;/p&gt;
+&lt;h2 id="方案使用needle模型"&gt;方案：使用Needle模型&lt;/h2&gt;
+&lt;p&gt;Needle是一个从Gemini 2.0蒸馏出来的26M参数量模型，专门做工具调用（Tool Calling）。它可以在本地CPU上运行，不需要GPU，不需要联网，零成本调用。&lt;/p&gt;
+&lt;h3 id="工具链架构"&gt;工具链架构&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;模型&lt;/strong&gt;: Needle 26M参数（Python+ONNX运行时）&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;环境&lt;/strong&gt;: Python 3.10+，pip安装依赖&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;运行时&lt;/strong&gt;: ONNX Runtime（CPU可跑）&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;操作系统&lt;/strong&gt;: Windows/macOS/Linux均支持&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="从安装到首次运行的完整步骤"&gt;从安装到首次运行的完整步骤&lt;/h3&gt;
+&lt;h4 id="第一步安装依赖"&gt;第一步：安装依赖&lt;/h4&gt;
+&lt;p&gt;打开终端（Windows用CMD或PowerShell，macOS用Terminal），运行：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 创建虚拟环境（推荐）&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;python -m venv needle_env
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 激活虚拟环境&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# Windows:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;needle_env&lt;span style="color:#ae81ff"&gt;\S&lt;/span&gt;cripts&lt;span style="color:#ae81ff"&gt;\a&lt;/span&gt;ctivate
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# macOS/Linux:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;source needle_env/bin/activate
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 安装依赖&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;pip install onnxruntime numpy transformers tokenizers
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id="第二步下载模型"&gt;第二步：下载模型&lt;/h4&gt;
+&lt;p&gt;从GitHub Release下载模型文件（约50MB）。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 创建模型目录&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;mkdir -p needle_model
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;cd needle_model
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 下载模型权重（约50MB，取决于网络速度，通常1-3分钟）&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 如果下载慢，可以用国内镜像：&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# wget https://hf-mirror.com/needle-ai/needle-26m/resolve/main/model.onnx&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;git clone https://github.com/cactus-compute/needle.git
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;cd needle
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id="第三步准备工具定义文件"&gt;第三步：准备工具定义文件&lt;/h4&gt;
+&lt;p&gt;创建一个&lt;code&gt;tools.json&lt;/code&gt;文件，定义你的工具。比如一个发送邮件的工具：&lt;/p&gt;</description><content:encoded><![CDATA[<h1 id="needle本地部署零成本跑通ai函数调用">Needle本地部署：零成本跑通AI函数调用</h1>
+<h2 id="效率痛点">效率痛点</h2>
+<p>如果你是独立开发者或兼职接外包，经常需要写脚本调用API完成自动化任务（比如从邮件提取数据、生成报表、自动回复）。传统做法：要么每次写硬编码逻辑（每天30分钟），要么调用GPT-4 API（一次0.03美元，一个月100次就是60元）。对每月可支配现金不到2000元的人，这笔开销不小。而且网络不稳定时，依赖云端API就瘫痪了。</p>
+<p><strong>不用这个方案的代价</strong>：一个月浪费15小时写重复代码，多花至少60元API费。</p>
+<h2 id="方案使用needle模型">方案：使用Needle模型</h2>
+<p>Needle是一个从Gemini 2.0蒸馏出来的26M参数量模型，专门做工具调用（Tool Calling）。它可以在本地CPU上运行，不需要GPU，不需要联网，零成本调用。</p>
+<h3 id="工具链架构">工具链架构</h3>
+<ul>
+<li><strong>模型</strong>: Needle 26M参数（Python+ONNX运行时）</li>
+<li><strong>环境</strong>: Python 3.10+，pip安装依赖</li>
+<li><strong>运行时</strong>: ONNX Runtime（CPU可跑）</li>
+<li><strong>操作系统</strong>: Windows/macOS/Linux均支持</li>
+</ul>
+<h3 id="从安装到首次运行的完整步骤">从安装到首次运行的完整步骤</h3>
+<h4 id="第一步安装依赖">第一步：安装依赖</h4>
+<p>打开终端（Windows用CMD或PowerShell，macOS用Terminal），运行：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 创建虚拟环境（推荐）</span>
+</span></span><span style="display:flex;"><span>python -m venv needle_env
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 激活虚拟环境</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Windows:</span>
+</span></span><span style="display:flex;"><span>needle_env<span style="color:#ae81ff">\S</span>cripts<span style="color:#ae81ff">\a</span>ctivate
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># macOS/Linux:</span>
+</span></span><span style="display:flex;"><span>source needle_env/bin/activate
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 安装依赖</span>
+</span></span><span style="display:flex;"><span>pip install onnxruntime numpy transformers tokenizers
+</span></span></code></pre></div><h4 id="第二步下载模型">第二步：下载模型</h4>
+<p>从GitHub Release下载模型文件（约50MB）。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 创建模型目录</span>
+</span></span><span style="display:flex;"><span>mkdir -p needle_model
+</span></span><span style="display:flex;"><span>cd needle_model
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 下载模型权重（约50MB，取决于网络速度，通常1-3分钟）</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 如果下载慢，可以用国内镜像：</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># wget https://hf-mirror.com/needle-ai/needle-26m/resolve/main/model.onnx</span>
+</span></span><span style="display:flex;"><span>git clone https://github.com/cactus-compute/needle.git
+</span></span><span style="display:flex;"><span>cd needle
+</span></span></code></pre></div><h4 id="第三步准备工具定义文件">第三步：准备工具定义文件</h4>
+<p>创建一个<code>tools.json</code>文件，定义你的工具。比如一个发送邮件的工具：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>[
+</span></span><span style="display:flex;"><span>  {
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;send_email&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;description&#34;</span>: <span style="color:#e6db74">&#34;发送电子邮件给收件人&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;parameters&#34;</span>: {
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;object&#34;</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;properties&#34;</span>: {
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;to&#34;</span>: {<span style="color:#f92672">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;string&#34;</span>, <span style="color:#f92672">&#34;description&#34;</span>: <span style="color:#e6db74">&#34;收件人邮箱&#34;</span>},
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;subject&#34;</span>: {<span style="color:#f92672">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;string&#34;</span>, <span style="color:#f92672">&#34;description&#34;</span>: <span style="color:#e6db74">&#34;邮件主题&#34;</span>},
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;body&#34;</span>: {<span style="color:#f92672">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;string&#34;</span>, <span style="color:#f92672">&#34;description&#34;</span>: <span style="color:#e6db74">&#34;邮件正文&#34;</span>}
+</span></span><span style="display:flex;"><span>      },
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;required&#34;</span>: [<span style="color:#e6db74">&#34;to&#34;</span>, <span style="color:#e6db74">&#34;subject&#34;</span>, <span style="color:#e6db74">&#34;body&#34;</span>]
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>]
+</span></span></code></pre></div><h4 id="第四步编写调用脚本">第四步：编写调用脚本</h4>
+<p>创建<code>run_needle.py</code>：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> requests
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> json
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 加载模型（可以用在线推理，但建议本地）</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 这里用官方示例中的API调用方式</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 注意：Needle本身是本地模型，但为了快速体验，也可以用官方提供的Demo接口</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 如果你想要完全本地，需要下载onnx模型并加载到onnxruntime中</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 以下是本地加载的完整代码示例</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> onnxruntime
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> numpy <span style="color:#66d9ef">as</span> np
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> transformers <span style="color:#f92672">import</span> AutoTokenizer
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 加载tokenizer</span>
+</span></span><span style="display:flex;"><span>tokenizer <span style="color:#f92672">=</span> AutoTokenizer<span style="color:#f92672">.</span>from_pretrained(<span style="color:#e6db74">&#34;cactus-compute/needle-26m&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 这里假设你已下载onnx模型到本地</span>
+</span></span><span style="display:flex;"><span>session <span style="color:#f92672">=</span> onnxruntime<span style="color:#f92672">.</span>InferenceSession(<span style="color:#e6db74">&#34;needle-26m/model.onnx&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">call_needle</span>(prompt, tools):
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 构造输入</span>
+</span></span><span style="display:flex;"><span>    input_text <span style="color:#f92672">=</span> <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;&#34;&#34;You are an AI assistant. You have access to the following tools:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">{</span>json<span style="color:#f92672">.</span>dumps(tools, indent<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>)<span style="color:#e6db74">}</span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">User request: </span><span style="color:#e6db74">{</span>prompt<span style="color:#e6db74">}</span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Think step by step and decide which tool to call with what arguments.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Output ONLY a JSON object with &#39;tool_name&#39; and &#39;tool_arguments&#39;.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 编码</span>
+</span></span><span style="display:flex;"><span>    inputs <span style="color:#f92672">=</span> tokenizer(input_text, return_tensors<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;np&#34;</span>, max_length<span style="color:#f92672">=</span><span style="color:#ae81ff">512</span>, truncation<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 推理</span>
+</span></span><span style="display:flex;"><span>    outputs <span style="color:#f92672">=</span> session<span style="color:#f92672">.</span>run(<span style="color:#66d9ef">None</span>, {k: v <span style="color:#66d9ef">for</span> k, v <span style="color:#f92672">in</span> inputs<span style="color:#f92672">.</span>items() <span style="color:#66d9ef">if</span> k <span style="color:#f92672">in</span> [<span style="color:#e6db74">&#39;input_ids&#39;</span>, <span style="color:#e6db74">&#39;attention_mask&#39;</span>]})
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 解码</span>
+</span></span><span style="display:flex;"><span>    generated_ids <span style="color:#f92672">=</span> outputs[<span style="color:#ae81ff">0</span>][<span style="color:#ae81ff">0</span>]
+</span></span><span style="display:flex;"><span>    result <span style="color:#f92672">=</span> tokenizer<span style="color:#f92672">.</span>decode(generated_ids, skip_special_tokens<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 提取JSON（简单处理，实际可能需要更复杂解析）</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 只取模型输出的最后一部分</span>
+</span></span><span style="display:flex;"><span>        json_start <span style="color:#f92672">=</span> result<span style="color:#f92672">.</span>rfind(<span style="color:#e6db74">&#39;{&#39;</span>)
+</span></span><span style="display:flex;"><span>        json_end <span style="color:#f92672">=</span> result<span style="color:#f92672">.</span>rfind(<span style="color:#e6db74">&#39;}&#39;</span>) <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> json_start <span style="color:#f92672">!=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> json<span style="color:#f92672">.</span>loads(result[json_start:json_end])
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">except</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">pass</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">None</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 使用示例</span>
+</span></span><span style="display:flex;"><span>tools <span style="color:#f92672">=</span> [
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;send_email&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;description&#34;</span>: <span style="color:#e6db74">&#34;向指定地址发送邮件&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;parameters&#34;</span>: {
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;object&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;properties&#34;</span>: {
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;to&#34;</span>: {<span style="color:#e6db74">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;string&#34;</span>},
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;subject&#34;</span>: {<span style="color:#e6db74">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;string&#34;</span>},
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;body&#34;</span>: {<span style="color:#e6db74">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;string&#34;</span>}
+</span></span><span style="display:flex;"><span>            },
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;required&#34;</span>: [<span style="color:#e6db74">&#34;to&#34;</span>, <span style="color:#e6db74">&#34;subject&#34;</span>, <span style="color:#e6db74">&#34;body&#34;</span>]
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>result <span style="color:#f92672">=</span> call_needle(<span style="color:#e6db74">&#34;帮我给boss@example.com发一封邮件，主题是&#39;今日报表&#39;，内容包含昨天销售额&#34;</span>, tools)
+</span></span><span style="display:flex;"><span>print(result)
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 预期输出类似：{&#39;tool_name&#39;: &#39;send_email&#39;, &#39;tool_arguments&#39;: {&#39;to&#39;: &#39;boss@example.com&#39;, &#39;subject&#39;: &#39;今日报表&#39;, &#39;body&#39;: &#39;昨日销售数据请查收&#39;}}</span>
+</span></span></code></pre></div><h4 id="第五步运行脚本">第五步：运行脚本</h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>python run_needle.py
+</span></span></code></pre></div><p>首次运行会下载tokenizer（约1分钟），之后推理时间通常在0.5秒内。</p>
+<h2 id="效果量化">效果量化</h2>
+<ul>
+<li><strong>优化前</strong>：写一个自动发送报表的Python脚本，手动写if-else逻辑，每次30分钟，假设每周5次 =&gt; 150分钟/周 = 10小时/月。或者调用GPT-4 API，一次0.03美元，100次/月 = 3美元/月（约21元人民币）。</li>
+<li><strong>优化后</strong>：用Needle推理，每次维护只需修改prompt（5分钟），推理零成本。总计约1小时/月。</li>
+<li><strong>节省</strong>：9小时/月 + 21元/月。如果接外包按50元/时算，相当于每月多赚450元。</li>
+</ul>
+<p><strong>启动成本</strong>: 0元（所有依赖和模型免费）
+<strong>时间投入</strong>: 首次配置1小时
+<strong>预期首周收益</strong>: 节省6元API费 + 节省2.5小时时间</p>
+<h2 id="进阶技巧">进阶技巧</h2>
+<h3 id="1-多工具并发">1. 多工具并发</h3>
+<p>在工具定义里，可以定义多个工具，模型会自动选择。同时，你可以利用并发执行：如果模型连续返回两个工具调用，可以同时执行，减少总耗时。</p>
+<h3 id="2-自定义输出格式">2. 自定义输出格式</h3>
+<p>通过修改prompt中的约束，可以让模型输出特定格式（如CSV行、XML片段），直接用于后续处理脚本。</p>
+<h3 id="3-与cronat结合做定时任务">3. 与cron/at结合做定时任务</h3>
+<p>在Linux/macOS上设置cron，Windows上用任务计划程序，把Needle作为无服务器函数调用器，定时执行自动化流程（如每天早上自动收集数据并发送报告）。</p>
+<h2 id="常见排障">常见排障</h2>
+<h3 id="问题1-onnx模型加载失败">问题1: ONNX模型加载失败</h3>
+<p><strong>症状</strong>: <code>ONNX Runtime Error: Model not in a valid format</code>
+<strong>解决</strong>: 确认下载完整，检查md5。如果从官方源下载慢，换用国内镜像：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>pip install huggingface-hub
+</span></span><span style="display:flex;"><span>huggingface-cli download cactus-compute/needle-26m --local-dir ./needle-26m --resume-download
+</span></span></code></pre></div><h3 id="问题2-输出不是纯json">问题2: 输出不是纯JSON</h3>
+<p><strong>症状</strong>: 模型返回了多余文字，无法直接parse
+<strong>解决</strong>: 简化prompt指令，加上“ONLY output valid JSON, no other text”。或使用正则提取JSON块。</p>
+<h3 id="问题3-内存不足">问题3: 内存不足</h3>
+<p><strong>症状</strong>: 运行时报<code>MemoryError</code>
+<strong>解决</strong>: Needle只有26M参数，占用约50MB RAM。如果还报错，可能是ONNX Runtime版本问题。更新到最新版：<code>pip install --upgrade onnxruntime</code></p>
+]]></content:encoded></item><item><title>免费AI SEO审计指南</title><link>https://radar.huadongpeng.com/posts/developer-goldmine/deep-dive-2026-05-13-0917/</link><pubDate>Wed, 13 May 2026 09:17:16 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/developer-goldmine/deep-dive-2026-05-13-0917/</guid><description>&lt;h2 id="免费ai-seo审计指南让网站被ai搜索看见"&gt;免费AI SEO审计指南：让网站被AI搜索看见&lt;/h2&gt;
 &lt;h3 id="效率痛点"&gt;效率痛点&lt;/h3&gt;
 &lt;p&gt;如果你有个人博客或接外包项目，AI搜索引擎（如Google AI Overviews、Perplexity）正在成为主要流量入口。但多数人不知道自己的网站在AI眼中长什么样——可能内容正确但没被索引，结构混乱被忽略。手动检查每个页面需要每天花30分钟做重复操作，一个月浪费15小时。&lt;/p&gt;
 &lt;p&gt;不用这个工具的代价：你的优质内容永远排不到AI搜索结果前列，接单机会被其他更懂SEO的人抢走。&lt;/p&gt;

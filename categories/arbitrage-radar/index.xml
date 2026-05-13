@@ -1,4 +1,61 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Arbitrage-Radar on Easton 跨国智库</title><link>https://radar.huadongpeng.com/categories/arbitrage-radar/</link><description>Recent content in Arbitrage-Radar on Easton 跨国智库</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Wed, 13 May 2026 09:17:28 +0800</lastBuildDate><atom:link href="https://radar.huadongpeng.com/categories/arbitrage-radar/index.xml" rel="self" type="application/rss+xml"/><item><title>B站视频笔记赚</title><link>https://radar.huadongpeng.com/posts/arbitrage-radar/deep-dive-2026-05-13-0917/</link><pubDate>Wed, 13 May 2026 09:17:28 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/arbitrage-radar/deep-dive-2026-05-13-0917/</guid><description>&lt;h1 id="b站视频笔记工具从开源到赚钱的执行手册"&gt;B站视频笔记工具：从开源到赚钱的执行手册&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Arbitrage-Radar on Easton 跨国智库</title><link>https://radar.huadongpeng.com/categories/arbitrage-radar/</link><description>Recent content in Arbitrage-Radar on Easton 跨国智库</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Wed, 13 May 2026 09:34:00 +0800</lastBuildDate><atom:link href="https://radar.huadongpeng.com/categories/arbitrage-radar/index.xml" rel="self" type="application/rss+xml"/><item><title>替人存档被屏蔽新闻</title><link>https://radar.huadongpeng.com/posts/arbitrage-radar/deep-dive-2026-05-13-0934/</link><pubDate>Wed, 13 May 2026 09:34:00 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/arbitrage-radar/deep-dive-2026-05-13-0934/</guid><description>&lt;p&gt;核心洞察&lt;/p&gt;
+&lt;p&gt;2026年2月起，《纽约时报》《卫报》《今日美国》等23家主流媒体集体封锁互联网档案馆的Wayback Machine爬虫，不允许自动备份他们的文章。原因是他们怕AI公司用存档快照训练模型。但讽刺的是，这些媒体自己仍在发布的深度报道中大量引用Wayback上的旧页面——自己断了后路，也让普通用户失去了免费追溯、验证和引用新闻的能力。Reddit上已经有人骂“这简直是烧图书馆”，savethearchive.com上反对请愿已超10万签名，但媒体拒不松口。&lt;/p&gt;
+&lt;p&gt;目前没有人提供针对性的手动存档服务。而用户刚需明确：研究者要引用旧报道、维权者要截屏作为证据、自媒体要扒资料——但他们不知道去哪备份，或者嫌自己操作麻烦。这中间就是你的套利空间：替他们手动存，每篇收费2-5元，零成本。&lt;/p&gt;
+&lt;p&gt;执行清单Day1-7&lt;/p&gt;
+&lt;p&gt;Day1：注册工具并试存。打开archive.is（国内可直接访问），在首页输入一篇《纽约时报》公开文章的URL，点击“save”。等待30秒，获得一个永久存档链接。截图保存。记录整个操作步骤。&lt;/p&gt;
+&lt;p&gt;Day2：准备服务说明。打开微信，新建一个朋友圈草稿，写“可帮你手动保存被屏蔽新闻文章的永久快照，NYT/卫报/今日美国等23家站点支持，每篇2元，10篇起接。存档链接可永久查看。”配Day1操作截图。&lt;/p&gt;
+&lt;p&gt;Day3：找第一批客户。打开知乎，搜索“新闻存档”、“NYT怎么查看被删文章”等关键词，找到提问者。私信他们：“我提供手动存档服务，每篇2元，可以帮你把NYT文章永久备份到可正常访问的链接。”回复10个人。&lt;/p&gt;
+&lt;p&gt;Day4：扩大渠道。打开闲鱼，发布商品“新闻文章永久存档服务”，定价2元/篇，标题写“NYT/卫报/今日美国文章备份”。描述中附带示例存档链接。一天刷新一次。&lt;/p&gt;
+&lt;p&gt;Day5：批量教程变现。打开小红书，发一篇300字图文教程《3分钟手动保存被屏蔽新闻，再也不用担心404》。文末说“如果自己搞不定，可以找我代办，2元/篇”。&lt;/p&gt;
+&lt;p&gt;Day6：接单验收。如果已有3-5个人问价，统计一下平均每人存几篇。如果客户要求存很多篇（比如20篇），可以按比例给折扣，比如20篇打包30元。&lt;/p&gt;
+&lt;p&gt;Day7：总结复利。回顾本周收入。如果收入低于50元，说明渠道不对，明天加大闲鱼和知乎的发布时间；如果收入超过100元，说明需求很大，可以尝试提价到4元/篇或者写一个自动脚本提高效率。&lt;/p&gt;
+&lt;p&gt;工具清单&lt;/p&gt;
+&lt;p&gt;Archive.is（存档工具）：https://archive.is。费用：免费。无需注册即可使用。&lt;/p&gt;
+&lt;p&gt;微信（接单沟通）：费用：免费。&lt;/p&gt;
+&lt;p&gt;闲鱼（发布服务）：费用：免费，闲鱼是C2C平台，个人发布商品无手续费。&lt;/p&gt;
+&lt;p&gt;小红书（引流）：费用：免费。&lt;/p&gt;
+&lt;p&gt;知乎（找客户）：费用：免费。&lt;/p&gt;
+&lt;p&gt;收益预估&lt;/p&gt;
+&lt;p&gt;保守：每周接单15篇，每篇2元，月入120元。计算：15篇/周 x 4周 x 2元 = 120元。&lt;/p&gt;
+&lt;p&gt;中等：每周接单40篇，每篇2元，月入320元。计算：40篇/周 x 4周 x 2元 = 320元。同时可能开启包月服务：每月包50篇收费100元（平均2元/篇但预付费），再额外锁定2个包月客户，月入520元。&lt;/p&gt;
+&lt;p&gt;乐观：形成口碑后客户通过微信介绍新客户，每周接单100篇，同时开启培训服务“教你如何批量存档”收费30元/人，每月培训20人。月入：100x4x2 + 20x30 = 800+600=1400元。&lt;/p&gt;
+&lt;p&gt;3个最容易踩的坑&lt;/p&gt;
+&lt;p&gt;坑1：客户发来的URL已失效或被删除。避坑：提前告知客户，只有当前仍能打开的文章才能存档。如果文章已404，无法恢复。&lt;/p&gt;
+&lt;p&gt;坑2：Archive.is偶尔被屏蔽。避坑：备用存档站点archive.ph，用法一样。如果archive.is打不开就换archive.ph。没差。&lt;/p&gt;
+&lt;p&gt;坑3：客户不信任你。避坑：先免费帮第一个客户存1篇，生成永久链接后发给他验货。看到效果再付费。一旦建立信任，复购率非常高。&lt;/p&gt;
+&lt;p&gt;延伸资源&lt;/p&gt;
+&lt;p&gt;B站搜索“Archive.is教程”：免费视频，完整演示操作界面。&lt;/p&gt;
+&lt;p&gt;微信公众号文章《如何永久保存网页》：免费阅读，讲解存档的法律意义和操作方法。&lt;/p&gt;
+&lt;p&gt;互联网档案馆官网 FAQ：https://archive.org/about/faqs.php，了解Wayback的工作原理，用来回答客户疑问。&lt;/p&gt;</description><content:encoded><![CDATA[<p>核心洞察</p>
+<p>2026年2月起，《纽约时报》《卫报》《今日美国》等23家主流媒体集体封锁互联网档案馆的Wayback Machine爬虫，不允许自动备份他们的文章。原因是他们怕AI公司用存档快照训练模型。但讽刺的是，这些媒体自己仍在发布的深度报道中大量引用Wayback上的旧页面——自己断了后路，也让普通用户失去了免费追溯、验证和引用新闻的能力。Reddit上已经有人骂“这简直是烧图书馆”，savethearchive.com上反对请愿已超10万签名，但媒体拒不松口。</p>
+<p>目前没有人提供针对性的手动存档服务。而用户刚需明确：研究者要引用旧报道、维权者要截屏作为证据、自媒体要扒资料——但他们不知道去哪备份，或者嫌自己操作麻烦。这中间就是你的套利空间：替他们手动存，每篇收费2-5元，零成本。</p>
+<p>执行清单Day1-7</p>
+<p>Day1：注册工具并试存。打开archive.is（国内可直接访问），在首页输入一篇《纽约时报》公开文章的URL，点击“save”。等待30秒，获得一个永久存档链接。截图保存。记录整个操作步骤。</p>
+<p>Day2：准备服务说明。打开微信，新建一个朋友圈草稿，写“可帮你手动保存被屏蔽新闻文章的永久快照，NYT/卫报/今日美国等23家站点支持，每篇2元，10篇起接。存档链接可永久查看。”配Day1操作截图。</p>
+<p>Day3：找第一批客户。打开知乎，搜索“新闻存档”、“NYT怎么查看被删文章”等关键词，找到提问者。私信他们：“我提供手动存档服务，每篇2元，可以帮你把NYT文章永久备份到可正常访问的链接。”回复10个人。</p>
+<p>Day4：扩大渠道。打开闲鱼，发布商品“新闻文章永久存档服务”，定价2元/篇，标题写“NYT/卫报/今日美国文章备份”。描述中附带示例存档链接。一天刷新一次。</p>
+<p>Day5：批量教程变现。打开小红书，发一篇300字图文教程《3分钟手动保存被屏蔽新闻，再也不用担心404》。文末说“如果自己搞不定，可以找我代办，2元/篇”。</p>
+<p>Day6：接单验收。如果已有3-5个人问价，统计一下平均每人存几篇。如果客户要求存很多篇（比如20篇），可以按比例给折扣，比如20篇打包30元。</p>
+<p>Day7：总结复利。回顾本周收入。如果收入低于50元，说明渠道不对，明天加大闲鱼和知乎的发布时间；如果收入超过100元，说明需求很大，可以尝试提价到4元/篇或者写一个自动脚本提高效率。</p>
+<p>工具清单</p>
+<p>Archive.is（存档工具）：https://archive.is。费用：免费。无需注册即可使用。</p>
+<p>微信（接单沟通）：费用：免费。</p>
+<p>闲鱼（发布服务）：费用：免费，闲鱼是C2C平台，个人发布商品无手续费。</p>
+<p>小红书（引流）：费用：免费。</p>
+<p>知乎（找客户）：费用：免费。</p>
+<p>收益预估</p>
+<p>保守：每周接单15篇，每篇2元，月入120元。计算：15篇/周 x 4周 x 2元 = 120元。</p>
+<p>中等：每周接单40篇，每篇2元，月入320元。计算：40篇/周 x 4周 x 2元 = 320元。同时可能开启包月服务：每月包50篇收费100元（平均2元/篇但预付费），再额外锁定2个包月客户，月入520元。</p>
+<p>乐观：形成口碑后客户通过微信介绍新客户，每周接单100篇，同时开启培训服务“教你如何批量存档”收费30元/人，每月培训20人。月入：100x4x2 + 20x30 = 800+600=1400元。</p>
+<p>3个最容易踩的坑</p>
+<p>坑1：客户发来的URL已失效或被删除。避坑：提前告知客户，只有当前仍能打开的文章才能存档。如果文章已404，无法恢复。</p>
+<p>坑2：Archive.is偶尔被屏蔽。避坑：备用存档站点archive.ph，用法一样。如果archive.is打不开就换archive.ph。没差。</p>
+<p>坑3：客户不信任你。避坑：先免费帮第一个客户存1篇，生成永久链接后发给他验货。看到效果再付费。一旦建立信任，复购率非常高。</p>
+<p>延伸资源</p>
+<p>B站搜索“Archive.is教程”：免费视频，完整演示操作界面。</p>
+<p>微信公众号文章《如何永久保存网页》：免费阅读，讲解存档的法律意义和操作方法。</p>
+<p>互联网档案馆官网 FAQ：https://archive.org/about/faqs.php，了解Wayback的工作原理，用来回答客户疑问。</p>
+]]></content:encoded></item><item><title>B站视频笔记赚</title><link>https://radar.huadongpeng.com/posts/arbitrage-radar/deep-dive-2026-05-13-0917/</link><pubDate>Wed, 13 May 2026 09:17:28 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/arbitrage-radar/deep-dive-2026-05-13-0917/</guid><description>&lt;h1 id="b站视频笔记工具从开源到赚钱的执行手册"&gt;B站视频笔记工具：从开源到赚钱的执行手册&lt;/h1&gt;
 &lt;h2 id="核心洞察"&gt;核心洞察&lt;/h2&gt;
 &lt;p&gt;最近V2EX上一款叫BiliNote的开源工具火了，GitHub 6000+星。但评论区最多的是抱怨——&amp;ldquo;部署太麻烦&amp;quot;&amp;ldquo;GPU环境配不上&amp;quot;&amp;ldquo;API key搞不定&amp;rdquo;。原帖作者自己也承认：&amp;ldquo;很多普通用户根本没法真正跑起来。&amp;rdquo;&lt;/p&gt;
 &lt;p&gt;这就形成了一个赚钱缺口：&lt;strong&gt;有人证明了需求，但没人做好交付。&lt;/strong&gt; 用户要的不是开源代码，而是开箱即用的产品。BiliNote Pro卖的就是这个价值。&lt;/p&gt;

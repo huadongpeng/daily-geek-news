@@ -1,4 +1,237 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>China-Going-Global on Easton 跨国智库</title><link>https://radar.huadongpeng.com/categories/china-going-global/</link><description>Recent content in China-Going-Global on Easton 跨国智库</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Wed, 13 May 2026 09:19:47 +0800</lastBuildDate><atom:link href="https://radar.huadongpeng.com/categories/china-going-global/index.xml" rel="self" type="application/rss+xml"/><item><title>Qwen淘宝AI接单</title><link>https://radar.huadongpeng.com/posts/china-going-global/deep-dive-2026-05-13-0919/</link><pubDate>Wed, 13 May 2026 09:19:47 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/china-going-global/deep-dive-2026-05-13-0919/</guid><description>&lt;h2 id="用qwen-api开发ai导购工具零成本出海实操指南"&gt;用Qwen API开发AI导购工具：零成本出海实操指南&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>China-Going-Global on Easton 跨国智库</title><link>https://radar.huadongpeng.com/categories/china-going-global/</link><description>Recent content in China-Going-Global on Easton 跨国智库</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Wed, 13 May 2026 09:34:58 +0800</lastBuildDate><atom:link href="https://radar.huadongpeng.com/categories/china-going-global/index.xml" rel="self" type="application/rss+xml"/><item><title>Kling接单教程</title><link>https://radar.huadongpeng.com/posts/china-going-global/deep-dive-2026-05-13-0934/</link><pubDate>Wed, 13 May 2026 09:34:58 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/china-going-global/deep-dive-2026-05-13-0934/</guid><description>&lt;h2 id="目标市场画像"&gt;目标市场画像&lt;/h2&gt;
+&lt;h3 id="为什么选kling-ai"&gt;为什么选Kling AI？&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;用户量&lt;/strong&gt;：Kling AI上线至今已生成超1000万支视频，月均活跃用户超500万&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;客单价&lt;/strong&gt;：海外视频生成外包市场均价$10-50/单（约70-350元），国内接单价50-200元/条&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;竞争度&lt;/strong&gt;：目前国内全职做Kling接单的人极少，百度搜索仅2-3家工作室。大量抖音/快手小商家需要批量生成产品演示视频，但自己不会用AI工具&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;适合卖的服务&lt;/strong&gt;：
+&lt;ol&gt;
+&lt;li&gt;产品展示视频（给淘宝/拼多多卖家，15秒AI生成）&lt;/li&gt;
+&lt;li&gt;社媒短视频（帮小红书博主生成动态内容，10-30秒）&lt;/li&gt;
+&lt;li&gt;教学演示视频（教育机构/个人老师，1-2分钟讲解片段）&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="从零到上线的每一步"&gt;从零到上线的每一步&lt;/h2&gt;
+&lt;h3 id="step-1注册kling-ai账号10分钟"&gt;Step 1：注册Kling AI账号（10分钟）&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;访问 &lt;a href="https://klingai.com"&gt;https://klingai.com&lt;/a&gt; （国内可直接访问，无需翻墙）&lt;/li&gt;
+&lt;li&gt;点击右上角“Sign Up”按钮&lt;/li&gt;
+&lt;li&gt;选择手机号注册：输入中国大陆手机号 +86，接收验证码（6位数字）&lt;/li&gt;
+&lt;li&gt;设置密码：至少8位，包含字母和数字&lt;/li&gt;
+&lt;li&gt;完善信息：昵称随意填，地区选“中国”&lt;/li&gt;
+&lt;li&gt;完成注册后，系统自动送20免费积分（每个视频生成消耗2-8积分）&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;注意：不支持邮箱注册，必须用手机号。如果手机号已绑定其他账号，换副卡或家人号码&lt;/p&gt;
+&lt;h3 id="step-2配置与熟悉30分钟"&gt;Step 2：配置与熟悉（30分钟）&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;登录后点击“Create”进入创作页面&lt;/li&gt;
+&lt;li&gt;模型选择：新手选“Kling 2.0” (消耗2积分/次)，高端单用“Kling 3.0”(8积分/次)&lt;/li&gt;
+&lt;li&gt;关键参数设置：
+&lt;ul&gt;
+&lt;li&gt;Prompt（提示词）：必须用英文。示例：&amp;ldquo;a white cat sitting on a sofa, natural lighting, 4k&amp;rdquo;&lt;/li&gt;
+&lt;li&gt;Duration（时长）：选5秒（基础）或10秒（进阶）&lt;/li&gt;
+&lt;li&gt;Aspect Ratio（比例）：横屏16:9（适合商品展示），竖屏9:16（适合抖音/B站）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;点击“Generate”按钮，等待20-60秒生成&lt;/li&gt;
+&lt;li&gt;生成的视频在“My Creations”中查看，支持下载MP4格式&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;常见坑&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;中文提示词效果差，必须用英文。不会英文怎么办？用DeepL翻译（免费）或ChatGPT翻译&lt;/li&gt;
+&lt;li&gt;免费积分用完需要充值：最低充值$10=50积分，生成一次2积分，约100次/10美元&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="step-3上架发布1小时"&gt;Step 3：上架/发布（1小时）&lt;/h3&gt;
+&lt;p&gt;方式一：闲鱼发布服务&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;打开闲鱼App，点击“卖闲置”&lt;/li&gt;
+&lt;li&gt;选择“发闲置”&lt;/li&gt;
+&lt;li&gt;标题写：“AI视频生成，5分钟出片，淘宝产品视频/短视频”&lt;/li&gt;
+&lt;li&gt;正文写：&amp;ldquo;专业AI视频生成，支持产品展示、产品动画、创意短视频。15秒视频仅29.9元！需提供产品图片或文案。效果参考（从Kling下载的样片视频）&amp;rdquo;&lt;/li&gt;
+&lt;li&gt;上传3段样片视频（用Kling生成不同风格）&lt;/li&gt;
+&lt;li&gt;价格设置：29.9元/条&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;方式二：小红书接单&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;发一篇笔记：“帮你们用AI生成产品视频，有人需要吗？”&lt;/li&gt;
+&lt;li&gt;放入Kling生成的高质量视频，标注“这是AI生成的，也可以为你定制”&lt;/li&gt;
+&lt;li&gt;评论区和私信接单&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id="step-4接单与收款"&gt;Step 4：接单与收款&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;接单流程&lt;/strong&gt;：客户私信发产品图片或文案 → 你生成视频 → 加水印发预览 → 客户满意后付款 → 发无水印版&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;收款方式&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;闲鱼：平台担保，买家确认收货后到账（1-3天）&lt;/li&gt;
+&lt;li&gt;微信/支付宝收款：直接转账，建议老客户使用&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;回款周期&lt;/strong&gt;：闲鱼3天，微信支付宝即时&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;手续费&lt;/strong&gt;：闲鱼收0.6%，微信支付宝提现0.1%&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id="工具链推荐"&gt;工具链推荐&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Kling AI&lt;/strong&gt;（核心）&lt;/p&gt;</description><content:encoded><![CDATA[<h2 id="目标市场画像">目标市场画像</h2>
+<h3 id="为什么选kling-ai">为什么选Kling AI？</h3>
+<ul>
+<li><strong>用户量</strong>：Kling AI上线至今已生成超1000万支视频，月均活跃用户超500万</li>
+<li><strong>客单价</strong>：海外视频生成外包市场均价$10-50/单（约70-350元），国内接单价50-200元/条</li>
+<li><strong>竞争度</strong>：目前国内全职做Kling接单的人极少，百度搜索仅2-3家工作室。大量抖音/快手小商家需要批量生成产品演示视频，但自己不会用AI工具</li>
+<li><strong>适合卖的服务</strong>：
+<ol>
+<li>产品展示视频（给淘宝/拼多多卖家，15秒AI生成）</li>
+<li>社媒短视频（帮小红书博主生成动态内容，10-30秒）</li>
+<li>教学演示视频（教育机构/个人老师，1-2分钟讲解片段）</li>
+</ol>
+</li>
+</ul>
+<h2 id="从零到上线的每一步">从零到上线的每一步</h2>
+<h3 id="step-1注册kling-ai账号10分钟">Step 1：注册Kling AI账号（10分钟）</h3>
+<ol>
+<li>访问 <a href="https://klingai.com">https://klingai.com</a> （国内可直接访问，无需翻墙）</li>
+<li>点击右上角“Sign Up”按钮</li>
+<li>选择手机号注册：输入中国大陆手机号 +86，接收验证码（6位数字）</li>
+<li>设置密码：至少8位，包含字母和数字</li>
+<li>完善信息：昵称随意填，地区选“中国”</li>
+<li>完成注册后，系统自动送20免费积分（每个视频生成消耗2-8积分）</li>
+</ol>
+<p>注意：不支持邮箱注册，必须用手机号。如果手机号已绑定其他账号，换副卡或家人号码</p>
+<h3 id="step-2配置与熟悉30分钟">Step 2：配置与熟悉（30分钟）</h3>
+<ol>
+<li>登录后点击“Create”进入创作页面</li>
+<li>模型选择：新手选“Kling 2.0” (消耗2积分/次)，高端单用“Kling 3.0”(8积分/次)</li>
+<li>关键参数设置：
+<ul>
+<li>Prompt（提示词）：必须用英文。示例：&ldquo;a white cat sitting on a sofa, natural lighting, 4k&rdquo;</li>
+<li>Duration（时长）：选5秒（基础）或10秒（进阶）</li>
+<li>Aspect Ratio（比例）：横屏16:9（适合商品展示），竖屏9:16（适合抖音/B站）</li>
+</ul>
+</li>
+<li>点击“Generate”按钮，等待20-60秒生成</li>
+<li>生成的视频在“My Creations”中查看，支持下载MP4格式</li>
+</ol>
+<p><strong>常见坑</strong>：</p>
+<ul>
+<li>中文提示词效果差，必须用英文。不会英文怎么办？用DeepL翻译（免费）或ChatGPT翻译</li>
+<li>免费积分用完需要充值：最低充值$10=50积分，生成一次2积分，约100次/10美元</li>
+</ul>
+<h3 id="step-3上架发布1小时">Step 3：上架/发布（1小时）</h3>
+<p>方式一：闲鱼发布服务</p>
+<ol>
+<li>打开闲鱼App，点击“卖闲置”</li>
+<li>选择“发闲置”</li>
+<li>标题写：“AI视频生成，5分钟出片，淘宝产品视频/短视频”</li>
+<li>正文写：&ldquo;专业AI视频生成，支持产品展示、产品动画、创意短视频。15秒视频仅29.9元！需提供产品图片或文案。效果参考（从Kling下载的样片视频）&rdquo;</li>
+<li>上传3段样片视频（用Kling生成不同风格）</li>
+<li>价格设置：29.9元/条</li>
+</ol>
+<p>方式二：小红书接单</p>
+<ol>
+<li>发一篇笔记：“帮你们用AI生成产品视频，有人需要吗？”</li>
+<li>放入Kling生成的高质量视频，标注“这是AI生成的，也可以为你定制”</li>
+<li>评论区和私信接单</li>
+</ol>
+<h3 id="step-4接单与收款">Step 4：接单与收款</h3>
+<ol>
+<li><strong>接单流程</strong>：客户私信发产品图片或文案 → 你生成视频 → 加水印发预览 → 客户满意后付款 → 发无水印版</li>
+<li><strong>收款方式</strong>：
+<ul>
+<li>闲鱼：平台担保，买家确认收货后到账（1-3天）</li>
+<li>微信/支付宝收款：直接转账，建议老客户使用</li>
+</ul>
+</li>
+<li><strong>回款周期</strong>：闲鱼3天，微信支付宝即时</li>
+<li><strong>手续费</strong>：闲鱼收0.6%，微信支付宝提现0.1%</li>
+</ol>
+<h2 id="工具链推荐">工具链推荐</h2>
+<ol>
+<li>
+<p><strong>Kling AI</strong>（核心）</p>
+<ul>
+<li>费用：免费20积分，之后$10起充</li>
+<li>用途：生成AI视频</li>
+<li>替代品：可灵AI（国内版klingai.cn），功能相同，无需英文提示</li>
+</ul>
+</li>
+<li>
+<p><strong>剪映专业版</strong>（免费）</p>
+<ul>
+<li>费用：0元</li>
+<li>用途：剪辑视频，加字幕、配乐、水印</li>
+<li>替代品：CapCut（海外版剪映，功能一致）</li>
+</ul>
+</li>
+<li>
+<p><strong>DeepL翻译</strong>（免费）</p>
+<ul>
+<li>费用：0元（免费版5000字/月）</li>
+<li>用途：将中文需求翻译成英文Prompt</li>
+<li>替代品：Google翻译、ChatGPT免费版</li>
+</ul>
+</li>
+</ol>
+<h2 id="避坑清单">避坑清单</h2>
+<ol>
+<li>
+<p><strong>提示词太低质</strong> → 客户视频模糊/变形的常见原因</p>
+<ul>
+<li>解决：用“产品图+场景描述”模式，如“红色保温杯放在办公桌上，背景是书架，柔光，4K”</li>
+</ul>
+</li>
+<li>
+<p><strong>Kling不支持人脸生成精细</strong> → 如果有人脸需求，用Midjourney先做人像图再转视频</p>
+</li>
+<li>
+<p><strong>被平台误判为虚假服务</strong> → 闲鱼规则严格，不要在标题写“AI生成”，写“视频制作”即可</p>
+</li>
+</ol>
+<h2 id="成本拆解">成本拆解</h2>
+<table>
+  <thead>
+      <tr>
+          <th>项目</th>
+          <th>金额</th>
+          <th>备注</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>启动成本</td>
+          <td>0元</td>
+          <td>用免费额度</td>
+      </tr>
+      <tr>
+          <td>首月运营成本</td>
+          <td>10美元(≈72元)</td>
+          <td>第1单回本后充值</td>
+      </tr>
+      <tr>
+          <td>每单成本</td>
+          <td>0.4-2元</td>
+          <td>积分消耗折算</td>
+      </tr>
+      <tr>
+          <td>预期首周收益</td>
+          <td>200-500元</td>
+          <td>按5-10单计算</td>
+      </tr>
+      <tr>
+          <td>回本周期</td>
+          <td>即时</td>
+          <td>第1单收29.9元即回本</td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>月收入预估</strong>：</p>
+<ul>
+<li>每天接2单 × 29.9元 = 59.8元</li>
+<li>月收入：约1800-2000元</li>
+<li>纯利润（扣除积分费）：约1600元</li>
+</ul>
+<p><strong>你现在就能做的事</strong>：打开klingai.com → 点击Sign Up用手机号注册 → 输入英文提示词生成第一段视频 → 下载到手机 → 发到闲鱼开卖</p>
+]]></content:encoded></item><item><title>Qwen淘宝AI接单</title><link>https://radar.huadongpeng.com/posts/china-going-global/deep-dive-2026-05-13-0919/</link><pubDate>Wed, 13 May 2026 09:19:47 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/china-going-global/deep-dive-2026-05-13-0919/</guid><description>&lt;h2 id="用qwen-api开发ai导购工具零成本出海实操指南"&gt;用Qwen API开发AI导购工具：零成本出海实操指南&lt;/h2&gt;
 &lt;h3 id="目标市场画像"&gt;目标市场画像&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;为什么选这个市场？&lt;/strong&gt; 阿里Qwen与淘宝打通后，用户可以用自然语言完成购物全流程。但淘宝主要服务中文用户，英文跨境电商（AliExpress）还没深度接入。欧美、东南亚用户想比价、找商品、看评价，仍需手动操作。这中间有痛点：语言障碍 + 信息过载。你可以做一个“AI海外淘宝导购”小工具——用户用英文问需求，你调用Qwen API搜淘宝商品，返回英文结果。&lt;/li&gt;

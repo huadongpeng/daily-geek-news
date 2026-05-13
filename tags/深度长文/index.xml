@@ -1,4 +1,486 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>深度长文 on Easton 跨国智库</title><link>https://radar.huadongpeng.com/tags/%E6%B7%B1%E5%BA%A6%E9%95%BF%E6%96%87/</link><description>Recent content in 深度长文 on Easton 跨国智库</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Wed, 13 May 2026 09:19:47 +0800</lastBuildDate><atom:link href="https://radar.huadongpeng.com/tags/%E6%B7%B1%E5%BA%A6%E9%95%BF%E6%96%87/index.xml" rel="self" type="application/rss+xml"/><item><title>Qwen淘宝AI接单</title><link>https://radar.huadongpeng.com/posts/china-going-global/deep-dive-2026-05-13-0919/</link><pubDate>Wed, 13 May 2026 09:19:47 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/china-going-global/deep-dive-2026-05-13-0919/</guid><description>&lt;h2 id="用qwen-api开发ai导购工具零成本出海实操指南"&gt;用Qwen API开发AI导购工具：零成本出海实操指南&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>深度长文 on Easton 跨国智库</title><link>https://radar.huadongpeng.com/tags/%E6%B7%B1%E5%BA%A6%E9%95%BF%E6%96%87/</link><description>Recent content in 深度长文 on Easton 跨国智库</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Wed, 13 May 2026 09:34:58 +0800</lastBuildDate><atom:link href="https://radar.huadongpeng.com/tags/%E6%B7%B1%E5%BA%A6%E9%95%BF%E6%96%87/index.xml" rel="self" type="application/rss+xml"/><item><title>Kling接单教程</title><link>https://radar.huadongpeng.com/posts/china-going-global/deep-dive-2026-05-13-0934/</link><pubDate>Wed, 13 May 2026 09:34:58 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/china-going-global/deep-dive-2026-05-13-0934/</guid><description>&lt;h2 id="目标市场画像"&gt;目标市场画像&lt;/h2&gt;
+&lt;h3 id="为什么选kling-ai"&gt;为什么选Kling AI？&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;用户量&lt;/strong&gt;：Kling AI上线至今已生成超1000万支视频，月均活跃用户超500万&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;客单价&lt;/strong&gt;：海外视频生成外包市场均价$10-50/单（约70-350元），国内接单价50-200元/条&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;竞争度&lt;/strong&gt;：目前国内全职做Kling接单的人极少，百度搜索仅2-3家工作室。大量抖音/快手小商家需要批量生成产品演示视频，但自己不会用AI工具&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;适合卖的服务&lt;/strong&gt;：
+&lt;ol&gt;
+&lt;li&gt;产品展示视频（给淘宝/拼多多卖家，15秒AI生成）&lt;/li&gt;
+&lt;li&gt;社媒短视频（帮小红书博主生成动态内容，10-30秒）&lt;/li&gt;
+&lt;li&gt;教学演示视频（教育机构/个人老师，1-2分钟讲解片段）&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="从零到上线的每一步"&gt;从零到上线的每一步&lt;/h2&gt;
+&lt;h3 id="step-1注册kling-ai账号10分钟"&gt;Step 1：注册Kling AI账号（10分钟）&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;访问 &lt;a href="https://klingai.com"&gt;https://klingai.com&lt;/a&gt; （国内可直接访问，无需翻墙）&lt;/li&gt;
+&lt;li&gt;点击右上角“Sign Up”按钮&lt;/li&gt;
+&lt;li&gt;选择手机号注册：输入中国大陆手机号 +86，接收验证码（6位数字）&lt;/li&gt;
+&lt;li&gt;设置密码：至少8位，包含字母和数字&lt;/li&gt;
+&lt;li&gt;完善信息：昵称随意填，地区选“中国”&lt;/li&gt;
+&lt;li&gt;完成注册后，系统自动送20免费积分（每个视频生成消耗2-8积分）&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;注意：不支持邮箱注册，必须用手机号。如果手机号已绑定其他账号，换副卡或家人号码&lt;/p&gt;
+&lt;h3 id="step-2配置与熟悉30分钟"&gt;Step 2：配置与熟悉（30分钟）&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;登录后点击“Create”进入创作页面&lt;/li&gt;
+&lt;li&gt;模型选择：新手选“Kling 2.0” (消耗2积分/次)，高端单用“Kling 3.0”(8积分/次)&lt;/li&gt;
+&lt;li&gt;关键参数设置：
+&lt;ul&gt;
+&lt;li&gt;Prompt（提示词）：必须用英文。示例：&amp;ldquo;a white cat sitting on a sofa, natural lighting, 4k&amp;rdquo;&lt;/li&gt;
+&lt;li&gt;Duration（时长）：选5秒（基础）或10秒（进阶）&lt;/li&gt;
+&lt;li&gt;Aspect Ratio（比例）：横屏16:9（适合商品展示），竖屏9:16（适合抖音/B站）&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;点击“Generate”按钮，等待20-60秒生成&lt;/li&gt;
+&lt;li&gt;生成的视频在“My Creations”中查看，支持下载MP4格式&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;常见坑&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;中文提示词效果差，必须用英文。不会英文怎么办？用DeepL翻译（免费）或ChatGPT翻译&lt;/li&gt;
+&lt;li&gt;免费积分用完需要充值：最低充值$10=50积分，生成一次2积分，约100次/10美元&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="step-3上架发布1小时"&gt;Step 3：上架/发布（1小时）&lt;/h3&gt;
+&lt;p&gt;方式一：闲鱼发布服务&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;打开闲鱼App，点击“卖闲置”&lt;/li&gt;
+&lt;li&gt;选择“发闲置”&lt;/li&gt;
+&lt;li&gt;标题写：“AI视频生成，5分钟出片，淘宝产品视频/短视频”&lt;/li&gt;
+&lt;li&gt;正文写：&amp;ldquo;专业AI视频生成，支持产品展示、产品动画、创意短视频。15秒视频仅29.9元！需提供产品图片或文案。效果参考（从Kling下载的样片视频）&amp;rdquo;&lt;/li&gt;
+&lt;li&gt;上传3段样片视频（用Kling生成不同风格）&lt;/li&gt;
+&lt;li&gt;价格设置：29.9元/条&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;方式二：小红书接单&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;发一篇笔记：“帮你们用AI生成产品视频，有人需要吗？”&lt;/li&gt;
+&lt;li&gt;放入Kling生成的高质量视频，标注“这是AI生成的，也可以为你定制”&lt;/li&gt;
+&lt;li&gt;评论区和私信接单&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h3 id="step-4接单与收款"&gt;Step 4：接单与收款&lt;/h3&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;接单流程&lt;/strong&gt;：客户私信发产品图片或文案 → 你生成视频 → 加水印发预览 → 客户满意后付款 → 发无水印版&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;收款方式&lt;/strong&gt;：
+&lt;ul&gt;
+&lt;li&gt;闲鱼：平台担保，买家确认收货后到账（1-3天）&lt;/li&gt;
+&lt;li&gt;微信/支付宝收款：直接转账，建议老客户使用&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;回款周期&lt;/strong&gt;：闲鱼3天，微信支付宝即时&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;手续费&lt;/strong&gt;：闲鱼收0.6%，微信支付宝提现0.1%&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id="工具链推荐"&gt;工具链推荐&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Kling AI&lt;/strong&gt;（核心）&lt;/p&gt;</description><content:encoded><![CDATA[<h2 id="目标市场画像">目标市场画像</h2>
+<h3 id="为什么选kling-ai">为什么选Kling AI？</h3>
+<ul>
+<li><strong>用户量</strong>：Kling AI上线至今已生成超1000万支视频，月均活跃用户超500万</li>
+<li><strong>客单价</strong>：海外视频生成外包市场均价$10-50/单（约70-350元），国内接单价50-200元/条</li>
+<li><strong>竞争度</strong>：目前国内全职做Kling接单的人极少，百度搜索仅2-3家工作室。大量抖音/快手小商家需要批量生成产品演示视频，但自己不会用AI工具</li>
+<li><strong>适合卖的服务</strong>：
+<ol>
+<li>产品展示视频（给淘宝/拼多多卖家，15秒AI生成）</li>
+<li>社媒短视频（帮小红书博主生成动态内容，10-30秒）</li>
+<li>教学演示视频（教育机构/个人老师，1-2分钟讲解片段）</li>
+</ol>
+</li>
+</ul>
+<h2 id="从零到上线的每一步">从零到上线的每一步</h2>
+<h3 id="step-1注册kling-ai账号10分钟">Step 1：注册Kling AI账号（10分钟）</h3>
+<ol>
+<li>访问 <a href="https://klingai.com">https://klingai.com</a> （国内可直接访问，无需翻墙）</li>
+<li>点击右上角“Sign Up”按钮</li>
+<li>选择手机号注册：输入中国大陆手机号 +86，接收验证码（6位数字）</li>
+<li>设置密码：至少8位，包含字母和数字</li>
+<li>完善信息：昵称随意填，地区选“中国”</li>
+<li>完成注册后，系统自动送20免费积分（每个视频生成消耗2-8积分）</li>
+</ol>
+<p>注意：不支持邮箱注册，必须用手机号。如果手机号已绑定其他账号，换副卡或家人号码</p>
+<h3 id="step-2配置与熟悉30分钟">Step 2：配置与熟悉（30分钟）</h3>
+<ol>
+<li>登录后点击“Create”进入创作页面</li>
+<li>模型选择：新手选“Kling 2.0” (消耗2积分/次)，高端单用“Kling 3.0”(8积分/次)</li>
+<li>关键参数设置：
+<ul>
+<li>Prompt（提示词）：必须用英文。示例：&ldquo;a white cat sitting on a sofa, natural lighting, 4k&rdquo;</li>
+<li>Duration（时长）：选5秒（基础）或10秒（进阶）</li>
+<li>Aspect Ratio（比例）：横屏16:9（适合商品展示），竖屏9:16（适合抖音/B站）</li>
+</ul>
+</li>
+<li>点击“Generate”按钮，等待20-60秒生成</li>
+<li>生成的视频在“My Creations”中查看，支持下载MP4格式</li>
+</ol>
+<p><strong>常见坑</strong>：</p>
+<ul>
+<li>中文提示词效果差，必须用英文。不会英文怎么办？用DeepL翻译（免费）或ChatGPT翻译</li>
+<li>免费积分用完需要充值：最低充值$10=50积分，生成一次2积分，约100次/10美元</li>
+</ul>
+<h3 id="step-3上架发布1小时">Step 3：上架/发布（1小时）</h3>
+<p>方式一：闲鱼发布服务</p>
+<ol>
+<li>打开闲鱼App，点击“卖闲置”</li>
+<li>选择“发闲置”</li>
+<li>标题写：“AI视频生成，5分钟出片，淘宝产品视频/短视频”</li>
+<li>正文写：&ldquo;专业AI视频生成，支持产品展示、产品动画、创意短视频。15秒视频仅29.9元！需提供产品图片或文案。效果参考（从Kling下载的样片视频）&rdquo;</li>
+<li>上传3段样片视频（用Kling生成不同风格）</li>
+<li>价格设置：29.9元/条</li>
+</ol>
+<p>方式二：小红书接单</p>
+<ol>
+<li>发一篇笔记：“帮你们用AI生成产品视频，有人需要吗？”</li>
+<li>放入Kling生成的高质量视频，标注“这是AI生成的，也可以为你定制”</li>
+<li>评论区和私信接单</li>
+</ol>
+<h3 id="step-4接单与收款">Step 4：接单与收款</h3>
+<ol>
+<li><strong>接单流程</strong>：客户私信发产品图片或文案 → 你生成视频 → 加水印发预览 → 客户满意后付款 → 发无水印版</li>
+<li><strong>收款方式</strong>：
+<ul>
+<li>闲鱼：平台担保，买家确认收货后到账（1-3天）</li>
+<li>微信/支付宝收款：直接转账，建议老客户使用</li>
+</ul>
+</li>
+<li><strong>回款周期</strong>：闲鱼3天，微信支付宝即时</li>
+<li><strong>手续费</strong>：闲鱼收0.6%，微信支付宝提现0.1%</li>
+</ol>
+<h2 id="工具链推荐">工具链推荐</h2>
+<ol>
+<li>
+<p><strong>Kling AI</strong>（核心）</p>
+<ul>
+<li>费用：免费20积分，之后$10起充</li>
+<li>用途：生成AI视频</li>
+<li>替代品：可灵AI（国内版klingai.cn），功能相同，无需英文提示</li>
+</ul>
+</li>
+<li>
+<p><strong>剪映专业版</strong>（免费）</p>
+<ul>
+<li>费用：0元</li>
+<li>用途：剪辑视频，加字幕、配乐、水印</li>
+<li>替代品：CapCut（海外版剪映，功能一致）</li>
+</ul>
+</li>
+<li>
+<p><strong>DeepL翻译</strong>（免费）</p>
+<ul>
+<li>费用：0元（免费版5000字/月）</li>
+<li>用途：将中文需求翻译成英文Prompt</li>
+<li>替代品：Google翻译、ChatGPT免费版</li>
+</ul>
+</li>
+</ol>
+<h2 id="避坑清单">避坑清单</h2>
+<ol>
+<li>
+<p><strong>提示词太低质</strong> → 客户视频模糊/变形的常见原因</p>
+<ul>
+<li>解决：用“产品图+场景描述”模式，如“红色保温杯放在办公桌上，背景是书架，柔光，4K”</li>
+</ul>
+</li>
+<li>
+<p><strong>Kling不支持人脸生成精细</strong> → 如果有人脸需求，用Midjourney先做人像图再转视频</p>
+</li>
+<li>
+<p><strong>被平台误判为虚假服务</strong> → 闲鱼规则严格，不要在标题写“AI生成”，写“视频制作”即可</p>
+</li>
+</ol>
+<h2 id="成本拆解">成本拆解</h2>
+<table>
+  <thead>
+      <tr>
+          <th>项目</th>
+          <th>金额</th>
+          <th>备注</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>启动成本</td>
+          <td>0元</td>
+          <td>用免费额度</td>
+      </tr>
+      <tr>
+          <td>首月运营成本</td>
+          <td>10美元(≈72元)</td>
+          <td>第1单回本后充值</td>
+      </tr>
+      <tr>
+          <td>每单成本</td>
+          <td>0.4-2元</td>
+          <td>积分消耗折算</td>
+      </tr>
+      <tr>
+          <td>预期首周收益</td>
+          <td>200-500元</td>
+          <td>按5-10单计算</td>
+      </tr>
+      <tr>
+          <td>回本周期</td>
+          <td>即时</td>
+          <td>第1单收29.9元即回本</td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>月收入预估</strong>：</p>
+<ul>
+<li>每天接2单 × 29.9元 = 59.8元</li>
+<li>月收入：约1800-2000元</li>
+<li>纯利润（扣除积分费）：约1600元</li>
+</ul>
+<p><strong>你现在就能做的事</strong>：打开klingai.com → 点击Sign Up用手机号注册 → 输入英文提示词生成第一段视频 → 下载到手机 → 发到闲鱼开卖</p>
+]]></content:encoded></item><item><title>Needle本地部署</title><link>https://radar.huadongpeng.com/posts/developer-goldmine/deep-dive-2026-05-13-0934/</link><pubDate>Wed, 13 May 2026 09:34:04 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/developer-goldmine/deep-dive-2026-05-13-0934/</guid><description>&lt;h1 id="needle本地部署零成本跑通ai函数调用"&gt;Needle本地部署：零成本跑通AI函数调用&lt;/h1&gt;
+&lt;h2 id="效率痛点"&gt;效率痛点&lt;/h2&gt;
+&lt;p&gt;如果你是独立开发者或兼职接外包，经常需要写脚本调用API完成自动化任务（比如从邮件提取数据、生成报表、自动回复）。传统做法：要么每次写硬编码逻辑（每天30分钟），要么调用GPT-4 API（一次0.03美元，一个月100次就是60元）。对每月可支配现金不到2000元的人，这笔开销不小。而且网络不稳定时，依赖云端API就瘫痪了。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;不用这个方案的代价&lt;/strong&gt;：一个月浪费15小时写重复代码，多花至少60元API费。&lt;/p&gt;
+&lt;h2 id="方案使用needle模型"&gt;方案：使用Needle模型&lt;/h2&gt;
+&lt;p&gt;Needle是一个从Gemini 2.0蒸馏出来的26M参数量模型，专门做工具调用（Tool Calling）。它可以在本地CPU上运行，不需要GPU，不需要联网，零成本调用。&lt;/p&gt;
+&lt;h3 id="工具链架构"&gt;工具链架构&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;模型&lt;/strong&gt;: Needle 26M参数（Python+ONNX运行时）&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;环境&lt;/strong&gt;: Python 3.10+，pip安装依赖&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;运行时&lt;/strong&gt;: ONNX Runtime（CPU可跑）&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;操作系统&lt;/strong&gt;: Windows/macOS/Linux均支持&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="从安装到首次运行的完整步骤"&gt;从安装到首次运行的完整步骤&lt;/h3&gt;
+&lt;h4 id="第一步安装依赖"&gt;第一步：安装依赖&lt;/h4&gt;
+&lt;p&gt;打开终端（Windows用CMD或PowerShell，macOS用Terminal），运行：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 创建虚拟环境（推荐）&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;python -m venv needle_env
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 激活虚拟环境&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# Windows:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;needle_env&lt;span style="color:#ae81ff"&gt;\S&lt;/span&gt;cripts&lt;span style="color:#ae81ff"&gt;\a&lt;/span&gt;ctivate
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# macOS/Linux:&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;source needle_env/bin/activate
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 安装依赖&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;pip install onnxruntime numpy transformers tokenizers
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id="第二步下载模型"&gt;第二步：下载模型&lt;/h4&gt;
+&lt;p&gt;从GitHub Release下载模型文件（约50MB）。&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-bash" data-lang="bash"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 创建模型目录&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;mkdir -p needle_model
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;cd needle_model
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 下载模型权重（约50MB，取决于网络速度，通常1-3分钟）&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# 如果下载慢，可以用国内镜像：&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#75715e"&gt;# wget https://hf-mirror.com/needle-ai/needle-26m/resolve/main/model.onnx&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;git clone https://github.com/cactus-compute/needle.git
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;cd needle
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h4 id="第三步准备工具定义文件"&gt;第三步：准备工具定义文件&lt;/h4&gt;
+&lt;p&gt;创建一个&lt;code&gt;tools.json&lt;/code&gt;文件，定义你的工具。比如一个发送邮件的工具：&lt;/p&gt;</description><content:encoded><![CDATA[<h1 id="needle本地部署零成本跑通ai函数调用">Needle本地部署：零成本跑通AI函数调用</h1>
+<h2 id="效率痛点">效率痛点</h2>
+<p>如果你是独立开发者或兼职接外包，经常需要写脚本调用API完成自动化任务（比如从邮件提取数据、生成报表、自动回复）。传统做法：要么每次写硬编码逻辑（每天30分钟），要么调用GPT-4 API（一次0.03美元，一个月100次就是60元）。对每月可支配现金不到2000元的人，这笔开销不小。而且网络不稳定时，依赖云端API就瘫痪了。</p>
+<p><strong>不用这个方案的代价</strong>：一个月浪费15小时写重复代码，多花至少60元API费。</p>
+<h2 id="方案使用needle模型">方案：使用Needle模型</h2>
+<p>Needle是一个从Gemini 2.0蒸馏出来的26M参数量模型，专门做工具调用（Tool Calling）。它可以在本地CPU上运行，不需要GPU，不需要联网，零成本调用。</p>
+<h3 id="工具链架构">工具链架构</h3>
+<ul>
+<li><strong>模型</strong>: Needle 26M参数（Python+ONNX运行时）</li>
+<li><strong>环境</strong>: Python 3.10+，pip安装依赖</li>
+<li><strong>运行时</strong>: ONNX Runtime（CPU可跑）</li>
+<li><strong>操作系统</strong>: Windows/macOS/Linux均支持</li>
+</ul>
+<h3 id="从安装到首次运行的完整步骤">从安装到首次运行的完整步骤</h3>
+<h4 id="第一步安装依赖">第一步：安装依赖</h4>
+<p>打开终端（Windows用CMD或PowerShell，macOS用Terminal），运行：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 创建虚拟环境（推荐）</span>
+</span></span><span style="display:flex;"><span>python -m venv needle_env
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 激活虚拟环境</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># Windows:</span>
+</span></span><span style="display:flex;"><span>needle_env<span style="color:#ae81ff">\S</span>cripts<span style="color:#ae81ff">\a</span>ctivate
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># macOS/Linux:</span>
+</span></span><span style="display:flex;"><span>source needle_env/bin/activate
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 安装依赖</span>
+</span></span><span style="display:flex;"><span>pip install onnxruntime numpy transformers tokenizers
+</span></span></code></pre></div><h4 id="第二步下载模型">第二步：下载模型</h4>
+<p>从GitHub Release下载模型文件（约50MB）。</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span><span style="color:#75715e"># 创建模型目录</span>
+</span></span><span style="display:flex;"><span>mkdir -p needle_model
+</span></span><span style="display:flex;"><span>cd needle_model
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 下载模型权重（约50MB，取决于网络速度，通常1-3分钟）</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 如果下载慢，可以用国内镜像：</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># wget https://hf-mirror.com/needle-ai/needle-26m/resolve/main/model.onnx</span>
+</span></span><span style="display:flex;"><span>git clone https://github.com/cactus-compute/needle.git
+</span></span><span style="display:flex;"><span>cd needle
+</span></span></code></pre></div><h4 id="第三步准备工具定义文件">第三步：准备工具定义文件</h4>
+<p>创建一个<code>tools.json</code>文件，定义你的工具。比如一个发送邮件的工具：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-json" data-lang="json"><span style="display:flex;"><span>[
+</span></span><span style="display:flex;"><span>  {
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;send_email&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;description&#34;</span>: <span style="color:#e6db74">&#34;发送电子邮件给收件人&#34;</span>,
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">&#34;parameters&#34;</span>: {
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;object&#34;</span>,
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;properties&#34;</span>: {
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;to&#34;</span>: {<span style="color:#f92672">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;string&#34;</span>, <span style="color:#f92672">&#34;description&#34;</span>: <span style="color:#e6db74">&#34;收件人邮箱&#34;</span>},
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;subject&#34;</span>: {<span style="color:#f92672">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;string&#34;</span>, <span style="color:#f92672">&#34;description&#34;</span>: <span style="color:#e6db74">&#34;邮件主题&#34;</span>},
+</span></span><span style="display:flex;"><span>        <span style="color:#f92672">&#34;body&#34;</span>: {<span style="color:#f92672">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;string&#34;</span>, <span style="color:#f92672">&#34;description&#34;</span>: <span style="color:#e6db74">&#34;邮件正文&#34;</span>}
+</span></span><span style="display:flex;"><span>      },
+</span></span><span style="display:flex;"><span>      <span style="color:#f92672">&#34;required&#34;</span>: [<span style="color:#e6db74">&#34;to&#34;</span>, <span style="color:#e6db74">&#34;subject&#34;</span>, <span style="color:#e6db74">&#34;body&#34;</span>]
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>  }
+</span></span><span style="display:flex;"><span>]
+</span></span></code></pre></div><h4 id="第四步编写调用脚本">第四步：编写调用脚本</h4>
+<p>创建<code>run_needle.py</code>：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-python" data-lang="python"><span style="display:flex;"><span><span style="color:#f92672">import</span> requests
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> json
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 加载模型（可以用在线推理，但建议本地）</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 这里用官方示例中的API调用方式</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 注意：Needle本身是本地模型，但为了快速体验，也可以用官方提供的Demo接口</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 如果你想要完全本地，需要下载onnx模型并加载到onnxruntime中</span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 以下是本地加载的完整代码示例</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> onnxruntime
+</span></span><span style="display:flex;"><span><span style="color:#f92672">import</span> numpy <span style="color:#66d9ef">as</span> np
+</span></span><span style="display:flex;"><span><span style="color:#f92672">from</span> transformers <span style="color:#f92672">import</span> AutoTokenizer
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 加载tokenizer</span>
+</span></span><span style="display:flex;"><span>tokenizer <span style="color:#f92672">=</span> AutoTokenizer<span style="color:#f92672">.</span>from_pretrained(<span style="color:#e6db74">&#34;cactus-compute/needle-26m&#34;</span>)
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 这里假设你已下载onnx模型到本地</span>
+</span></span><span style="display:flex;"><span>session <span style="color:#f92672">=</span> onnxruntime<span style="color:#f92672">.</span>InferenceSession(<span style="color:#e6db74">&#34;needle-26m/model.onnx&#34;</span>)
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">def</span> <span style="color:#a6e22e">call_needle</span>(prompt, tools):
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 构造输入</span>
+</span></span><span style="display:flex;"><span>    input_text <span style="color:#f92672">=</span> <span style="color:#e6db74">f</span><span style="color:#e6db74">&#34;&#34;&#34;You are an AI assistant. You have access to the following tools:
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">{</span>json<span style="color:#f92672">.</span>dumps(tools, indent<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>)<span style="color:#e6db74">}</span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">User request: </span><span style="color:#e6db74">{</span>prompt<span style="color:#e6db74">}</span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Think step by step and decide which tool to call with what arguments.
+</span></span></span><span style="display:flex;"><span><span style="color:#e6db74">Output ONLY a JSON object with &#39;tool_name&#39; and &#39;tool_arguments&#39;.&#34;&#34;&#34;</span>
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 编码</span>
+</span></span><span style="display:flex;"><span>    inputs <span style="color:#f92672">=</span> tokenizer(input_text, return_tensors<span style="color:#f92672">=</span><span style="color:#e6db74">&#34;np&#34;</span>, max_length<span style="color:#f92672">=</span><span style="color:#ae81ff">512</span>, truncation<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 推理</span>
+</span></span><span style="display:flex;"><span>    outputs <span style="color:#f92672">=</span> session<span style="color:#f92672">.</span>run(<span style="color:#66d9ef">None</span>, {k: v <span style="color:#66d9ef">for</span> k, v <span style="color:#f92672">in</span> inputs<span style="color:#f92672">.</span>items() <span style="color:#66d9ef">if</span> k <span style="color:#f92672">in</span> [<span style="color:#e6db74">&#39;input_ids&#39;</span>, <span style="color:#e6db74">&#39;attention_mask&#39;</span>]})
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 解码</span>
+</span></span><span style="display:flex;"><span>    generated_ids <span style="color:#f92672">=</span> outputs[<span style="color:#ae81ff">0</span>][<span style="color:#ae81ff">0</span>]
+</span></span><span style="display:flex;"><span>    result <span style="color:#f92672">=</span> tokenizer<span style="color:#f92672">.</span>decode(generated_ids, skip_special_tokens<span style="color:#f92672">=</span><span style="color:#66d9ef">True</span>)
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e"># 提取JSON（简单处理，实际可能需要更复杂解析）</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">try</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#75715e"># 只取模型输出的最后一部分</span>
+</span></span><span style="display:flex;"><span>        json_start <span style="color:#f92672">=</span> result<span style="color:#f92672">.</span>rfind(<span style="color:#e6db74">&#39;{&#39;</span>)
+</span></span><span style="display:flex;"><span>        json_end <span style="color:#f92672">=</span> result<span style="color:#f92672">.</span>rfind(<span style="color:#e6db74">&#39;}&#39;</span>) <span style="color:#f92672">+</span> <span style="color:#ae81ff">1</span>
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">if</span> json_start <span style="color:#f92672">!=</span> <span style="color:#f92672">-</span><span style="color:#ae81ff">1</span>:
+</span></span><span style="display:flex;"><span>            <span style="color:#66d9ef">return</span> json<span style="color:#f92672">.</span>loads(result[json_start:json_end])
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">except</span>:
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">pass</span>
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#66d9ef">None</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 使用示例</span>
+</span></span><span style="display:flex;"><span>tools <span style="color:#f92672">=</span> [
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;name&#34;</span>: <span style="color:#e6db74">&#34;send_email&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;description&#34;</span>: <span style="color:#e6db74">&#34;向指定地址发送邮件&#34;</span>,
+</span></span><span style="display:flex;"><span>        <span style="color:#e6db74">&#34;parameters&#34;</span>: {
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;object&#34;</span>,
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;properties&#34;</span>: {
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;to&#34;</span>: {<span style="color:#e6db74">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;string&#34;</span>},
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;subject&#34;</span>: {<span style="color:#e6db74">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;string&#34;</span>},
+</span></span><span style="display:flex;"><span>                <span style="color:#e6db74">&#34;body&#34;</span>: {<span style="color:#e6db74">&#34;type&#34;</span>: <span style="color:#e6db74">&#34;string&#34;</span>}
+</span></span><span style="display:flex;"><span>            },
+</span></span><span style="display:flex;"><span>            <span style="color:#e6db74">&#34;required&#34;</span>: [<span style="color:#e6db74">&#34;to&#34;</span>, <span style="color:#e6db74">&#34;subject&#34;</span>, <span style="color:#e6db74">&#34;body&#34;</span>]
+</span></span><span style="display:flex;"><span>        }
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>]
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>result <span style="color:#f92672">=</span> call_needle(<span style="color:#e6db74">&#34;帮我给boss@example.com发一封邮件，主题是&#39;今日报表&#39;，内容包含昨天销售额&#34;</span>, tools)
+</span></span><span style="display:flex;"><span>print(result)
+</span></span><span style="display:flex;"><span><span style="color:#75715e"># 预期输出类似：{&#39;tool_name&#39;: &#39;send_email&#39;, &#39;tool_arguments&#39;: {&#39;to&#39;: &#39;boss@example.com&#39;, &#39;subject&#39;: &#39;今日报表&#39;, &#39;body&#39;: &#39;昨日销售数据请查收&#39;}}</span>
+</span></span></code></pre></div><h4 id="第五步运行脚本">第五步：运行脚本</h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>python run_needle.py
+</span></span></code></pre></div><p>首次运行会下载tokenizer（约1分钟），之后推理时间通常在0.5秒内。</p>
+<h2 id="效果量化">效果量化</h2>
+<ul>
+<li><strong>优化前</strong>：写一个自动发送报表的Python脚本，手动写if-else逻辑，每次30分钟，假设每周5次 =&gt; 150分钟/周 = 10小时/月。或者调用GPT-4 API，一次0.03美元，100次/月 = 3美元/月（约21元人民币）。</li>
+<li><strong>优化后</strong>：用Needle推理，每次维护只需修改prompt（5分钟），推理零成本。总计约1小时/月。</li>
+<li><strong>节省</strong>：9小时/月 + 21元/月。如果接外包按50元/时算，相当于每月多赚450元。</li>
+</ul>
+<p><strong>启动成本</strong>: 0元（所有依赖和模型免费）
+<strong>时间投入</strong>: 首次配置1小时
+<strong>预期首周收益</strong>: 节省6元API费 + 节省2.5小时时间</p>
+<h2 id="进阶技巧">进阶技巧</h2>
+<h3 id="1-多工具并发">1. 多工具并发</h3>
+<p>在工具定义里，可以定义多个工具，模型会自动选择。同时，你可以利用并发执行：如果模型连续返回两个工具调用，可以同时执行，减少总耗时。</p>
+<h3 id="2-自定义输出格式">2. 自定义输出格式</h3>
+<p>通过修改prompt中的约束，可以让模型输出特定格式（如CSV行、XML片段），直接用于后续处理脚本。</p>
+<h3 id="3-与cronat结合做定时任务">3. 与cron/at结合做定时任务</h3>
+<p>在Linux/macOS上设置cron，Windows上用任务计划程序，把Needle作为无服务器函数调用器，定时执行自动化流程（如每天早上自动收集数据并发送报告）。</p>
+<h2 id="常见排障">常见排障</h2>
+<h3 id="问题1-onnx模型加载失败">问题1: ONNX模型加载失败</h3>
+<p><strong>症状</strong>: <code>ONNX Runtime Error: Model not in a valid format</code>
+<strong>解决</strong>: 确认下载完整，检查md5。如果从官方源下载慢，换用国内镜像：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-bash" data-lang="bash"><span style="display:flex;"><span>pip install huggingface-hub
+</span></span><span style="display:flex;"><span>huggingface-cli download cactus-compute/needle-26m --local-dir ./needle-26m --resume-download
+</span></span></code></pre></div><h3 id="问题2-输出不是纯json">问题2: 输出不是纯JSON</h3>
+<p><strong>症状</strong>: 模型返回了多余文字，无法直接parse
+<strong>解决</strong>: 简化prompt指令，加上“ONLY output valid JSON, no other text”。或使用正则提取JSON块。</p>
+<h3 id="问题3-内存不足">问题3: 内存不足</h3>
+<p><strong>症状</strong>: 运行时报<code>MemoryError</code>
+<strong>解决</strong>: Needle只有26M参数，占用约50MB RAM。如果还报错，可能是ONNX Runtime版本问题。更新到最新版：<code>pip install --upgrade onnxruntime</code></p>
+]]></content:encoded></item><item><title>替人存档被屏蔽新闻</title><link>https://radar.huadongpeng.com/posts/arbitrage-radar/deep-dive-2026-05-13-0934/</link><pubDate>Wed, 13 May 2026 09:34:00 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/arbitrage-radar/deep-dive-2026-05-13-0934/</guid><description>&lt;p&gt;核心洞察&lt;/p&gt;
+&lt;p&gt;2026年2月起，《纽约时报》《卫报》《今日美国》等23家主流媒体集体封锁互联网档案馆的Wayback Machine爬虫，不允许自动备份他们的文章。原因是他们怕AI公司用存档快照训练模型。但讽刺的是，这些媒体自己仍在发布的深度报道中大量引用Wayback上的旧页面——自己断了后路，也让普通用户失去了免费追溯、验证和引用新闻的能力。Reddit上已经有人骂“这简直是烧图书馆”，savethearchive.com上反对请愿已超10万签名，但媒体拒不松口。&lt;/p&gt;
+&lt;p&gt;目前没有人提供针对性的手动存档服务。而用户刚需明确：研究者要引用旧报道、维权者要截屏作为证据、自媒体要扒资料——但他们不知道去哪备份，或者嫌自己操作麻烦。这中间就是你的套利空间：替他们手动存，每篇收费2-5元，零成本。&lt;/p&gt;
+&lt;p&gt;执行清单Day1-7&lt;/p&gt;
+&lt;p&gt;Day1：注册工具并试存。打开archive.is（国内可直接访问），在首页输入一篇《纽约时报》公开文章的URL，点击“save”。等待30秒，获得一个永久存档链接。截图保存。记录整个操作步骤。&lt;/p&gt;
+&lt;p&gt;Day2：准备服务说明。打开微信，新建一个朋友圈草稿，写“可帮你手动保存被屏蔽新闻文章的永久快照，NYT/卫报/今日美国等23家站点支持，每篇2元，10篇起接。存档链接可永久查看。”配Day1操作截图。&lt;/p&gt;
+&lt;p&gt;Day3：找第一批客户。打开知乎，搜索“新闻存档”、“NYT怎么查看被删文章”等关键词，找到提问者。私信他们：“我提供手动存档服务，每篇2元，可以帮你把NYT文章永久备份到可正常访问的链接。”回复10个人。&lt;/p&gt;
+&lt;p&gt;Day4：扩大渠道。打开闲鱼，发布商品“新闻文章永久存档服务”，定价2元/篇，标题写“NYT/卫报/今日美国文章备份”。描述中附带示例存档链接。一天刷新一次。&lt;/p&gt;
+&lt;p&gt;Day5：批量教程变现。打开小红书，发一篇300字图文教程《3分钟手动保存被屏蔽新闻，再也不用担心404》。文末说“如果自己搞不定，可以找我代办，2元/篇”。&lt;/p&gt;
+&lt;p&gt;Day6：接单验收。如果已有3-5个人问价，统计一下平均每人存几篇。如果客户要求存很多篇（比如20篇），可以按比例给折扣，比如20篇打包30元。&lt;/p&gt;
+&lt;p&gt;Day7：总结复利。回顾本周收入。如果收入低于50元，说明渠道不对，明天加大闲鱼和知乎的发布时间；如果收入超过100元，说明需求很大，可以尝试提价到4元/篇或者写一个自动脚本提高效率。&lt;/p&gt;
+&lt;p&gt;工具清单&lt;/p&gt;
+&lt;p&gt;Archive.is（存档工具）：https://archive.is。费用：免费。无需注册即可使用。&lt;/p&gt;
+&lt;p&gt;微信（接单沟通）：费用：免费。&lt;/p&gt;
+&lt;p&gt;闲鱼（发布服务）：费用：免费，闲鱼是C2C平台，个人发布商品无手续费。&lt;/p&gt;
+&lt;p&gt;小红书（引流）：费用：免费。&lt;/p&gt;
+&lt;p&gt;知乎（找客户）：费用：免费。&lt;/p&gt;
+&lt;p&gt;收益预估&lt;/p&gt;
+&lt;p&gt;保守：每周接单15篇，每篇2元，月入120元。计算：15篇/周 x 4周 x 2元 = 120元。&lt;/p&gt;
+&lt;p&gt;中等：每周接单40篇，每篇2元，月入320元。计算：40篇/周 x 4周 x 2元 = 320元。同时可能开启包月服务：每月包50篇收费100元（平均2元/篇但预付费），再额外锁定2个包月客户，月入520元。&lt;/p&gt;
+&lt;p&gt;乐观：形成口碑后客户通过微信介绍新客户，每周接单100篇，同时开启培训服务“教你如何批量存档”收费30元/人，每月培训20人。月入：100x4x2 + 20x30 = 800+600=1400元。&lt;/p&gt;
+&lt;p&gt;3个最容易踩的坑&lt;/p&gt;
+&lt;p&gt;坑1：客户发来的URL已失效或被删除。避坑：提前告知客户，只有当前仍能打开的文章才能存档。如果文章已404，无法恢复。&lt;/p&gt;
+&lt;p&gt;坑2：Archive.is偶尔被屏蔽。避坑：备用存档站点archive.ph，用法一样。如果archive.is打不开就换archive.ph。没差。&lt;/p&gt;
+&lt;p&gt;坑3：客户不信任你。避坑：先免费帮第一个客户存1篇，生成永久链接后发给他验货。看到效果再付费。一旦建立信任，复购率非常高。&lt;/p&gt;
+&lt;p&gt;延伸资源&lt;/p&gt;
+&lt;p&gt;B站搜索“Archive.is教程”：免费视频，完整演示操作界面。&lt;/p&gt;
+&lt;p&gt;微信公众号文章《如何永久保存网页》：免费阅读，讲解存档的法律意义和操作方法。&lt;/p&gt;
+&lt;p&gt;互联网档案馆官网 FAQ：https://archive.org/about/faqs.php，了解Wayback的工作原理，用来回答客户疑问。&lt;/p&gt;</description><content:encoded><![CDATA[<p>核心洞察</p>
+<p>2026年2月起，《纽约时报》《卫报》《今日美国》等23家主流媒体集体封锁互联网档案馆的Wayback Machine爬虫，不允许自动备份他们的文章。原因是他们怕AI公司用存档快照训练模型。但讽刺的是，这些媒体自己仍在发布的深度报道中大量引用Wayback上的旧页面——自己断了后路，也让普通用户失去了免费追溯、验证和引用新闻的能力。Reddit上已经有人骂“这简直是烧图书馆”，savethearchive.com上反对请愿已超10万签名，但媒体拒不松口。</p>
+<p>目前没有人提供针对性的手动存档服务。而用户刚需明确：研究者要引用旧报道、维权者要截屏作为证据、自媒体要扒资料——但他们不知道去哪备份，或者嫌自己操作麻烦。这中间就是你的套利空间：替他们手动存，每篇收费2-5元，零成本。</p>
+<p>执行清单Day1-7</p>
+<p>Day1：注册工具并试存。打开archive.is（国内可直接访问），在首页输入一篇《纽约时报》公开文章的URL，点击“save”。等待30秒，获得一个永久存档链接。截图保存。记录整个操作步骤。</p>
+<p>Day2：准备服务说明。打开微信，新建一个朋友圈草稿，写“可帮你手动保存被屏蔽新闻文章的永久快照，NYT/卫报/今日美国等23家站点支持，每篇2元，10篇起接。存档链接可永久查看。”配Day1操作截图。</p>
+<p>Day3：找第一批客户。打开知乎，搜索“新闻存档”、“NYT怎么查看被删文章”等关键词，找到提问者。私信他们：“我提供手动存档服务，每篇2元，可以帮你把NYT文章永久备份到可正常访问的链接。”回复10个人。</p>
+<p>Day4：扩大渠道。打开闲鱼，发布商品“新闻文章永久存档服务”，定价2元/篇，标题写“NYT/卫报/今日美国文章备份”。描述中附带示例存档链接。一天刷新一次。</p>
+<p>Day5：批量教程变现。打开小红书，发一篇300字图文教程《3分钟手动保存被屏蔽新闻，再也不用担心404》。文末说“如果自己搞不定，可以找我代办，2元/篇”。</p>
+<p>Day6：接单验收。如果已有3-5个人问价，统计一下平均每人存几篇。如果客户要求存很多篇（比如20篇），可以按比例给折扣，比如20篇打包30元。</p>
+<p>Day7：总结复利。回顾本周收入。如果收入低于50元，说明渠道不对，明天加大闲鱼和知乎的发布时间；如果收入超过100元，说明需求很大，可以尝试提价到4元/篇或者写一个自动脚本提高效率。</p>
+<p>工具清单</p>
+<p>Archive.is（存档工具）：https://archive.is。费用：免费。无需注册即可使用。</p>
+<p>微信（接单沟通）：费用：免费。</p>
+<p>闲鱼（发布服务）：费用：免费，闲鱼是C2C平台，个人发布商品无手续费。</p>
+<p>小红书（引流）：费用：免费。</p>
+<p>知乎（找客户）：费用：免费。</p>
+<p>收益预估</p>
+<p>保守：每周接单15篇，每篇2元，月入120元。计算：15篇/周 x 4周 x 2元 = 120元。</p>
+<p>中等：每周接单40篇，每篇2元，月入320元。计算：40篇/周 x 4周 x 2元 = 320元。同时可能开启包月服务：每月包50篇收费100元（平均2元/篇但预付费），再额外锁定2个包月客户，月入520元。</p>
+<p>乐观：形成口碑后客户通过微信介绍新客户，每周接单100篇，同时开启培训服务“教你如何批量存档”收费30元/人，每月培训20人。月入：100x4x2 + 20x30 = 800+600=1400元。</p>
+<p>3个最容易踩的坑</p>
+<p>坑1：客户发来的URL已失效或被删除。避坑：提前告知客户，只有当前仍能打开的文章才能存档。如果文章已404，无法恢复。</p>
+<p>坑2：Archive.is偶尔被屏蔽。避坑：备用存档站点archive.ph，用法一样。如果archive.is打不开就换archive.ph。没差。</p>
+<p>坑3：客户不信任你。避坑：先免费帮第一个客户存1篇，生成永久链接后发给他验货。看到效果再付费。一旦建立信任，复购率非常高。</p>
+<p>延伸资源</p>
+<p>B站搜索“Archive.is教程”：免费视频，完整演示操作界面。</p>
+<p>微信公众号文章《如何永久保存网页》：免费阅读，讲解存档的法律意义和操作方法。</p>
+<p>互联网档案馆官网 FAQ：https://archive.org/about/faqs.php，了解Wayback的工作原理，用来回答客户疑问。</p>
+]]></content:encoded></item><item><title>Qwen淘宝AI接单</title><link>https://radar.huadongpeng.com/posts/china-going-global/deep-dive-2026-05-13-0919/</link><pubDate>Wed, 13 May 2026 09:19:47 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/china-going-global/deep-dive-2026-05-13-0919/</guid><description>&lt;h2 id="用qwen-api开发ai导购工具零成本出海实操指南"&gt;用Qwen API开发AI导购工具：零成本出海实操指南&lt;/h2&gt;
 &lt;h3 id="目标市场画像"&gt;目标市场画像&lt;/h3&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;为什么选这个市场？&lt;/strong&gt; 阿里Qwen与淘宝打通后，用户可以用自然语言完成购物全流程。但淘宝主要服务中文用户，英文跨境电商（AliExpress）还没深度接入。欧美、东南亚用户想比价、找商品、看评价，仍需手动操作。这中间有痛点：语言障碍 + 信息过载。你可以做一个“AI海外淘宝导购”小工具——用户用英文问需求，你调用Qwen API搜淘宝商品，返回英文结果。&lt;/li&gt;
