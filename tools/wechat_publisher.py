@@ -383,15 +383,16 @@ def md_to_wechat_html(md_text):
 
 def _inject_table_styles(html):
     """BeautifulSoup 后处理：为表格注入微信安全的内联样式 + 移动端滚动容器"""
+    if '<table' not in html:
+        return html
+
     soup = BeautifulSoup(html, 'html.parser')
 
     for table in soup.find_all('table'):
-        # 表格整体样式（覆盖 mistune 的 border 属性，WeChat 会丢弃 border="1"）
         table['style'] = (
             'border-collapse:collapse;width:100%;margin:12px 0;'
             'font-size:14px;color:#3f3f3f;'
         )
-        # 移除无效的 border/cellspacing HTML 属性
         for attr in ['border', 'cellspacing', 'cellpadding']:
             if attr in table.attrs:
                 del table[attr]
@@ -411,14 +412,15 @@ def _inject_table_styles(html):
             if not td.get_text(strip=True):
                 td.string = '\xa0'
 
-        # 外层包裹移动端横向滚动容器
         wrapper = soup.new_tag('div', style=(
             'width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;'
             'margin:16px 0;'
         ))
         table.wrap(wrapper)
 
-    return str(soup)
+    # 只返回 body 内部内容，避免 <html><body> 包裹破坏微信排版
+    body = soup.find('body')
+    return body.decode_contents() if body else str(soup)
 
 
 # ============================================================
