@@ -1,4 +1,185 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Arbitrage-Radar on Easton 跨国智库</title><link>https://radar.huadongpeng.com/categories/arbitrage-radar/</link><description>Recent content in Arbitrage-Radar on Easton 跨国智库</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Wed, 13 May 2026 09:34:00 +0800</lastBuildDate><atom:link href="https://radar.huadongpeng.com/categories/arbitrage-radar/index.xml" rel="self" type="application/rss+xml"/><item><title>替人存档被屏蔽新闻</title><link>https://radar.huadongpeng.com/posts/arbitrage-radar/deep-dive-2026-05-13-0934/</link><pubDate>Wed, 13 May 2026 09:34:00 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/arbitrage-radar/deep-dive-2026-05-13-0934/</guid><description>&lt;p&gt;核心洞察&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Arbitrage-Radar on Easton 跨国智库</title><link>https://radar.huadongpeng.com/categories/arbitrage-radar/</link><description>Recent content in Arbitrage-Radar on Easton 跨国智库</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Fri, 15 May 2026 06:24:37 +0800</lastBuildDate><atom:link href="https://radar.huadongpeng.com/categories/arbitrage-radar/index.xml" rel="self" type="application/rss+xml"/><item><title>Nginx漏洞</title><link>https://radar.huadongpeng.com/posts/arbitrage-radar/deep-dive-2026-05-15-0624/</link><pubDate>Fri, 15 May 2026 06:24:37 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/arbitrage-radar/deep-dive-2026-05-15-0624/</guid><description>&lt;h1 id="核心洞察"&gt;核心洞察&lt;/h1&gt;
+&lt;p&gt;2026年5月14日，安全研究员Zhenpeng Lin公开了Nginx中存在18年的远程代码执行漏洞（CVE-2026-42945）。这个漏洞存在于ngx_http_rewrite_module模块中，允许未认证攻击者远程执行代码。Reddit/webdev上大量运维人员抱怨：“又有一堆服务器要熬夜升级了”。更有人骂：“Nginx这么多年还没修好底层问题”。&lt;/p&gt;
+&lt;p&gt;这个钱为什么别人没赚到？不是技术壁垒，是信息差。很多小公司和个人站长根本没有订阅安全通知，也不会主动查CVE。你能做的不是卖修复服务，而是帮助别人检测和修复——尤其是那些不懂命令行的人。&lt;/p&gt;
+&lt;h1 id="执行清单-day1-7"&gt;执行清单 Day1-7&lt;/h1&gt;
+&lt;h2 id="day1周一确定自己是否受影响"&gt;Day1（周一）：确定自己是否受影响&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;打开终端→输入 &lt;code&gt;nginx -v&lt;/code&gt; 查看版本号&lt;/li&gt;
+&lt;li&gt;如果版本低于 1.26.3 或 1.27.4，就受影响&lt;/li&gt;
+&lt;li&gt;打开 &lt;a href="https://nginx.org/en/download.html"&gt;https://nginx.org/en/download.html&lt;/a&gt; → 确认最新稳定版是 1.26.3&lt;/li&gt;
+&lt;li&gt;记录下当前版本和操作系统&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id="day2周二备份配置文件"&gt;Day2（周二）：备份配置文件&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;输入 &lt;code&gt;cp -r /etc/nginx /etc/nginx_backup&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;输入 &lt;code&gt;nginx -t&lt;/code&gt; 确认配置无误&lt;/li&gt;
+&lt;li&gt;如果报错，记下错误信息&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id="day3周三升级nginxdebianubuntu"&gt;Day3（周三）：升级Nginx（Debian/Ubuntu）&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;输入 &lt;code&gt;sudo apt update&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;输入 &lt;code&gt;sudo apt upgrade nginx&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;输入 &lt;code&gt;nginx -v&lt;/code&gt; 确认版本&lt;/li&gt;
+&lt;li&gt;输入 &lt;code&gt;systemctl restart nginx&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id="day4周四升级nginxcentosrhel"&gt;Day4（周四）：升级Nginx（CentOS/RHEL）&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;输入 &lt;code&gt;sudo yum update nginx&lt;/code&gt; 或 &lt;code&gt;sudo dnf update nginx&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;输入 &lt;code&gt;nginx -v&lt;/code&gt; 确认版本&lt;/li&gt;
+&lt;li&gt;输入 &lt;code&gt;systemctl restart nginx&lt;/code&gt;&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id="day5周五检查是否被入侵"&gt;Day5（周五）：检查是否被入侵&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;查看 &lt;code&gt;/var/log/nginx/access.log&lt;/code&gt; 中是否有异常请求&lt;/li&gt;
+&lt;li&gt;搜索关键词 &lt;code&gt;rewrite&lt;/code&gt; 和可疑IP&lt;/li&gt;
+&lt;li&gt;运行 &lt;code&gt;last&lt;/code&gt; 查看登录记录&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id="day6周六加固安全"&gt;Day6（周六）：加固安全&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;编辑 &lt;code&gt;/etc/nginx/nginx.conf&lt;/code&gt;，添加 &lt;code&gt;server_tokens off;&lt;/code&gt; 隐藏版本号&lt;/li&gt;
+&lt;li&gt;安装fail2ban：&lt;code&gt;sudo apt install fail2ban&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;配置fail2ban保护Nginx&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id="day7周日自动化监控"&gt;Day7（周日）：自动化监控&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;设置cron任务每周检查更新：&lt;code&gt;0 2 * * 0 apt-get update -y &amp;amp;&amp;amp; apt-get upgrade -y&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;开启系统自动安全更新&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h1 id="工具清单"&gt;工具清单&lt;/h1&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;工具&lt;/th&gt;
+&lt;th&gt;网址&lt;/th&gt;
+&lt;th&gt;费用&lt;/th&gt;
+&lt;th&gt;替代方案&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Nginx官网&lt;/td&gt;
+&lt;td&gt;nginx.org&lt;/td&gt;
+&lt;td&gt;免费&lt;/td&gt;
+&lt;td&gt;-&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;fail2ban&lt;/td&gt;
+&lt;td&gt;包管理器安装&lt;/td&gt;
+&lt;td&gt;免费&lt;/td&gt;
+&lt;td&gt;crowdsec（免费）&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;系统更新&lt;/td&gt;
+&lt;td&gt;apt/yum/dnf&lt;/td&gt;
+&lt;td&gt;免费&lt;/td&gt;
+&lt;td&gt;-&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h1 id="收益预估"&gt;收益预估&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;保守&lt;/strong&gt;：为自己服务器修复，节省未来被黑后的损失（数据恢复费500-2000元）&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;中等&lt;/strong&gt;：帮3-5个小企业检测修复，收费200-500元/次，首月收入600-2500元&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;乐观&lt;/strong&gt;：写成教程或做成自动化检测工具，吸引100+用户，首月收入3000-8000元&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;计算逻辑：中等场景，每天投入1小时，找本地小企业或朋友介绍，修复一次平均30分钟，收费200元。&lt;/p&gt;</description><content:encoded><![CDATA[<h1 id="核心洞察">核心洞察</h1>
+<p>2026年5月14日，安全研究员Zhenpeng Lin公开了Nginx中存在18年的远程代码执行漏洞（CVE-2026-42945）。这个漏洞存在于ngx_http_rewrite_module模块中，允许未认证攻击者远程执行代码。Reddit/webdev上大量运维人员抱怨：“又有一堆服务器要熬夜升级了”。更有人骂：“Nginx这么多年还没修好底层问题”。</p>
+<p>这个钱为什么别人没赚到？不是技术壁垒，是信息差。很多小公司和个人站长根本没有订阅安全通知，也不会主动查CVE。你能做的不是卖修复服务，而是帮助别人检测和修复——尤其是那些不懂命令行的人。</p>
+<h1 id="执行清单-day1-7">执行清单 Day1-7</h1>
+<h2 id="day1周一确定自己是否受影响">Day1（周一）：确定自己是否受影响</h2>
+<ol>
+<li>打开终端→输入 <code>nginx -v</code> 查看版本号</li>
+<li>如果版本低于 1.26.3 或 1.27.4，就受影响</li>
+<li>打开 <a href="https://nginx.org/en/download.html">https://nginx.org/en/download.html</a> → 确认最新稳定版是 1.26.3</li>
+<li>记录下当前版本和操作系统</li>
+</ol>
+<h2 id="day2周二备份配置文件">Day2（周二）：备份配置文件</h2>
+<ol>
+<li>输入 <code>cp -r /etc/nginx /etc/nginx_backup</code></li>
+<li>输入 <code>nginx -t</code> 确认配置无误</li>
+<li>如果报错，记下错误信息</li>
+</ol>
+<h2 id="day3周三升级nginxdebianubuntu">Day3（周三）：升级Nginx（Debian/Ubuntu）</h2>
+<ol>
+<li>输入 <code>sudo apt update</code></li>
+<li>输入 <code>sudo apt upgrade nginx</code></li>
+<li>输入 <code>nginx -v</code> 确认版本</li>
+<li>输入 <code>systemctl restart nginx</code></li>
+</ol>
+<h2 id="day4周四升级nginxcentosrhel">Day4（周四）：升级Nginx（CentOS/RHEL）</h2>
+<ol>
+<li>输入 <code>sudo yum update nginx</code> 或 <code>sudo dnf update nginx</code></li>
+<li>输入 <code>nginx -v</code> 确认版本</li>
+<li>输入 <code>systemctl restart nginx</code></li>
+</ol>
+<h2 id="day5周五检查是否被入侵">Day5（周五）：检查是否被入侵</h2>
+<ol>
+<li>查看 <code>/var/log/nginx/access.log</code> 中是否有异常请求</li>
+<li>搜索关键词 <code>rewrite</code> 和可疑IP</li>
+<li>运行 <code>last</code> 查看登录记录</li>
+</ol>
+<h2 id="day6周六加固安全">Day6（周六）：加固安全</h2>
+<ol>
+<li>编辑 <code>/etc/nginx/nginx.conf</code>，添加 <code>server_tokens off;</code> 隐藏版本号</li>
+<li>安装fail2ban：<code>sudo apt install fail2ban</code></li>
+<li>配置fail2ban保护Nginx</li>
+</ol>
+<h2 id="day7周日自动化监控">Day7（周日）：自动化监控</h2>
+<ol>
+<li>设置cron任务每周检查更新：<code>0 2 * * 0 apt-get update -y &amp;&amp; apt-get upgrade -y</code></li>
+<li>开启系统自动安全更新</li>
+</ol>
+<h1 id="工具清单">工具清单</h1>
+<table>
+  <thead>
+      <tr>
+          <th>工具</th>
+          <th>网址</th>
+          <th>费用</th>
+          <th>替代方案</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>Nginx官网</td>
+          <td>nginx.org</td>
+          <td>免费</td>
+          <td>-</td>
+      </tr>
+      <tr>
+          <td>fail2ban</td>
+          <td>包管理器安装</td>
+          <td>免费</td>
+          <td>crowdsec（免费）</td>
+      </tr>
+      <tr>
+          <td>系统更新</td>
+          <td>apt/yum/dnf</td>
+          <td>免费</td>
+          <td>-</td>
+      </tr>
+  </tbody>
+</table>
+<h1 id="收益预估">收益预估</h1>
+<ul>
+<li><strong>保守</strong>：为自己服务器修复，节省未来被黑后的损失（数据恢复费500-2000元）</li>
+<li><strong>中等</strong>：帮3-5个小企业检测修复，收费200-500元/次，首月收入600-2500元</li>
+<li><strong>乐观</strong>：写成教程或做成自动化检测工具，吸引100+用户，首月收入3000-8000元</li>
+</ul>
+<p>计算逻辑：中等场景，每天投入1小时，找本地小企业或朋友介绍，修复一次平均30分钟，收费200元。</p>
+<h1 id="3个最容易踩的坑">3个最容易踩的坑</h1>
+<ol>
+<li><strong>不备份直接升级</strong>：新版本可能不兼容旧配置。避开：升级前必须 <code>cp -r /etc/nginx /etc/nginx_backup</code>。</li>
+<li><strong>忘记重启服务</strong>：升级完不重启等于没修。避开：升级后立刻执行 <code>systemctl restart nginx</code>。</li>
+<li><strong>忽略负载均衡器</strong>：如果你用Nginx做反向代理，重启会造成短暂断连。避开：安排在凌晨低峰期操作。</li>
+</ol>
+<h1 id="延伸资源">延伸资源</h1>
+<ol>
+<li>B站搜索“Nginx安全配置教程”→有系列视频手把手教</li>
+<li>腾讯云开发者社区→搜“Nginx漏洞修复”有中文指南</li>
+<li>公众号“运维咖啡吧”→定期推送安全公告和修复脚本</li>
+</ol>
+]]></content:encoded></item><item><title>替人存档被屏蔽新闻</title><link>https://radar.huadongpeng.com/posts/arbitrage-radar/deep-dive-2026-05-13-0934/</link><pubDate>Wed, 13 May 2026 09:34:00 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/arbitrage-radar/deep-dive-2026-05-13-0934/</guid><description>&lt;p&gt;核心洞察&lt;/p&gt;
 &lt;p&gt;2026年2月起，《纽约时报》《卫报》《今日美国》等23家主流媒体集体封锁互联网档案馆的Wayback Machine爬虫，不允许自动备份他们的文章。原因是他们怕AI公司用存档快照训练模型。但讽刺的是，这些媒体自己仍在发布的深度报道中大量引用Wayback上的旧页面——自己断了后路，也让普通用户失去了免费追溯、验证和引用新闻的能力。Reddit上已经有人骂“这简直是烧图书馆”，savethearchive.com上反对请愿已超10万签名，但媒体拒不松口。&lt;/p&gt;
 &lt;p&gt;目前没有人提供针对性的手动存档服务。而用户刚需明确：研究者要引用旧报道、维权者要截屏作为证据、自媒体要扒资料——但他们不知道去哪备份，或者嫌自己操作麻烦。这中间就是你的套利空间：替他们手动存，每篇收费2-5元，零成本。&lt;/p&gt;
 &lt;p&gt;执行清单Day1-7&lt;/p&gt;

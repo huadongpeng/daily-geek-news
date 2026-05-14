@@ -1,4 +1,199 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Ai-Frontier on Easton 跨国智库</title><link>https://radar.huadongpeng.com/categories/ai-frontier/</link><description>Recent content in Ai-Frontier on Easton 跨国智库</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Thu, 14 May 2026 06:27:57 +0800</lastBuildDate><atom:link href="https://radar.huadongpeng.com/categories/ai-frontier/index.xml" rel="self" type="application/rss+xml"/><item><title>财务Codex实战</title><link>https://radar.huadongpeng.com/posts/ai-frontier/deep-dive-2026-05-14-0627/</link><pubDate>Thu, 14 May 2026 06:27:57 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/ai-frontier/deep-dive-2026-05-14-0627/</guid><description>&lt;h2 id="财务团队用codex零代码自动生成报表初稿实战教程"&gt;财务团队用Codex：零代码自动生成报表初稿实战教程&lt;/h2&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Ai-Frontier on Easton 跨国智库</title><link>https://radar.huadongpeng.com/categories/ai-frontier/</link><description>Recent content in Ai-Frontier on Easton 跨国智库</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Fri, 15 May 2026 06:24:46 +0800</lastBuildDate><atom:link href="https://radar.huadongpeng.com/categories/ai-frontier/index.xml" rel="self" type="application/rss+xml"/><item><title>Codex财务实战</title><link>https://radar.huadongpeng.com/posts/ai-frontier/deep-dive-2026-05-15-0624/</link><pubDate>Fri, 15 May 2026 06:24:46 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/ai-frontier/deep-dive-2026-05-15-0624/</guid><description>&lt;h1 id="codex-财务实战零成本自动生成月度报告15分钟搞定"&gt;Codex 财务实战：零成本自动生成月度报告（15分钟搞定）&lt;/h1&gt;
+&lt;h2 id="痛点手工做报表占你一整天"&gt;痛点：手工做报表占你一整天&lt;/h2&gt;
+&lt;p&gt;月底财务团队都要手动拉数据、合并表格、写报告。一个中型电商的财务经理说，每次做月度经营分析报告要花8小时。现在用Codex，免费账号就能把时间压缩到15分钟。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;适用人群&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;会计、财务助理、小企业主&lt;/li&gt;
+&lt;li&gt;有基础英语阅读能力（工具界面和提示词用英文）&lt;/li&gt;
+&lt;li&gt;每天能挤30分钟学习配置&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;成本标注&lt;/strong&gt;：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;启动成本：0元&lt;/li&gt;
+&lt;li&gt;时间投入：初始学习1小时，成熟后每次15分钟&lt;/li&gt;
+&lt;li&gt;预期首周收益：省下15小时重复劳动，可用于更高价值任务&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="第一步注册并启动codex5分钟"&gt;第一步：注册并启动Codex（5分钟）&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;打开浏览器，访问 chat.openai.com&lt;/li&gt;
+&lt;li&gt;注册免费账号（需国内手机号接收验证码，或者使用国外接码平台）&lt;/li&gt;
+&lt;li&gt;登录后，在左侧菜单找到“Codex”入口（若没有，点击“Explore”搜索“Codex”）。&lt;/li&gt;
+&lt;li&gt;进入Codex空间，界面类似一个聊天窗口，但专门用于代码和自动化任务。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt;：免费账号每天有对话次数限制，大约20-50次，够财务任务使用。&lt;/p&gt;
+&lt;h2 id="第二步准备你的数据3分钟"&gt;第二步：准备你的数据（3分钟）&lt;/h2&gt;
+&lt;p&gt;准备一个简单的CSV文件，包含本月销售数据：&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"&gt;&lt;code class="language-csv" data-lang="csv"&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt;日期&lt;/span&gt;,&lt;span style="color:#e6db74"&gt;销售额&lt;/span&gt;,&lt;span style="color:#e6db74"&gt;成本&lt;/span&gt;,&lt;span style="color:#e6db74"&gt;毛利率&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt;2026-04-01&lt;/span&gt;,&lt;span style="color:#e6db74"&gt;10000&lt;/span&gt;,&lt;span style="color:#e6db74"&gt;6000&lt;/span&gt;,&lt;span style="color:#e6db74"&gt;40%&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt;2026-04-02&lt;/span&gt;,&lt;span style="color:#e6db74"&gt;12000&lt;/span&gt;,&lt;span style="color:#e6db74"&gt;7200&lt;/span&gt;,&lt;span style="color:#e6db74"&gt;40%&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style="display:flex;"&gt;&lt;span&gt;&lt;span style="color:#e6db74"&gt;...&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;如果手头没有数据，随便编一个。Codex只是学习，不是真的分析你的公司秘密。&lt;/p&gt;
+&lt;h2 id="第三步让codex生成报表7分钟"&gt;第三步：让Codex生成报表（7分钟）&lt;/h2&gt;
+&lt;p&gt;在Codex对话框输入以下提示词（复制粘贴即可）：&lt;/p&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;我用一个CSV文件，有几列：日期、销售额、成本、毛利率。
+请帮我完成以下任务：
+1. 读取并解析这个CSV文件（假设文件路径为 /mnt/data/sales.csv）
+2. 计算本月总销售额、总成本、平均毛利率
+3. 按周汇总销售额，给出每周环比增长率
+4. 生成一份月度摘要报告，格式为Markdown，包含表格和结论
+5. 把结果输出到屏幕上
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;点击发送。Codex会自动写代码、执行，并返回结果。如果第一次报错，可能是文件路径不对，改成实际上传的文件名即可。&lt;/p&gt;
+&lt;h2 id="第四条进阶技巧做成自动化模板3个技巧"&gt;第四条：进阶技巧：做成自动化模板（3个技巧）&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;技巧1：让Codex记住你的格式&lt;/strong&gt;
+在提示词末尾加上“以后每次都用同样的格式输出，只需要更新CSV数据”。下次只要说“更新月报”，Codex就自动重跑。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;技巧2：生成图表&lt;/strong&gt;
+告诉Codex“生成一个柱状图，显示每周销售额趋势，用matplotlib，保存为PNG”。Codex会自动写代码生成图片并显示。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;技巧3：对比预算&lt;/strong&gt;
+如果有预算数据，上传另一个CSV，提示“对比实际值和预算，计算偏差百分比”。&lt;/p&gt;
+&lt;h2 id="第五步常见错误与排障"&gt;第五步：常见错误与排障&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;错误1：Codex说“文件未找到”&lt;/strong&gt;
+解决：点击对话框下方的“上传文件”按钮，上传CSV后再发送提示词。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;错误2：输出全是代码但没图表&lt;/strong&gt;
+解决：追加一句话“请运行代码并显示结果，不要只给出代码”。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;错误3：免费额度用完&lt;/strong&gt;
+替代方案：用Google Colab运行同样的Python脚本（免费），再把结果贴回ChatGPT生成报告。&lt;/p&gt;
+&lt;h2 id="同类工具对比"&gt;同类工具对比&lt;/h2&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;工具&lt;/th&gt;
+&lt;th&gt;免费额度&lt;/th&gt;
+&lt;th&gt;上手难度&lt;/th&gt;
+&lt;th&gt;是否需翻墙&lt;/th&gt;
+&lt;th&gt;适合场景&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;ChatGPT + Codex&lt;/td&gt;
+&lt;td&gt;每日20-50次&lt;/td&gt;
+&lt;td&gt;2/5&lt;/td&gt;
+&lt;td&gt;否（但有访问限制）&lt;/td&gt;
+&lt;td&gt;零代码自动化&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;Google Gemini&lt;/td&gt;
+&lt;td&gt;免费60次/月&lt;/td&gt;
+&lt;td&gt;2/5&lt;/td&gt;
+&lt;td&gt;部分需要&lt;/td&gt;
+&lt;td&gt;类似但可能更慢&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;文心一言&lt;/td&gt;
+&lt;td&gt;免费&lt;/td&gt;
+&lt;td&gt;2/5&lt;/td&gt;
+&lt;td&gt;否&lt;/td&gt;
+&lt;td&gt;中文友好，但无法执行代码&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;&lt;strong&gt;性价比结论&lt;/strong&gt;：免费版Codex完全够用，一天20次对话足够完成财务月度报告。如果遇高峰期，可以隔天再用。&lt;/p&gt;</description><content:encoded><![CDATA[<h1 id="codex-财务实战零成本自动生成月度报告15分钟搞定">Codex 财务实战：零成本自动生成月度报告（15分钟搞定）</h1>
+<h2 id="痛点手工做报表占你一整天">痛点：手工做报表占你一整天</h2>
+<p>月底财务团队都要手动拉数据、合并表格、写报告。一个中型电商的财务经理说，每次做月度经营分析报告要花8小时。现在用Codex，免费账号就能把时间压缩到15分钟。</p>
+<p><strong>适用人群</strong>：</p>
+<ul>
+<li>会计、财务助理、小企业主</li>
+<li>有基础英语阅读能力（工具界面和提示词用英文）</li>
+<li>每天能挤30分钟学习配置</li>
+</ul>
+<p><strong>成本标注</strong>：</p>
+<ul>
+<li>启动成本：0元</li>
+<li>时间投入：初始学习1小时，成熟后每次15分钟</li>
+<li>预期首周收益：省下15小时重复劳动，可用于更高价值任务</li>
+</ul>
+<h2 id="第一步注册并启动codex5分钟">第一步：注册并启动Codex（5分钟）</h2>
+<ol>
+<li>打开浏览器，访问 chat.openai.com</li>
+<li>注册免费账号（需国内手机号接收验证码，或者使用国外接码平台）</li>
+<li>登录后，在左侧菜单找到“Codex”入口（若没有，点击“Explore”搜索“Codex”）。</li>
+<li>进入Codex空间，界面类似一个聊天窗口，但专门用于代码和自动化任务。</li>
+</ol>
+<p><strong>注意</strong>：免费账号每天有对话次数限制，大约20-50次，够财务任务使用。</p>
+<h2 id="第二步准备你的数据3分钟">第二步：准备你的数据（3分钟）</h2>
+<p>准备一个简单的CSV文件，包含本月销售数据：</p>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none;"><code class="language-csv" data-lang="csv"><span style="display:flex;"><span><span style="color:#e6db74">日期</span>,<span style="color:#e6db74">销售额</span>,<span style="color:#e6db74">成本</span>,<span style="color:#e6db74">毛利率</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">2026-04-01</span>,<span style="color:#e6db74">10000</span>,<span style="color:#e6db74">6000</span>,<span style="color:#e6db74">40%</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">2026-04-02</span>,<span style="color:#e6db74">12000</span>,<span style="color:#e6db74">7200</span>,<span style="color:#e6db74">40%</span>
+</span></span><span style="display:flex;"><span><span style="color:#e6db74">...</span>
+</span></span></code></pre></div><p>如果手头没有数据，随便编一个。Codex只是学习，不是真的分析你的公司秘密。</p>
+<h2 id="第三步让codex生成报表7分钟">第三步：让Codex生成报表（7分钟）</h2>
+<p>在Codex对话框输入以下提示词（复制粘贴即可）：</p>
+<pre tabindex="0"><code>我用一个CSV文件，有几列：日期、销售额、成本、毛利率。
+请帮我完成以下任务：
+1. 读取并解析这个CSV文件（假设文件路径为 /mnt/data/sales.csv）
+2. 计算本月总销售额、总成本、平均毛利率
+3. 按周汇总销售额，给出每周环比增长率
+4. 生成一份月度摘要报告，格式为Markdown，包含表格和结论
+5. 把结果输出到屏幕上
+</code></pre><p>点击发送。Codex会自动写代码、执行，并返回结果。如果第一次报错，可能是文件路径不对，改成实际上传的文件名即可。</p>
+<h2 id="第四条进阶技巧做成自动化模板3个技巧">第四条：进阶技巧：做成自动化模板（3个技巧）</h2>
+<p><strong>技巧1：让Codex记住你的格式</strong>
+在提示词末尾加上“以后每次都用同样的格式输出，只需要更新CSV数据”。下次只要说“更新月报”，Codex就自动重跑。</p>
+<p><strong>技巧2：生成图表</strong>
+告诉Codex“生成一个柱状图，显示每周销售额趋势，用matplotlib，保存为PNG”。Codex会自动写代码生成图片并显示。</p>
+<p><strong>技巧3：对比预算</strong>
+如果有预算数据，上传另一个CSV，提示“对比实际值和预算，计算偏差百分比”。</p>
+<h2 id="第五步常见错误与排障">第五步：常见错误与排障</h2>
+<p><strong>错误1：Codex说“文件未找到”</strong>
+解决：点击对话框下方的“上传文件”按钮，上传CSV后再发送提示词。</p>
+<p><strong>错误2：输出全是代码但没图表</strong>
+解决：追加一句话“请运行代码并显示结果，不要只给出代码”。</p>
+<p><strong>错误3：免费额度用完</strong>
+替代方案：用Google Colab运行同样的Python脚本（免费），再把结果贴回ChatGPT生成报告。</p>
+<h2 id="同类工具对比">同类工具对比</h2>
+<table>
+  <thead>
+      <tr>
+          <th>工具</th>
+          <th>免费额度</th>
+          <th>上手难度</th>
+          <th>是否需翻墙</th>
+          <th>适合场景</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>ChatGPT + Codex</td>
+          <td>每日20-50次</td>
+          <td>2/5</td>
+          <td>否（但有访问限制）</td>
+          <td>零代码自动化</td>
+      </tr>
+      <tr>
+          <td>Google Gemini</td>
+          <td>免费60次/月</td>
+          <td>2/5</td>
+          <td>部分需要</td>
+          <td>类似但可能更慢</td>
+      </tr>
+      <tr>
+          <td>文心一言</td>
+          <td>免费</td>
+          <td>2/5</td>
+          <td>否</td>
+          <td>中文友好，但无法执行代码</td>
+      </tr>
+  </tbody>
+</table>
+<p><strong>性价比结论</strong>：免费版Codex完全够用，一天20次对话足够完成财务月度报告。如果遇高峰期，可以隔天再用。</p>
+<h2 id="谁适合用--谁不适合用">谁适合用 / 谁不适合用</h2>
+<p><strong>适合</strong>：</p>
+<ul>
+<li>每月要做1-3次重复财务报告的人</li>
+<li>愿意花1小时学习提示词</li>
+<li>有基础Excel知识但不会编程</li>
+</ul>
+<p><strong>不适合</strong>：</p>
+<ul>
+<li>财务数据极其敏感（需本地执行） -&gt; 建议用本地Python + Ollama</li>
+<li>需要实时接入公司数据库 -&gt; 需要技术团队配合</li>
+<li>完全不想学任何新工具 -&gt; 继续手工做表</li>
+</ul>
+<h2 id="你现在就能做的事">你现在就能做的事</h2>
+<p>打开ChatGPT免费版 → 进入Codex空间 → 复制上面第三条的提示词，把数据改成你自己的。15分钟后，你就有了一份自动化月报。</p>
+<p>（注：以上所有操作均基于2026年5月15日公开版ChatGPT。免费额度可能有变动，以实际使用为准。）</p>
+]]></content:encoded></item><item><title>财务Codex实战</title><link>https://radar.huadongpeng.com/posts/ai-frontier/deep-dive-2026-05-14-0627/</link><pubDate>Thu, 14 May 2026 06:27:57 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/ai-frontier/deep-dive-2026-05-14-0627/</guid><description>&lt;h2 id="财务团队用codex零代码自动生成报表初稿实战教程"&gt;财务团队用Codex：零代码自动生成报表初稿实战教程&lt;/h2&gt;
 &lt;h3 id="痛点财务人员每天花2小时在手动做表对公式写报告上"&gt;痛点：财务人员每天花2小时在手动做表、对公式、写报告上&lt;/h3&gt;
 &lt;p&gt;你是一个财务分析师，每月底要交MBR（月度业务回顾）、差异分析、情景规划。你在Excel里复制粘贴，对账对到眼睛花。现在，Codex可以帮你把原始数据（CSV/Excel）直接转成初稿，省掉70%的重复劳动。&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;启动成本：0元&lt;/strong&gt;（使用ChatGPT免费版即可）
