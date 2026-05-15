@@ -1,4 +1,124 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>每日汇总 on Easton 跨国智库</title><link>https://radar.huadongpeng.com/tags/%E6%AF%8F%E6%97%A5%E6%B1%87%E6%80%BB/</link><description>Recent content in 每日汇总 on Easton 跨国智库</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Fri, 15 May 2026 06:26:45 +0800</lastBuildDate><atom:link href="https://radar.huadongpeng.com/tags/%E6%AF%8F%E6%97%A5%E6%B1%87%E6%80%BB/index.xml" rel="self" type="application/rss+xml"/><item><title>每日快讯</title><link>https://radar.huadongpeng.com/posts/daily-briefing/briefing-2026-05-15/</link><pubDate>Fri, 15 May 2026 06:26:45 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/daily-briefing/briefing-2026-05-15/</guid><description>&lt;blockquote&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>每日汇总 on Easton 跨国智库</title><link>https://radar.huadongpeng.com/tags/%E6%AF%8F%E6%97%A5%E6%B1%87%E6%80%BB/</link><description>Recent content in 每日汇总 on Easton 跨国智库</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Sat, 16 May 2026 06:23:04 +0800</lastBuildDate><atom:link href="https://radar.huadongpeng.com/tags/%E6%AF%8F%E6%97%A5%E6%B1%87%E6%80%BB/index.xml" rel="self" type="application/rss+xml"/><item><title>每日快讯</title><link>https://radar.huadongpeng.com/posts/daily-briefing/briefing-2026-05-16/</link><pubDate>Sat, 16 May 2026 06:23:04 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/daily-briefing/briefing-2026-05-16/</guid><description>&lt;blockquote&gt;
+&lt;p&gt;2026年05月16日 · 11 条情报&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id="效率工具与自动化"&gt;效率工具与自动化&lt;/h2&gt;
+&lt;h3 id="zulip基金会成立"&gt;Zulip基金会成立&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：Zulip博客 | 免费开源团队聊天软件，专为社区和公益组织优化。&lt;/p&gt;
+&lt;p&gt;零成本替代Slack，支持自部署，每月省下至少100元订阅费。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;🎯 打开zulip.com注册免费账号，或自部署：git clone并运行 docker-compose up。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id="agent-sin任务自动化"&gt;Agent-Sin任务自动化&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：ProductHunt | AI助手通过可复用技能处理重复任务。&lt;/p&gt;
+&lt;p&gt;把每天30分钟的数据录入/整理交给AI，节省每月15小时。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;🎯 搜索Agent-Sin注册，创建首个“邮件归档”技能并运行。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id="sleek-analytics替代"&gt;Sleek Analytics替代&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：ProductHunt | 简单Google Analytics替代方案。&lt;/p&gt;
+&lt;p&gt;完全免费，无隐私泄露，安装只需5分钟。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;🎯 打开sleekanalytics.com注册，复制脚本代码到网站head标签内。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id="cline-sdk编程代理"&gt;Cline SDK编程代理&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：ProductHunt | 插件化开源运行时，构建自定义编程代理。&lt;/p&gt;
+&lt;p&gt;免费代替付费AI编码工具，可自动化代码审查、生成测试。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;🎯 访问github.com/cline/cline-sdk，阅读README，运行 npm install cline-sdk。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id="清理15k行scss指南"&gt;清理15k行SCSS指南&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：Reddit r/webdev | AI辅助拆分巨型CSS文件到独立模块。&lt;/p&gt;
+&lt;p&gt;处理一天浪费4小时，用这个方法缩短到30分钟。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;🎯 安装Node.js，运行 npx @purgecss/cli &amp;ndash;css 原始.css &amp;ndash;content ./*.html &amp;ndash;out out/。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;hr&gt;
+&lt;h2 id="ai-工具实战"&gt;AI 工具实战&lt;/h2&gt;
+&lt;h3 id="开源编码模型"&gt;开源编码模型&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：VentureBeat | NousCoder-14B开源编码模型&lt;/p&gt;
+&lt;p&gt;14B参数可本地跑，性能接近大厂闭源模型，零成本且数据隐私好。&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;🎯 打开Hugging Face→搜索NousCoder-14B→下载GGUF→用Ollama运行&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;hr&gt;
+&lt;h2 id="套利雷达"&gt;套利雷达&lt;/h2&gt;
+&lt;h3 id="stripe替代品需求旺盛"&gt;Stripe替代品需求旺盛&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;来源&lt;/strong&gt;：Reddit r/SaaS | 用户抱怨Stripe收费过高，寻求替代方案&lt;/p&gt;</description><content:encoded><![CDATA[<blockquote>
+<p>2026年05月16日 · 11 条情报</p>
+</blockquote>
+<h2 id="效率工具与自动化">效率工具与自动化</h2>
+<h3 id="zulip基金会成立">Zulip基金会成立</h3>
+<p><strong>来源</strong>：Zulip博客 | 免费开源团队聊天软件，专为社区和公益组织优化。</p>
+<p>零成本替代Slack，支持自部署，每月省下至少100元订阅费。</p>
+<blockquote>
+<p>🎯 打开zulip.com注册免费账号，或自部署：git clone并运行 docker-compose up。</p>
+</blockquote>
+<h3 id="agent-sin任务自动化">Agent-Sin任务自动化</h3>
+<p><strong>来源</strong>：ProductHunt | AI助手通过可复用技能处理重复任务。</p>
+<p>把每天30分钟的数据录入/整理交给AI，节省每月15小时。</p>
+<blockquote>
+<p>🎯 搜索Agent-Sin注册，创建首个“邮件归档”技能并运行。</p>
+</blockquote>
+<h3 id="sleek-analytics替代">Sleek Analytics替代</h3>
+<p><strong>来源</strong>：ProductHunt | 简单Google Analytics替代方案。</p>
+<p>完全免费，无隐私泄露，安装只需5分钟。</p>
+<blockquote>
+<p>🎯 打开sleekanalytics.com注册，复制脚本代码到网站head标签内。</p>
+</blockquote>
+<h3 id="cline-sdk编程代理">Cline SDK编程代理</h3>
+<p><strong>来源</strong>：ProductHunt | 插件化开源运行时，构建自定义编程代理。</p>
+<p>免费代替付费AI编码工具，可自动化代码审查、生成测试。</p>
+<blockquote>
+<p>🎯 访问github.com/cline/cline-sdk，阅读README，运行 npm install cline-sdk。</p>
+</blockquote>
+<h3 id="清理15k行scss指南">清理15k行SCSS指南</h3>
+<p><strong>来源</strong>：Reddit r/webdev | AI辅助拆分巨型CSS文件到独立模块。</p>
+<p>处理一天浪费4小时，用这个方法缩短到30分钟。</p>
+<blockquote>
+<p>🎯 安装Node.js，运行 npx @purgecss/cli &ndash;css 原始.css &ndash;content ./*.html &ndash;out out/。</p>
+</blockquote>
+<hr>
+<h2 id="ai-工具实战">AI 工具实战</h2>
+<h3 id="开源编码模型">开源编码模型</h3>
+<p><strong>来源</strong>：VentureBeat | NousCoder-14B开源编码模型</p>
+<p>14B参数可本地跑，性能接近大厂闭源模型，零成本且数据隐私好。</p>
+<blockquote>
+<p>🎯 打开Hugging Face→搜索NousCoder-14B→下载GGUF→用Ollama运行</p>
+</blockquote>
+<hr>
+<h2 id="套利雷达">套利雷达</h2>
+<h3 id="stripe替代品需求旺盛">Stripe替代品需求旺盛</h3>
+<p><strong>来源</strong>：Reddit r/SaaS | 用户抱怨Stripe收费过高，寻求替代方案</p>
+<p>会写支付集成代码，可提供极简支付服务或对比指南赚信息差</p>
+<blockquote>
+<p>🎯 打开Reddit→搜&quot;Stripe alternative&quot;→列5个免费/低价支付API→汇总成对比表</p>
+</blockquote>
+<hr>
+<h2 id="海外信息差">海外信息差</h2>
+<h3 id="ai替代真人网红">AI替代真人网红</h3>
+<p><strong>来源</strong>：Reddit+行业报告 | 品牌悄悄用AI生成虚拟形象替代真人网红</p>
+<p>国内AI虚拟人带货刚起步，但批量克隆细分领域专家还空白。你可以用免费工具克隆自己或他人形象，搬运到小红书/抖音接单</p>
+<blockquote>
+<p>🎯 去小红书搜&quot;AI数字人&quot;看同类内容数量和评论，测试能不能发类似视频</p>
+</blockquote>
+<h3 id="ai创意生产工具">AI创意生产工具</h3>
+<p><strong>来源</strong>：Reddit Creative Ops讨论 | 国外用Notion+Canva+Runable流水线生产广告素材</p>
+<p>这套组合国内可全免费复刻，帮小商家批量做测试素材，按条收费</p>
+<blockquote>
+<p>🎯 打开Canva免费版，创建5个同产品不同文案的视频模板测试效率</p>
+</blockquote>
+<h3 id="反馈周五点子集市">反馈周五点子集市</h3>
+<p><strong>来源</strong>：Reddit r/Entrepreneur | 国外创业者每周五互评点子，国内缺这类低成本验证社区</p>
+<p>你可以在微信群/知识星球组织你的&quot;点子评审日&quot;，收取小额入群费或做资源对接</p>
+<blockquote>
+<p>🎯 创建一个百度贴吧或知乎专栏，发帖征集创业点子并公开点评，看一周内回复数</p>
+</blockquote>
+<hr>
+<h2 id="出海工具链">出海工具链</h2>
+<h3 id="tiktok-go接单">TikTok GO接单</h3>
+<p><strong>来源</strong>：未知 |</p>
+<hr>
+]]></content:encoded></item><item><title>每日快讯</title><link>https://radar.huadongpeng.com/posts/daily-briefing/briefing-2026-05-15/</link><pubDate>Fri, 15 May 2026 06:26:45 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/daily-briefing/briefing-2026-05-15/</guid><description>&lt;blockquote&gt;
 &lt;p&gt;2026年05月15日 · 19 条情报&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h2 id="宏观风向标"&gt;宏观风向标&lt;/h2&gt;
