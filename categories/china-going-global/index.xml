@@ -1,4 +1,137 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>China-Going-Global on Easton 跨国智库</title><link>https://radar.huadongpeng.com/categories/china-going-global/</link><description>Recent content in China-Going-Global on Easton 跨国智库</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Thu, 14 May 2026 06:30:05 +0800</lastBuildDate><atom:link href="https://radar.huadongpeng.com/categories/china-going-global/index.xml" rel="self" type="application/rss+xml"/><item><title>MiniCPM-V上线</title><link>https://radar.huadongpeng.com/posts/china-going-global/deep-dive-2026-05-14-0630/</link><pubDate>Thu, 14 May 2026 06:30:05 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/china-going-global/deep-dive-2026-05-14-0630/</guid><description>&lt;h1 id="minicpm-v-46-出海实操用13b模型做本地端侧图片理解工具"&gt;MiniCPM-V 4.6 出海实操：用1.3B模型做本地端侧图片理解工具&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>China-Going-Global on Easton 跨国智库</title><link>https://radar.huadongpeng.com/categories/china-going-global/</link><description>Recent content in China-Going-Global on Easton 跨国智库</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Sun, 17 May 2026 06:19:24 +0800</lastBuildDate><atom:link href="https://radar.huadongpeng.com/categories/china-going-global/index.xml" rel="self" type="application/rss+xml"/><item><title>TikTok GO接单</title><link>https://radar.huadongpeng.com/posts/china-going-global/deep-dive-2026-05-17-0619/</link><pubDate>Sun, 17 May 2026 06:19:24 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/china-going-global/deep-dive-2026-05-17-0619/</guid><description>&lt;h1 id="tiktok-go-零成本接单实操指南"&gt;TikTok GO 零成本接单实操指南&lt;/h1&gt;
+&lt;h2 id="目标市场画像"&gt;目标市场画像&lt;/h2&gt;
+&lt;p&gt;&lt;strong&gt;为什么选TikTok GO？&lt;/strong&gt;
+TikTok GO是TikTok于2026年4-5月在印尼、美国和日本推出的本地生活服务平台。用户可以直接在TikTok内预订酒店、景点、餐饮和旅行体验。对于国内普通人来说，这是当下门槛最低的出海渠道：&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;数据支撑：TikTok全球月活超20亿，印尼月活超2亿。TikTok GO直接复用现有用户池，初期竞争小。&lt;/li&gt;
+&lt;li&gt;客单价：餐饮/旅游体验类服务客单价在$10-100之间，比纯内容变现高。&lt;/li&gt;
+&lt;li&gt;竞争度：平台刚上线，服务商数量少，有信息差红利。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;&lt;strong&gt;适合卖什么？&lt;/strong&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;本地餐饮代排队/优惠券代购：帮留学生或游客抢热门餐厅位置。&lt;/li&gt;
+&lt;li&gt;小众旅行路线设计：为自由行游客定制1-3日在地行程。&lt;/li&gt;
+&lt;li&gt;语言/文化陪游：为TikTok上的外国游客提供中文导览服务。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id="从零到上线的每一步"&gt;从零到上线的每一步&lt;/h2&gt;
+&lt;h3 id="step-1注册资质"&gt;Step 1：注册资质&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;使用国内手机号注册TikTok账号（若被限，用+86号可正常注册）。&lt;/li&gt;
+&lt;li&gt;进入TikTok GO入口：在TikTok搜索框输入&amp;quot;TikTok GO&amp;quot;→点击官方账号→点&amp;quot;Join as Provider&amp;quot;。&lt;/li&gt;
+&lt;li&gt;提交资料：上传身份证正反面JPG，&amp;lt;2MB。支持国内身份证+护照。邮箱建议用Gmail/Outlook（国内163可用）。&lt;/li&gt;
+&lt;li&gt;等待审核：通常1-3个工作日。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="step-2配置服务页"&gt;Step 2：配置服务页&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;点击&amp;quot;Create Service&amp;quot;→选择类别（餐饮/旅行/体验）。&lt;/li&gt;
+&lt;li&gt;填写服务标题+描述+价格。提示：标题不含&amp;quot;Chinese&amp;quot;&amp;ldquo;private&amp;quot;等敏感词。&lt;/li&gt;
+&lt;li&gt;设定服务区域：选你实际能覆盖的城市。&lt;/li&gt;
+&lt;li&gt;上传封面图：900x600px，无文字水印。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="step-3发布与接单"&gt;Step 3：发布与接单&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;TikTok GO采用预约制，客户通过TikTok聊天直接下单。&lt;/li&gt;
+&lt;li&gt;时效：第一单通常出现在你发布后的24-72小时。&lt;/li&gt;
+&lt;li&gt;被拒常见原因：
+&lt;ul&gt;
+&lt;li&gt;服务类目选错→重新选择对应类目。&lt;/li&gt;
+&lt;li&gt;图片含第三方平台水印→重新制作纯色背景图。&lt;/li&gt;
+&lt;li&gt;描述含联系方式（微信/WhatsApp）→删除仅留TikTok账号。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="step-4收款"&gt;Step 4：收款&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;绑定收款方式：支持PayPal、Payoneer、国内银行卡（通过联动优势）。&lt;/li&gt;
+&lt;li&gt;回款周期：订单完成后7个工作日到账。&lt;/li&gt;
+&lt;li&gt;手续费：平台抽成15%，提现手续费2%。&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="工具链推荐"&gt;工具链推荐&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;Canva免费版&lt;/strong&gt;：$0。制作服务封面图。替代：稿定设计。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;DeepL翻译&lt;/strong&gt;：$0。将中文服务描述翻译成英文/印尼语。替代：Google翻译。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;TikTok Studio&lt;/strong&gt;：$0。管理订单与客户聊天。替代：浏览器直接操作。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id="避坑清单"&gt;避坑清单&lt;/h2&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;不要用虚假定位&lt;/strong&gt;：TikTok会检测IP，若定位与实际服务地不符，直接封号。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;不要违规导流&lt;/strong&gt;：在聊天中提及微信/WhatsApp会被系统抓取并限制。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;不要接超出能力范围的单&lt;/strong&gt;：初期只接自己能完成的服务，否则差评影响后续接单。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id="成本拆解"&gt;成本拆解&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;启动成本：0元（注册免费，工具免费）&lt;/li&gt;
+&lt;li&gt;月度运营成本：0元（全免费工具）&lt;/li&gt;
+&lt;li&gt;预期首周收益：$20-80（按2-4单，每单$10-50算）&lt;/li&gt;
+&lt;li&gt;预期回本周期：当日回本（零成本投入）&lt;/li&gt;
+&lt;/ul&gt;</description><content:encoded><![CDATA[<h1 id="tiktok-go-零成本接单实操指南">TikTok GO 零成本接单实操指南</h1>
+<h2 id="目标市场画像">目标市场画像</h2>
+<p><strong>为什么选TikTok GO？</strong>
+TikTok GO是TikTok于2026年4-5月在印尼、美国和日本推出的本地生活服务平台。用户可以直接在TikTok内预订酒店、景点、餐饮和旅行体验。对于国内普通人来说，这是当下门槛最低的出海渠道：</p>
+<ul>
+<li>数据支撑：TikTok全球月活超20亿，印尼月活超2亿。TikTok GO直接复用现有用户池，初期竞争小。</li>
+<li>客单价：餐饮/旅游体验类服务客单价在$10-100之间，比纯内容变现高。</li>
+<li>竞争度：平台刚上线，服务商数量少，有信息差红利。</li>
+</ul>
+<p><strong>适合卖什么？</strong></p>
+<ol>
+<li>本地餐饮代排队/优惠券代购：帮留学生或游客抢热门餐厅位置。</li>
+<li>小众旅行路线设计：为自由行游客定制1-3日在地行程。</li>
+<li>语言/文化陪游：为TikTok上的外国游客提供中文导览服务。</li>
+</ol>
+<h2 id="从零到上线的每一步">从零到上线的每一步</h2>
+<h3 id="step-1注册资质">Step 1：注册资质</h3>
+<ul>
+<li>使用国内手机号注册TikTok账号（若被限，用+86号可正常注册）。</li>
+<li>进入TikTok GO入口：在TikTok搜索框输入&quot;TikTok GO&quot;→点击官方账号→点&quot;Join as Provider&quot;。</li>
+<li>提交资料：上传身份证正反面JPG，&lt;2MB。支持国内身份证+护照。邮箱建议用Gmail/Outlook（国内163可用）。</li>
+<li>等待审核：通常1-3个工作日。</li>
+</ul>
+<h3 id="step-2配置服务页">Step 2：配置服务页</h3>
+<ul>
+<li>点击&quot;Create Service&quot;→选择类别（餐饮/旅行/体验）。</li>
+<li>填写服务标题+描述+价格。提示：标题不含&quot;Chinese&quot;&ldquo;private&quot;等敏感词。</li>
+<li>设定服务区域：选你实际能覆盖的城市。</li>
+<li>上传封面图：900x600px，无文字水印。</li>
+</ul>
+<h3 id="step-3发布与接单">Step 3：发布与接单</h3>
+<ul>
+<li>TikTok GO采用预约制，客户通过TikTok聊天直接下单。</li>
+<li>时效：第一单通常出现在你发布后的24-72小时。</li>
+<li>被拒常见原因：
+<ul>
+<li>服务类目选错→重新选择对应类目。</li>
+<li>图片含第三方平台水印→重新制作纯色背景图。</li>
+<li>描述含联系方式（微信/WhatsApp）→删除仅留TikTok账号。</li>
+</ul>
+</li>
+</ul>
+<h3 id="step-4收款">Step 4：收款</h3>
+<ul>
+<li>绑定收款方式：支持PayPal、Payoneer、国内银行卡（通过联动优势）。</li>
+<li>回款周期：订单完成后7个工作日到账。</li>
+<li>手续费：平台抽成15%，提现手续费2%。</li>
+</ul>
+<h2 id="工具链推荐">工具链推荐</h2>
+<ol>
+<li><strong>Canva免费版</strong>：$0。制作服务封面图。替代：稿定设计。</li>
+<li><strong>DeepL翻译</strong>：$0。将中文服务描述翻译成英文/印尼语。替代：Google翻译。</li>
+<li><strong>TikTok Studio</strong>：$0。管理订单与客户聊天。替代：浏览器直接操作。</li>
+</ol>
+<h2 id="避坑清单">避坑清单</h2>
+<ol>
+<li><strong>不要用虚假定位</strong>：TikTok会检测IP，若定位与实际服务地不符，直接封号。</li>
+<li><strong>不要违规导流</strong>：在聊天中提及微信/WhatsApp会被系统抓取并限制。</li>
+<li><strong>不要接超出能力范围的单</strong>：初期只接自己能完成的服务，否则差评影响后续接单。</li>
+</ol>
+<h2 id="成本拆解">成本拆解</h2>
+<ul>
+<li>启动成本：0元（注册免费，工具免费）</li>
+<li>月度运营成本：0元（全免费工具）</li>
+<li>预期首周收益：$20-80（按2-4单，每单$10-50算）</li>
+<li>预期回本周期：当日回本（零成本投入）</li>
+</ul>
+]]></content:encoded></item><item><title>MiniCPM-V上线</title><link>https://radar.huadongpeng.com/posts/china-going-global/deep-dive-2026-05-14-0630/</link><pubDate>Thu, 14 May 2026 06:30:05 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/china-going-global/deep-dive-2026-05-14-0630/</guid><description>&lt;h1 id="minicpm-v-46-出海实操用13b模型做本地端侧图片理解工具"&gt;MiniCPM-V 4.6 出海实操：用1.3B模型做本地端侧图片理解工具&lt;/h1&gt;
 &lt;blockquote&gt;
 &lt;p&gt;2026年5月14日发布。启动成本0元，时间投入2小时，预期收益0~500元（承接海外小众图片处理需求）。&lt;/p&gt;
 &lt;/blockquote&gt;

@@ -1,4 +1,227 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Ai-Frontier on Easton 跨国智库</title><link>https://radar.huadongpeng.com/categories/ai-frontier/</link><description>Recent content in Ai-Frontier on Easton 跨国智库</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Fri, 15 May 2026 06:24:46 +0800</lastBuildDate><atom:link href="https://radar.huadongpeng.com/categories/ai-frontier/index.xml" rel="self" type="application/rss+xml"/><item><title>Codex财务实战</title><link>https://radar.huadongpeng.com/posts/ai-frontier/deep-dive-2026-05-15-0624/</link><pubDate>Fri, 15 May 2026 06:24:46 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/ai-frontier/deep-dive-2026-05-15-0624/</guid><description>&lt;h1 id="codex-财务实战零成本自动生成月度报告15分钟搞定"&gt;Codex 财务实战：零成本自动生成月度报告（15分钟搞定）&lt;/h1&gt;
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Ai-Frontier on Easton 跨国智库</title><link>https://radar.huadongpeng.com/categories/ai-frontier/</link><description>Recent content in Ai-Frontier on Easton 跨国智库</description><generator>Hugo</generator><language>zh-cn</language><lastBuildDate>Sun, 17 May 2026 06:17:20 +0800</lastBuildDate><atom:link href="https://radar.huadongpeng.com/categories/ai-frontier/index.xml" rel="self" type="application/rss+xml"/><item><title>Cowork免费实战</title><link>https://radar.huadongpeng.com/posts/ai-frontier/deep-dive-2026-05-17-0617/</link><pubDate>Sun, 17 May 2026 06:17:20 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/ai-frontier/deep-dive-2026-05-17-0617/</guid><description>&lt;h2 id="cowork零成本桌面ai助手实战指南"&gt;Cowork：零成本桌面AI助手实战指南&lt;/h2&gt;
+&lt;h3 id="这个工具解决什么痛点"&gt;这个工具解决什么痛点&lt;/h3&gt;
+&lt;p&gt;你每天要花大量时间处理文档、表格、邮件，重复性工作占用了本应用于学习或赚钱的时间。Cowork允许你用自然语言指令，让AI直接在你的电脑上操作文件——不需要写一行代码。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;时间节省&lt;/strong&gt;：处理一份10页的会议纪要，手动摘要需30分钟，用Cowork约5分钟。&lt;/p&gt;
+&lt;h3 id="从注册到产出第一个结果的完整流程"&gt;从注册到产出第一个结果的完整流程&lt;/h3&gt;
+&lt;h4 id="第一步下载并安装"&gt;第一步：下载并安装&lt;/h4&gt;
+&lt;ol&gt;
+&lt;li&gt;打开浏览器，访问 &lt;code&gt;claude.ai&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;注册账号（支持国内邮箱，需科学上网，但无付费要求）&lt;/li&gt;
+&lt;li&gt;下载Claude Desktop客户端（支持Windows/Mac）&lt;/li&gt;
+&lt;li&gt;安装后打开，登录你的账号&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;启动成本&lt;/strong&gt;：0元（基础版免费）
+&lt;strong&gt;时间投入&lt;/strong&gt;：5分钟&lt;/p&gt;
+&lt;h4 id="第二步让cowork处理你的第一个文件"&gt;第二步：让Cowork处理你的第一个文件&lt;/h4&gt;
+&lt;p&gt;假设你有一个杂乱的数据表格，需要整理成清晰的报告：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;准备文件&lt;/strong&gt;：找到一个Excel文件（比如销售数据）放在桌面上&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;下达指令&lt;/strong&gt;：在Claude Desktop的对话框中输入：
+&lt;pre tabindex="0"&gt;&lt;code&gt;请打开桌面上的“销售数据.xlsx”，帮我做三件事：
+1. 删除重复行
+2. 按月份排序
+3. 计算每个月的总销售额
+4. 将结果保存为新文件“销售汇总.csv”
+&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;授权访问&lt;/strong&gt;：第一次使用时，系统会询问是否允许Cowork访问你的电脑文件。点击“允许”。&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;查看结果&lt;/strong&gt;：几秒钟后，桌面就会出现“销售汇总.csv”，打开检查结果。&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;&lt;strong&gt;预期首周收益&lt;/strong&gt;：节省3-5小时文件处理时间，这些时间可用于学习新技能或接单。&lt;/p&gt;
+&lt;h3 id="进阶技巧3个大多数人不知道的用法"&gt;进阶技巧：3个大多数人不知道的用法&lt;/h3&gt;
+&lt;h4 id="技巧1批量重命名文件"&gt;技巧1：批量重命名文件&lt;/h4&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;请将桌面“照片”文件夹内所有以“IMG_”开头的文件，
+按拍摄日期重命名为“2026_05_17_第X张.jpg”格式
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;节省手动重命名的时间（50个文件约省20分钟）。&lt;/p&gt;
+&lt;h4 id="技巧2自动生成周报"&gt;技巧2：自动生成周报&lt;/h4&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;请读取桌面“本周工作笔记.md”，提取本周完成的主要任务，
+按“项目名称-进度-问题”格式生成一段周报，保存为“周报_20260517.txt”
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;每月可省4-5份周报的时间（约2小时）。&lt;/p&gt;
+&lt;h4 id="技巧3网页数据抓取"&gt;技巧3：网页数据抓取&lt;/h4&gt;
+&lt;pre tabindex="0"&gt;&lt;code&gt;打开https://example.com的“价格”页面，
+提取所有产品的名称和价格，保存为“价格对比.csv”
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;替代需要编程的爬虫工具。&lt;/p&gt;
+&lt;h3 id="常见错误和排障"&gt;常见错误和排障&lt;/h3&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;问题&lt;/th&gt;
+&lt;th&gt;原因&lt;/th&gt;
+&lt;th&gt;解决&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Cowork说“无法访问文件”&lt;/td&gt;
+&lt;td&gt;系统权限未开启&lt;/td&gt;
+&lt;td&gt;打开系统设置→隐私与安全性→文件访问→允许Claude Desktop&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;生成结果不准确&lt;/td&gt;
+&lt;td&gt;指令不够具体&lt;/td&gt;
+&lt;td&gt;重写指令，增加“按列A降序排列”等具体描述&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;处理大文件卡住&lt;/td&gt;
+&lt;td&gt;免费版有50MB限制&lt;/td&gt;
+&lt;td&gt;分割文件：用“请先处理前100行”渐进操作&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3 id="同类工具对比"&gt;同类工具对比&lt;/h3&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;工具&lt;/th&gt;
+&lt;th&gt;是否免费&lt;/th&gt;
+&lt;th&gt;文件操作能力&lt;/th&gt;
+&lt;th&gt;上手难度（5分制）&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;Cowork&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;基础版免费&lt;/td&gt;
+&lt;td&gt;可读写本地文件&lt;/td&gt;
+&lt;td&gt;2分&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;OpenAI Codex&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;需付费（20美元/月起）&lt;/td&gt;
+&lt;td&gt;仅限代码项目&lt;/td&gt;
+&lt;td&gt;4分（需编程基础）&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td&gt;&lt;strong&gt;Google Gemini&lt;/strong&gt;&lt;/td&gt;
+&lt;td&gt;免费&lt;/td&gt;
+&lt;td&gt;仅支持Google Drive文件&lt;/td&gt;
+&lt;td&gt;3分&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;h3 id="谁适合用谁不适合用"&gt;谁适合用/谁不适合用&lt;/h3&gt;
+&lt;p&gt;&lt;strong&gt;适合&lt;/strong&gt;：&lt;/p&gt;</description><content:encoded><![CDATA[<h2 id="cowork零成本桌面ai助手实战指南">Cowork：零成本桌面AI助手实战指南</h2>
+<h3 id="这个工具解决什么痛点">这个工具解决什么痛点</h3>
+<p>你每天要花大量时间处理文档、表格、邮件，重复性工作占用了本应用于学习或赚钱的时间。Cowork允许你用自然语言指令，让AI直接在你的电脑上操作文件——不需要写一行代码。</p>
+<p><strong>时间节省</strong>：处理一份10页的会议纪要，手动摘要需30分钟，用Cowork约5分钟。</p>
+<h3 id="从注册到产出第一个结果的完整流程">从注册到产出第一个结果的完整流程</h3>
+<h4 id="第一步下载并安装">第一步：下载并安装</h4>
+<ol>
+<li>打开浏览器，访问 <code>claude.ai</code></li>
+<li>注册账号（支持国内邮箱，需科学上网，但无付费要求）</li>
+<li>下载Claude Desktop客户端（支持Windows/Mac）</li>
+<li>安装后打开，登录你的账号</li>
+</ol>
+<p><strong>启动成本</strong>：0元（基础版免费）
+<strong>时间投入</strong>：5分钟</p>
+<h4 id="第二步让cowork处理你的第一个文件">第二步：让Cowork处理你的第一个文件</h4>
+<p>假设你有一个杂乱的数据表格，需要整理成清晰的报告：</p>
+<ol>
+<li><strong>准备文件</strong>：找到一个Excel文件（比如销售数据）放在桌面上</li>
+<li><strong>下达指令</strong>：在Claude Desktop的对话框中输入：
+<pre tabindex="0"><code>请打开桌面上的“销售数据.xlsx”，帮我做三件事：
+1. 删除重复行
+2. 按月份排序
+3. 计算每个月的总销售额
+4. 将结果保存为新文件“销售汇总.csv”
+</code></pre></li>
+<li><strong>授权访问</strong>：第一次使用时，系统会询问是否允许Cowork访问你的电脑文件。点击“允许”。</li>
+<li><strong>查看结果</strong>：几秒钟后，桌面就会出现“销售汇总.csv”，打开检查结果。</li>
+</ol>
+<p><strong>预期首周收益</strong>：节省3-5小时文件处理时间，这些时间可用于学习新技能或接单。</p>
+<h3 id="进阶技巧3个大多数人不知道的用法">进阶技巧：3个大多数人不知道的用法</h3>
+<h4 id="技巧1批量重命名文件">技巧1：批量重命名文件</h4>
+<pre tabindex="0"><code>请将桌面“照片”文件夹内所有以“IMG_”开头的文件，
+按拍摄日期重命名为“2026_05_17_第X张.jpg”格式
+</code></pre><p>节省手动重命名的时间（50个文件约省20分钟）。</p>
+<h4 id="技巧2自动生成周报">技巧2：自动生成周报</h4>
+<pre tabindex="0"><code>请读取桌面“本周工作笔记.md”，提取本周完成的主要任务，
+按“项目名称-进度-问题”格式生成一段周报，保存为“周报_20260517.txt”
+</code></pre><p>每月可省4-5份周报的时间（约2小时）。</p>
+<h4 id="技巧3网页数据抓取">技巧3：网页数据抓取</h4>
+<pre tabindex="0"><code>打开https://example.com的“价格”页面，
+提取所有产品的名称和价格，保存为“价格对比.csv”
+</code></pre><p>替代需要编程的爬虫工具。</p>
+<h3 id="常见错误和排障">常见错误和排障</h3>
+<table>
+  <thead>
+      <tr>
+          <th>问题</th>
+          <th>原因</th>
+          <th>解决</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td>Cowork说“无法访问文件”</td>
+          <td>系统权限未开启</td>
+          <td>打开系统设置→隐私与安全性→文件访问→允许Claude Desktop</td>
+      </tr>
+      <tr>
+          <td>生成结果不准确</td>
+          <td>指令不够具体</td>
+          <td>重写指令，增加“按列A降序排列”等具体描述</td>
+      </tr>
+      <tr>
+          <td>处理大文件卡住</td>
+          <td>免费版有50MB限制</td>
+          <td>分割文件：用“请先处理前100行”渐进操作</td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="同类工具对比">同类工具对比</h3>
+<table>
+  <thead>
+      <tr>
+          <th>工具</th>
+          <th>是否免费</th>
+          <th>文件操作能力</th>
+          <th>上手难度（5分制）</th>
+      </tr>
+  </thead>
+  <tbody>
+      <tr>
+          <td><strong>Cowork</strong></td>
+          <td>基础版免费</td>
+          <td>可读写本地文件</td>
+          <td>2分</td>
+      </tr>
+      <tr>
+          <td><strong>OpenAI Codex</strong></td>
+          <td>需付费（20美元/月起）</td>
+          <td>仅限代码项目</td>
+          <td>4分（需编程基础）</td>
+      </tr>
+      <tr>
+          <td><strong>Google Gemini</strong></td>
+          <td>免费</td>
+          <td>仅支持Google Drive文件</td>
+          <td>3分</td>
+      </tr>
+  </tbody>
+</table>
+<h3 id="谁适合用谁不适合用">谁适合用/谁不适合用</h3>
+<p><strong>适合</strong>：</p>
+<ul>
+<li>非技术背景的运营、行政、销售助理</li>
+<li>需要批量处理文档的兼职自由职业者</li>
+<li>每天花1小时以上整理表格和撰写报告的人</li>
+</ul>
+<p><strong>不适合</strong>：</p>
+<ul>
+<li>需要很高数据安全性（如处理客户隐私数据）的用户</li>
+<li>需要离线完全运行（Cowork依赖网络）的用户</li>
+<li>专做高精度财务建模（AI可能出错）的用户</li>
+</ul>
+<h3 id="性价比结论">性价比结论</h3>
+<p><strong>免费版足够日常使用</strong>。每日有约100次对话额度，处理20个以下文件完全够用。如果每日需要处理大量文件（超过50份），考虑升级到Pro版（20美元/月）。</p>
+<h3 id="你现在就能做的事">你现在就能做的事</h3>
+<ol>
+<li>打开 <code>claude.ai</code> → 注册 → 下载Claude Desktop</li>
+<li>在桌面上放一个你平时需要处理的Excel文件</li>
+<li>输入指令：“请把桌面上的XX文件整理成表格，去重后保存”</li>
+<li>整个过程不超过10分钟，零成本。</li>
+</ol>
+]]></content:encoded></item><item><title>Codex财务实战</title><link>https://radar.huadongpeng.com/posts/ai-frontier/deep-dive-2026-05-15-0624/</link><pubDate>Fri, 15 May 2026 06:24:46 +0800</pubDate><guid>https://radar.huadongpeng.com/posts/ai-frontier/deep-dive-2026-05-15-0624/</guid><description>&lt;h1 id="codex-财务实战零成本自动生成月度报告15分钟搞定"&gt;Codex 财务实战：零成本自动生成月度报告（15分钟搞定）&lt;/h1&gt;
 &lt;h2 id="痛点手工做报表占你一整天"&gt;痛点：手工做报表占你一整天&lt;/h2&gt;
 &lt;p&gt;月底财务团队都要手动拉数据、合并表格、写报告。一个中型电商的财务经理说，每次做月度经营分析报告要花8小时。现在用Codex，免费账号就能把时间压缩到15分钟。&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;适用人群&lt;/strong&gt;：&lt;/p&gt;
