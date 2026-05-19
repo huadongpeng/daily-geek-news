@@ -969,6 +969,34 @@ def save_deep_dive(category_name, config, data):
     return file_path
 
 
+def save_category_briefing(category_name, config, items):
+    """为单个引擎保存每日快讯到其分类目录，确保 Hugo 分类页有内容"""
+    if not items:
+        return None
+
+    now = bj_now()
+    date_slug = now.strftime("%Y-%m-%d")
+    title_cn = config.get("title_cn", category_name)
+    cat_lower = category_name.lower()
+
+    md_body = f"> {now.strftime('%Y年%m月%d日')} · {len(items)} 条情报\n\n"
+    for item in items:
+        md_body += f"### {item.get('title', '无标题')}\n\n"
+        md_body += f"**来源**：{item.get('source', '未知')} | {item.get('one_liner', '')}\n\n"
+        why = item.get('why_matters', '')
+        if why:
+            md_body += f"{why}\n\n"
+        za = item.get('zero_cost_angle', '')
+        if za and za not in ('暂无可执行角度', '待观察', '持续关注'):
+            md_body += f"> 🎯 {za}\n\n"
+
+    return _write_hugo_post(
+        category_name, f"briefing-{date_slug}.md",
+        f"{title_cn}快讯", [cat_lower], ["快讯"],
+        md_body
+    )
+
+
 def save_aggregated_briefing(briefings_by_cat):
     """聚合所有引擎的快讯为一篇，按 topic 分组"""
     if not briefings_by_cat:
@@ -1129,11 +1157,18 @@ if __name__ == "__main__":
 
     # 聚合所有快讯为一篇
     total_briefings = 1 if all_briefings else 0
+    total_category_briefings = 0
     if all_briefings:
         save_aggregated_briefing(all_briefings)
         total_tg += send_aggregated_briefing_tg(all_briefings)
+        # 为每个引擎单独保存分类快讯，确保各 Hugo 分类页（尤其是宏观风向标）有文章展示
+        for cat_name, items in all_briefings.items():
+            saved_cat = save_category_briefing(cat_name, AGENTS[cat_name], items)
+            if saved_cat:
+                total_category_briefings += 1
+                print(f"   📋 [{cat_name}] 分类快讯已落盘: {saved_cat}")
 
     print()
     print(f"🏁 执行完毕。")
-    print(f"   📊 聚合快讯: {total_briefings} | 深度长文: {total_deep_dives} | TG推送: {total_tg}")
+    print(f"   📊 聚合快讯: {total_briefings} | 分类快讯: {total_category_briefings} | 深度长文: {total_deep_dives} | TG推送: {total_tg}")
     print(f"   📡 Feed: {_FEED_OK} 成功 / {_FEED_FAIL} 失败")
