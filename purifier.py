@@ -18,9 +18,12 @@ from ddgs import DDGS
 
 BJT = timezone(timedelta(hours=8))
 SITE_URL = os.environ.get("SITE_URL", "https://radar.huadongpeng.com").rstrip("/")
-MODEL = os.environ.get("DEEPSEEK_MODEL", "deepseek-v4-pro")
-DEEPSEEK_THINKING = os.environ.get("DEEPSEEK_THINKING", "enabled")
-DEEPSEEK_REASONING_EFFORT = os.environ.get("DEEPSEEK_REASONING_EFFORT", "max")
+FLASH_MODEL = os.environ.get("DEEPSEEK_FLASH_MODEL", os.environ.get("DEEPSEEK_MODEL", "deepseek-v4-flash"))
+PRO_MODEL = os.environ.get("DEEPSEEK_PRO_MODEL", "deepseek-v4-pro")
+FLASH_THINKING = os.environ.get("DEEPSEEK_FLASH_THINKING", "disabled")
+FLASH_REASONING_EFFORT = os.environ.get("DEEPSEEK_FLASH_REASONING_EFFORT", "low")
+PRO_THINKING = os.environ.get("DEEPSEEK_PRO_THINKING", os.environ.get("DEEPSEEK_THINKING", "enabled"))
+PRO_REASONING_EFFORT = os.environ.get("DEEPSEEK_PRO_REASONING_EFFORT", os.environ.get("DEEPSEEK_REASONING_EFFORT", "max"))
 DEEPSEEK_API_KEY = os.environ.get("DEEPSEEK_API_KEY")
 TG_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
 TG_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID")
@@ -89,8 +92,15 @@ TOPICS: tuple[Topic, ...] = (
         intent=(
             "重大社会热点事件，不限 AI。只保留可能影响生活、职业、收入、"
             "政策环境、平台规则、国际局势或普通人风险决策的信息。"
+            "优先纳入中外官方/近官方口径，便于交叉对比和识别叙事差异。"
         ),
         feeds=(
+            "https://www.federalreserve.gov/feeds/press_all.xml",
+            "https://www.sec.gov/news/pressreleases.rss",
+            "https://www.ecb.europa.eu/rss/press.html",
+            "http://www.chinadaily.com.cn/rss/china_rss.xml",
+            "http://www.chinadaily.com.cn/rss/world_rss.xml",
+            "http://www.chinadaily.com.cn/rss/bizchina_rss.xml",
             "https://feeds.bbci.co.uk/news/world/rss.xml",
             "https://feeds.bbci.co.uk/news/business/rss.xml",
             "https://www.theguardian.com/world/rss",
@@ -110,8 +120,13 @@ TOPICS: tuple[Topic, ...] = (
         intent=(
             "跨地区、跨语言、跨平台的信息差。优先海外已验证但中文圈少见的模式、"
             "工具、规则变化、用户需求和可迁移到中国或华语市场的机会。"
+            "同时对照中外官方/近官方叙事，寻找同一事件在不同语境下的偏差。"
         ),
         feeds=(
+            "https://www.federalreserve.gov/feeds/press_monetary.xml",
+            "https://www.ecb.europa.eu/rss/statpress.html",
+            "http://www.chinadaily.com.cn/rss/world_rss.xml",
+            "http://www.chinadaily.com.cn/rss/bizchina_rss.xml",
             "https://restofworld.org/feed/latest/",
             "https://www.wired.com/feed/rss",
             "https://www.producthunt.com/feed",
@@ -260,7 +275,14 @@ def collect_sources(max_age_hours: int) -> dict[str, list[dict[str, Any]]]:
     return collected
 
 
-def llm_json(system: str, user: str, max_tokens: int = 8192) -> dict[str, Any]:
+def llm_json(
+    system: str,
+    user: str,
+    max_tokens: int = 8192,
+    model: str | None = None,
+    thinking_type: str | None = None,
+    reasoning_effort: str | None = None,
+) -> dict[str, Any]:
     def parse_json_object(raw: str) -> dict[str, Any]:
         raw = raw.strip()
         if raw.startswith("```"):
@@ -280,6 +302,9 @@ def llm_json(system: str, user: str, max_tokens: int = 8192) -> dict[str, Any]:
 
     last_error: Exception | None = None
     for attempt in range(2):
+        chosen_model = model or FLASH_MODEL
+        chosen_thinking = FLASH_THINKING if thinking_type is None else thinking_type
+        chosen_effort = FLASH_REASONING_EFFORT if reasoning_effort is None else reasoning_effort
         user_content = user
         if attempt:
             user_content = (
@@ -287,11 +312,11 @@ def llm_json(system: str, user: str, max_tokens: int = 8192) -> dict[str, Any]:
                 "不要代码块，不要解释文字，字符串里的换行必须正确转义。\n\n"
                 + user
             )
-        thinking: dict[str, str] = {"type": DEEPSEEK_THINKING}
-        if DEEPSEEK_THINKING == "enabled":
-            thinking["reasoning_effort"] = DEEPSEEK_REASONING_EFFORT
+        thinking: dict[str, str] = {"type": chosen_thinking}
+        if chosen_thinking == "enabled":
+            thinking["reasoning_effort"] = chosen_effort
         payload: dict[str, Any] = {
-            "model": MODEL,
+            "model": chosen_model,
             "temperature": 0.2,
             "max_tokens": max_tokens,
             "response_format": {"type": "json_object"},
@@ -391,6 +416,9 @@ def initial_filter(collected: dict[str, list[dict[str, Any]]], persona: str) -> 
 - deep_candidates 选择 2-4 个，必须能通过进一步检索验证。
 - 优先官方、论文、原始帖、当事公司博客、权威媒体；少用二手转述。
 """,
+        model=FLASH_MODEL,
+        thinking_type=FLASH_THINKING,
+        reasoning_effort=FLASH_REASONING_EFFORT,
     )
 
 
@@ -434,7 +462,59 @@ def research_candidates(candidates: list[dict[str, Any]], method: str) -> list[d
     return researched
 
 
-def compose_report(
+def compose_briefing(filtered: dict[str, Any], persona: str, slot: str) -> dict[str, Any]:
+    print("📰 使用 Flash 生成简讯日报...")
+    topic_titles = {t.slug: t.title for t in TOPICS}
+    return llm_json(
+        system=(
+            "你是 Easton 的个人情报快编。你会把初筛信息整理成可发布到网站的中文简讯。"
+            "必须输出合法 JSON，不要代码块。"
+        ),
+        user=f"""
+当前时间：{bj_now().strftime('%Y-%m-%d %H:%M')} BJT
+本次批次：{slot}
+
+【人设】
+{persona}
+
+【主题映射】
+{json.dumps(topic_titles, ensure_ascii=False)}
+
+【初筛结果】
+{json.dumps(filtered, ensure_ascii=False)[:100000]}
+
+请输出 JSON：
+{{
+  "briefing": {{
+    "title": "今日简讯标题",
+    "summary": "100字内说明今天最重要的判断",
+    "items": [
+      {{
+        "topic": "主题slug",
+        "title": "短标题",
+        "source": "来源",
+        "url": "链接",
+        "credibility": "高|中|线索",
+        "why_it_matters": "为什么重要",
+        "action": "下一步动作"
+      }}
+    ]
+  }}
+}}
+
+简讯要求：
+- items 从初筛 briefing_items 中优中择优，保留 10-18 条。
+- 只写和人设相关、能指导关注/行动的信息；不要把来源不明的信息写成事实。
+- why_it_matters 用人话说明与我有什么关系，action 给一个今天能做的小动作。
+""",
+        max_tokens=12000,
+        model=FLASH_MODEL,
+        thinking_type=FLASH_THINKING,
+        reasoning_effort=FLASH_REASONING_EFFORT,
+    )
+
+
+def compose_deep_dives(
     filtered: dict[str, Any],
     researched: list[dict[str, Any]],
     persona: str,
@@ -442,11 +522,11 @@ def compose_report(
     writing_method: str,
     slot: str,
 ) -> dict[str, Any]:
-    print("✍️ 生成简讯日报和深度好文...")
+    print("✍️ 使用 Pro max 生成深度好文...")
     topic_titles = {t.slug: t.title for t in TOPICS}
     return llm_json(
         system=(
-            "你是 Easton 的个人情报主编和深度作者。你会把信息写成可发布到网站的中文 Markdown。"
+            "你是 Easton 的深度研究作者。你会基于检索证据写成可发布到网站的中文 Markdown 深度文章。"
             "必须输出合法 JSON，不要代码块。"
         ),
         user=f"""
@@ -473,21 +553,6 @@ def compose_report(
 
 请输出 JSON：
 {{
-  "briefing": {{
-    "title": "今日简讯标题",
-    "summary": "100字内说明今天最重要的判断",
-    "items": [
-      {{
-        "topic": "主题slug",
-        "title": "短标题",
-        "source": "来源",
-        "url": "链接",
-        "credibility": "高|中|线索",
-        "why_it_matters": "为什么重要",
-        "action": "下一步动作"
-      }}
-    ]
-  }},
   "deep_dives": [
     {{
       "topic": "主题slug",
@@ -507,6 +572,9 @@ def compose_report(
 - 所有不确定信息要标注“线索”或“待验证”。
 """,
         max_tokens=64000,
+        model=PRO_MODEL,
+        thinking_type=PRO_THINKING,
+        reasoning_effort=PRO_REASONING_EFFORT,
     )
 
 
@@ -729,13 +797,21 @@ def main() -> None:
     writing_method = load_text_config("WRITING_SKILL_PATH", ROOT / "config" / "writing_skill.md", WRITING_METHOD_DEFAULT)
 
     print("🚀 Easton Radar v3")
-    print(f"   批次: {slot} | 模型: {MODEL} | 主题: {len(TOPICS)}")
+    print(
+        f"   批次: {slot} | 初筛/简讯: {FLASH_MODEL} | "
+        f"深度: {PRO_MODEL}({PRO_THINKING}/{PRO_REASONING_EFFORT}) | 主题: {len(TOPICS)}"
+    )
 
     collected = collect_sources(args.max_age_hours)
     filtered = initial_filter(collected, persona)
+    briefing_report = compose_briefing(filtered, persona, slot)
     candidates = filtered.get("deep_candidates", [])
     researched = research_candidates(candidates, research_method)
-    report = compose_report(filtered, researched, persona, research_method, writing_method, slot)
+    deep_report = compose_deep_dives(filtered, researched, persona, research_method, writing_method, slot)
+    report = {
+        "briefing": briefing_report.get("briefing", {}),
+        "deep_dives": deep_report.get("deep_dives", []),
+    }
     save_outputs(report, slot)
     if not args.no_telegram:
         send_telegram(report, slot)

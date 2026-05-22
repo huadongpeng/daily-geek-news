@@ -43,9 +43,12 @@ jobs:
       - name: Run intelligence pipeline
         env:
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
-          DEEPSEEK_MODEL: ${{ vars.DEEPSEEK_MODEL || 'deepseek-v4-pro' }}
-          DEEPSEEK_THINKING: ${{ vars.DEEPSEEK_THINKING || 'enabled' }}
-          DEEPSEEK_REASONING_EFFORT: ${{ vars.DEEPSEEK_REASONING_EFFORT || 'max' }}
+          DEEPSEEK_FLASH_MODEL: ${{ vars.DEEPSEEK_FLASH_MODEL || 'deepseek-v4-flash' }}
+          DEEPSEEK_FLASH_THINKING: ${{ vars.DEEPSEEK_FLASH_THINKING || 'disabled' }}
+          DEEPSEEK_FLASH_REASONING_EFFORT: ${{ vars.DEEPSEEK_FLASH_REASONING_EFFORT || 'low' }}
+          DEEPSEEK_PRO_MODEL: ${{ vars.DEEPSEEK_PRO_MODEL || 'deepseek-v4-pro' }}
+          DEEPSEEK_PRO_THINKING: ${{ vars.DEEPSEEK_PRO_THINKING || 'enabled' }}
+          DEEPSEEK_PRO_REASONING_EFFORT: ${{ vars.DEEPSEEK_PRO_REASONING_EFFORT || 'max' }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
           TG_THREAD_BRIEFING: ${{ secrets.TG_THREAD_BRIEFING }}

@@ -51,9 +51,12 @@
 pip install feedparser requests ddgs
 
 export DEEPSEEK_API_KEY="sk-xxx"
-export DEEPSEEK_MODEL="deepseek-v4-pro"
-export DEEPSEEK_THINKING="enabled"
-export DEEPSEEK_REASONING_EFFORT="max"
+export DEEPSEEK_FLASH_MODEL="deepseek-v4-flash"
+export DEEPSEEK_FLASH_THINKING="disabled"
+export DEEPSEEK_FLASH_REASONING_EFFORT="low"
+export DEEPSEEK_PRO_MODEL="deepseek-v4-pro"
+export DEEPSEEK_PRO_THINKING="enabled"
+export DEEPSEEK_PRO_REASONING_EFFORT="max"
 export TELEGRAM_BOT_TOKEN="xxx"      # 可选
 export TELEGRAM_CHAT_ID="-100xxx"    # 可选
 
@@ -76,12 +79,12 @@ Gemini Banana 生图提示词（公众号封面图适配）
 
 | Secret | 说明 |
 | --- | --- |
-| `DEEPSEEK_API_KEY` | 必需，调用 DeepSeek V4 Pro 做分析和写作 |
+| `DEEPSEEK_API_KEY` | 必需，调用 DeepSeek V4 系列模型做分析和写作 |
 | `TELEGRAM_BOT_TOKEN` | 可选，发送 Telegram 通知 |
 | `TELEGRAM_CHAT_ID` | 可选，Telegram 目标群或频道 |
 | `TG_THREAD_BRIEFING` | 可选，Telegram topic id |
 
-默认模型是 `deepseek-v4-pro`。如需临时切换，可在 GitHub Variables 里设置 `DEEPSEEK_MODEL`。
-默认启用 Thinking Mode，`DEEPSEEK_REASONING_EFFORT` 默认使用 `max`。
+默认轻量步骤使用 `deepseek-v4-flash`，包括初筛和简讯整理；深度长文使用 `deepseek-v4-pro`，并默认启用 Thinking Mode + `max`。
+如需临时切换，可在 GitHub Variables 里设置 `DEEPSEEK_FLASH_MODEL` 或 `DEEPSEEK_PRO_MODEL`。
 
 GitHub Actions 每天北京时间 06:00 和 18:00 自动运行，也可以手动触发并选择 `morning/evening`。
