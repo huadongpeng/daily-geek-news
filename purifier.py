@@ -118,7 +118,6 @@ TOPICS: tuple[Topic, ...] = (
             "https://news.ycombinator.com/rss",
             "https://www.reddit.com/r/digitalnomad/top/.rss?t=day",
             "https://www.reddit.com/r/InternetIsBeautiful/top/.rss?t=day",
-            "https://e27.co/feed/",
         ),
         search_seeds=("overseas product trend China gap", "emerging market startup pain", "tool alternative demand"),
     ),
@@ -601,13 +600,26 @@ def normalize_wechat_body(md: str) -> str:
     return re.sub(r"\n{3,}", "\n\n", text)
 
 
+def normalize_gemini_banana_prompt(prompt: str, title: str) -> str:
+    prompt = re.sub(r"\s+", " ", prompt or "").strip()
+    if not prompt:
+        prompt = f"以「{title}」为主题的数字艺术封面，有明确视觉焦点和故事感。"
+    required = "公众号封面图，900x383，2.35:1 横版构图，无文字，无logo，无人物面孔。"
+    if "900x383" not in prompt and "2.35:1" not in prompt:
+        prompt = f"{required}{prompt}"
+    elif "无文字" not in prompt or "无logo" not in prompt:
+        prompt = f"{prompt}，无文字，无logo，无人物面孔"
+    return prompt
+
+
 def write_wechat_source(article: dict[str, Any], slot: str) -> Path:
     date_slug = bj_now().strftime("%Y-%m-%d")
     title = article.get("title", "深度文章")
-    prompt = article.get("gemini_banana_prompt") or article.get("cover_prompt") or (
+    raw_prompt = article.get("gemini_banana_prompt") or article.get("cover_prompt") or (
         f"公众号封面图，900x383，2.35:1，主题是「{title}」，无文字，无logo，无人物面孔，"
         "数字艺术风格，有明确视觉焦点，适合技术与商业观察类文章。"
     )
+    prompt = normalize_gemini_banana_prompt(str(raw_prompt), title)
     body = normalize_wechat_body(article.get("content_md", ""))
     path = WECHAT_OUTPUT_DIR / f"{date_slug}-{slot}-{slugify(title)}.md"
     content = (
