@@ -19,6 +19,8 @@ from ddgs import DDGS
 BJT = timezone(timedelta(hours=8))
 SITE_URL = os.environ.get("SITE_URL", "https://radar.huadongpeng.com").rstrip("/")
 MODEL = os.environ.get("DEEPSEEK_MODEL", "deepseek-v4-pro")
+DEEPSEEK_THINKING = os.environ.get("DEEPSEEK_THINKING", "enabled")
+DEEPSEEK_REASONING_EFFORT = os.environ.get("DEEPSEEK_REASONING_EFFORT", "max")
 DEEPSEEK_API_KEY = os.environ.get("DEEPSEEK_API_KEY")
 TG_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
 TG_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID")
@@ -50,16 +52,13 @@ TOPICS: tuple[Topic, ...] = (
         ),
         feeds=(
             "https://openai.com/blog/rss.xml",
-            "https://www.anthropic.com/feed/",
             "https://blog.google/technology/ai/rss/",
-            "https://deepmind.google/blog/feed.xml",
-            "https://ai.meta.com/blog/feed/",
-            "https://mistral.ai/feed/",
             "https://huggingface.co/blog/feed.xml",
             "https://arxiv.org/rss/cs.AI",
             "https://arxiv.org/rss/cs.LG",
-            "https://tldr.tech/ai/rss",
             "https://news.ycombinator.com/rss",
+            "https://dev.to/feed/tag/ai",
+            "https://venturebeat.com/category/ai/feed/",
         ),
         search_seeds=("AI model release", "AI coding agent", "AI paper breakthrough"),
     ),
@@ -74,7 +73,6 @@ TOPICS: tuple[Topic, ...] = (
         feeds=(
             "https://news.ycombinator.com/rss",
             "https://www.producthunt.com/feed",
-            "https://feed.indiehackers.com/forum/rss",
             "https://www.reddit.com/r/SaaS/top/.rss?t=day",
             "https://www.reddit.com/r/SideProject/top/.rss?t=day",
             "https://www.reddit.com/r/Entrepreneur/top/.rss?t=day",
@@ -116,12 +114,10 @@ TOPICS: tuple[Topic, ...] = (
         feeds=(
             "https://restofworld.org/feed/latest/",
             "https://www.wired.com/feed/rss",
-            "https://www.pragmaticengineer.com/feed",
             "https://www.producthunt.com/feed",
             "https://news.ycombinator.com/rss",
             "https://www.reddit.com/r/digitalnomad/top/.rss?t=day",
             "https://www.reddit.com/r/InternetIsBeautiful/top/.rss?t=day",
-            "https://www.techinasia.com/feed",
             "https://e27.co/feed/",
         ),
         search_seeds=("overseas product trend China gap", "emerging market startup pain", "tool alternative demand"),
@@ -266,26 +262,68 @@ def collect_sources(max_age_hours: int) -> dict[str, list[dict[str, Any]]]:
 
 
 def llm_json(system: str, user: str, max_tokens: int = 8192) -> dict[str, Any]:
-    resp = requests.post(
-        "https://api.deepseek.com/chat/completions",
-        headers={"Authorization": f"Bearer {DEEPSEEK_API_KEY}", "Content-Type": "application/json"},
-        json={
+    def parse_json_object(raw: str) -> dict[str, Any]:
+        raw = raw.strip()
+        if raw.startswith("```"):
+            raw = re.sub(r"^```(?:json)?\s*", "", raw)
+            raw = re.sub(r"\s*```$", "", raw)
+        candidates = [raw]
+        match = re.search(r"\{.*\}", raw, re.S)
+        if match:
+            candidates.append(match.group(0))
+        last_error: Exception | None = None
+        for candidate in candidates:
+            try:
+                return json.loads(candidate, strict=False)
+            except json.JSONDecodeError as exc:
+                last_error = exc
+        raise last_error or ValueError("No JSON object found")
+
+    last_error: Exception | None = None
+    for attempt in range(2):
+        user_content = user
+        if attempt:
+            user_content = (
+                "上一次输出不是可解析 JSON。请只返回一个完整、合法、未截断的 JSON object。"
+                "不要代码块，不要解释文字，字符串里的换行必须正确转义。\n\n"
+                + user
+            )
+        thinking: dict[str, str] = {"type": DEEPSEEK_THINKING}
+        if DEEPSEEK_THINKING == "enabled":
+            thinking["reasoning_effort"] = DEEPSEEK_REASONING_EFFORT
+        payload: dict[str, Any] = {
             "model": MODEL,
             "temperature": 0.2,
             "max_tokens": max_tokens,
-            "messages": [{"role": "system", "content": system}, {"role": "user", "content": user}],
-        },
-        timeout=300,
-    )
-    resp.raise_for_status()
-    text = resp.json()["choices"][0]["message"]["content"]
-    try:
-        return json.loads(text)
-    except json.JSONDecodeError:
-        match = re.search(r"\{.*\}", text, re.S)
-        if match:
-            return json.loads(match.group(0))
-        raise
+            "response_format": {"type": "json_object"},
+            "thinking": thinking,
+            "messages": [{"role": "system", "content": system}, {"role": "user", "content": user_content}],
+        }
+        resp = requests.post(
+            "https://api.deepseek.com/chat/completions",
+            headers={"Authorization": f"Bearer {DEEPSEEK_API_KEY}", "Content-Type": "application/json"},
+            json=payload,
+            timeout=300,
+        )
+        resp.raise_for_status()
+        data = resp.json()
+        choice = data["choices"][0]
+        finish_reason = choice.get("finish_reason")
+        text = choice.get("message", {}).get("content") or ""
+        if finish_reason == "length":
+            last_error = ValueError("DeepSeek response was truncated because finish_reason=length")
+            continue
+        if not text.strip():
+            last_error = ValueError("DeepSeek returned empty content")
+            continue
+        try:
+            return parse_json_object(text)
+        except Exception as exc:
+            last_error = exc
+            debug_path = CACHE_DIR / f"bad-json-{bj_now().strftime('%Y%m%d-%H%M%S')}-try{attempt + 1}.txt"
+            debug_path.write_text(text, encoding="utf-8")
+
+    raise ValueError(f"LLM JSON parse failed after retry: {last_error}") from last_error
 
 
 def source_digest(collected: dict[str, list[dict[str, Any]]]) -> str:

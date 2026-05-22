@@ -52,6 +52,8 @@ pip install feedparser requests ddgs
 
 export DEEPSEEK_API_KEY="sk-xxx"
 export DEEPSEEK_MODEL="deepseek-v4-pro"
+export DEEPSEEK_THINKING="enabled"
+export DEEPSEEK_REASONING_EFFORT="max"
 export TELEGRAM_BOT_TOKEN="xxx"      # 可选
 export TELEGRAM_CHAT_ID="-100xxx"    # 可选
 
@@ -80,5 +82,6 @@ Gemini Banana 生图提示词（公众号封面图适配）
 | `TG_THREAD_BRIEFING` | 可选，Telegram topic id |
 
 默认模型是 `deepseek-v4-pro`。如需临时切换，可在 GitHub Variables 里设置 `DEEPSEEK_MODEL`。
+默认启用 Thinking Mode，`DEEPSEEK_REASONING_EFFORT` 默认使用 `max`。
 
 GitHub Actions 每天北京时间 06:00 和 18:00 自动运行，也可以手动触发并选择 `morning/evening`。
