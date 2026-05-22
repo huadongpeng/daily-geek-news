@@ -139,18 +139,18 @@ TOPICS: tuple[Topic, ...] = (
 )
 
 
-PERSONA_DEFAULT = “””
+PERSONA_DEFAULT = """
 Easton，30多岁，普通二本计算机专业，2016年毕业。现在是一家养猪设备制造企业唯一的IT人，一人顶一个部门。
-处境不轻松，日子过得比较艰难，压力不小，这影响他对风险的判断——比普通人更在乎代价，更在乎”这事我真的能做吗”。
+处境不轻松，日子过得比较艰难，压力不小，这影响他对风险的判断——比普通人更在乎代价，更在乎这事我真的能做吗。
 
-认知模式（核心特征）：研究得很深，实践得很少。对感兴趣的东西会做很深的信息检索和筛选，有自己的思维框架，能看到别人不一定看到的角度。但受限于经济情况和性格特征，真正下场尝试的次数有限。对新事物往往研究到七八成深度，站在”可以开始动手了”的门口——然后没有迈进去。这是真实的自我描述，也是可以自嘲的地方。
+认知模式（核心特征）：研究得很深，实践得很少。对感兴趣的东西会做很深的信息检索和筛选，有自己的思维框架，能看到别人不一定看到的角度。但受限于经济情况和性格特征，真正下场尝试的次数有限。对新事物往往研究到七八成深度，站在可以开始动手了的门口——然后没有迈进去。这是真实的自我描述，也是可以自嘲的地方。
 
-在探索副业，深度用AI写代码、写公众号，对海外市场和信息差感兴趣，但实践很少——没时间、没本金、有顾虑，外加容易停在”研究完了但还没开始”的位置。
+在探索副业，深度用AI写代码、写公众号，对海外市场和信息差感兴趣，但实践很少——没时间、没本金、有顾虑，外加容易停在研究完了但还没开始的位置。
 写给和他处境类似的人：想探副业但启动资金有限，想睁眼看世界但信息来源乱，研究了不少但不知道怎么开始的普通打工人。
 不教人成功，只是一个站在门口研究了很久但还没迈进去的人，认真把自己看到的东西写出来。
-“””
+"""
 
-RESEARCH_METHOD_DEFAULT = “””
+RESEARCH_METHOD_DEFAULT = """
 信息探索原则：
 1. 优先官方公告、原始论文、公司文档、监管文件、当事人原帖；其次主流媒体、行业媒体、开发者讨论。
 2. 来源必须分层：高可信 / 中可信 / 线索级，不能混写在一起。
@@ -158,22 +158,22 @@ RESEARCH_METHOD_DEFAULT = “””
 4. 引用商业公司报告时标注利益动机，对数字打折说明。
 5. 不把单个 Reddit/论坛帖子写成确定事实，只当需求线索。
 6. 整理结果时：找最重要的 2-3 个有据可查的事实，找最反直觉/最让人停下来的 1-2 个角度，找对 Easton 的个人连接点。
-“””
+"""
 
-WRITING_METHOD_DEFAULT = “””
+WRITING_METHOD_DEFAULT = """
 写作原则：
-开头必须从一个具体细节切入（时间、价格、页面、报错、聊天句子），绝不用”在当今AI快速发展的时代”。
+开头必须从一个具体细节切入（时间、价格、页面、报错、聊天句子），绝不用"在当今AI快速发展的时代"。
 文章风格是有见识的普通技术人在认真聊一件打动他的事，不是媒体报道，不是知识付费教程。
 反证和不确定性嵌在正文中间出现，不单独开一节。
-来源可信度在正文引用时就带出来，不在文章末尾单独开”信息来源与可信度”一节。
+来源可信度在正文引用时就带出来，不在文章末尾单独开"信息来源与可信度"一节。
 标题要短，避免夸张承诺，宁可少写也不要水。
 
 结构禁令：
-- 禁止”一、二、三、四、五、六”数字编号大标题
-- 禁止”本周/两周内/一个月内”三段时间轴行动计划
+- 禁止"一、二、三、四、五、六"数字编号大标题
+- 禁止"本周/两周内/一个月内"三段时间轴行动计划
 - 禁止工具推荐列满四五个选项，只写自己真正用过或打算用的那一两个
 - 禁止引用数据不带个人判断（说明来源动机、说明我信几成）
-“””
+"""
 
 
 def bj_now() -> datetime:
@@ -381,9 +381,43 @@ def source_digest(collected: dict[str, list[dict[str, Any]]]) -> str:
     return "\n".join(blocks)
 
 
-def initial_filter(collected: dict[str, list[dict[str, Any]]], persona: str) -> dict[str, Any]:
+def load_recent_titles(days: int = 7) -> list[str]:
+    """扫描 content/posts/ 下近 N 天内生成的深度文章标题，用于防重复。"""
+    cutoff = bj_now() - timedelta(days=days)
+    titles: list[str] = []
+    for category in ("ai-tech", "income-lab", "world-signals", "info-gap"):
+        cat_dir = CONTENT_DIR / category
+        if not cat_dir.exists():
+            continue
+        for md_file in cat_dir.glob("*.md"):
+            try:
+                mtime = datetime.fromtimestamp(md_file.stat().st_mtime, tz=BJT)
+                if mtime < cutoff:
+                    continue
+                text = md_file.read_text(encoding="utf-8")
+                m = re.search(r'^title:\s*"([^"]+)"', text, re.MULTILINE)
+                if m:
+                    titles.append(m.group(1))
+            except Exception:
+                continue
+    if titles:
+        print(f"   📚 近 {days} 天已发布深度文章: {len(titles)} 篇，用于防重复选题")
+    return titles
+
+
+def initial_filter(
+    collected: dict[str, list[dict[str, Any]]],
+    persona: str,
+    recent_titles: list[str],
+) -> dict[str, Any]:
     print("🧭 初筛符合人设和关注方向的信息...")
     topics = "\n".join(f"- {t.title}: {t.intent}" for t in TOPICS)
+    recent_block = ""
+    if recent_titles:
+        recent_block = (
+            "\n【近7天已发布深度文章（选 deep_candidates 时主动回避主题高度重合的话题）】\n"
+            + "\n".join(f"- {t}" for t in recent_titles)
+        )
     return llm_json(
         system=(
             "你是 Easton 的个人情报编辑。任务是从源头信息中筛出真正值得进入日报的内容。"
@@ -397,6 +431,7 @@ def initial_filter(collected: dict[str, list[dict[str, Any]]], persona: str) -> 
 
 【关注主题】
 {topics}
+{recent_block}
 
 【候选信息】
 {source_digest(collected)[:250000]}
@@ -427,7 +462,7 @@ def initial_filter(collected: dict[str, list[dict[str, Any]]], persona: str) -> 
 
 规则：
 - briefing_items 总数 12-20 条，宁缺毋滥。
-- deep_candidates 选择 2-4 个，必须能通过进一步检索验证。
+- deep_candidates 选择 2-4 个，必须能通过进一步检索验证。近7天已发布的主题优先跳过，除非有实质性新进展值得追。
 - 优先官方、论文、原始帖、当事公司博客、权威媒体；少用二手转述。
 """,
         model=FLASH_MODEL,
@@ -535,23 +570,31 @@ def compose_deep_dives(
     research_method: str,
     writing_method: str,
     slot: str,
+    recent_titles: list[str] | None = None,
 ) -> dict[str, Any]:
     print("✍️ 使用 Pro max 生成深度好文...")
     topic_titles = {t.slug: t.title for t in TOPICS}
+    recent_block = ""
+    if recent_titles:
+        recent_block = (
+            "\n【近7天已发布深度文章（主题高度重合的直接跳过，不要输出）】\n"
+            + "\n".join(f"- {t}" for t in recent_titles)
+            + "\n"
+        )
     return llm_json(
         system=(
-            “你是 Easton 的深度写作作者。”
-            “Easton 是普通二本计算机专业毕业的技术人，现在是一家养猪设备制造企业唯一的 IT 人，”
-            “处境不轻松，日子过得比较艰难，但一直在认真关注海外市场、信息差和副业机会。”
-            “他的核心特质：研究得很深，实践得很少。”
-            “对感兴趣的东西会做深度检索和筛选，有自己的思维框架；”
-            “但受限于经济情况和性格，真正下场尝试的次数有限，”
-            “经常站在'可以开始动手了'的门口却没有迈进去——这是他可以自嘲的地方，也是他和读者产生共鸣的地方。”
-            “他的文章写给和他处境类似的普通人，不教人成功，”
-            “只是一个站在门口研究了很久但还没迈进去的人，认真把自己看到的东西写出来。”
-            “必须输出合法 JSON，不要代码块。”
+            "你是 Easton 的深度写作作者。"
+            "Easton 是普通二本计算机专业毕业的技术人，现在是一家养猪设备制造企业唯一的 IT 人，"
+            "处境不轻松，日子过得比较艰难，但一直在认真关注海外市场、信息差和副业机会。"
+            "他的核心特质：研究得很深，实践得很少。"
+            "对感兴趣的东西会做深度检索和筛选，有自己的思维框架；"
+            "但受限于经济情况和性格，真正下场尝试的次数有限，"
+            "经常站在'可以开始动手了'的门口却没有迈进去——这是他可以自嘲的地方，也是他和读者产生共鸣的地方。"
+            "他的文章写给和他处境类似的普通人，不教人成功，"
+            "只是一个站在门口研究了很久但还没迈进去的人，认真把自己看到的东西写出来。"
+            "必须输出合法 JSON，不要代码块。"
         ),
-        user=f”””
+        user=f"""
 当前时间：{bj_now().strftime('%Y-%m-%d %H:%M')} BJT
 本次批次：{slot}
 
@@ -564,11 +607,11 @@ def compose_deep_dives(
 【写作方法论】
 {writing_method[:40000]}
 
-【工作流程：两阶段执行】
+{recent_block}【工作流程：两阶段执行】
 
 第一阶段 — 消化证据，找到那个让人停下来的角度：
 阅读【深度候选与检索证据】，按信息探索方法论的原则，在心里整理：
-- 最重要的 2-3 个有据可查的事实（区分”已确认”和”线索”）
+- 最重要的 2-3 个有据可查的事实（区分"已确认"和"线索"）
 - 最有意思、最反直觉的那个角度（不是最全面，是最让 Easton 停下来的）
 - 对 Easton 这种处境最有个人共鸣的连接点
 
@@ -588,13 +631,13 @@ def compose_deep_dives(
 
 请输出 JSON：
 {{
-  “deep_dives”: [
+  "deep_dives": [
     {{
-      “topic”: “主题slug”,
-      “title”: “文章标题”,
-      “summary”: “Telegram 摘要，80字内”,
-      “gemini_banana_prompt”: “适合 Gemini Banana 生图的公众号封面提示词，中文，900x383，2.35:1，必须无文字、无logo、无人物面孔”,
-      “content_md”: “完整 Markdown 正文”
+      "topic": "主题slug",
+      "title": "文章标题",
+      "summary": "Telegram 摘要，80字内",
+      "gemini_banana_prompt": "适合 Gemini Banana 生图的公众号封面提示词，中文，900x383，2.35:1，必须无文字、无logo、无人物面孔",
+      "content_md": "完整 Markdown 正文"
     }}
   ]
 }}
@@ -602,13 +645,13 @@ def compose_deep_dives(
 深度文章硬性要求：
 - 产出 1-3 篇，优中择优，不要凑数。
 - 每篇必须有：有据可查的事实链、为什么和 Easton 有关（代入一人IT+日子不轻松+没时间没本金的真实处境）、机会或风险判断、反证和不确定性。
-- 来源可信度在正文引用时就带出来，不要在文章末尾单独开”信息来源与可信度”一节。
-- “接下来我打算做什么”：Easton 研究深但实践少，经常站在门口没迈进去——这是真实的，可以自嘲。写法要有取舍、有顾虑，可以说”我大概率还是不会马上动手”，绝对不能写成带时间分段或序号的行动清单。如果有真实尝试过的内容，要明确标注，那比研究更有分量。
-- 人设一致性：文章里”我”是养猪设备厂一人IT、探索副业极少实践的普通技术人，不能写成带团队的技术总监或已有多个项目的创业者。个人财务处境只能以”日子过得不轻松””压力比较大”一笔带过，不展开细节。
+- 来源可信度在正文引用时就带出来，不要在文章末尾单独开"信息来源与可信度"一节。
+- "接下来我打算做什么"：Easton 研究深但实践少，经常站在门口没迈进去——这是真实的，可以自嘲。写法要有取舍、有顾虑，可以说"我大概率还是不会马上动手"，绝对不能写成带时间分段或序号的行动清单。如果有真实尝试过的内容，要明确标注，那比研究更有分量。
+- 人设一致性：文章里"我"是养猪设备厂一人IT、探索副业极少实践的普通技术人，不能写成带团队的技术总监或已有多个项目的创业者。个人财务处境只能以"日子过得不轻松""压力比较大"一笔带过，不展开细节。
 - 正文只允许使用 Markdown 加粗 `**文字**`，不用表格、代码块、引用块、图片语法、复杂 Markdown。
-- 禁止”一、二、三、四、五、六”数字编号大标题；禁止”本周/两周内/一个月内”三段时间轴。
-- 所有不确定信息标注”线索”或”待验证”。
-“””,
+- 禁止"一、二、三、四、五、六"数字编号大标题；禁止"本周/两周内/一个月内"三段时间轴。
+- 所有不确定信息标注"线索"或"待验证"。
+""",
         max_tokens=64000,
         model=PRO_MODEL,
         thinking_type=PRO_THINKING,
@@ -840,12 +883,13 @@ def main() -> None:
         f"深度: {PRO_MODEL}({PRO_THINKING}/{PRO_REASONING_EFFORT}) | 主题: {len(TOPICS)}"
     )
 
+    recent_titles = load_recent_titles(days=7)
     collected = collect_sources(args.max_age_hours)
-    filtered = initial_filter(collected, persona)
+    filtered = initial_filter(collected, persona, recent_titles)
     briefing_report = compose_briefing(filtered, persona, slot)
     candidates = filtered.get("deep_candidates", [])
     researched = research_candidates(candidates, research_method)
-    deep_report = compose_deep_dives(filtered, researched, persona, research_method, writing_method, slot)
+    deep_report = compose_deep_dives(filtered, researched, persona, research_method, writing_method, slot, recent_titles)
     report = {
         "briefing": briefing_report.get("briefing", {}),
         "deep_dives": deep_report.get("deep_dives", []),
