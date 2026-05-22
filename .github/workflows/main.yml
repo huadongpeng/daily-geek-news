@@ -1,11 +1,20 @@
-name: Easton Radar Auto Deploy
+name: Easton Radar
 
 on:
   schedule:
-    - cron: '0 22 * * *' # 北京时间早上 6 点
+    - cron: "0 22 * * *" # 06:00 Beijing
+    - cron: "0 10 * * *" # 18:00 Beijing
   workflow_dispatch:
-
-# 赋予 GitHub Action 推送代码和部署页面的最高权限
+    inputs:
+      slot:
+        description: "Run slot"
+        required: false
+        default: "auto"
+        type: choice
+        options:
+          - auto
+          - morning
+          - evening
 permissions:
   contents: write
   pages: write
@@ -15,88 +24,52 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-    - name: 1. 检出代码 (包含 Hugo 主题)
-      uses: actions/checkout@v4
-      with:
-        submodules: true
-        fetch-depth: 0
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: true
+          fetch-depth: 0
 
-    - name: 2. 配置 Python 环境
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.10'
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
 
-    - name: 3. 安装依赖包
-      run: |
-        python -m pip install --upgrade pip
-        pip install feedparser requests ddgs
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install feedparser requests ddgs
 
-    - name: 4. 运行情报引擎：生成长文 Markdown
-      env:
-        DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
-        TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-        TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
-        TG_THREAD_ARBITRAGE: ${{ secrets.TG_THREAD_ARBITRAGE }}
-        TG_THREAD_AI: ${{ secrets.TG_THREAD_AI }}
-        TG_THREAD_CROSS: ${{ secrets.TG_THREAD_CROSS }}
-        TG_THREAD_MACRO: ${{ secrets.TG_THREAD_MACRO }}
-        TG_THREAD_CHINA: ${{ secrets.TG_THREAD_CHINA }}
-        TG_THREAD_DEV: ${{ secrets.TG_THREAD_DEV }}
-        TG_THREAD_BRIEFING: ${{ secrets.TG_THREAD_BRIEFING }}
-      run: python purifier.py
+      - name: Run intelligence pipeline
+        env:
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          DEEPSEEK_MODEL: ${{ vars.DEEPSEEK_MODEL || 'deepseek-v4-pro' }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          TG_THREAD_BRIEFING: ${{ secrets.TG_THREAD_BRIEFING }}
+        run: |
+          SLOT="${{ github.event.inputs.slot || 'auto' }}"
+          python purifier.py --slot "$SLOT"
 
-    - name: 5. 提交最新生成的文章到代码库
-      run: |
-        git config --local user.email "action@github.com"
-        git config --local user.name "GitHub Action"
-        git add content/posts/
-        # 如果有新文章则提交，没有则跳过，防止报错强杀流水线
-        git diff --quiet && git diff --staged --quiet || (git commit -m "Auto-generated Easton daily insight" && git push)
+      - name: Commit generated content
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add content/posts/ outputs/wechat_articles/
+          git diff --quiet && git diff --staged --quiet || (git commit -m "Generate Easton radar content" && git push)
 
-    - name: 5.5 镜像推送到腾讯云 GitLab（触发公众号草稿箱发布）
-      continue-on-error: true
-      env:
-        GITLAB_HOST: ${{ secrets.GITLAB_HOST }}
-        GITLAB_USERNAME: ${{ secrets.GITLAB_USERNAME }}
-        GITLAB_ACCESS_TOKEN: ${{ secrets.GITLAB_ACCESS_TOKEN }}
-      run: |
-        if [ -z "$GITLAB_HOST" ] || [ -z "$GITLAB_USERNAME" ] || [ -z "$GITLAB_ACCESS_TOKEN" ]; then
-          echo "⏭️ GitLab 密钥未配置，跳过 GitLab 推送"
-          exit 0
-        fi
-        GITLAB_REMOTE="https://${GITLAB_USERNAME}:${GITLAB_ACCESS_TOKEN}@${GITLAB_HOST}/${GITLAB_USERNAME}/daily-geek-news.git"
-        git remote add gitlab "$GITLAB_REMOTE" 2>/dev/null || git remote set-url gitlab "$GITLAB_REMOTE"
-        # 镜像模式：GitHub 为源，GitLab 为镜像，强制同步
-        git push gitlab +main:main 2>&1 || echo "⚠️ GitLab 推送失败，检查参数是否正确"
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: "latest"
+          extended: true
 
-    - name: 5.6 从 GitLab 拉取封面图（腾讯云服务器生成后推送）
-      continue-on-error: true
-      env:
-        GITLAB_HOST: ${{ secrets.GITLAB_HOST }}
-        GITLAB_USERNAME: ${{ secrets.GITLAB_USERNAME }}
-        GITLAB_ACCESS_TOKEN: ${{ secrets.GITLAB_ACCESS_TOKEN }}
-      run: |
-        if [ -z "$GITLAB_HOST" ] || [ -z "$GITLAB_USERNAME" ] || [ -z "$GITLAB_ACCESS_TOKEN" ]; then
-          echo "⏭️ GitLab 未配置，跳过"
-          exit 0
-        fi
-        GITLAB_REMOTE="https://${GITLAB_USERNAME}:${GITLAB_ACCESS_TOKEN}@${GITLAB_HOST}/${GITLAB_USERNAME}/daily-geek-news.git"
-        git fetch "$GITLAB_REMOTE" main 2>&1 || { echo "⏭️ 无法连接 GitLab"; exit 0; }
-        # 仅合并 static/images/covers/ 目录的更新，避免文章冲突
-        git checkout FETCH_HEAD -- static/images/covers/ 2>&1 && echo "✅ 封面图已同步" || echo "⏭️ 无新封面图"
+      - name: Build Hugo site
+        run: hugo --minify
 
-    - name: 6. 在云端安装 Hugo 编译器
-      uses: peaceiris/actions-hugo@v3
-      with:
-        hugo-version: 'latest'
-        extended: true
-
-    - name: 7. 执行 Hugo 网页极速渲染
-      run: hugo --minify
-
-    - name: 8. 无服务器部署至 GitHub Pages 分支
-      uses: peaceiris/actions-gh-pages@v4
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        publish_dir: ./public
-        cname: radar.huadongpeng.com
+      - name: Deploy GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./public
+          cname: radar.huadongpeng.com

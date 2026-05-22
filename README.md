@@ -1,107 +1,84 @@
-# Easton 跨国智库
+# Easton Radar
 
-每日自动化扫描 **70+ 全球权威信息源**，DeepSeek V4 Pro 深度推理，输出中文可执行商业情报。GitHub Actions 全自动运行，Hugo 静态站点部署至 GitHub Pages，Telegram + 微信公众号双通道推送。
+给一个中年小公司技术经理用的个人情报系统：早晚抓取尽量接近源头的信息，按人设初筛，生成每日简讯，并从候选里深挖 1-3 篇值得写的深度文章。输出到 Hugo 网站，并通过 Telegram 通知。
 
-## 架构
+## 新流程
 
-```
-70+ RSS Feeds (全球 7 区域: 北美/欧洲/亚洲/中东/拉美/非洲/中国)
-        │
-        ▼
-  并行抓取 (6 引擎 × 4 worker，请求级缓存去重)
-        │
-        ▼
-  DuckDuckGo RAG 检索 (每条 5 个深度来源)
-        │
-        ▼
-  DeepSeek V4 Pro 双轨引擎 (6 引擎并发)
-        │
-        ├── 📋 每日快讯 (聚合为 1 篇，按 topic 分组)
-        │       ├──► Hugo Markdown → GitHub Pages
-        │       └──► Telegram Topic 推送
-        │
-        └── 🔥 深度长文 (宁缺毋滥，1-2 篇/天)
-                ├──► Hugo Markdown → GitHub Pages
-                ├──► Telegram 各 Topic 推送
-                └──► 微信公众号草稿箱 (通义万相/智谱生图)
+```text
+一手/近源 RSS
+        ↓
+按人设与关注主题初筛
+        ↓
+整理每日简讯合集
+        ↓
+对深度候选二次检索与溯源
+        ↓
+优中择优生成深度好文
+        ↓
+生成 Gemini Banana 公众号封面提示词
+        ↓
+写入 Hugo + 公众号源文件 + Telegram 通知 + GitHub Pages
 ```
 
-## 六大情报引擎
+## 当前关注主题
 
-| 引擎 | 信息源 | 定位 |
-|------|--------|------|
-| 套利雷达 | HN, ProductHunt, IndieHackers, r/SaaS, r/SideProject, Acquire, BetaList, V2EX, SSPAI 等 15 源 | 零成本商业模型本土化套利 |
-| 跨国脑洞 | Wired, Rest of World, Guardian, Semafor, Stratechery, Pragmatic Engineer 等 9 源 | 海外模式中国本土化落地方案 |
-| 中国出海 | 36Kr, 虎嗅, Pandaily, TechNode, Nikkei Asia, SCMP, TechInAsia, e27, Inc42, LatamList, Disrupt Africa 等 15 源 | 中国独有模式反向出海套利 |
-| AI 前沿 | OpenAI, Anthropic, Google AI, DeepMind, Meta AI, Mistral, TLDR AI, HuggingFace, ArXiv, 机器之心 等 17 源 | 大模型动态 + AI 工具实战接入 |
-| 开发者金矿 | HN, r/programming, GitHub Trending, ProductHunt, Dev.to, InfoWorld, IndieHackers 等 12 源 | 独立开发者技术变现路径 |
-| 宏观风向 | TechCrunch, Bloomberg, The Verge, BBC, CNBC, Sifted, YC, a16z 等 10 源 | 全球事件对独立开发者的冲击与对冲 |
+| 主题 | 关注点 |
+| --- | --- |
+| AI 技术雷达 | AI 最新技术资讯、模型能力变化、论文、官方发布、开发者可试用工具 |
+| 赚钱副业实验室 | 个人赚钱渠道、副业、独立产品、低成本验证机会 |
+| 社会热点与生活信号 | 不限 AI，只要可能影响职业、收入、生活和风险决策 |
+| 信息差雷达 | 跨语言、跨地区、跨平台的信息差和可迁移机会 |
 
-## 内容体系
+## 配置
 
-| 类型 | 频率 | 内容 | 标准 |
-|------|------|------|------|
-| 每日快讯 | 1 篇/天 | 6 引擎情报聚合，按 topic 分组，每条含来源+要点+零成本切入点 | 始终输出 |
-| 深度长文 | 1-2 篇/天 | 四章结构深度拆解，核心章节 ≥1200 字，有理有据有推演 | 宁缺毋滥 |
+核心个人配置在 `config/`：
+
+- `config/persona.md`：人设
+- `config/research_skill.md`：深度检索与溯源方法论
+- `config/writing_skill.md`：深度文章写作方法论
+
+公众号源文件输出参考并整合了旧项目 `/ws/project/article/` 的 `output/` 工作流，但现在由主流程自动生成，不再需要手工改写项目中转。
+
+也可以通过环境变量覆盖：
+
+- `PERSONA_PATH`
+- `RESEARCH_SKILL_PATH`
+- `WRITING_SKILL_PATH`
 
 ## 本地运行
 
 ```bash
 pip install feedparser requests ddgs
 
-# 环境变量
 export DEEPSEEK_API_KEY="sk-xxx"
-export TELEGRAM_BOT_TOKEN="xxx"
-export TELEGRAM_CHAT_ID="-100xxx"
-export TG_THREAD_ARBITRAGE="xxx"  # 各引擎 Topic ID（可选）
-# ... 其他 TG_THREAD_* 变量
+export DEEPSEEK_MODEL="deepseek-v4-pro"
+export TELEGRAM_BOT_TOKEN="xxx"      # 可选
+export TELEGRAM_CHAT_ID="-100xxx"    # 可选
 
-python purifier.py   # 生成 content/posts/ 下 Markdown
-hugo serve           # 本地预览 http://localhost:1313
+python purifier.py --slot morning
+python purifier.py --slot evening
+hugo serve
 ```
 
-## 微信公众号发布
+深度文章会额外输出到 `outputs/wechat_articles/`，每篇文件只有三个部分：
 
-部署在腾讯云服务器上，每日 crontab 触发：
-
-```bash
-# 推送今日深度长文
-bash tools/publish_wechat.sh
-
-# 推送昨日文章
-bash tools/publish_wechat.sh --yesterday
-
-# 指定日期 / 预览
-bash tools/publish_wechat.sh --date 2026-05-12
-bash tools/publish_wechat.sh --dry-run
+```text
+标题
+Gemini Banana 生图提示词（公众号封面图适配）
+正文内容
 ```
 
-环境变量配置见 `tools/.env.example`。
+其中正文面向微信公众号编辑器复制粘贴，只保留 `**加粗**` 这一种特殊 Markdown 格式。
 
-## 部署
-
-GitHub Actions 每日 UTC 22:00（北京时间 06:00）自动运行。
-
-### GitHub Secrets
+## GitHub Secrets
 
 | Secret | 说明 |
-|--------|------|
-| `DEEPSEEK_API_KEY` | DeepSeek API 密钥 |
-| `TELEGRAM_BOT_TOKEN` | Telegram Bot Token |
-| `TELEGRAM_CHAT_ID` | 超级群组 ID |
-| `TG_THREAD_ARBITRAGE` | 套利雷达 Topic ID |
-| `TG_THREAD_AI` | AI 前沿 Topic ID |
-| `TG_THREAD_CROSS` | 跨国脑洞 Topic ID |
-| `TG_THREAD_MACRO` | 宏观风向 Topic ID |
-| `TG_THREAD_CHINA` | 中国出海 Topic ID |
-| `TG_THREAD_DEV` | 开发者金矿 Topic ID |
-| `TG_THREAD_BRIEFING` | 每日快讯 Topic ID |
-| `GITLAB_HOST` | 自建 GitLab 地址 |
-| `GITLAB_USERNAME` | GitLab 用户名 |
-| `GITLAB_ACCESS_TOKEN` | GitLab Access Token |
+| --- | --- |
+| `DEEPSEEK_API_KEY` | 必需，调用 DeepSeek V4 Pro 做分析和写作 |
+| `TELEGRAM_BOT_TOKEN` | 可选，发送 Telegram 通知 |
+| `TELEGRAM_CHAT_ID` | 可选，Telegram 目标群或频道 |
+| `TG_THREAD_BRIEFING` | 可选，Telegram topic id |
 
-## 联系方式
+默认模型是 `deepseek-v4-pro`。如需临时切换，可在 GitHub Variables 里设置 `DEEPSEEK_MODEL`。
 
-- 网站：[radar.huadongpeng.com](https://radar.huadongpeng.com)
-- 公众号：**老花有话说**（lanrenleyou）
-- 邮箱：hdop1993@gmail.com
+GitHub Actions 每天北京时间 06:00 和 18:00 自动运行，也可以手动触发并选择 `morning/evening`。
