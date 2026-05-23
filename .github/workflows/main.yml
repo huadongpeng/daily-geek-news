@@ -63,7 +63,7 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add content/posts/ outputs/wechat_articles/
+          git add content/posts/
           git diff --quiet && git diff --staged --quiet || (git commit -m "Generate Easton radar content" && git push)
 
       - name: Setup Hugo
