@@ -24,7 +24,7 @@ theme = 'PaperMod'
 
   [params.homeInfoParams]
     Title = "Easton 跨国智库"
-    Content = "一个小公司的软件技术经理，人到中年，还在摸爬滚打。\n\n不教你成功，只分享我探索的方向、踩过的坑，和那些让我「卧槽」的东西。\n\n四个方向：AI 技术雷达 · 赚钱副业实验室 · 社会热点与生活信号 · 信息差雷达\n\n早晚更新，Telegram 通知，网站沉淀。"
+    Content = "一个小公司的软件技术经理，人到中年，还在摸爬滚打。\n\n不教你成功，只分享我探索的方向、踩过的坑，和那些让我「卧槽」的东西。\n\n四个方向：AI 工具前线 · 副业实验室 · 出海信号 · 生活信号\n\n早晚更新，Telegram 通知，网站沉淀。"
 
   [[params.socialIcons]]
     name = "email"
@@ -48,26 +48,26 @@ theme = 'PaperMod'
 
 [[menu.main]]
   identifier = "ai"
-  name = "AI技术"
-  url = "/categories/ai-tech/"
+  name = "AI 工具"
+  url = "/categories/ai-tools/"
   weight = 3
 
 [[menu.main]]
-  identifier = "income"
-  name = "副业探索"
-  url = "/categories/income-lab/"
+  identifier = "side"
+  name = "副业实验室"
+  url = "/categories/side-hustle/"
   weight = 4
 
 [[menu.main]]
-  identifier = "world"
-  name = "生活信号"
-  url = "/categories/world-signals/"
+  identifier = "overseas"
+  name = "出海信号"
+  url = "/categories/overseas/"
   weight = 5
 
 [[menu.main]]
-  identifier = "gap"
-  name = "信息差"
-  url = "/categories/info-gap/"
+  identifier = "life"
+  name = "生活信号"
+  url = "/categories/life-signal/"
   weight = 6
 
 [[menu.main]]

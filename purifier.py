@@ -56,12 +56,14 @@ class Topic:
 
 TOPICS: tuple[Topic, ...] = (
     Topic(
-        slug="ai-tech",
-        title="AI 技术雷达",
-        category="ai-tech",
+        slug="ai-tools",
+        title="AI 工具前线",
+        category="ai-tools",
         intent=(
-            "AI 最新技术资讯，优先官方公告、论文、工程实践、模型能力变化、"
-            "开发者能立刻试用的工具。过滤纯融资、营销口水和重复转述。"
+            "今天能实际用上的 AI 工具、模型能力变化、工程实践。"
+            "优先官方发布、开发者可直接调用的新能力、编码代理更新。"
+            "过滤纯融资新闻、营销口水、纯学术论文（除非有立竿见影的工程意义）。"
+            "【判断标准】主角是一个 AI 工具/能力，且开发者/普通用户今天就能试用 → 此分类。"
         ),
         feeds=(
             "https://openai.com/blog/rss.xml",
@@ -73,15 +75,17 @@ TOPICS: tuple[Topic, ...] = (
             "https://dev.to/feed/tag/ai",
             "https://venturebeat.com/category/ai/feed/",
         ),
-        search_seeds=("AI model release", "AI coding agent", "AI paper breakthrough"),
+        search_seeds=("AI model release site:openai.com OR site:google.com", "AI coding agent new feature", "AI tool developer update"),
     ),
     Topic(
-        slug="income-lab",
-        title="赚钱副业实验室",
-        category="income-lab",
+        slug="side-hustle",
+        title="副业实验室",
+        category="side-hustle",
         intent=(
-            "个人赚钱渠道、副业、独立产品、低成本验证机会。优先真实抱怨、"
-            "需求外溢、工具替代、平台规则变化和可在一周内验证的方向。"
+            "普通人可以低成本验证的赚钱路径和市场空缺。"
+            "优先有具体操作步骤、真实案例、平台规则变化、需求外溢信号。"
+            "过滤大公司战略、VC 融资、无操作路径的机会分析。"
+            "【判断标准】这件事有明确的副业路径，普通人能在一周内开始验证 → 此分类（优先级最高）。"
         ),
         feeds=(
             "https://news.ycombinator.com/rss",
@@ -93,58 +97,53 @@ TOPICS: tuple[Topic, ...] = (
             "https://www.reddit.com/r/freelance/top/.rss?t=day",
             "https://v2ex.com/feed/create.xml",
         ),
-        search_seeds=("side project revenue", "micro saas pain point", "freelancer complaint"),
+        search_seeds=("side project revenue case study", "indie hacker success story", "micro saas market gap"),
     ),
     Topic(
-        slug="world-signals",
-        title="社会热点与生活信号",
-        category="world-signals",
+        slug="overseas",
+        title="出海信号",
+        category="overseas",
         intent=(
-            "重大社会热点事件，不限 AI。只保留可能影响生活、职业、收入、"
-            "政策环境、平台规则、国际局势或普通人风险决策的信息。"
-            "优先纳入中外官方/近官方口径，便于交叉对比和识别叙事差异。"
+            "海外已发生但中文圈还没注意到的趋势、机会、规则变化和信息差。"
+            "优先：海外平台政策变化、跨地区商业模式差异、非中文圈的用户需求/抱怨、"
+            "中外同一事件的叙事差异。过滤中文圈已大量报道的内容。"
+            "【判断标准】这条信息有跨语言/跨地区的信息差价值，中文圈读者大概率没看到 → 此分类。"
+        ),
+        feeds=(
+            "https://restofworld.org/feed/latest/",
+            "https://www.wired.com/feed/rss",
+            "https://www.semafor.com/rss.xml",
+            "http://www.chinadaily.com.cn/rss/world_rss.xml",
+            "http://www.chinadaily.com.cn/rss/bizchina_rss.xml",
+            "https://feeds.bbci.co.uk/news/world/rss.xml",
+            "https://www.reddit.com/r/digitalnomad/top/.rss?t=day",
+            "https://www.reddit.com/r/InternetIsBeautiful/top/.rss?t=day",
+            "https://www.producthunt.com/feed",
+        ),
+        search_seeds=("overseas market China information gap", "emerging market platform opportunity", "cross-border business trend 2025"),
+    ),
+    Topic(
+        slug="life-signal",
+        title="生活信号",
+        category="life-signal",
+        intent=(
+            "可能影响普通人工作、收入、生活决策的宏观社会/经济/政策变化。"
+            "优先：利率/就业政策变化、平台监管、大规模裁员潮、消费趋势。"
+            "过滤纯政治外交、和普通人生活无关的宏观分析。"
+            "【判断标准】不是AI工具/副业路径/海外信息差，但这件事会影响普通人今后的决策 → 此分类（兜底）。"
         ),
         feeds=(
             "https://www.federalreserve.gov/feeds/press_all.xml",
             "https://www.sec.gov/news/pressreleases.rss",
             "https://www.ecb.europa.eu/rss/press.html",
             "http://www.chinadaily.com.cn/rss/china_rss.xml",
-            "http://www.chinadaily.com.cn/rss/world_rss.xml",
-            "http://www.chinadaily.com.cn/rss/bizchina_rss.xml",
-            "https://feeds.bbci.co.uk/news/world/rss.xml",
             "https://feeds.bbci.co.uk/news/business/rss.xml",
             "https://www.theguardian.com/world/rss",
             "https://www.theverge.com/rss/index.xml",
             "https://techcrunch.com/feed/",
             "https://www.cnbc.com/id/100003114/device/rss/rss.html",
-            "https://www.wired.com/feed/rss",
-            "https://restofworld.org/feed/latest/",
-            "https://www.semafor.com/rss.xml",
         ),
-        search_seeds=("global regulation platform workers", "social trend affects jobs", "consumer tech policy"),
-    ),
-    Topic(
-        slug="info-gap",
-        title="信息差雷达",
-        category="info-gap",
-        intent=(
-            "跨地区、跨语言、跨平台的信息差。优先海外已验证但中文圈少见的模式、"
-            "工具、规则变化、用户需求和可迁移到中国或华语市场的机会。"
-            "同时对照中外官方/近官方叙事，寻找同一事件在不同语境下的偏差。"
-        ),
-        feeds=(
-            "https://www.federalreserve.gov/feeds/press_monetary.xml",
-            "https://www.ecb.europa.eu/rss/statpress.html",
-            "http://www.chinadaily.com.cn/rss/world_rss.xml",
-            "http://www.chinadaily.com.cn/rss/bizchina_rss.xml",
-            "https://restofworld.org/feed/latest/",
-            "https://www.wired.com/feed/rss",
-            "https://www.producthunt.com/feed",
-            "https://news.ycombinator.com/rss",
-            "https://www.reddit.com/r/digitalnomad/top/.rss?t=day",
-            "https://www.reddit.com/r/InternetIsBeautiful/top/.rss?t=day",
-        ),
-        search_seeds=("overseas product trend China gap", "emerging market startup pain", "tool alternative demand"),
+        search_seeds=("tech layoffs 2025", "platform policy change affects workers", "consumer economy trend"),
     ),
 )
 
@@ -400,7 +399,7 @@ def load_recent_titles(days: int = 7) -> list[str]:
     """扫描 content/posts/ 下近 N 天内生成的深度文章标题，用于防重复。"""
     cutoff = bj_now() - timedelta(days=days)
     titles: list[str] = []
-    for category in ("ai-tech", "income-lab", "world-signals", "info-gap"):
+    for category in ("ai-tools", "side-hustle", "overseas", "life-signal"):
         cat_dir = CONTENT_DIR / category
         if not cat_dir.exists():
             continue
@@ -455,7 +454,7 @@ def initial_filter(
 {{
   "briefing_items": [
     {{
-      "topic": "ai-tech|income-lab|world-signals|info-gap",
+      "topic": "ai-tools|side-hustle|overseas|life-signal",
       "title": "不超过16字",
       "source": "来源名",
       "url": "原始链接",
@@ -466,7 +465,7 @@ def initial_filter(
   ],
   "deep_candidates": [
     {{
-      "topic": "主题slug",
+      "topic": "ai-tools|side-hustle|overseas|life-signal",
       "title": "深度选题标题，16字内",
       "core_question": "这篇文章要回答的问题",
       "seed_urls": ["原始链接1", "原始链接2"],
@@ -475,7 +474,15 @@ def initial_filter(
   ]
 }}
 
-规则：
+分类决策规则（按优先级顺序，选第一个匹配的）：
+1. side-hustle：有明确副业路径，普通人能在一周内开始验证 → 最高优先级
+2. ai-tools：主角是一个 AI 工具/能力，开发者/普通用户今天就能试用
+3. overseas：有跨语言/跨地区信息差价值，中文圈读者大概率没看到
+4. life-signal：不符合以上三项，但会影响普通人的工作/收入/生活决策 → 兜底
+
+【严禁创造新 slug】topic 字段只能是上面 4 个值之一，不得自创任何其他分类名。
+
+其他规则：
 - briefing_items 总数 12-20 条，宁缺毋滥。
 - deep_candidates 选择 2-4 个，必须能通过进一步检索验证。近7天已发布的主题优先跳过，除非有实质性新进展值得追。
 - 优先官方、论文、原始帖、当事公司博客、权威媒体；少用二手转述。
@@ -507,23 +514,121 @@ def web_search(query: str, max_results: int = 6) -> list[dict[str, str]]:
     return results
 
 
-def research_candidates(candidates: list[dict[str, Any]], method: str) -> list[dict[str, Any]]:
-    print("🔎 对深度候选做二次检索和优中择优...")
-    researched: list[dict[str, Any]] = []
+_SEARCH_TOOL: dict[str, Any] = {
+    "type": "function",
+    "function": {
+        "name": "web_search",
+        "description": (
+            "Search the internet for up-to-date information. "
+            "Use to verify claims, find primary sources, and cross-reference reports. "
+            "Prefer English queries for technical topics; Chinese for China-specific topics."
+        ),
+        "parameters": {
+            "type": "object",
+            "properties": {
+                "query": {"type": "string", "description": "The search query string"},
+            },
+            "required": ["query"],
+        },
+    },
+}
+
+
+def _research_one_with_tools(candidate: dict[str, Any], max_searches: int = 8) -> str:
+    """Deep-research one candidate using DeepSeek tool-calling + DDGS. Returns text research notes."""
+    system = (
+        "你是一名深度信息探索专家。对给定的新闻线索做深度验证研究。\n"
+        "工作方式：先用 web_search 反复检索验证，再出结论。没有搜索就直接给答案是不允许的。\n"
+        "完成后输出结构化研究笔记（中文）：\n"
+        "【已确认事实】有多来源印证的核心事实，标注来源和可信级别\n"
+        "【高概率推断】单来源或间接证据支持的推断\n"
+        "【待验证线索】无法核实的说法\n"
+        "【最有价值的角度】最反直觉或最让普通打工人停下来的 1-2 个点\n"
+        "【来源分层】高可信/中可信/线索级 各列出具体来源"
+    )
+    user = (
+        f"新闻线索：{candidate.get('title', '')}\n"
+        f"核心问题：{candidate.get('core_question', '')}\n"
+        f"原始来源：{', '.join(candidate.get('seed_urls', [])[:3])}\n"
+        f"深挖理由：{candidate.get('reason', '')}\n\n"
+        "请开始检索验证。先搜索，再判断。"
+    )
+    messages: list[dict[str, Any]] = [
+        {"role": "system", "content": system},
+        {"role": "user", "content": user},
+    ]
+    searches_done = 0
+
+    for _ in range(max_searches + 4):
+        if searches_done >= max_searches:
+            messages.append({
+                "role": "user",
+                "content": "检索已达上限，请现在整理输出完整的结构化研究笔记。",
+            })
+        payload: dict[str, Any] = {
+            "model": PRO_MODEL,
+            "temperature": 0.3,
+            "max_tokens": 10000,
+            "messages": messages,
+        }
+        if searches_done < max_searches:
+            payload["tools"] = [_SEARCH_TOOL]
+            payload["tool_choice"] = "auto"
+        resp = requests.post(
+            "https://api.deepseek.com/chat/completions",
+            headers={"Authorization": f"Bearer {DEEPSEEK_API_KEY}", "Content-Type": "application/json"},
+            json=payload,
+            timeout=180,
+        )
+        resp.raise_for_status()
+        data = resp.json()
+        choice = data["choices"][0]
+        finish_reason = choice.get("finish_reason")
+        msg = choice.get("message", {})
+        content = msg.get("content") or ""
+        tool_calls = msg.get("tool_calls") or []
+
+        if finish_reason == "tool_calls" and tool_calls and searches_done < max_searches:
+            messages.append({
+                "role": "assistant",
+                "content": content,
+                "tool_calls": tool_calls,
+            })
+            for tc in tool_calls:
+                try:
+                    query = json.loads(tc["function"]["arguments"]).get("query", "")
+                except Exception:
+                    query = ""
+                if query:
+                    results = web_search(query, max_results=6)
+                    searches_done += 1
+                    print(f"      🔍[{searches_done}] {query[:70]}")
+                    messages.append({
+                        "role": "tool",
+                        "tool_call_id": tc["id"],
+                        "content": json.dumps(results, ensure_ascii=False),
+                    })
+        else:
+            return content
+
+    return ""
+
+
+def research_with_tools(candidates: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    """Research all deep candidates using DeepSeek tool calling. Returns candidates with research_notes."""
+    print("🔎 使用 DeepSeek Tool Calling 对深度候选做 AI 主导检索...")
+    results: list[dict[str, Any]] = []
     for cand in candidates[:4]:
         title = cand.get("title", "")
-        question = cand.get("core_question", "")
-        queries = [
-            f"{title} official announcement source",
-            f"{title} analysis evidence",
-            f"{question} primary source",
-        ]
-        evidence: list[dict[str, str]] = []
-        for q in queries:
-            evidence.extend(web_search(q, max_results=5))
-        researched.append({**cand, "research_method": method, "evidence": evidence[:10]})
-        print(f"   {title}: {len(evidence[:10])} 条补充证据")
-    return researched
+        print(f"   📌 {title[:50]}")
+        notes = _research_one_with_tools(cand, max_searches=8)
+        results.append({
+            **cand,
+            "research_method": "tool-calling",
+            "research_notes": notes,
+        })
+        print(f"   ✅ 研究完成，笔记 {len(notes)} 字")
+    return results
 
 
 def compose_briefing(filtered: dict[str, Any], persona: str, slot: str) -> dict[str, Any]:
@@ -617,14 +722,15 @@ def compose_investigation_reports(
 【初筛结果】
 {json.dumps(filtered, ensure_ascii=False)[:80000]}
 
-【深度候选与检索证据】
+【深度候选与 AI 工具调用研究笔记】
+（每个候选包含 research_notes 字段：AI 通过多轮 web_search 工具调用产出的结构化研究笔记，含已确认事实/推断/来源分层）
 {json.dumps(researched, ensure_ascii=False)[:300000]}
 
 请输出 JSON：
 {{
   "investigation_reports": [
     {{
-      "topic": "主题slug",
+      "topic": "ai-tools|side-hustle|overseas|life-signal",
       "title": "调查报告标题",
       "summary": "核心发现摘要，100字内",
       "content_md": "完整调查报告 Markdown 正文"
@@ -632,14 +738,22 @@ def compose_investigation_reports(
   ]
 }}
 
+【严禁创造新 topic slug】只能使用 ai-tools / side-hustle / overseas / life-signal 之一。
+
+分类决策规则（按优先级）：
+1. side-hustle：有明确副业路径，普通人能在一周内验证
+2. ai-tools：主角是 AI 工具/能力，今天就能试用
+3. overseas：有跨语言/跨地区信息差价值
+4. life-signal：影响普通人生活/工作决策（兜底）
+
 调查报告硬性要求：
 - 产出 1-3 篇，优中择优，不要凑数。
-- 每篇必须包含：核心发现（有据可查的事实链）、证据来源与可信度分层、多角度分析（含反证和不确定性）、对读者的实际影响判断。
+- 直接使用 research_notes 里的已确认事实作为核心论据，不要基于自身训练知识编造来源。
+- 每篇必须包含：核心发现（有据可查的事实链）、证据来源与可信度分层、多角度分析（含反证和不确定性）。
 - 来源必须在正文引用时标注来源名称和可信度（高可信 / 中可信 / 线索级）。
 - 可使用 H2、H3 标题，表格，引用块等完整 Markdown 格式——这是网站调查文章，格式可以丰富。
 - 严格区分已确认事实、高概率推断、待验证线索，不把猜测包装成结论。
 - 以客观调查语气写作，不需要个人"我"的叙述视角。
-- 所有不确定信息明确标注"线索"或"待验证"。
 - 每篇不少于 1500 字，要有实质深度，不是新闻摘要。
 """,
         max_tokens=64000,
@@ -849,7 +963,7 @@ def render_briefing_md(briefing: dict[str, Any], slot: str) -> str:
     ]
     grouped: dict[str, list[dict[str, Any]]] = {}
     for item in briefing.get("items", []):
-        grouped.setdefault(item.get("topic", "info-gap"), []).append(item)
+        grouped.setdefault(item.get("topic", "life-signal"), []).append(item)
     for slug, items in grouped.items():
         lines.extend([f"## {topic_titles.get(slug, slug)}", ""])
         for item in items:
@@ -948,10 +1062,10 @@ def save_website_outputs(
 
     valid_topics = {t.slug for t in TOPICS}
     for article in investigation_reports[:3]:
-        raw_topic = article.get("topic", "info-gap")
-        topic = raw_topic if raw_topic in valid_topics else "info-gap"
+        raw_topic = article.get("topic", "life-signal")
+        topic = raw_topic if raw_topic in valid_topics else "life-signal"
         if topic != raw_topic:
-            print(f"   ⚠️ 模型返回了未知分类 '{raw_topic}'，已回退到 info-gap")
+            print(f"   ⚠️ 模型返回了未知分类 '{raw_topic}'，已回退到 life-signal")
         title = article.get("title", "深度调查")
         body = article.get("content_md", "")
         paths.append(
@@ -1108,7 +1222,7 @@ def main() -> None:
 
     # 深度检索
     candidates = filtered.get("deep_candidates", [])
-    researched = research_candidates(candidates, research_method)
+    researched = research_with_tools(candidates)
 
     # 阶段一：网站调查报告
     inv_result = compose_investigation_reports(filtered, researched, research_method, slot, recent_titles)
