@@ -1014,28 +1014,48 @@ def _smtp_settings(email: str) -> tuple[str, int, bool]:
     return _SMTP_PRESETS.get(domain, ("smtp.office365.com", 587, False))
 
 
-def send_email_article(title: str, prompt_en: str, prompt_zh: str, body_txt: str) -> None:
+def email_attachment_name(title: str) -> str:
+    safe_title = re.sub(r'[\\/:*?"<>|\r\n]+', "-", title).strip(" .-")
+    return f"{safe_title or '公众号文章'}.txt"
+
+
+def send_email_articles(articles: list[dict[str, str]], slot: str) -> None:
     if not EMAIL_FROM or not EMAIL_PASSWORD:
         print("📭 未配置 EMAIL_FROM / EMAIL_PASSWORD，跳过邮件发送")
         return
+    if not articles:
+        return
+
     msg = MIMEMultipart()
     msg["From"] = EMAIL_FROM
     msg["To"] = EMAIL_TO
-    msg["Subject"] = f"[公众号] {title}"
+    msg["Subject"] = f"[公众号] {bj_now().strftime('%Y-%m-%d')} {slot} · {len(articles)} 篇"
 
-    email_body = (
-        f"文章标题：{title}\n\n"
-        f"封面图提示词（英文版，Midjourney / DALL-E）：\n{prompt_en}\n\n"
-        f"封面图提示词（中文版，即梦 / 通义万相）：\n{prompt_zh}"
-    )
-    msg.attach(MIMEText(email_body, "plain", "utf-8"))
+    body_parts = [
+        f"本批次共 {len(articles)} 篇公众号文章。",
+        "正文见附件；每个附件为一篇文章，文件名为文章标题。",
+    ]
+    for index, article in enumerate(articles, 1):
+        body_parts.extend(
+            [
+                "",
+                f"## {index}. {article['title']}",
+                "",
+                "封面图提示词（英文版，Midjourney / DALL-E）：",
+                article["prompt_en"],
+                "",
+                "封面图提示词（中文版，即梦 / 通义万相）：",
+                article["prompt_zh"],
+            ]
+        )
+    msg.attach(MIMEText("\n".join(body_parts), "plain", "utf-8"))
 
-    safe_title = re.sub(r"[^\w一-鿿\-]", "-", title)[:40]
-    attachment = MIMEBase("application", "octet-stream")
-    attachment.set_payload(body_txt.encode("utf-8"))
-    encoders.encode_base64(attachment)
-    attachment.add_header("Content-Disposition", f'attachment; filename="{safe_title}.txt"')
-    msg.attach(attachment)
+    for article in articles:
+        attachment = MIMEBase("text", "plain")
+        attachment.set_payload(article["body_txt"].encode("utf-8"))
+        encoders.encode_base64(attachment)
+        attachment.add_header("Content-Disposition", "attachment", filename=email_attachment_name(article["title"]))
+        msg.attach(attachment)
 
     host, port, use_ssl = _smtp_settings(EMAIL_FROM)
     try:
@@ -1049,7 +1069,7 @@ def send_email_article(title: str, prompt_en: str, prompt_zh: str, body_txt: str
                 server.starttls()
                 server.login(EMAIL_FROM, EMAIL_PASSWORD)
                 server.sendmail(EMAIL_FROM, EMAIL_TO, msg.as_string())
-        print(f"   📧 邮件已发送: {title}")
+        print(f"   📧 邮件已发送: {len(articles)} 篇文章，{len(articles)} 个 txt 附件")
     except Exception as exc:
         print(f"   ⚠️ 邮件发送失败: {exc}")
 
@@ -1076,7 +1096,7 @@ def write_post(
 ) -> Path:
     path = CONTENT_DIR / category / filename
     path.parent.mkdir(parents=True, exist_ok=True)
-    date = bj_now().strftime("%Y-%m-%dT%H:%M:%S%z")
+    date = bj_now().strftime("%Y-%m-%dT%H:%M:00%z")
     fm = [
         "---",
         f"title: {yaml_scalar(title)}",
@@ -1230,6 +1250,7 @@ def save_wechat_outputs(
 ) -> list[Path]:
     print("📱 写入公众号文章并发送邮件...")
     paths: list[Path] = []
+    email_articles: list[dict[str, str]] = []
     date_slug = bj_now().strftime("%Y-%m-%d")
 
     for article in wechat_articles[:3]:
@@ -1259,7 +1280,14 @@ def save_wechat_outputs(
         path.write_text(content, encoding="utf-8")
         paths.append(path)
 
-        send_email_article(title, prompt_en, prompt_zh, body_wechat)
+        email_articles.append(
+            {
+                "title": title,
+                "prompt_en": prompt_en,
+                "prompt_zh": prompt_zh,
+                "body_txt": body_wechat,
+            }
+        )
 
     for path in paths:
         try:
@@ -1267,6 +1295,8 @@ def save_wechat_outputs(
         except ValueError:
             display_path = path
         print(f"   ✅ {display_path}")
+
+    send_email_articles(email_articles, slot)
     return paths
 
 
