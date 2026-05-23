@@ -13,6 +13,8 @@
         ↓
 对深度候选二次检索与溯源
         ↓
+证据去重与门槛检查（不足则跳过长文）
+        ↓
 优中择优生成深度好文
         ↓
 生成 Gemini Banana 公众号封面提示词
@@ -65,11 +67,12 @@ python purifier.py --slot evening
 hugo serve
 ```
 
-深度文章会额外输出到 `outputs/wechat_articles/`，每篇文件只有三个部分：
+公众号文章会额外输出到 `outputs/wechat_articles/`，每篇文件包含标题、封面提示词和正文：
 
 ```text
 标题
-Gemini Banana 生图提示词（公众号封面图适配）
+封面图提示词（英文版，Midjourney / DALL-E）
+封面图提示词（中文版，即梦 / 通义万相）
 正文内容
 ```
 
@@ -86,5 +89,7 @@ Gemini Banana 生图提示词（公众号封面图适配）
 
 默认轻量步骤使用 `deepseek-v4-flash`，包括初筛和简讯整理；深度长文使用 `deepseek-v4-pro`，并默认启用 Thinking Mode + `max`。
 如需临时切换，可在 GitHub Variables 里设置 `DEEPSEEK_FLASH_MODEL` 或 `DEEPSEEK_PRO_MODEL`。
+
+深度检索不会使用 DeepSeek tool-calling。当前流程是 Flash 生成查询，程序抓取 seed URL、DDGS 搜索结果和可访问正文，去重并检查最小证据量；证据不足的候选只保留在简讯，不进入调查报告和公众号长文。
 
 GitHub Actions 每天北京时间 06:00 和 18:00 自动运行，也可以手动触发并选择 `morning/evening`。

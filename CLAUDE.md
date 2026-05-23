@@ -55,17 +55,19 @@ These can be overridden with:
 1. Collect RSS entries from source-oriented feeds.
 2. Ask the LLM to filter items against the persona and four focus areas.
 3. Generate the daily briefing.
-4. Search around selected deep candidates using DuckDuckGo.
+4. Research selected deep candidates: FLASH generates targeted queries, seed URLs and search results are fetched, evidence is deduplicated, and weak-evidence candidates are skipped.
 5. **Phase 1** — Ask Pro model to write objective investigation reports → save to Hugo under `content/posts/{category}/investigation-*.md`.
 6. **Phase 2** — Ask Pro model to rewrite each report in Easton's personal voice → save to `outputs/wechat_articles/` and send by email.
 7. Send a Telegram summary if configured.
 
-Focus areas:
+Focus areas (priority order — pick first match):
 
-- `ai-tech`: AI technical news, official releases, papers, developer tooling.
-- `income-lab`: side income, micro-SaaS, solo products, low-cost experiments.
-- `world-signals`: major social events and life-impacting signals.
-- `info-gap`: cross-language, cross-region, cross-platform information gaps.
+1. `side-hustle`: clear side-income path, ordinary person can start validating within a week.
+2. `ai-tools`: an AI tool/capability as the main subject, usable today by developers or general users.
+3. `overseas`: cross-language/cross-region information gap, Chinese-speaking readers likely haven't seen it.
+4. `life-signal`: doesn't fit above three, but affects ordinary people's work/income/life decisions (catch-all).
+
+**严禁创造新 slug** — topic field must be one of these four exact values.
 
 ## Environment Variables
 
@@ -84,7 +86,7 @@ Optional:
 - `TELEGRAM_BOT_TOKEN`
 - `TELEGRAM_CHAT_ID`
 - `TG_THREAD_BRIEFING`
-- `EMAIL_FROM` — sender email address (Outlook SMTP)
+- `EMAIL_FROM` — sender email address (SMTP auto-detected by domain: QQ→ssl:465, Outlook/Gmail→starttls:587)
 - `EMAIL_PASSWORD` — email password or app password
 - `EMAIL_TO` — recipient address (default: huadongpeng@outlook.com)
 - `PERSONA_PATH`
@@ -104,5 +106,7 @@ The workflow runs `purifier.py`, commits generated Markdown and WeChat-ready sou
 
 - Do not reintroduce WeChat API publishing or image-generation API calls into the main path unless explicitly requested.
 - Keep generated content under `content/posts/`.
-- Keep generated WeChat-ready article source files under `outputs/wechat_articles/`.
-- The project has historical content under older categories. New generated content should use the four new categories.
+- Keep generated WeChat-ready article source files under `outputs/wechat_articles/` (gitignored — not committed to repo).
+- The project has historical content under older category slugs. New generated content must use the four new slugs above.
+- Research uses guarded AI-guided search: FLASH generates queries → seed/search pages are fetched → evidence is deduplicated and checked → PRO+thinking analyzes only candidates that pass the evidence threshold. No DeepSeek tool-calling (causes 400 errors).
+- WeChat articles are written as Easton Hua / 老花 (first person identity, not ghostwriter). Fixed sign-off format required at the end of every article.

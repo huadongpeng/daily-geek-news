@@ -15,6 +15,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from pathlib import Path
 from typing import Any
+from urllib.parse import urlparse
 
 import feedparser
 import requests
@@ -42,6 +43,11 @@ ROOT = Path(__file__).resolve().parent
 CONTENT_DIR = ROOT / "content" / "posts"
 CACHE_DIR = ROOT / ".cache" / "radar"
 WECHAT_OUTPUT_DIR = ROOT / "outputs" / "wechat_articles"
+MIN_EVIDENCE_ITEMS = 3
+MIN_EVIDENCE_DOMAINS = 2
+MAX_FULLTEXT_EVIDENCE = 8
+MAX_SEARCH_PAGE_FETCHES = 12
+MAX_EVIDENCE_TEXT_CHARS = 5000
 
 
 @dataclass(frozen=True)
@@ -498,6 +504,19 @@ def search_cache_key(query: str) -> Path:
     return CACHE_DIR / f"search-{h}.json"
 
 
+def page_cache_key(url: str) -> Path:
+    h = hashlib.sha256(url.encode("utf-8")).hexdigest()[:20]
+    return CACHE_DIR / f"page-{h}.json"
+
+
+def hostname(url: str) -> str:
+    try:
+        host = urlparse(url).netloc.lower()
+    except Exception:
+        return ""
+    return host.removeprefix("www.")
+
+
 def web_search(query: str, max_results: int = 6) -> list[dict[str, str]]:
     cache = search_cache_key(query)
     if cache.exists() and time.time() - cache.stat().st_mtime < 60 * 60 * 12:
@@ -514,117 +533,230 @@ def web_search(query: str, max_results: int = 6) -> list[dict[str, str]]:
     return results
 
 
-_SEARCH_TOOL: dict[str, Any] = {
-    "type": "function",
-    "function": {
-        "name": "web_search",
-        "description": (
-            "Search the internet for up-to-date information. "
-            "Use to verify claims, find primary sources, and cross-reference reports. "
-            "Prefer English queries for technical topics; Chinese for China-specific topics."
-        ),
-        "parameters": {
-            "type": "object",
-            "properties": {
-                "query": {"type": "string", "description": "The search query string"},
-            },
-            "required": ["query"],
-        },
-    },
-}
+def fetch_page_evidence(url: str, source_type: str, query: str = "") -> dict[str, Any] | None:
+    """Fetch a lightweight text snapshot for stronger evidence than search snippets."""
+    url = (url or "").strip()
+    if not url.startswith(("http://", "https://")):
+        return None
 
+    cache = page_cache_key(url)
+    if cache.exists() and time.time() - cache.stat().st_mtime < 60 * 60 * 24:
+        try:
+            cached = json.loads(cache.read_text(encoding="utf-8"))
+            if cached.get("ok"):
+                return cached.get("evidence")
+            return None
+        except Exception:
+            pass
 
-def _research_one_with_tools(candidate: dict[str, Any], max_searches: int = 8) -> str:
-    """Deep-research one candidate using DeepSeek tool-calling + DDGS. Returns text research notes."""
-    system = (
-        "你是一名深度信息探索专家。对给定的新闻线索做深度验证研究。\n"
-        "工作方式：先用 web_search 反复检索验证，再出结论。没有搜索就直接给答案是不允许的。\n"
-        "完成后输出结构化研究笔记（中文）：\n"
-        "【已确认事实】有多来源印证的核心事实，标注来源和可信级别\n"
-        "【高概率推断】单来源或间接证据支持的推断\n"
-        "【待验证线索】无法核实的说法\n"
-        "【最有价值的角度】最反直觉或最让普通打工人停下来的 1-2 个点\n"
-        "【来源分层】高可信/中可信/线索级 各列出具体来源"
-    )
-    user = (
-        f"新闻线索：{candidate.get('title', '')}\n"
-        f"核心问题：{candidate.get('core_question', '')}\n"
-        f"原始来源：{', '.join(candidate.get('seed_urls', [])[:3])}\n"
-        f"深挖理由：{candidate.get('reason', '')}\n\n"
-        "请开始检索验证。先搜索，再判断。"
-    )
-    messages: list[dict[str, Any]] = [
-        {"role": "system", "content": system},
-        {"role": "user", "content": user},
-    ]
-    searches_done = 0
-
-    for _ in range(max_searches + 4):
-        if searches_done >= max_searches:
-            messages.append({
-                "role": "user",
-                "content": "检索已达上限，请现在整理输出完整的结构化研究笔记。",
-            })
-        payload: dict[str, Any] = {
-            "model": PRO_MODEL,
-            "temperature": 0.3,
-            "max_tokens": 10000,
-            "messages": messages,
-        }
-        if searches_done < max_searches:
-            payload["tools"] = [_SEARCH_TOOL]
-            payload["tool_choice"] = "auto"
-        resp = requests.post(
-            "https://api.deepseek.com/chat/completions",
-            headers={"Authorization": f"Bearer {DEEPSEEK_API_KEY}", "Content-Type": "application/json"},
-            json=payload,
-            timeout=180,
+    evidence: dict[str, Any] | None = None
+    try:
+        resp = requests.get(
+            url,
+            timeout=20,
+            headers={"User-Agent": "EastonRadar/4.0 (+https://radar.huadongpeng.com)"},
         )
         resp.raise_for_status()
-        data = resp.json()
-        choice = data["choices"][0]
-        finish_reason = choice.get("finish_reason")
-        msg = choice.get("message", {})
-        content = msg.get("content") or ""
-        tool_calls = msg.get("tool_calls") or []
+        content_type = resp.headers.get("content-type", "")
+        is_text_like = (
+            not content_type
+            or "text/html" in content_type
+            or "text/plain" in content_type
+            or "xml" in content_type
+            or "json" in content_type
+        )
+        if not is_text_like:
+            raise ValueError(f"unsupported content-type: {content_type}")
 
-        if finish_reason == "tool_calls" and tool_calls and searches_done < max_searches:
-            messages.append({
-                "role": "assistant",
-                "content": content,
-                "tool_calls": tool_calls,
-            })
-            for tc in tool_calls:
-                try:
-                    query = json.loads(tc["function"]["arguments"]).get("query", "")
-                except Exception:
-                    query = ""
-                if query:
-                    results = web_search(query, max_results=6)
-                    searches_done += 1
-                    print(f"      🔍[{searches_done}] {query[:70]}")
-                    messages.append({
-                        "role": "tool",
-                        "tool_call_id": tc["id"],
-                        "content": json.dumps(results, ensure_ascii=False),
-                    })
-        else:
-            return content
+        raw = resp.text[:400000]
+        title_match = re.search(r"<title[^>]*>(.*?)</title>", raw, re.I | re.S)
+        title = strip_tags(title_match.group(1)) if title_match else ""
+        text = strip_tags(raw)[:MAX_EVIDENCE_TEXT_CHARS]
+        if len(text) < 300:
+            raise ValueError("page text too short")
+        evidence = {
+            "source_type": source_type,
+            "query": query,
+            "title": title,
+            "url": url,
+            "domain": hostname(url),
+            "body": text,
+            "body_type": "page_text",
+        }
+        cache.write_text(json.dumps({"ok": True, "evidence": evidence}, ensure_ascii=False, indent=2), encoding="utf-8")
+    except Exception as exc:
+        print(f"      ⚠️ 正文抓取失败: {hostname(url) or url[:40]} | {exc}")
+        cache.write_text(json.dumps({"ok": False, "error": str(exc)}, ensure_ascii=False, indent=2), encoding="utf-8")
+    return evidence
 
-    return ""
+
+def _normalize_queries(raw_queries: Any) -> list[str]:
+    if not isinstance(raw_queries, list):
+        return []
+    seen: set[str] = set()
+    queries: list[str] = []
+    for raw in raw_queries:
+        if not isinstance(raw, str):
+            continue
+        query = re.sub(r"\s+", " ", raw).strip()
+        if not query or len(query) > 220:
+            continue
+        key = query.lower()
+        if key in seen:
+            continue
+        seen.add(key)
+        queries.append(query)
+    return queries[:8]
+
+
+def _dedupe_evidence(items: list[dict[str, Any]]) -> list[dict[str, Any]]:
+    seen: set[str] = set()
+    unique: list[dict[str, Any]] = []
+    for item in items:
+        url = str(item.get("url") or "").strip()
+        title = str(item.get("title") or "").strip().lower()
+        key = url or f"{item.get('domain', '')}:{title}"
+        if not key or key in seen:
+            continue
+        seen.add(key)
+        unique.append(item)
+    return unique
+
+
+def _evidence_domains(evidence: list[dict[str, Any]]) -> set[str]:
+    return {str(item.get("domain") or hostname(str(item.get("url") or ""))) for item in evidence if item.get("url")}
+
+
+def _has_minimum_evidence(evidence: list[dict[str, Any]]) -> bool:
+    substantive = [item for item in evidence if item.get("body_type") == "page_text" and len(str(item.get("body") or "")) >= 500]
+    domains = {d for d in _evidence_domains(evidence) if d}
+    return len(evidence) >= MIN_EVIDENCE_ITEMS and len(domains) >= MIN_EVIDENCE_DOMAINS and bool(substantive)
+
+
+def _collect_evidence(candidate: dict[str, Any], queries: list[str]) -> list[dict[str, Any]]:
+    evidence: list[dict[str, Any]] = []
+    seed_urls = [url for url in candidate.get("seed_urls", []) if isinstance(url, str)]
+
+    for url in seed_urls[:3]:
+        page = fetch_page_evidence(url, "seed_url")
+        if page:
+            evidence.append(page)
+
+    search_hits: list[dict[str, Any]] = []
+    for q in queries:
+        hits = web_search(q, max_results=5)
+        print(f"      🔍 {q[:70]}: {len(hits)} 条")
+        for hit in hits:
+            item = {
+                "source_type": "search_result",
+                "query": q,
+                "title": hit.get("title", ""),
+                "url": hit.get("url", ""),
+                "domain": hostname(hit.get("url", "")),
+                "body": hit.get("body", ""),
+                "body_type": "search_snippet",
+            }
+            search_hits.append(item)
+
+    for hit in _dedupe_evidence(search_hits)[:MAX_SEARCH_PAGE_FETCHES]:
+        if len([item for item in evidence if item.get("body_type") == "page_text"]) >= MAX_FULLTEXT_EVIDENCE:
+            break
+        page = fetch_page_evidence(str(hit.get("url") or ""), "search_result", str(hit.get("query") or ""))
+        evidence.append(page or hit)
+
+    return _dedupe_evidence(evidence)
+
+
+def _generate_search_queries(candidate: dict[str, Any]) -> list[str]:
+    """Ask FLASH to generate targeted search queries for verifying a candidate's claims."""
+    result = llm_json(
+        system=(
+            "你是一名信息检索专家。根据新闻线索，生成最有效的搜索查询来验证核心事实、寻找一手来源。"
+            "优先英文查询（更易找到一手来源），中文查询用于中文市场相关内容。"
+            "查询要具体且有针对性，能验证核心事实，而不是泛泛搜索主题。"
+            "必须输出合法 JSON，不要代码块。"
+        ),
+        user=(
+            f"新闻线索：{candidate.get('title', '')}\n"
+            f"核心问题：{candidate.get('core_question', '')}\n"
+            f"原始来源：{', '.join(candidate.get('seed_urls', [])[:2])}\n"
+            f"深挖理由：{candidate.get('reason', '')}\n\n"
+            '请生成 6-8 个最有价值的搜索查询，用于核实事实、寻找一手来源、交叉验证。\n'
+            '输出 JSON：{"queries": ["query1", "query2", ...]}'
+        ),
+        max_tokens=800,
+        model=FLASH_MODEL,
+        thinking_type=FLASH_THINKING,
+        reasoning_effort=FLASH_REASONING_EFFORT,
+    )
+    return _normalize_queries(result.get("queries"))
+
+
+def _analyze_evidence(candidate: dict[str, Any], evidence: list[dict[str, Any]]) -> str:
+    """Use PRO to synthesize search evidence into structured research notes."""
+    result = llm_json(
+        system=(
+            "你是一名深度信息探索专家。根据已收集的检索证据，对新闻线索做深度分析。\n"
+            "严格区分已确认事实、高概率推断、待验证线索，标注每条信息的来源和可信度。\n"
+            "只能使用输入证据，不得使用训练记忆补充事实。证据不足时必须明确写'证据不足，不能确认'。\n"
+            "必须输出合法 JSON，不要代码块。"
+        ),
+        user=(
+            f"新闻线索：{candidate.get('title', '')}\n"
+            f"核心问题：{candidate.get('core_question', '')}\n\n"
+            f"【检索证据（共 {len(evidence)} 条）】\n"
+            f"{json.dumps(evidence, ensure_ascii=False)[:120000]}\n\n"
+            "请根据以上证据输出结构化研究笔记。\n"
+            '输出 JSON：{"research_notes": "完整研究笔记（中文）"}\n\n'
+            "研究笔记必须包含以下几块：\n"
+            "【已确认事实】只写输入证据中有多来源印证的事实，标注来源名称和可信级别（高可信/中可信）；没有就写'暂无足够证据'\n"
+            "【高概率推断】单来源或间接证据支持，标注来源\n"
+            "【待验证线索】无法核实的说法，标注来源\n"
+            "【最有价值的角度】最反直觉或最让普通打工人停下来的 1-2 个点\n"
+            "【来源分层】高可信/中可信/线索级 各列出具体来源名称"
+        ),
+        max_tokens=8000,
+        model=PRO_MODEL,
+        thinking_type=PRO_THINKING,
+        reasoning_effort=PRO_REASONING_EFFORT,
+    )
+    return result.get("research_notes", "")
 
 
 def research_with_tools(candidates: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    """Research all deep candidates using DeepSeek tool calling. Returns candidates with research_notes."""
-    print("🔎 使用 DeepSeek Tool Calling 对深度候选做 AI 主导检索...")
+    """Research deep candidates: FLASH generates queries → DDGS executes → PRO synthesizes."""
+    print("🔎 AI 主导深度检索（Flash生成查询 → DDGS执行 → Pro分析）...")
     results: list[dict[str, Any]] = []
     for cand in candidates[:4]:
         title = cand.get("title", "")
         print(f"   📌 {title[:50]}")
-        notes = _research_one_with_tools(cand, max_searches=8)
+
+        queries = _generate_search_queries(cand)
+        print(f"      📝 生成 {len(queries)} 个检索查询")
+        if not queries:
+            print("      ⚠️ 未生成有效查询，跳过该候选")
+            continue
+
+        evidence = _collect_evidence(cand, queries)
+        domains = {d for d in _evidence_domains(evidence) if d}
+        page_count = len([item for item in evidence if item.get("body_type") == "page_text"])
+        print(f"      📚 证据 {len(evidence)} 条，正文 {page_count} 条，独立域名 {len(domains)} 个")
+        if not _has_minimum_evidence(evidence):
+            print(
+                "      ⚠️ 证据不足，跳过该候选 "
+                f"（需要≥{MIN_EVIDENCE_ITEMS}条证据、≥{MIN_EVIDENCE_DOMAINS}个域名、至少1条正文）"
+            )
+            continue
+
+        notes = _analyze_evidence(cand, evidence)
+        if not notes.strip():
+            print("      ⚠️ 研究笔记为空，跳过该候选")
+            continue
         results.append({
             **cand,
-            "research_method": "tool-calling",
+            "research_method": "ai-guided-search",
+            "evidence_count": len(evidence),
+            "evidence_domains": sorted(domains),
             "research_notes": notes,
         })
         print(f"   ✅ 研究完成，笔记 {len(notes)} 字")
@@ -723,8 +855,8 @@ def compose_investigation_reports(
 【初筛结果】
 {json.dumps(filtered, ensure_ascii=False)[:80000]}
 
-【深度候选与 AI 工具调用研究笔记】
-（每个候选包含 research_notes 字段：AI 通过多轮 web_search 工具调用产出的结构化研究笔记，含已确认事实/推断/来源分层）
+【已通过证据门槛的深度候选与 AI 引导检索研究笔记】
+（每个候选包含 research_notes / evidence_count / evidence_domains 字段：基于 seed URL、DDGS 搜索结果和可抓取正文生成，含已确认事实/推断/来源分层）
 {json.dumps(researched, ensure_ascii=False)[:300000]}
 
 请输出 JSON：
@@ -756,6 +888,7 @@ def compose_investigation_reports(
 
 硬性要求：
 - 产出 1-3 篇，优中择优，不要凑数。
+- 只能围绕【已通过证据门槛的深度候选】写调查报告；如果 researched 为空或证据不足，返回空数组，不要根据初筛结果硬写。
 - 直接使用 research_notes 里的已确认事实作为核心论据，不要基于训练知识编造来源。
 - 来源在正文引用时标注名称和可信度，禁止在文末单独列"参考来源"一节。
 - 严格区分已确认事实、高概率推断、待验证线索——不把推断写成结论。
@@ -1229,14 +1362,21 @@ def main() -> None:
     researched = research_with_tools(candidates)
 
     # 阶段一：网站调查报告
-    inv_result = compose_investigation_reports(filtered, researched, research_method, slot, recent_titles)
-    investigation_reports = inv_result.get("investigation_reports", [])
+    if researched:
+        inv_result = compose_investigation_reports(filtered, researched, research_method, slot, recent_titles)
+        investigation_reports = inv_result.get("investigation_reports", [])
+    else:
+        print("📋 没有深度候选通过证据门槛，本批次跳过调查报告和公众号长文")
+        investigation_reports = []
     save_website_outputs(briefing_report.get("briefing", {}), investigation_reports, slot)
 
     # 阶段二：公众号文章（个人口吻）+ 发邮件
-    wechat_result = compose_wechat_articles(investigation_reports, researched, persona, writing_method, slot)
-    wechat_articles = wechat_result.get("wechat_articles", [])
-    save_wechat_outputs(wechat_articles, slot)
+    if investigation_reports:
+        wechat_result = compose_wechat_articles(investigation_reports, researched, persona, writing_method, slot)
+        wechat_articles = wechat_result.get("wechat_articles", [])
+        save_wechat_outputs(wechat_articles, slot)
+    else:
+        wechat_articles = []
 
     # Telegram 通知
     if not args.no_telegram:
