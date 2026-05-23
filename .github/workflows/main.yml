@@ -60,11 +60,18 @@ jobs:
           python purifier.py --slot "$SLOT"
 
       - name: Commit generated content
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add content/posts/
-          git diff --quiet && git diff --staged --quiet || (git commit -m "Generate Easton radar content" && git push)
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Generate Easton radar content"
+            git push "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git" "HEAD:${{ github.ref_name }}"
+          fi
 
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v3
