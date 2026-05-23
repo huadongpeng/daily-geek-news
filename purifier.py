@@ -883,8 +883,12 @@ def save_website_outputs(
             )
         )
 
+    valid_topics = {t.slug for t in TOPICS}
     for article in investigation_reports[:3]:
-        topic = article.get("topic", "info-gap")
+        raw_topic = article.get("topic", "info-gap")
+        topic = raw_topic if raw_topic in valid_topics else "info-gap"
+        if topic != raw_topic:
+            print(f"   ⚠️ 模型返回了未知分类 '{raw_topic}'，已回退到 info-gap")
         title = article.get("title", "深度调查")
         body = article.get("content_md", "")
         paths.append(
