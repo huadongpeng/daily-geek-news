@@ -36,6 +36,8 @@ TG_THREAD_BRIEFING = os.environ.get("TG_THREAD_BRIEFING")
 EMAIL_FROM = os.environ.get("EMAIL_FROM", "")
 EMAIL_PASSWORD = os.environ.get("EMAIL_PASSWORD", "")
 EMAIL_TO = os.environ.get("EMAIL_TO", "huadongpeng@outlook.com")
+EMAIL_SMTP_HOST = os.environ.get("EMAIL_SMTP_HOST", "")
+EMAIL_SMTP_PORT = int(os.environ.get("EMAIL_SMTP_PORT", "0"))
 ROOT = Path(__file__).resolve().parent
 CONTENT_DIR = ROOT / "content" / "posts"
 CACHE_DIR = ROOT / ".cache" / "radar"
@@ -728,6 +730,29 @@ def compose_wechat_articles(
 
 # ─── 邮件发送 ────────────────────────────────────────────────────────────────
 
+_SMTP_PRESETS: dict[str, tuple[str, int, bool]] = {
+    "qq.com":      ("smtp.qq.com",          465, True),
+    "foxmail.com": ("smtp.qq.com",          465, True),
+    "163.com":     ("smtp.163.com",         465, True),
+    "126.com":     ("smtp.126.com",         465, True),
+    "yeah.net":    ("smtp.yeah.net",        465, True),
+    "sina.com":    ("smtp.sina.com",        465, True),
+    "outlook.com": ("smtp.office365.com",   587, False),
+    "hotmail.com": ("smtp.office365.com",   587, False),
+    "live.com":    ("smtp.office365.com",   587, False),
+    "gmail.com":   ("smtp.gmail.com",       587, False),
+}
+
+def _smtp_settings(email: str) -> tuple[str, int, bool]:
+    """返回 (host, port, use_ssl)，优先读环境变量，其次按域名匹配预设。"""
+    if EMAIL_SMTP_HOST:
+        port = EMAIL_SMTP_PORT or 587
+        use_ssl = port == 465
+        return EMAIL_SMTP_HOST, port, use_ssl
+    domain = email.split("@")[-1].lower()
+    return _SMTP_PRESETS.get(domain, ("smtp.office365.com", 587, False))
+
+
 def send_email_article(title: str, prompt: str, body_txt: str) -> None:
     if not EMAIL_FROM or not EMAIL_PASSWORD:
         print("📭 未配置 EMAIL_FROM / EMAIL_PASSWORD，跳过邮件发送")
@@ -747,12 +772,18 @@ def send_email_article(title: str, prompt: str, body_txt: str) -> None:
     attachment.add_header("Content-Disposition", f'attachment; filename="{safe_title}.txt"')
     msg.attach(attachment)
 
+    host, port, use_ssl = _smtp_settings(EMAIL_FROM)
     try:
-        with smtplib.SMTP("smtp.office365.com", 587) as server:
-            server.ehlo()
-            server.starttls()
-            server.login(EMAIL_FROM, EMAIL_PASSWORD)
-            server.sendmail(EMAIL_FROM, EMAIL_TO, msg.as_string())
+        if use_ssl:
+            with smtplib.SMTP_SSL(host, port) as server:
+                server.login(EMAIL_FROM, EMAIL_PASSWORD)
+                server.sendmail(EMAIL_FROM, EMAIL_TO, msg.as_string())
+        else:
+            with smtplib.SMTP(host, port) as server:
+                server.ehlo()
+                server.starttls()
+                server.login(EMAIL_FROM, EMAIL_PASSWORD)
+                server.sendmail(EMAIL_FROM, EMAIL_TO, msg.as_string())
         print(f"   📧 邮件已发送: {title}")
     except Exception as exc:
         print(f"   ⚠️ 邮件发送失败: {exc}")
