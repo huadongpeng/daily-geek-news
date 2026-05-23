@@ -5,5 +5,4 @@ __pycache__/
 tools/.env
 public/
 resources/_gen/
-!outputs/
-!outputs/wechat_articles/
+outputs/wechat_articles/

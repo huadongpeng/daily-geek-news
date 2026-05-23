@@ -701,11 +701,21 @@ def compose_wechat_articles(
       "topic": "主题slug",
       "title": "公众号文章标题",
       "summary": "Telegram 摘要，80字内",
-      "gemini_banana_prompt": "适合 Gemini Banana 生图的公众号封面提示词，中文，900x383，2.35:1，必须无文字、无logo、无人物面孔",
+      "cover_prompt_en": "英文版封面图提示词，给 Midjourney / DALL-E 使用。详细描述画面构图、色彩、光影、氛围和情绪。必须指定风格（flat vector illustration 或 digital art），构图有明确视觉焦点（左右结构或中心结构），色调与文章基调匹配，氛围有故事感和情绪张力。规格 900x383，2.35:1 横版。【严禁在场景描述中出现文字、字母、数字、品牌名、产品名、logo、商标图案】",
+      "cover_prompt_zh": "中文版封面图提示词，给即梦 / 通义万相使用。与英文版同等细节：描述风格、构图、色调、光影、情绪氛围。公众号封面图，900x383，2.35:1 横版构图。【严禁在场景描述中出现文字、字母、数字、品牌名、产品名、logo、商标图案，无文字，无logo，无人物面孔】",
       "content_md": "完整公众号正文"
     }}
   ]
 }}
+
+封面图提示词写作规范（必须遵守）：
+- 风格二选一：扁平矢量插画（flat vector illustration）或 数字艺术（digital art）
+- 构图：必须有一个明确的视觉焦点，选择左右结构或中心结构之一
+- 色调：与文章基调匹配——科技/AI话题用冷色调（深蓝、紫、青），副业/收入话题用暖色调（橙、金、绿），冲突/信息差话题用对比色
+- 氛围：有故事感和情绪张力，不能是干巴巴的信息图，要让人看到封面就想点开
+- 铁律：场景描述里绝对不能出现任何文字、字母、数字、品牌名（如 DeepSeek、OpenAI、WhatsApp）、产品logo、商标——这些无法被生图模型过滤，会直接破坏图片质量
+- 英文版要详细（100字以上），描述具体的物件、色彩、光影质感、空间感
+- 中文版保持同等细节（80字以上），稍简洁即可
 
 公众号文章硬性要求：
 - 每篇调查报告对应一篇公众号文章，共 {len(investigation_reports)} 篇。
@@ -753,7 +763,7 @@ def _smtp_settings(email: str) -> tuple[str, int, bool]:
     return _SMTP_PRESETS.get(domain, ("smtp.office365.com", 587, False))
 
 
-def send_email_article(title: str, prompt: str, body_txt: str) -> None:
+def send_email_article(title: str, prompt_en: str, prompt_zh: str, body_txt: str) -> None:
     if not EMAIL_FROM or not EMAIL_PASSWORD:
         print("📭 未配置 EMAIL_FROM / EMAIL_PASSWORD，跳过邮件发送")
         return
@@ -762,7 +772,11 @@ def send_email_article(title: str, prompt: str, body_txt: str) -> None:
     msg["To"] = EMAIL_TO
     msg["Subject"] = f"[公众号] {title}"
 
-    email_body = f"文章标题：{title}\n\n生图提示词：\n{prompt}"
+    email_body = (
+        f"文章标题：{title}\n\n"
+        f"封面图提示词（英文版，Midjourney / DALL-E）：\n{prompt_en}\n\n"
+        f"封面图提示词（中文版，即梦 / 通义万相）：\n{prompt_zh}"
+    )
     msg.attach(MIMEText(email_body, "plain", "utf-8"))
 
     safe_title = re.sub(r"[^\w一-鿿\-]", "-", title)[:40]
@@ -881,15 +895,33 @@ def normalize_wechat_body(md: str) -> str:
     return re.sub(r"\n{3,}", "\n\n", text)
 
 
-def normalize_gemini_banana_prompt(prompt: str, title: str) -> str:
+def normalize_cover_prompt(prompt: str, title: str, lang: str = "zh") -> str:
     prompt = re.sub(r"\s+", " ", prompt or "").strip()
     if not prompt:
-        prompt = f"以「{title}」为主题的数字艺术封面，有明确视觉焦点和故事感。"
-    required = "公众号封面图，900x383，2.35:1 横版构图，无文字，无logo，无人物面孔。"
-    if "900x383" not in prompt and "2.35:1" not in prompt:
-        prompt = f"{required}{prompt}"
-    elif "无文字" not in prompt or "无logo" not in prompt:
-        prompt = f"{prompt}，无文字，无logo，无人物面孔"
+        if lang == "en":
+            prompt = (
+                f"Digital art, 2.35:1 landscape format. "
+                f"A minimalist scene representing '{title}', flat vector illustration style, "
+                "clear focal point, cool blue-purple tones, cinematic lighting, "
+                "story-driven atmosphere, no text, no logos, no human faces."
+            )
+        else:
+            prompt = (
+                f"扁平矢量插画，2.35:1 横版，以「{title}」为主题，"
+                "有明确视觉焦点，冷色调科技感，有故事张力，无文字，无logo，无人物面孔。"
+            )
+    if lang == "zh":
+        suffix_parts = []
+        if "900x383" not in prompt and "2.35:1" not in prompt:
+            suffix_parts.append("公众号封面图，900x383，2.35:1 横版构图")
+        if "无文字" not in prompt:
+            suffix_parts.append("无文字")
+        if "无logo" not in prompt:
+            suffix_parts.append("无logo")
+        if "无人物面孔" not in prompt:
+            suffix_parts.append("无人物面孔")
+        if suffix_parts:
+            prompt = f"{prompt}。{', '.join(suffix_parts)}"
     return prompt
 
 
@@ -951,11 +983,14 @@ def save_wechat_outputs(
 
     for article in wechat_articles[:3]:
         title = article.get("title", "公众号文章")
-        raw_prompt = article.get("gemini_banana_prompt") or (
-            f"公众号封面图，900x383，2.35:1，主题是「{title}」，无文字，无logo，无人物面孔，"
-            "数字艺术风格，有明确视觉焦点。"
+        prompt_en = normalize_cover_prompt(
+            str(article.get("cover_prompt_en") or article.get("gemini_banana_prompt") or ""),
+            title, lang="en",
         )
-        prompt = normalize_gemini_banana_prompt(str(raw_prompt), title)
+        prompt_zh = normalize_cover_prompt(
+            str(article.get("cover_prompt_zh") or article.get("gemini_banana_prompt") or ""),
+            title, lang="zh",
+        )
         body_md = article.get("content_md", "")
         body_wechat = normalize_wechat_body(body_md)
 
@@ -963,15 +998,17 @@ def save_wechat_outputs(
         content = (
             "标题\n"
             f"{title}\n\n"
-            "Gemini Banana 生图提示词（公众号封面图适配）\n"
-            f"{prompt}\n\n"
+            "封面图提示词（英文版，Midjourney / DALL-E）\n"
+            f"{prompt_en}\n\n"
+            "封面图提示词（中文版，即梦 / 通义万相）\n"
+            f"{prompt_zh}\n\n"
             "正文内容\n"
             f"{body_wechat}\n"
         )
         path.write_text(content, encoding="utf-8")
         paths.append(path)
 
-        send_email_article(title, prompt, body_wechat)
+        send_email_article(title, prompt_en, prompt_zh, body_wechat)
 
     for path in paths:
         try:
