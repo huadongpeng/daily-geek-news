@@ -5,9 +5,14 @@ import html
 import json
 import os
 import re
+import smtplib
 import time
 from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
+from email import encoders
+from email.mime.base import MIMEBase
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 from pathlib import Path
 from typing import Any
 
@@ -28,6 +33,9 @@ DEEPSEEK_API_KEY = os.environ.get("DEEPSEEK_API_KEY")
 TG_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
 TG_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID")
 TG_THREAD_BRIEFING = os.environ.get("TG_THREAD_BRIEFING")
+EMAIL_FROM = os.environ.get("EMAIL_FROM", "")
+EMAIL_PASSWORD = os.environ.get("EMAIL_PASSWORD", "")
+EMAIL_TO = os.environ.get("EMAIL_TO", "huadongpeng@outlook.com")
 ROOT = Path(__file__).resolve().parent
 CONTENT_DIR = ROOT / "content" / "posts"
 CACHE_DIR = ROOT / ".cache" / "radar"
@@ -140,12 +148,17 @@ TOPICS: tuple[Topic, ...] = (
 
 
 PERSONA_DEFAULT = """
-Easton，30多岁，普通二本计算机专业，2016年毕业。现在是一家养猪设备制造企业唯一的IT人，一人顶一个部门。
-处境不轻松，日子过得比较艰难，压力不小，这影响他对风险的判断——比普通人更在乎代价，更在乎这事我真的能做吗。
+Easton，30多岁，信阳人，IT技术经理，负责公司软件研发的所有内容，一个人扛着整个技术方向。
+日子过得比较艰难，压力不小，这影响他对风险的判断——比普通人更在乎代价，更在乎这事我真的能做吗。
 
-认知模式（核心特征）：研究得很深，实践得很少。对感兴趣的东西会做很深的信息检索和筛选，有自己的思维框架，能看到别人不一定看到的角度。但受限于经济情况和性格特征，真正下场尝试的次数有限。对新事物往往研究到七八成深度，站在可以开始动手了的门口——然后没有迈进去。这是真实的自我描述，也是可以自嘲的地方。
+日常：喝信阳毛尖，下班喝点小酒（白的黄的啤的都行），平时逛论坛刷帖子玩英雄联盟，
+周末去奥乐齐/河马奥莱这类平价超市，或者找地方露营看网络小说一呆一下午。
 
-在探索副业，深度用AI写代码、写公众号，对海外市场和信息差感兴趣，但实践很少——没时间、没本金、有顾虑，外加容易停在研究完了但还没开始的位置。
+认知模式（核心特征）：研究得很深，实践得很少。对感兴趣的东西会做很深的信息检索和筛选，
+有自己的思维框架，能看到别人不一定看到的角度。但受限于经济情况和性格特征，真正下场尝试的次数有限。
+对新事物往往研究到七八成深度，站在可以开始动手了的门口——然后没有迈进去。
+这是真实的自我描述，也是可以自嘲的地方。
+
 写给和他处境类似的人：想探副业但启动资金有限，想睁眼看世界但信息来源乱，研究了不少但不知道怎么开始的普通打工人。
 不教人成功，只是一个站在门口研究了很久但还没迈进去的人，认真把自己看到的东西写出来。
 """
@@ -157,7 +170,7 @@ RESEARCH_METHOD_DEFAULT = """
 3. 明确区分已确认事实、高概率推断、待验证线索、观点/立场，不把猜测包装成结论。
 4. 引用商业公司报告时标注利益动机，对数字打折说明。
 5. 不把单个 Reddit/论坛帖子写成确定事实，只当需求线索。
-6. 整理结果时：找最重要的 2-3 个有据可查的事实，找最反直觉/最让人停下来的 1-2 个角度，找对 Easton 的个人连接点。
+6. 整理结果时：找最重要的 2-3 个有据可查的事实，找最反直觉/最让人停下来的 1-2 个角度。
 """
 
 WRITING_METHOD_DEFAULT = """
@@ -188,7 +201,7 @@ def load_optional_text(env_name: str, fallback: str) -> str:
     try:
         return p.read_text(encoding="utf-8").strip()
     except OSError as exc:
-        print(f"⚠️ 无法读取 {env_name}={path}: {exc}")
+        print(f"   ⚠️ 无法读取 {env_name}={path}: {exc}")
         return fallback.strip()
 
 
@@ -231,7 +244,7 @@ def fetch_feed(url: str, limit: int, max_age_hours: int) -> list[dict[str, Any]]
         resp = requests.get(
             url,
             timeout=20,
-            headers={"User-Agent": "EastonRadar/3.0 (+https://radar.huadongpeng.com)"},
+            headers={"User-Agent": "EastonRadar/4.0 (+https://radar.huadongpeng.com)"},
         )
         resp.raise_for_status()
         parsed = feedparser.parse(resp.content)
@@ -563,16 +576,16 @@ def compose_briefing(filtered: dict[str, Any], persona: str, slot: str) -> dict[
     )
 
 
-def compose_deep_dives(
+# ─── 阶段一：网站深度调查报告 ───────────────────────────────────────────────
+
+def compose_investigation_reports(
     filtered: dict[str, Any],
     researched: list[dict[str, Any]],
-    persona: str,
     research_method: str,
-    writing_method: str,
     slot: str,
     recent_titles: list[str] | None = None,
 ) -> dict[str, Any]:
-    print("✍️ 使用 Pro max 生成深度好文...")
+    print("📋 阶段一：使用 Pro max 生成深度调查报告（网站版）...")
     topic_titles = {t.slug: t.title for t in TOPICS}
     recent_block = ""
     if recent_titles:
@@ -583,74 +596,50 @@ def compose_deep_dives(
         )
     return llm_json(
         system=(
-            "你是 Easton 的深度写作作者。"
-            "Easton 是普通二本计算机专业毕业的技术人，现在是一家养猪设备制造企业唯一的 IT 人，"
-            "处境不轻松，日子过得比较艰难，但一直在认真关注海外市场、信息差和副业机会。"
-            "他的核心特质：研究得很深，实践得很少。"
-            "对感兴趣的东西会做深度检索和筛选，有自己的思维框架；"
-            "但受限于经济情况和性格，真正下场尝试的次数有限，"
-            "经常站在'可以开始动手了'的门口却没有迈进去——这是他可以自嘲的地方，也是他和读者产生共鸣的地方。"
-            "他的文章写给和他处境类似的普通人，不教人成功，"
-            "只是一个站在门口研究了很久但还没迈进去的人，认真把自己看到的东西写出来。"
+            "你是一名专业技术调查记者，任务是根据一手证据和深度检索结果，"
+            "撰写严谨、深入、有结构的中文调查报告。"
+            "报告面向关注 AI、副业、海外市场和信息差的中文读者。"
+            "要求：事实清晰、来源透明、分析有深度、结论有据可查、反证明确标注。"
             "必须输出合法 JSON，不要代码块。"
         ),
         user=f"""
 当前时间：{bj_now().strftime('%Y-%m-%d %H:%M')} BJT
 本次批次：{slot}
 
-【Easton 人设】
-{persona}
-
-【信息探索方法论】
+【信息探索与研究方法论】
 {research_method[:40000]}
 
-【写作方法论】
-{writing_method[:40000]}
-
-{recent_block}【工作流程：两阶段执行】
-
-第一阶段 — 消化证据，找到那个让人停下来的角度：
-阅读【深度候选与检索证据】，按信息探索方法论的原则，在心里整理：
-- 最重要的 2-3 个有据可查的事实（区分"已确认"和"线索"）
-- 最有意思、最反直觉的那个角度（不是最全面，是最让 Easton 停下来的）
-- 对 Easton 这种处境最有个人共鸣的连接点
-
-第二阶段 — 从那个细节开始写：
-不要把研究素材的结构转成文章结构。
-从让 Easton 停下来的那个细节开始写。其他内容在写作自然推进时再放进来，用不到的就扔掉。
-一篇好文章用掉的研究素材通常不超过 30%。
-
+{recent_block}
 【主题映射】
 {json.dumps(topic_titles, ensure_ascii=False)}
 
 【初筛结果】
-{json.dumps(filtered, ensure_ascii=False)[:100000]}
+{json.dumps(filtered, ensure_ascii=False)[:80000]}
 
 【深度候选与检索证据】
 {json.dumps(researched, ensure_ascii=False)[:300000]}
 
 请输出 JSON：
 {{
-  "deep_dives": [
+  "investigation_reports": [
     {{
       "topic": "主题slug",
-      "title": "文章标题",
-      "summary": "Telegram 摘要，80字内",
-      "gemini_banana_prompt": "适合 Gemini Banana 生图的公众号封面提示词，中文，900x383，2.35:1，必须无文字、无logo、无人物面孔",
-      "content_md": "完整 Markdown 正文"
+      "title": "调查报告标题",
+      "summary": "核心发现摘要，100字内",
+      "content_md": "完整调查报告 Markdown 正文"
     }}
   ]
 }}
 
-深度文章硬性要求：
+调查报告硬性要求：
 - 产出 1-3 篇，优中择优，不要凑数。
-- 每篇必须有：有据可查的事实链、为什么和 Easton 有关（代入一人IT+日子不轻松+没时间没本金的真实处境）、机会或风险判断、反证和不确定性。
-- 来源可信度在正文引用时就带出来，不要在文章末尾单独开"信息来源与可信度"一节。
-- "接下来我打算做什么"：Easton 研究深但实践少，经常站在门口没迈进去——这是真实的，可以自嘲。写法要有取舍、有顾虑，可以说"我大概率还是不会马上动手"，绝对不能写成带时间分段或序号的行动清单。如果有真实尝试过的内容，要明确标注，那比研究更有分量。
-- 人设一致性：文章里"我"是养猪设备厂一人IT、探索副业极少实践的普通技术人，不能写成带团队的技术总监或已有多个项目的创业者。个人财务处境只能以"日子过得不轻松""压力比较大"一笔带过，不展开细节。
-- 正文只允许使用 Markdown 加粗 `**文字**`，不用表格、代码块、引用块、图片语法、复杂 Markdown。
-- 禁止"一、二、三、四、五、六"数字编号大标题；禁止"本周/两周内/一个月内"三段时间轴。
-- 所有不确定信息标注"线索"或"待验证"。
+- 每篇必须包含：核心发现（有据可查的事实链）、证据来源与可信度分层、多角度分析（含反证和不确定性）、对读者的实际影响判断。
+- 来源必须在正文引用时标注来源名称和可信度（高可信 / 中可信 / 线索级）。
+- 可使用 H2、H3 标题，表格，引用块等完整 Markdown 格式——这是网站调查文章，格式可以丰富。
+- 严格区分已确认事实、高概率推断、待验证线索，不把猜测包装成结论。
+- 以客观调查语气写作，不需要个人"我"的叙述视角。
+- 所有不确定信息明确标注"线索"或"待验证"。
+- 每篇不少于 1500 字，要有实质深度，不是新闻摘要。
 """,
         max_tokens=64000,
         model=PRO_MODEL,
@@ -659,8 +648,121 @@ def compose_deep_dives(
     )
 
 
+# ─── 阶段二：公众号文章（个人口吻改写）─────────────────────────────────────
+
+def compose_wechat_articles(
+    investigation_reports: list[dict[str, Any]],
+    researched: list[dict[str, Any]],
+    persona: str,
+    writing_method: str,
+    slot: str,
+) -> dict[str, Any]:
+    print("✍️ 阶段二：使用 Pro 生成公众号文章（个人口吻版）...")
+    topic_titles = {t.slug: t.title for t in TOPICS}
+    return llm_json(
+        system=(
+            "你是 Easton 的公众号代笔作者。"
+            "你的任务是把已经写好的调查报告，用 Easton 自己的口吻重新讲一遍，改写成公众号文章。"
+            "不是翻译，不是压缩摘要，是 Easton 读完这个研究、自己要跟读者聊这件事的感觉。"
+            "Easton 是个 30 多岁的 IT 技术经理，负责公司软件研发，信阳人，"
+            "喝信阳毛尖，下班喝小酒，平时逛论坛玩英雄联盟，周末去奥乐齐/河马奥莱或者露营看网络小说。"
+            "他研究深、实践少，经常站在要开始动手的门口但没迈进去，这是他可以自嘲的地方。"
+            "他写给普通打工人看，不教人成功，只是认真把自己看到的东西讲出来。"
+            "必须输出合法 JSON，不要代码块。"
+        ),
+        user=f"""
+当前时间：{bj_now().strftime('%Y-%m-%d %H:%M')} BJT
+本次批次：{slot}
+
+【Easton 人设与写作风格详细说明】
+{persona}
+
+【写作方法论】
+{writing_method[:40000]}
+
+【主题映射】
+{json.dumps(topic_titles, ensure_ascii=False)}
+
+【调查报告原文（改写的素材来源）】
+{json.dumps(investigation_reports, ensure_ascii=False)[:150000]}
+
+【补充研究证据（需要细节时参考）】
+{json.dumps(researched, ensure_ascii=False)[:80000]}
+
+【改写任务】
+从每篇调查报告中，找到最让 Easton 停下来的那个细节或角度，从那个点开始写公众号文章。
+研究素材只是原料——一篇好文章用掉的素材不超过 30%，用不上的就扔掉。
+
+请输出 JSON：
+{{
+  "wechat_articles": [
+    {{
+      "topic": "主题slug",
+      "title": "公众号文章标题",
+      "summary": "Telegram 摘要，80字内",
+      "gemini_banana_prompt": "适合 Gemini Banana 生图的公众号封面提示词，中文，900x383，2.35:1，必须无文字、无logo、无人物面孔",
+      "content_md": "完整公众号正文"
+    }}
+  ]
+}}
+
+公众号文章硬性要求：
+- 每篇调查报告对应一篇公众号文章，共 {len(investigation_reports)} 篇。
+- 开头从一个具体细节切入，绝不用"在当今AI快速发展的时代"之类的开场。
+- 每篇开头反应词只能用一次，且同批次 {len(investigation_reports)} 篇之间不能重复同一个反应词（"愣住"、"停下来"等要轮换）。
+- "站在门口"这个比喻整批次最多用一次，其他篇用不同表达。
+- 来源可信度在正文引用时带出来，不在末尾单独开"信息来源"一节。
+- 来源质疑的表达方式要多样——不要每次都是括号格式，可以是破折号、"但说真的"、问句等。
+- "接下来我打算做什么"：诚实说研究深但实践少，可以自嘲但不自我贬低。有真实尝试的明确标注。绝不写成带时间分段或序号的行动清单。
+- 生活细节（信阳毛尖/下班喝酒/英雄联盟/奥乐齐/露营看小说）只在真正贴切的地方自然带入，不强行。
+- 涉及工作身份只用"IT技术经理"，不提具体公司名。
+- 正文只允许使用 **加粗** 格式，不用表格、代码块、引用块、图片语法。
+- 禁止"一、二、三、四、五、六"数字编号大标题。
+- 禁止"本周/两周内/一个月内"三段时间轴行动计划。
+""",
+        max_tokens=32000,
+        model=PRO_MODEL,
+        thinking_type=PRO_THINKING,
+        reasoning_effort=PRO_REASONING_EFFORT,
+    )
+
+
+# ─── 邮件发送 ────────────────────────────────────────────────────────────────
+
+def send_email_article(title: str, prompt: str, body_txt: str) -> None:
+    if not EMAIL_FROM or not EMAIL_PASSWORD:
+        print("📭 未配置 EMAIL_FROM / EMAIL_PASSWORD，跳过邮件发送")
+        return
+    msg = MIMEMultipart()
+    msg["From"] = EMAIL_FROM
+    msg["To"] = EMAIL_TO
+    msg["Subject"] = f"[公众号] {title}"
+
+    email_body = f"文章标题：{title}\n\n生图提示词：\n{prompt}"
+    msg.attach(MIMEText(email_body, "plain", "utf-8"))
+
+    safe_title = re.sub(r"[^\w一-鿿\-]", "-", title)[:40]
+    attachment = MIMEBase("application", "octet-stream")
+    attachment.set_payload(body_txt.encode("utf-8"))
+    encoders.encode_base64(attachment)
+    attachment.add_header("Content-Disposition", f'attachment; filename="{safe_title}.txt"')
+    msg.attach(attachment)
+
+    try:
+        with smtplib.SMTP("smtp.office365.com", 587) as server:
+            server.ehlo()
+            server.starttls()
+            server.login(EMAIL_FROM, EMAIL_PASSWORD)
+            server.sendmail(EMAIL_FROM, EMAIL_TO, msg.as_string())
+        print(f"   📧 邮件已发送: {title}")
+    except Exception as exc:
+        print(f"   ⚠️ 邮件发送失败: {exc}")
+
+
+# ─── 文件输出 ─────────────────────────────────────────────────────────────────
+
 def slugify(text: str) -> str:
-    base = re.sub(r"[^a-zA-Z0-9\u4e00-\u9fff]+", "-", text).strip("-").lower()
+    base = re.sub(r"[^a-zA-Z0-9一-鿿]+", "-", text).strip("-").lower()
     if not base:
         base = hashlib.sha1(text.encode("utf-8")).hexdigest()[:8]
     return base[:48]
@@ -761,34 +863,15 @@ def normalize_gemini_banana_prompt(prompt: str, title: str) -> str:
     return prompt
 
 
-def write_wechat_source(article: dict[str, Any], slot: str) -> Path:
-    date_slug = bj_now().strftime("%Y-%m-%d")
-    title = article.get("title", "深度文章")
-    raw_prompt = article.get("gemini_banana_prompt") or article.get("cover_prompt") or (
-        f"公众号封面图，900x383，2.35:1，主题是「{title}」，无文字，无logo，无人物面孔，"
-        "数字艺术风格，有明确视觉焦点，适合技术与商业观察类文章。"
-    )
-    prompt = normalize_gemini_banana_prompt(str(raw_prompt), title)
-    body = normalize_wechat_body(article.get("content_md", ""))
-    path = WECHAT_OUTPUT_DIR / f"{date_slug}-{slot}-{slugify(title)}.md"
-    content = (
-        "标题\n"
-        f"{title}\n\n"
-        "Gemini Banana 生图提示词（公众号封面图适配）\n"
-        f"{prompt}\n\n"
-        "正文内容\n"
-        f"{body}\n"
-    )
-    path.write_text(content, encoding="utf-8")
-    return path
-
-
-def save_outputs(report: dict[str, Any], slot: str) -> list[Path]:
-    print("💾 写入 Hugo 内容...")
+def save_website_outputs(
+    briefing: dict[str, Any],
+    investigation_reports: list[dict[str, Any]],
+    slot: str,
+) -> list[Path]:
+    print("💾 写入网站内容（简讯 + 调查报告）...")
     paths: list[Path] = []
     date_slug = bj_now().strftime("%Y-%m-%d")
 
-    briefing = report.get("briefing") or {}
     if briefing.get("items"):
         body = render_briefing_md(briefing, slot)
         paths.append(
@@ -801,20 +884,20 @@ def save_outputs(report: dict[str, Any], slot: str) -> list[Path]:
             )
         )
 
-    for article in report.get("deep_dives", [])[:3]:
+    for article in investigation_reports[:3]:
         topic = article.get("topic", "info-gap")
-        title = article.get("title", "深度文章")
+        title = article.get("title", "深度调查")
         body = article.get("content_md", "")
         paths.append(
             write_post(
                 topic,
-                f"deep-dive-{date_slug}-{slot}-{slugify(title)}.md",
+                f"investigation-{date_slug}-{slot}-{slugify(title)}.md",
                 title,
-                ["深度好文", slot],
+                ["深度调查", slot],
                 body,
             )
         )
-        paths.append(write_wechat_source(article, slot))
+
     for path in paths:
         try:
             display_path = path.relative_to(ROOT)
@@ -824,23 +907,80 @@ def save_outputs(report: dict[str, Any], slot: str) -> list[Path]:
     return paths
 
 
+def save_wechat_outputs(
+    wechat_articles: list[dict[str, Any]],
+    slot: str,
+) -> list[Path]:
+    print("📱 写入公众号文章并发送邮件...")
+    paths: list[Path] = []
+    date_slug = bj_now().strftime("%Y-%m-%d")
+
+    for article in wechat_articles[:3]:
+        title = article.get("title", "公众号文章")
+        raw_prompt = article.get("gemini_banana_prompt") or (
+            f"公众号封面图，900x383，2.35:1，主题是「{title}」，无文字，无logo，无人物面孔，"
+            "数字艺术风格，有明确视觉焦点。"
+        )
+        prompt = normalize_gemini_banana_prompt(str(raw_prompt), title)
+        body_md = article.get("content_md", "")
+        body_wechat = normalize_wechat_body(body_md)
+
+        path = WECHAT_OUTPUT_DIR / f"{date_slug}-{slot}-{slugify(title)}.md"
+        content = (
+            "标题\n"
+            f"{title}\n\n"
+            "Gemini Banana 生图提示词（公众号封面图适配）\n"
+            f"{prompt}\n\n"
+            "正文内容\n"
+            f"{body_wechat}\n"
+        )
+        path.write_text(content, encoding="utf-8")
+        paths.append(path)
+
+        send_email_article(title, prompt, body_wechat)
+
+    for path in paths:
+        try:
+            display_path = path.relative_to(ROOT)
+        except ValueError:
+            display_path = path
+        print(f"   ✅ {display_path}")
+    return paths
+
+
+# ─── Telegram 通知 ────────────────────────────────────────────────────────────
+
 def tg_escape(text: str) -> str:
     return text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
 
 
-def send_telegram(report: dict[str, Any], slot: str) -> None:
+def send_telegram(
+    briefing: dict[str, Any],
+    investigation_reports: list[dict[str, Any]],
+    wechat_articles: list[dict[str, Any]],
+    slot: str,
+) -> None:
     if not TG_BOT_TOKEN or not TG_CHAT_ID:
         print("📭 未配置 Telegram，跳过通知")
         return
-    briefing = report.get("briefing") or {}
-    lines = [f"<b>{tg_escape(briefing.get('title', '今日简讯'))}</b>", f"{bj_now().strftime('%Y-%m-%d')} {slot}", ""]
+    lines = [
+        f"<b>{tg_escape(briefing.get('title', '今日简讯'))}</b>",
+        f"{bj_now().strftime('%Y-%m-%d')} {slot}",
+        "",
+    ]
     for item in briefing.get("items", [])[:10]:
         lines.append(f"• {tg_escape(item.get('title', ''))}｜{tg_escape(item.get('source', ''))}")
-    deep = report.get("deep_dives", [])
-    if deep:
-        lines.extend(["", "<b>深度好文</b>"])
-        for article in deep[:3]:
+
+    if investigation_reports:
+        lines.extend(["", "<b>📋 网站调查报告</b>"])
+        for article in investigation_reports[:3]:
             lines.append(f"• {tg_escape(article.get('title', ''))}: {tg_escape(article.get('summary', ''))}")
+
+    if wechat_articles:
+        lines.extend(["", "<b>📱 公众号文章（已发邮件）</b>"])
+        for article in wechat_articles[:3]:
+            lines.append(f"• {tg_escape(article.get('title', ''))}: {tg_escape(article.get('summary', ''))}")
+
     lines.extend(["", SITE_URL])
     payload: dict[str, Any] = {
         "chat_id": TG_CHAT_ID,
@@ -860,6 +1000,8 @@ def send_telegram(report: dict[str, Any], slot: str) -> None:
         print(f"   ⚠️ Telegram 异常: {exc}")
 
 
+# ─── 入口 ─────────────────────────────────────────────────────────────────────
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Easton Radar source-first intelligence pipeline")
     parser.add_argument("--slot", choices=["auto", "morning", "evening"], default="auto", help="日报批次")
@@ -877,26 +1019,40 @@ def main() -> None:
     research_method = load_text_config("RESEARCH_SKILL_PATH", ROOT / "config" / "research_skill.md", RESEARCH_METHOD_DEFAULT)
     writing_method = load_text_config("WRITING_SKILL_PATH", ROOT / "config" / "writing_skill.md", WRITING_METHOD_DEFAULT)
 
-    print("🚀 Easton Radar v3")
+    print("🚀 Easton Radar v4")
     print(
         f"   批次: {slot} | 初筛/简讯: {FLASH_MODEL} | "
-        f"深度: {PRO_MODEL}({PRO_THINKING}/{PRO_REASONING_EFFORT}) | 主题: {len(TOPICS)}"
+        f"调查/公众号: {PRO_MODEL}({PRO_THINKING}/{PRO_REASONING_EFFORT}) | 主题: {len(TOPICS)}"
     )
 
+    # 防重复
     recent_titles = load_recent_titles(days=7)
+
+    # 采集 & 初筛
     collected = collect_sources(args.max_age_hours)
     filtered = initial_filter(collected, persona, recent_titles)
+
+    # 简讯
     briefing_report = compose_briefing(filtered, persona, slot)
+
+    # 深度检索
     candidates = filtered.get("deep_candidates", [])
     researched = research_candidates(candidates, research_method)
-    deep_report = compose_deep_dives(filtered, researched, persona, research_method, writing_method, slot, recent_titles)
-    report = {
-        "briefing": briefing_report.get("briefing", {}),
-        "deep_dives": deep_report.get("deep_dives", []),
-    }
-    save_outputs(report, slot)
+
+    # 阶段一：网站调查报告
+    inv_result = compose_investigation_reports(filtered, researched, research_method, slot, recent_titles)
+    investigation_reports = inv_result.get("investigation_reports", [])
+    save_website_outputs(briefing_report.get("briefing", {}), investigation_reports, slot)
+
+    # 阶段二：公众号文章（个人口吻）+ 发邮件
+    wechat_result = compose_wechat_articles(investigation_reports, researched, persona, writing_method, slot)
+    wechat_articles = wechat_result.get("wechat_articles", [])
+    save_wechat_outputs(wechat_articles, slot)
+
+    # Telegram 通知
     if not args.no_telegram:
-        send_telegram(report, slot)
+        send_telegram(briefing_report.get("briefing", {}), investigation_reports, wechat_articles, slot)
+
     print("🏁 完成")
 
 

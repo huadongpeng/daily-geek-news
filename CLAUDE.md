@@ -17,9 +17,9 @@ first-hand / near-source RSS
   -> persona-based filtering
   -> daily briefing
   -> deep research on selected candidates
-  -> long-form articles
-  -> Gemini Banana cover prompts for WeChat
-  -> Telegram notification + Hugo website
+  -> Phase 1: investigation report (objective, structured) -> Hugo website
+  -> Phase 2: WeChat article (personal voice re-telling) -> email + outputs/wechat_articles/
+  -> Telegram notification
 ```
 
 ## Commands
@@ -56,10 +56,9 @@ These can be overridden with:
 2. Ask the LLM to filter items against the persona and four focus areas.
 3. Generate the daily briefing.
 4. Search around selected deep candidates using DuckDuckGo.
-5. Ask the LLM to write 1-3 deep-dive articles.
-6. Write Hugo Markdown under `content/posts/`.
-7. Write WeChat-ready source files under `outputs/wechat_articles/`.
-8. Send a Telegram summary if configured.
+5. **Phase 1** — Ask Pro model to write objective investigation reports → save to Hugo under `content/posts/{category}/investigation-*.md`.
+6. **Phase 2** — Ask Pro model to rewrite each report in Easton's personal voice → save to `outputs/wechat_articles/` and send by email.
+7. Send a Telegram summary if configured.
 
 Focus areas:
 
@@ -85,6 +84,9 @@ Optional:
 - `TELEGRAM_BOT_TOKEN`
 - `TELEGRAM_CHAT_ID`
 - `TG_THREAD_BRIEFING`
+- `EMAIL_FROM` — sender email address (Outlook SMTP)
+- `EMAIL_PASSWORD` — email password or app password
+- `EMAIL_TO` — recipient address (default: huadongpeng@outlook.com)
 - `PERSONA_PATH`
 - `RESEARCH_SKILL_PATH`
 - `WRITING_SKILL_PATH`
