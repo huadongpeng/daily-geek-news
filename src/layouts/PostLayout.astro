@@ -1,0 +1,117 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  frontmatter: CollectionEntry<'blog'>['data'];
+  postId: string;        // Astro 5 post.id, e.g. "ai-tools/investigation-xxx"
+}
+
+const { frontmatter, postId } = Astro.props;
+const { title, date, description, cover, categories, tags, sources = [] } = frontmatter;
+
+const CAT_LABELS: Record<string, string> = {
+  'ai-tools':       'AI 工具前线',
+  'side-hustle':    '副业实验室',
+  'overseas':       '出海信号',
+  'life-signal':    '生活信号',
+  'daily-briefing': '每日简讯',
+};
+
+const cat        = categories?.[0] ?? '';
+const catLabel   = CAT_LABELS[cat] ?? cat;
+const dateStr    = date.toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' });
+const canonURL   = new URL(`/blog/${postId}/`, Astro.site).href;
+const ogImageAbs = cover
+  ? (cover.startsWith('http') ? cover : new URL(cover, Astro.site).href)
+  : new URL('/og-default.jpg', Astro.site).href;
+
+// ── Schema.org BlogPosting JSON-LD ───────────────────────────
+// The `citation` array lets Perplexity / ChatGPT Search trace every
+// fact back to its primary source — core to AI SEO.
+const jsonLd: Record<string, unknown> = {
+  '@context': 'https://schema.org',
+  '@type':    'BlogPosting',
+  headline:   title,
+  ...(description && { description }),
+  datePublished: date.toISOString(),
+  dateModified:  date.toISOString(),
+  url:           canonURL,
+  image:         ogImageAbs,
+  inLanguage:    'zh-CN',
+  author: {
+    '@type':        'Person',
+    name:           'Easton Hua',
+    alternateName:  '老花',
+    url:            'https://www.huadongpeng.com/about/',
+  },
+  publisher: {
+    '@type': 'Organization',
+    name:    'hdop家',
+    url:     'https://www.huadongpeng.com',
+    logo: {
+      '@type': 'ImageObject',
+      url:     new URL('/favicon.svg', Astro.site).href,
+    },
+  },
+  ...(tags?.length && { keywords: tags.join(', ') }),
+  ...(sources.length > 0 && {
+    citation: sources.map(s => ({
+      '@type': 'CreativeWork',
+      name:    s.name,
+      url:     s.url,
+    })),
+  }),
+};
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  ogImage={cover || '/og-default.jpg'}
+  canonicalURL={canonURL}
+  jsonLd={jsonLd}
+>
+  <div class="wrap">
+
+    <header class="article-header">
+      <div class="article-meta">
+        {catLabel && <span class="tag">{catLabel}</span>}
+        <time class="article-date" datetime={date.toISOString()}>{dateStr}</time>
+      </div>
+      <h1 class="article-title">{title}</h1>
+      {description && <p class="article-desc">{description}</p>}
+    </header>
+
+    {cover && (
+      <div class="article-cover">
+        <img
+          src={cover}
+          alt={title}
+          width="1024"
+          height="576"
+          loading="eager"
+          decoding="async"
+        />
+      </div>
+    )}
+
+    <article class="prose">
+      <slot />
+    </article>
+
+    {sources.length > 0 && (
+      <aside class="sources" aria-label="信息来源">
+        <p class="sources-heading">信息来源</p>
+        <ul class="sources-list">
+          {sources.map(s => (
+            <li>
+              <a href={s.url} target="_blank" rel="noopener noreferrer">{s.name}</a>
+            </li>
+          ))}
+        </ul>
+      </aside>
+    )}
+
+  </div>
+</BaseLayout>

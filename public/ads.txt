@@ -1,0 +1,4 @@
+# Google AdSense
+# 申请通过后，将下面一行的 pub-XXXXXXXXXXXXXXXXX 替换为你的真实 Publisher ID
+# 示例: google.com, pub-1234567890123456, DIRECT, f08c47fec0942fa0
+google.com, pub-XXXXXXXXXXXXXXXXX, DIRECT, f08c47fec0942fa0

@@ -1,0 +1,28 @@
+---
+const nav = [
+  { href: '/',                        label: '首页'    },
+  { href: '/categories/ai-tools/',    label: 'AI 工具'  },
+  { href: '/categories/side-hustle/', label: '副业'    },
+  { href: '/categories/overseas/',    label: '出海'    },
+  { href: '/categories/life-signal/', label: '生活'    },
+  { href: '/about/',                  label: '关于'    },
+];
+
+const { pathname } = Astro.url;
+---
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="/" class="logo">hdop家 · 老花</a>
+    <nav class="nav" aria-label="主导航">
+      {nav.map(({ href, label }) => {
+        const active = href === '/'
+          ? pathname === '/'
+          : pathname.startsWith(href);
+        return (
+          <a href={href} aria-current={active ? 'page' : undefined}>{label}</a>
+        );
+      })}
+    </nav>
+  </div>
+</header>

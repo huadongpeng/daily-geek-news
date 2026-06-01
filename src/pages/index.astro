@@ -1,0 +1,36 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PostCard from '../components/PostCard.astro';
+
+const allPosts = await getCollection('blog', ({ data }) => !data.draft);
+const posts = allPosts
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 18);
+---
+
+<BaseLayout>
+  <div class="wrap">
+
+    <section class="hero">
+      <h1 class="hero-title">hdop家 · 老花</h1>
+      <p class="hero-desc">
+        一个小公司的软件技术经理，人到中年，还在摸爬滚打。<br />
+        不教你成功，只分享我探索的方向、踩过的坑，和那些让我「卧槽」的东西。<br />
+        <strong>四个方向</strong>：AI 工具前线 · 副业实验室 · 出海信号 · 生活信号
+      </p>
+    </section>
+
+    {posts.length > 0 ? (
+      <>
+        <p class="sec-title">最新文章</p>
+        <div class="grid">
+          {posts.map(post => <PostCard post={post} />)}
+        </div>
+      </>
+    ) : (
+      <p style="color:var(--muted);padding:3rem 0">内容生成中，请稍后…</p>
+    )}
+
+  </div>
+</BaseLayout>

@@ -1,0 +1,35 @@
+# hdop家 · 老花 — robots.txt
+# 主站: https://www.huadongpeng.com
+
+User-agent: *
+Allow: /
+Disallow: /dist/
+Crawl-delay: 1
+
+# ── AI search crawlers — explicitly welcome ──
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: cohere-ai
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: Bytespider
+Allow: /
+
+# Sitemap
+Sitemap: https://www.huadongpeng.com/sitemap-index.xml

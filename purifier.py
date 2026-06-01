@@ -15,7 +15,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from pathlib import Path
 from typing import Any
-from urllib.parse import urlparse
+from urllib.parse import quote, urlparse
 
 import feedparser
 import requests
@@ -40,9 +40,11 @@ EMAIL_TO = os.environ.get("EMAIL_TO", "huadongpeng@outlook.com")
 EMAIL_SMTP_HOST = os.environ.get("EMAIL_SMTP_HOST", "")
 EMAIL_SMTP_PORT = int(os.environ.get("EMAIL_SMTP_PORT", "0"))
 ROOT = Path(__file__).resolve().parent
-CONTENT_DIR = ROOT / "content" / "posts"
+CONTENT_DIR = ROOT / "src" / "content" / "blog"
 CACHE_DIR = ROOT / ".cache" / "radar"
 WECHAT_OUTPUT_DIR = ROOT / "outputs" / "wechat_articles"
+COVERS_DIR = ROOT / "public" / "images" / "covers"
+SILICONFLOW_API_KEY = os.environ.get("SILICONFLOW_API_KEY")
 MIN_EVIDENCE_ITEMS = 3
 MIN_EVIDENCE_DOMAINS = 2
 MAX_FULLTEXT_EVIDENCE = 8
@@ -220,6 +222,85 @@ def load_text_config(env_name: str, default_path: Path, fallback: str) -> str:
     return fallback.strip()
 
 
+def generate_cover_prompt(title: str, summary: str) -> str:
+    """Ask Flash to produce a concise English image-generation prompt for a cover."""
+    try:
+        result = llm_json(
+            system=(
+                "You are a creative director. Generate a concise English image prompt for an article cover."
+                " Output only valid JSON, no markdown."
+            ),
+            user=(
+                f"Article title: {title}\n"
+                f"Summary: {summary[:300]}\n\n"
+                "Generate an English image prompt under 30 words for a 16:9 cover image. "
+                "Minimalist or flat-vector style. No text, no logos, no human faces. "
+                'Output JSON: {"prompt": "..."}'
+            ),
+            max_tokens=200,
+            model=FLASH_MODEL,
+            thinking_type="disabled",
+            reasoning_effort="low",
+        )
+        prompt = (result.get("prompt") or "").strip()
+        return prompt or f"Minimalist digital art representing '{title[:40]}', clean background, technology aesthetic, 16:9"
+    except Exception as exc:
+        print(f"   ⚠️ 封面提示词生成失败: {exc}")
+        return f"Minimalist digital art, clean background, technology aesthetic, 16:9"
+
+
+def generate_cover_image(prompt: str, filename_stem: str) -> str:
+    """Generate cover via SiliconFlow FLUX.1-schnell; fall back to Pollinations.ai.
+
+    Returns the public-relative URL path ("/images/covers/foo.jpg") or empty string.
+    """
+    output_path = COVERS_DIR / f"{filename_stem}.jpg"
+
+    if SILICONFLOW_API_KEY:
+        try:
+            resp = requests.post(
+                "https://api.siliconflow.cn/v1/images/generations",
+                headers={
+                    "Authorization": f"Bearer {SILICONFLOW_API_KEY}",
+                    "Content-Type": "application/json",
+                },
+                json={
+                    "model": "black-forest-labs/FLUX.1-schnell",
+                    "prompt": prompt,
+                    "image_size": "1024x576",
+                    "num_inference_steps": 4,
+                },
+                timeout=120,
+            )
+            resp.raise_for_status()
+            data = resp.json()
+            images = data.get("images") or data.get("data") or []
+            img_url = images[0].get("url", "") if images else ""
+            if img_url:
+                img_data = requests.get(img_url, timeout=60)
+                img_data.raise_for_status()
+                output_path.write_bytes(img_data.content)
+                print(f"   🎨 封面图已生成 (SiliconFlow): {output_path.name}")
+                return f"/images/covers/{output_path.name}"
+        except Exception as exc:
+            print(f"   ⚠️ SiliconFlow 生图失败，降级到 Pollinations: {exc}")
+
+    try:
+        encoded = quote(prompt, safe="")
+        pol_url = (
+            f"https://image.pollinations.ai/prompt/{encoded}"
+            "?width=1024&height=576&nologo=true"
+        )
+        img_data = requests.get(pol_url, timeout=120, headers={"User-Agent": "EastonRadar/4.0"})
+        img_data.raise_for_status()
+        output_path.write_bytes(img_data.content)
+        print(f"   🎨 封面图已生成 (Pollinations): {output_path.name}")
+        return f"/images/covers/{output_path.name}"
+    except Exception as exc:
+        print(f"   ⚠️ 封面图生成失败: {exc}")
+        return ""
+
+
 def detect_slot(now: datetime, explicit: str | None) -> str:
     if explicit and explicit != "auto":
         return explicit
@@ -231,6 +312,7 @@ def ensure_runtime() -> None:
         raise SystemExit("❌ 缺少 DEEPSEEK_API_KEY，无法调用 AI 分析。")
     CACHE_DIR.mkdir(parents=True, exist_ok=True)
     WECHAT_OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    COVERS_DIR.mkdir(parents=True, exist_ok=True)
 
 
 def strip_tags(text: str) -> str:
@@ -866,7 +948,8 @@ def compose_investigation_reports(
       "topic": "ai-tools|side-hustle|overseas|life-signal",
       "title": "调查报告标题",
       "summary": "核心发现摘要，100字内",
-      "content_md": "完整调查报告 Markdown 正文"
+      "content_md": "完整调查报告 Markdown 正文",
+      "sources": [{{"name": "来源名称", "url": "https://原始链接"}}]
     }}
   ]
 }}
@@ -895,6 +978,7 @@ def compose_investigation_reports(
 - 客观调查语气，无第一人称"我"的叙述视角。
 - 可使用 H2、H3 标题、表格、引用块等完整 Markdown 格式。
 - 有实质深度，不是新闻摘要——字数服从内容需要，不要为凑字数堆废话。
+- sources 只收录文章正文中实际引用的高/中可信来源，格式 [{{"name": "来源名", "url": "https://..."}}]，2-8 个，url 必须是完整链接，不得用线索级来源。
 """,
         max_tokens=64000,
         model=PRO_MODEL,
@@ -1094,10 +1178,15 @@ def write_post(
     title: str,
     tags: list[str],
     body: str,
+    cover: str = "",
+    description: str = "",
+    sources: list[dict[str, str]] | None = None,
 ) -> Path:
     path = CONTENT_DIR / category / filename
     path.parent.mkdir(parents=True, exist_ok=True)
-    date = bj_now().strftime("%Y-%m-%dT%H:%M:00%z")
+    # isoformat() produces "+08:00" (with colon), which is valid ISO-8601 and
+    # passes Astro/Zod date parsing without type errors.
+    date = bj_now().isoformat(timespec="seconds")
     fm = [
         "---",
         f"title: {yaml_scalar(title)}",
@@ -1106,6 +1195,15 @@ def write_post(
         f"tags: {json.dumps(tags, ensure_ascii=False)}",
         "draft: false",
     ]
+    if description:
+        fm.append(f"description: {yaml_scalar(description)}")
+    if cover:
+        fm.append(f"cover: {yaml_scalar(cover)}")
+    if sources:
+        fm.append("sources:")
+        for s in sources:
+            fm.append(f"  - name: {yaml_scalar(s.get('name', ''))}")
+            fm.append(f"    url: {yaml_scalar(s.get('url', ''))}")
     fm.extend(["---", ""])
     path.write_text("\n".join(fm) + "\n" + body.strip() + "\n", encoding="utf-8")
     return path
@@ -1226,13 +1324,27 @@ def save_website_outputs(
             print(f"   ⚠️ 模型返回了未知分类 '{raw_topic}'，已回退到 life-signal")
         title = article.get("title", "深度调查")
         body = article.get("content_md", "")
+        summary = article.get("summary", "")
+        sources = article.get("sources") or []
+        filename_stem = f"investigation-{date_slug}-{slot}-{slugify(title)}"
+
+        cover_path = ""
+        try:
+            img_prompt = generate_cover_prompt(title, summary)
+            cover_path = generate_cover_image(img_prompt, filename_stem)
+        except Exception as exc:
+            print(f"   ⚠️ 封面图流程异常: {exc}")
+
         paths.append(
             write_post(
                 topic,
-                f"investigation-{date_slug}-{slot}-{slugify(title)}.md",
+                f"{filename_stem}.md",
                 title,
                 ["深度调查", slot],
                 body,
+                cover=cover_path,
+                description=summary,
+                sources=sources,
             )
         )
 

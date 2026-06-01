@@ -1,8 +1,17 @@
+# Python
 __pycache__/
 *.py[cod]
 .venv/
 .cache/
 tools/.env
-public/
+
+# Astro build output (do NOT ignore public/ — it's source assets now)
+dist/
+node_modules/
+.astro/
+
+# Hugo legacy (can be removed once fully migrated)
 resources/_gen/
+
+# WeChat article drafts — delivered by email, not committed
 outputs/wechat_articles/

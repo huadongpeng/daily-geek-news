@@ -1,0 +1,113 @@
+name: Easton Radar — Build & Deploy
+
+on:
+  schedule:
+    - cron: "0 22 * * *"   # 06:00 BJT (UTC+8)
+    - cron: "0 10 * * *"   # 18:00 BJT
+  workflow_dispatch:
+    inputs:
+      slot:
+        description: "批次 (auto/morning/evening)"
+        required: false
+        default: "auto"
+        type: choice
+        options: [auto, morning, evening]
+
+# Only need write access to push generated content back to the repo
+permissions:
+  contents: write
+
+jobs:
+  pipeline:
+    runs-on: ubuntu-latest
+
+    steps:
+      # ── 1. Checkout ──────────────────────────────────────────
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          # No submodules needed (Hugo theme is no longer used in build)
+          fetch-depth: 1
+
+      # ── 2. Python: run intelligence pipeline ─────────────────
+      - name: Setup Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install Python dependencies
+        run: pip install feedparser requests ddgs
+
+      - name: Run intelligence pipeline
+        env:
+          DEEPSEEK_API_KEY:                ${{ secrets.DEEPSEEK_API_KEY }}
+          SILICONFLOW_API_KEY:             ${{ secrets.SILICONFLOW_API_KEY }}
+          DEEPSEEK_FLASH_MODEL:            ${{ vars.DEEPSEEK_FLASH_MODEL    || 'deepseek-v4-flash' }}
+          DEEPSEEK_FLASH_THINKING:         ${{ vars.DEEPSEEK_FLASH_THINKING || 'disabled' }}
+          DEEPSEEK_FLASH_REASONING_EFFORT: ${{ vars.DEEPSEEK_FLASH_REASONING_EFFORT || 'low' }}
+          DEEPSEEK_PRO_MODEL:              ${{ vars.DEEPSEEK_PRO_MODEL      || 'deepseek-v4-pro' }}
+          DEEPSEEK_PRO_THINKING:           ${{ vars.DEEPSEEK_PRO_THINKING   || 'enabled' }}
+          DEEPSEEK_PRO_REASONING_EFFORT:   ${{ vars.DEEPSEEK_PRO_REASONING_EFFORT || 'max' }}
+          TELEGRAM_BOT_TOKEN:              ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID:                ${{ secrets.TELEGRAM_CHAT_ID }}
+          TG_THREAD_BRIEFING:              ${{ secrets.TG_THREAD_BRIEFING }}
+          EMAIL_FROM:                      ${{ secrets.EMAIL_FROM }}
+          EMAIL_PASSWORD:                  ${{ secrets.EMAIL_PASSWORD }}
+          EMAIL_TO:                        ${{ secrets.EMAIL_TO }}
+        run: python purifier.py --slot "${{ github.event.inputs.slot || 'auto' }}"
+
+      # ── 3. Commit generated content + cover images ───────────
+      - name: Commit generated content
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config user.email "action@github.com"
+          git config user.name  "GitHub Action"
+          # Stage new articles and AI-generated cover images
+          git add src/content/blog/ public/images/covers/
+          if git diff --staged --quiet; then
+            echo "✅ No new content this run"
+          else
+            git commit -m "chore: generate Easton Radar content [$(date -u '+%Y-%m-%d %H:%M UTC')]"
+            git push "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git" HEAD:main
+          fi
+
+      # ── 4. Node.js: build Astro ───────────────────────────────
+      - name: Setup Node.js 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+
+      - name: Install Node dependencies
+        run: npm ci
+
+      - name: Build Astro static site
+        run: npm run build
+        # Outputs to dist/
+
+      # ── 5a. Deploy to VPS via rsync (domestic users) ─────────
+      - name: Deploy dist/ to VPS
+        uses: easingthemes/ssh-deploy@v5
+        with:
+          SSH_PRIVATE_KEY: ${{ secrets.VPS_SSH_KEY }}
+          # -a preserve attrs; -v verbose; -z compress; --delete remove stale files
+          ARGS:            "-avz --delete"
+          SOURCE:          "dist/"
+          REMOTE_HOST:     ${{ secrets.VPS_IP }}
+          REMOTE_USER:     ${{ secrets.VPS_USER }}
+          TARGET:          "/ws/web/www.huadongpeng.com/"
+          # Keep the .well-known dir for Let's Encrypt renewal
+          EXCLUDE:         "/.well-known/"
+
+      # ── 5b. Deploy to GitHub Pages (overseas / AI crawlers) ──
+      - name: Deploy dist/ to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir:  ./dist
+          # radar.huadongpeng.com → GitHub Pages (overseas DNS line)
+          cname:        radar.huadongpeng.com
+          # Keep commit history lean
+          force_orphan: true

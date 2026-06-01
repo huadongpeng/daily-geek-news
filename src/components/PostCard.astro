@@ -1,0 +1,46 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  post: CollectionEntry<'blog'>;
+}
+
+const { post } = Astro.props;
+const { title, date, description, cover, categories } = post.data;
+
+const CAT_LABELS: Record<string, string> = {
+  'ai-tools':       'AI 工具',
+  'side-hustle':    '副业',
+  'overseas':       '出海',
+  'life-signal':    '生活',
+  'daily-briefing': '简讯',
+};
+
+const cat      = categories?.[0] ?? '';
+const catLabel = CAT_LABELS[cat] ?? cat;
+const dateStr  = date.toLocaleDateString('zh-CN', {
+  year: 'numeric', month: '2-digit', day: '2-digit',
+});
+// post.id in Astro 5 = "ai-tools/investigation-xxxx" (subdir/filename, no extension)
+const postUrl  = `/blog/${post.id}/`;
+---
+
+<article class="card">
+  {cover && (
+    <div class="card-cover">
+      <a href={postUrl} tabindex="-1" aria-hidden="true">
+        <img src={cover} alt={title} loading="lazy" decoding="async" />
+      </a>
+    </div>
+  )}
+  <div class="card-body">
+    <div class="card-meta">
+      {catLabel && <span class="tag">{catLabel}</span>}
+      <time class="card-date" datetime={date.toISOString()}>{dateStr}</time>
+    </div>
+    <h2 class="card-title">
+      <a href={postUrl}>{title}</a>
+    </h2>
+    {description && <p class="card-desc">{description}</p>}
+  </div>
+</article>

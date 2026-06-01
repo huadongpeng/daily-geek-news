@@ -1,0 +1,50 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostCard from '../../components/PostCard.astro';
+
+// getStaticPaths must be self-contained in Astro 6 (no outer-scope vars)
+export function getStaticPaths() {
+  const cats = ['ai-tools', 'side-hustle', 'overseas', 'life-signal', 'daily-briefing'];
+  return cats.map(category => ({ params: { category } }));
+}
+
+interface CatMeta { label: string; desc: string }
+
+const CAT_META: Record<string, CatMeta> = {
+  'ai-tools':       { label: 'AI 工具前线', desc: '今天能实际用上的 AI 工具与模型能力变化' },
+  'side-hustle':    { label: '副业实验室',  desc: '普通人可以低成本验证的赚钱路径与市场空缺' },
+  'overseas':       { label: '出海信号',    desc: '海外已发生但中文圈还没注意到的趋势与机会' },
+  'life-signal':    { label: '生活信号',    desc: '影响普通人工作、收入、生活决策的宏观变化' },
+  'daily-briefing': { label: '每日简讯',    desc: '每日精选情报，早晚两版' },
+};
+
+const { category } = Astro.params;
+const meta = CAT_META[category] ?? { label: category, desc: '' };
+
+const allPosts = await getCollection('blog', ({ data }) => !data.draft);
+const posts = allPosts
+  .filter(p => p.data.categories?.includes(category))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+
+<BaseLayout title={meta.label} description={meta.desc}>
+  <div class="wrap">
+
+    <div class="cat-header">
+      <span class="tag">{meta.label}</span>
+      <h1 class="cat-title">{meta.label}</h1>
+      {meta.desc && <p style="color:var(--muted);margin-top:.4rem;font-size:.95rem">{meta.desc}</p>}
+      <p class="cat-count">共 {posts.length} 篇</p>
+    </div>
+
+    {posts.length > 0 ? (
+      <div class="grid">
+        {posts.map(post => <PostCard post={post} />)}
+      </div>
+    ) : (
+      <p style="color:var(--muted);padding:2rem 0">暂无文章，内容生成中…</p>
+    )}
+
+  </div>
+</BaseLayout>
