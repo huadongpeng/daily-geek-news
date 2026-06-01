@@ -94,8 +94,11 @@ img { max-width: 100%; height: auto; display: block; border-radius: var(--r); }
   transition: background .15s;
 }
 
-/* Mobile dropdown nav */
+/* Mobile dropdown nav — hidden by default, shown with .open */
 .nav-mobile {
+  display: none;
+}
+.nav-mobile.open {
   display: flex; flex-direction: column;
   border-top: 1px solid var(--border);
   padding: .5rem 1rem .75rem;

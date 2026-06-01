@@ -31,8 +31,8 @@ const { pathname } = Astro.url;
     </button>
   </div>
 
-  <!-- Mobile dropdown -->
-  <nav class="nav-mobile" id="nav-mobile" aria-label="移动端导航" hidden>
+  <!-- Mobile dropdown — toggled via .open class, never uses `hidden` -->
+  <nav class="nav-mobile" id="nav-mobile" aria-label="移动端导航">
     {nav.map(({ href, label }) => {
       const active = href === '/' ? pathname === '/' : pathname.startsWith(href);
       return <a href={href} aria-current={active ? 'page' : undefined}>{label}</a>;
@@ -44,12 +44,13 @@ const { pathname } = Astro.url;
   const btn  = document.getElementById('nav-toggle')!;
   const menu = document.getElementById('nav-mobile')!;
   btn.addEventListener('click', () => {
-    const open = menu.hidden;
-    menu.hidden = !open;
+    const open = menu.classList.toggle('open');
     btn.setAttribute('aria-expanded', String(open));
   });
-  // Close when a link is tapped
   menu.querySelectorAll('a').forEach(a =>
-    a.addEventListener('click', () => { menu.hidden = true; btn.setAttribute('aria-expanded', 'false'); })
+    a.addEventListener('click', () => {
+      menu.classList.remove('open');
+      btn.setAttribute('aria-expanded', 'false');
+    })
   );
 </script>
