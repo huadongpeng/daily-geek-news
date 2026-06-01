@@ -62,8 +62,7 @@ jobs:
           EMAIL_FROM:                      ${{ secrets.EMAIL_FROM }}
           EMAIL_PASSWORD:                  ${{ secrets.EMAIL_PASSWORD }}
           EMAIL_TO:                        ${{ secrets.EMAIL_TO }}
-        env:
-          PYTHONIOENCODING: "utf-8"
+          PYTHONIOENCODING:                "utf-8"
         run: python purifier.py --slot "${{ github.event.inputs.slot || 'auto' }}"
 
       # ── 3. Commit generated content + cover images ───────────
