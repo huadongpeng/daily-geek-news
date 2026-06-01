@@ -33,7 +33,7 @@ from ddgs import DDGS
 
 
 BJT = timezone(timedelta(hours=8))
-SITE_URL = os.environ.get("SITE_URL", "https://radar.huadongpeng.com").rstrip("/")
+SITE_URL = os.environ.get("SITE_URL", "https://www.huadongpeng.com").rstrip("/")
 FLASH_MODEL = os.environ.get("DEEPSEEK_FLASH_MODEL", os.environ.get("DEEPSEEK_MODEL", "deepseek-v4-flash"))
 PRO_MODEL = os.environ.get("DEEPSEEK_PRO_MODEL", "deepseek-v4-pro")
 FLASH_THINKING = os.environ.get("DEEPSEEK_FLASH_THINKING", "disabled")
@@ -49,6 +49,8 @@ EMAIL_PASSWORD = os.environ.get("EMAIL_PASSWORD", "")
 EMAIL_TO = os.environ.get("EMAIL_TO", "huadongpeng@outlook.com")
 EMAIL_SMTP_HOST = os.environ.get("EMAIL_SMTP_HOST", "")
 EMAIL_SMTP_PORT = int(os.environ.get("EMAIL_SMTP_PORT", "0"))
+INDEXNOW_KEY = os.environ.get("INDEXNOW_KEY", "hdop-indexnow-key")
+BAIDU_PUSH_TOKEN = os.environ.get("BAIDU_PUSH_TOKEN", "")
 ROOT = Path(__file__).resolve().parent
 CONTENT_DIR = ROOT / "src" / "content" / "blog"
 CACHE_DIR = ROOT / ".cache" / "radar"
@@ -1372,6 +1374,21 @@ def save_website_outputs(
         except ValueError:
             display_path = path
         print(f"   ✅ {display_path}")
+
+    # 主动通知搜索引擎收录新文章
+    new_urls = []
+    for path in paths:
+        # 从文件路径推导 URL：src/content/blog/{cat}/{slug}.md → /blog/{cat}/{slug}/
+        try:
+            rel = path.relative_to(CONTENT_DIR)
+            url_path = "/blog/" + "/".join(rel.with_suffix("").parts) + "/"
+            new_urls.append(SITE_URL + url_path)
+        except ValueError:
+            pass
+    if new_urls:
+        submit_indexnow(new_urls)
+        submit_baidu(new_urls)
+
     return paths
 
 
@@ -1429,6 +1446,47 @@ def save_wechat_outputs(
 
     send_email_articles(email_articles, slot)
     return paths
+
+
+# ─── 搜索引擎主动推送 ─────────────────────────────────────────────────────────
+
+def submit_indexnow(urls: list[str]) -> None:
+    """Push new URLs to Bing / Yandex via IndexNow protocol."""
+    if not urls:
+        return
+    try:
+        resp = requests.post(
+            "https://api.indexnow.org/indexnow",
+            json={
+                "host": "www.huadongpeng.com",
+                "key": INDEXNOW_KEY,
+                "keyLocation": f"{SITE_URL}/{INDEXNOW_KEY}.txt",
+                "urlList": urls[:100],
+            },
+            timeout=15,
+        )
+        print(f"   🔍 IndexNow (Bing/Yandex) 推送 {len(urls)} 条 → HTTP {resp.status_code}")
+    except Exception as exc:
+        print(f"   ⚠️ IndexNow 推送失败: {exc}")
+
+
+def submit_baidu(urls: list[str]) -> None:
+    """Push new URLs to Baidu via Active Push API."""
+    if not BAIDU_PUSH_TOKEN or not urls:
+        if not BAIDU_PUSH_TOKEN:
+            print("   📭 未配置 BAIDU_PUSH_TOKEN，跳过百度推送")
+        return
+    try:
+        resp = requests.post(
+            f"http://data.zz.baidu.com/urls?site=www.huadongpeng.com&token={BAIDU_PUSH_TOKEN}",
+            data="\n".join(urls),
+            headers={"Content-Type": "text/plain"},
+            timeout=15,
+        )
+        result = resp.json()
+        print(f"   🔍 百度主动推送 {len(urls)} 条 → 成功 {result.get('success', 0)} 条")
+    except Exception as exc:
+        print(f"   ⚠️ 百度推送失败: {exc}")
 
 
 # ─── Telegram 通知 ────────────────────────────────────────────────────────────

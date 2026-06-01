@@ -62,6 +62,8 @@ jobs:
           EMAIL_FROM:                      ${{ secrets.EMAIL_FROM }}
           EMAIL_PASSWORD:                  ${{ secrets.EMAIL_PASSWORD }}
           EMAIL_TO:                        ${{ secrets.EMAIL_TO }}
+          INDEXNOW_KEY:                    ${{ secrets.INDEXNOW_KEY || 'hdop-indexnow-key' }}
+          BAIDU_PUSH_TOKEN:                ${{ secrets.BAIDU_PUSH_TOKEN }}
           PYTHONIOENCODING:                "utf-8"
         run: python purifier.py --slot "${{ github.event.inputs.slot || 'auto' }}"
 
