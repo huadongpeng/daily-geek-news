@@ -1,5 +1,13 @@
 import argparse
 import concurrent.futures
+import sys
+
+# Windows cmd/PowerShell defaults to GBK; reconfigure to UTF-8 so emoji in
+# print() doesn't crash. No-op on Linux/macOS where encoding is already utf-8.
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+if hasattr(sys.stderr, "reconfigure"):
+    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
 import hashlib
 import html
 import json

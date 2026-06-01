@@ -107,7 +107,8 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir:  ./dist
-          # radar.huadongpeng.com → GitHub Pages (overseas DNS line)
-          cname:        radar.huadongpeng.com
+          # www.huadongpeng.com → 与 VPS 同域名，DNS 境外线路指向 GitHub Pages
+          # canonical/sitemap 两边完全一致，SEO 权重统一归集主站
+          cname:        www.huadongpeng.com
           # Keep commit history lean
           force_orphan: true
