@@ -64,18 +64,31 @@ jobs:
         run: |
           git config user.email "action@github.com"
           git config user.name  "GitHub Action"
-          # Stage new articles and AI-generated cover images
+
+          # Wire auth token into origin so every git command below can push/fetch
+          git remote set-url origin \
+            "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git"
+
           git add src/content/blog/ public/images/covers/
           if git diff --staged --quiet; then
             echo "✅ No new content this run"
-          else
-            git commit -m "chore: generate Easton Radar content [$(date -u '+%Y-%m-%d %H:%M UTC')]"
-            # Rebase on top of any commits that landed while the pipeline was running
-            git pull --rebase \
-              "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git" main
-            git push \
-              "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git" HEAD:main
+            exit 0
           fi
+
+          git commit -m "chore: generate Easton Radar content [$(date -u '+%Y-%m-%d %H:%M UTC')]"
+
+          # Retry loop: fetch → rebase → push (handles concurrent commits that
+          # arrive while the 30-min Python pipeline was running)
+          for attempt in 1 2 3; do
+            echo "── push attempt ${attempt} ──"
+            git fetch origin main
+            git rebase origin/main
+            git push origin HEAD:main && exit 0
+            echo "Push rejected, retrying in ${attempt}s…"
+            sleep "$attempt"
+          done
+          echo "❌ All push attempts failed"
+          exit 1
 
       # ── 4. Node.js: build Astro ───────────────────────────────
       - name: Setup Node.js 20
