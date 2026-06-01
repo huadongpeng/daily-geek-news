@@ -14,15 +14,42 @@ const { pathname } = Astro.url;
 <header class="site-header">
   <div class="header-inner">
     <a href="/" class="logo">hdop家 · 老花</a>
-    <nav class="nav" aria-label="主导航">
+
+    <!-- Desktop nav -->
+    <nav class="nav nav-desktop" aria-label="主导航">
       {nav.map(({ href, label }) => {
-        const active = href === '/'
-          ? pathname === '/'
-          : pathname.startsWith(href);
-        return (
-          <a href={href} aria-current={active ? 'page' : undefined}>{label}</a>
-        );
+        const active = href === '/' ? pathname === '/' : pathname.startsWith(href);
+        return <a href={href} aria-current={active ? 'page' : undefined}>{label}</a>;
       })}
     </nav>
+
+    <!-- Mobile hamburger -->
+    <button class="nav-toggle" id="nav-toggle" aria-label="菜单" aria-expanded="false" aria-controls="nav-mobile">
+      <span class="ham-bar"></span>
+      <span class="ham-bar"></span>
+      <span class="ham-bar"></span>
+    </button>
   </div>
+
+  <!-- Mobile dropdown -->
+  <nav class="nav-mobile" id="nav-mobile" aria-label="移动端导航" hidden>
+    {nav.map(({ href, label }) => {
+      const active = href === '/' ? pathname === '/' : pathname.startsWith(href);
+      return <a href={href} aria-current={active ? 'page' : undefined}>{label}</a>;
+    })}
+  </nav>
 </header>
+
+<script>
+  const btn  = document.getElementById('nav-toggle')!;
+  const menu = document.getElementById('nav-mobile')!;
+  btn.addEventListener('click', () => {
+    const open = menu.hidden;
+    menu.hidden = !open;
+    btn.setAttribute('aria-expanded', String(open));
+  });
+  // Close when a link is tapped
+  menu.querySelectorAll('a').forEach(a =>
+    a.addEventListener('click', () => { menu.hidden = true; btn.setAttribute('aria-expanded', 'false'); })
+  );
+</script>

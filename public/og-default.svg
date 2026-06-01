@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#0f1117"/>
+  <rect width="1200" height="6" fill="#0f62fe"/>
+  <text x="80" y="260" font-family="-apple-system,'PingFang SC','Microsoft YaHei',system-ui,sans-serif" font-size="100" font-weight="700" fill="#ffffff">hdop家</text>
+  <text x="86" y="330" font-family="-apple-system,'PingFang SC','Microsoft YaHei',system-ui,sans-serif" font-size="32" fill="#9198a8">一个中年小公司技术经理的个人情报雷达</text>
+  <text x="86" y="400" font-family="-apple-system,'PingFang SC','Microsoft YaHei',system-ui,sans-serif" font-size="28" fill="#4d8ef5">AI工具前线 · 副业实验室 · 出海信号 · 生活信号</text>
+  <rect x="80" y="450" width="80" height="3" fill="#2d2f3e"/>
+  <text x="80" y="560" font-family="-apple-system,system-ui,sans-serif" font-size="24" fill="#4d4f5e">www.huadongpeng.com</text>
+</svg>

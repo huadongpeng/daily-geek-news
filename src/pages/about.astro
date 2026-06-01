@@ -1,10 +1,23 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+
+const personLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Easton Hua',
+  alternateName: '老花',
+  url: 'https://www.huadongpeng.com/about/',
+  email: 'hdop1993@gmail.com',
+  jobTitle: 'IT技术经理',
+  description: '小公司软件技术经理，研究深、实践少，写给和他处境类似的普通打工人。',
+  sameAs: ['https://github.com/huadongpeng'],
+};
 ---
 
 <BaseLayout
   title="关于老花 · hdop家"
   description="Easton Hua（老花），IT技术经理，一个人扛着公司的技术方向。研究深、实践少，写给和他处境类似的普通打工人。"
+  jsonLd={personLd}
 >
   <div class="wrap">
     <article class="prose" style="padding: 2.5rem 0">

@@ -1,0 +1,33 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const cats = [
+  { href: '/categories/ai-tools/',    label: 'AI 工具前线' },
+  { href: '/categories/side-hustle/', label: '副业实验室'  },
+  { href: '/categories/overseas/',    label: '出海信号'    },
+  { href: '/categories/life-signal/', label: '生活信号'    },
+];
+---
+
+<BaseLayout title="页面未找到 · hdop家" description="页面不存在，回到 hdop家主站继续阅读。">
+  <div class="wrap" style="padding: 4rem 0; text-align: center">
+    <p style="font-size:5rem;line-height:1;margin-bottom:1rem">404</p>
+    <h1 style="font-size:1.5rem;font-weight:700;margin-bottom:.75rem">页面不存在</h1>
+    <p style="color:var(--muted);margin-bottom:2.5rem">
+      可能是链接失效了，或者这个页面从未存在过。
+    </p>
+    <a href="/" style="display:inline-block;background:var(--accent);color:#fff;padding:.6rem 1.4rem;border-radius:var(--r);font-weight:600;text-decoration:none;margin-bottom:3rem">
+      回到首页
+    </a>
+    <div style="max-width:500px;margin:0 auto">
+      <p class="sec-title" style="text-align:left">或者直接去分类</p>
+      <div style="display:flex;flex-wrap:wrap;gap:.5rem;justify-content:flex-start">
+        {cats.map(c => (
+          <a href={c.href} style="padding:.35rem .8rem;background:var(--tag-bg);color:var(--tag-txt);border-radius:6px;font-size:.88rem;font-weight:600;text-decoration:none">
+            {c.label}
+          </a>
+        ))}
+      </div>
+    </div>
+  </div>
+</BaseLayout>
