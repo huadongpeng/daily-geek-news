@@ -21,7 +21,7 @@ permissions:
 # cancel-in-progress: false → queue the second run, don't kill the first.
 # This is the root-cause fix for "rejected: fetch first" errors.
 concurrency:
-  group: deploy
+  group: ${{ github.workflow }}
   cancel-in-progress: false
 
 jobs:
@@ -34,7 +34,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           # No submodules needed (Hugo theme is no longer used in build)
-          fetch-depth: 1
+          fetch-depth: 0
 
       # ── 2. Python: run intelligence pipeline ─────────────────
       - name: Setup Python 3.11
@@ -62,6 +62,8 @@ jobs:
           EMAIL_FROM:                      ${{ secrets.EMAIL_FROM }}
           EMAIL_PASSWORD:                  ${{ secrets.EMAIL_PASSWORD }}
           EMAIL_TO:                        ${{ secrets.EMAIL_TO }}
+        env:
+          PYTHONIOENCODING: "utf-8"
         run: python purifier.py --slot "${{ github.event.inputs.slot || 'auto' }}"
 
       # ── 3. Commit generated content + cover images ───────────
@@ -71,10 +73,6 @@ jobs:
         run: |
           git config user.email "action@github.com"
           git config user.name  "GitHub Action"
-
-          # Wire auth token into origin
-          git remote set-url origin \
-            "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git"
 
           git add src/content/blog/ public/images/covers/
           if git diff --staged --quiet; then
@@ -93,7 +91,7 @@ jobs:
           git push origin HEAD:main
 
       # ── 4. Node.js: build Astro ───────────────────────────────
-      - name: Setup Node.js 20
+      - name: Setup Node.js 22
         uses: actions/setup-node@v4
         with:
           node-version: "22"

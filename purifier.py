@@ -2,12 +2,14 @@ import argparse
 import concurrent.futures
 import sys
 
-# Windows cmd/PowerShell defaults to GBK; reconfigure to UTF-8 so emoji in
-# print() doesn't crash. No-op on Linux/macOS where encoding is already utf-8.
-if hasattr(sys.stdout, "reconfigure"):
-    sys.stdout.reconfigure(encoding="utf-8", errors="replace")
-if hasattr(sys.stderr, "reconfigure"):
-    sys.stderr.reconfigure(encoding="utf-8", errors="replace")
+# On Windows, cmd/PowerShell defaults to GBK which breaks emoji in print().
+# CI sets PYTHONIOENCODING=utf-8 in the workflow env; this guard handles local
+# Windows dev sessions where that variable is absent.
+# errors="backslashreplace" preserves unencodable chars in escaped form rather
+# than silently dropping them.
+if sys.platform == "win32":
+    sys.stdout.reconfigure(encoding="utf-8", errors="backslashreplace")
+    sys.stderr.reconfigure(encoding="utf-8", errors="backslashreplace")
 import hashlib
 import html
 import json
