@@ -1182,6 +1182,13 @@ def yaml_scalar(value: str) -> str:
     return json.dumps(value, ensure_ascii=False)
 
 
+def count_words(text: str) -> int:
+    """Count CJK characters + English words for reading-time estimation."""
+    cjk   = len(re.findall(r'[一-鿿㐀-䶿豈-﫿]', text))
+    latin = len(re.findall(r'\b[A-Za-z]+\b', text))
+    return cjk + latin
+
+
 def write_post(
     category: str,
     filename: str,
@@ -1203,6 +1210,7 @@ def write_post(
         f"date: {date}",
         f"categories: {json.dumps([category], ensure_ascii=False)}",
         f"tags: {json.dumps(tags, ensure_ascii=False)}",
+        f"wordCount: {count_words(body)}",
         "draft: false",
     ]
     if description:
