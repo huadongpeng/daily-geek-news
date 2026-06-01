@@ -22,6 +22,17 @@ const cat        = categories?.[0] ?? '';
 const catLabel   = CAT_LABELS[cat] ?? cat;
 const dateStr    = date.toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' });
 const canonURL   = new URL(`/blog/${postId}/`, Astro.site).href;
+
+// BreadcrumbList for article pages
+const breadcrumb = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: '首页',    item: 'https://www.huadongpeng.com' },
+    { '@type': 'ListItem', position: 2, name: catLabel, item: new URL(`/categories/${cat}/`, Astro.site).href },
+    { '@type': 'ListItem', position: 3, name: title,    item: canonURL },
+  ],
+};
 const ogImageAbs = cover
   ? (cover.startsWith('http') ? cover : new URL(cover, Astro.site).href)
   : new URL('/og-default.jpg', Astro.site).href;
@@ -63,6 +74,10 @@ const jsonLd: Record<string, unknown> = {
     })),
   }),
 };
+
+// Rough reading time (200 chars/min for Chinese)
+// Actual word count comes from the rendered slot, so we estimate from description length + sources count
+const readMins = Math.max(3, Math.round((description?.length ?? 0) * 6 / 200 + sources.length * 0.5 + 4));
 ---
 
 <BaseLayout
@@ -70,7 +85,7 @@ const jsonLd: Record<string, unknown> = {
   description={description}
   ogImage={cover || '/og-default.jpg'}
   canonicalURL={canonURL}
-  jsonLd={jsonLd}
+  jsonLd={[jsonLd, breadcrumb]}
 >
   <div class="wrap">
 
@@ -78,6 +93,7 @@ const jsonLd: Record<string, unknown> = {
       <div class="article-meta">
         {catLabel && <span class="tag">{catLabel}</span>}
         <time class="article-date" datetime={date.toISOString()}>{dateStr}</time>
+        <span class="article-date">· 约 {readMins} 分钟</span>
       </div>
       <h1 class="article-title">{title}</h1>
       {description && <p class="article-desc">{description}</p>}
@@ -96,9 +112,33 @@ const jsonLd: Record<string, unknown> = {
       </div>
     )}
 
+    {/*
+      广告位 A — 文章内容前（横幅/矩形）
+      申请通过后：替换 pub-XXXXXXXXXXXXXXXXX 和 data-ad-slot 值，删除注释
+    */}
+    {/* <ins class="adsbygoogle ad-article-top"
+         style="display:block"
+         data-ad-client="ca-pub-XXXXXXXXXXXXXXXXX"
+         data-ad-slot="AAAAAAAAAA"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script> */}
+
     <article class="prose">
       <slot />
     </article>
+
+    {/*
+      广告位 B — 文章内容后（效果通常最好）
+      申请通过后：替换 pub-XXXXXXXXXXXXXXXXX 和 data-ad-slot 值，删除注释
+    */}
+    {/* <ins class="adsbygoogle ad-article-bottom"
+         style="display:block"
+         data-ad-client="ca-pub-XXXXXXXXXXXXXXXXX"
+         data-ad-slot="BBBBBBBBBB"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script> */}
 
     {sources.length > 0 && (
       <aside class="sources" aria-label="信息来源">

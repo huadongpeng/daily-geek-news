@@ -8,7 +8,7 @@ interface Props {
   description?:  string;
   ogImage?:      string;
   canonicalURL?: string;
-  jsonLd?:       Record<string, unknown>;
+  jsonLd?:       Record<string, unknown> | Record<string, unknown>[];
 }
 
 const {
@@ -52,13 +52,30 @@ const ogImageAbs   = ogImage.startsWith('http') ? ogImage : new URL(ogImage, Ast
   <!-- RSS autodiscovery -->
   <link rel="alternate" type="application/rss+xml" title="hdop家 RSS" href="/rss.xml" />
 
+  <!--
+    Google AdSense Auto Ads
+    申请通过后：
+    1. 将 pub-XXXXXXXXXXXXXXXXX 替换为真实 Publisher ID（格式 pub-16位数字）
+    2. 删除这行注释，取消下面 <script> 的注释
+  -->
+  {/* <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXXX" crossorigin="anonymous"></script> */}
+
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
-  <!-- JSON-LD (injected by PostLayout when present) -->
-  {jsonLd && (
-    <Fragment set:html={`<script type="application/ld+json">${JSON.stringify(jsonLd)}</script>`} />
-  )}
+  <!-- WebSite JSON-LD (site-wide, helps AI crawlers index authorship) -->
+  <Fragment set:html={`<script type="application/ld+json">${JSON.stringify({
+    "@context":"https://schema.org","@type":"WebSite",
+    "name":"hdop家","url":"https://www.huadongpeng.com",
+    "description":"一个中年小公司技术经理的个人情报雷达",
+    "inLanguage":"zh-CN",
+    "author":{"@type":"Person","name":"Easton Hua","alternateName":"老花","url":"https://www.huadongpeng.com/about/"}
+  })}</script>`} />
+
+  <!-- JSON-LD (injected by PostLayout when present; accepts single object or array) -->
+  {jsonLd && (Array.isArray(jsonLd) ? jsonLd : [jsonLd]).map(schema => (
+    <Fragment set:html={`<script type="application/ld+json">${JSON.stringify(schema)}</script>`} />
+  ))}
 </head>
 <body>
   <Header />
