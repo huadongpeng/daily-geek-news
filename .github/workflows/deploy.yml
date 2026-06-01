@@ -70,7 +70,11 @@ jobs:
             echo "✅ No new content this run"
           else
             git commit -m "chore: generate Easton Radar content [$(date -u '+%Y-%m-%d %H:%M UTC')]"
-            git push "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git" HEAD:main
+            # Rebase on top of any commits that landed while the pipeline was running
+            git pull --rebase \
+              "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git" main
+            git push \
+              "https://x-access-token:${GH_TOKEN}@github.com/${{ github.repository }}.git" HEAD:main
           fi
 
       # ── 4. Node.js: build Astro ───────────────────────────────
