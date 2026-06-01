@@ -88,18 +88,21 @@ jobs:
         # Outputs to dist/
 
       # ── 5a. Deploy to VPS via rsync (domestic users) ─────────
-      - name: Deploy dist/ to VPS
-        uses: easingthemes/ssh-deploy@v5
-        with:
-          SSH_PRIVATE_KEY: ${{ secrets.VPS_SSH_KEY }}
-          # -a preserve attrs; -v verbose; -z compress; --delete remove stale files
-          ARGS:            "-avz --delete"
-          SOURCE:          "dist/"
-          REMOTE_HOST:     ${{ secrets.VPS_IP }}
-          REMOTE_USER:     ${{ secrets.VPS_USER }}
-          TARGET:          "/ws/web/www.huadongpeng.com/"
-          # Keep the .well-known dir for Let's Encrypt renewal
-          EXCLUDE:         "/.well-known/"
+      - name: Setup SSH for VPS deploy
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          # Add VPS host key to known_hosts (avoids interactive prompt)
+          ssh-keyscan -H "${{ secrets.VPS_IP }}" >> ~/.ssh/known_hosts
+
+      - name: Deploy dist/ to VPS via rsync
+        run: |
+          rsync -avz --delete \
+            --exclude="/.well-known/" \
+            -e "ssh -i ~/.ssh/deploy_key" \
+            dist/ \
+            "${{ secrets.VPS_USER }}@${{ secrets.VPS_IP }}:/ws/web/www.huadongpeng.com/"
 
       # ── 5b. Deploy to GitHub Pages (overseas / AI crawlers) ──
       - name: Deploy dist/ to GitHub Pages
