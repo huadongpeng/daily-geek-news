@@ -11,8 +11,11 @@
       "https://venturebeat.com/category/ai/feed/",
       "https://simonwillison.net/atom/everything/",
       "https://lobste.rs/t/ai.rss",
-      "https://www.reddit.com/r/LocalLLaMA/top/.rss?t=day",
-      "https://www.reddit.com/r/MachineLearning/top/.rss?t=day"
+      "https://techcrunch.com/category/artificial-intelligence/feed/",
+      "https://thenewstack.io/feed/",
+      "https://feeds.arstechnica.com/arstechnica/technology-lab",
+      "https://bair.berkeley.edu/blog/feed.xml",
+      "https://sebastianraschka.com/rss_feed.xml"
     ],
     "search_seeds": [
       "AI model release site:openai.com OR site:google.com",
@@ -24,15 +27,9 @@
     "feeds": [
       "https://news.ycombinator.com/rss",
       "https://www.producthunt.com/feed",
-      "https://www.reddit.com/r/SaaS/top/.rss?t=day",
-      "https://www.reddit.com/r/SideProject/top/.rss?t=day",
-      "https://www.reddit.com/r/Entrepreneur/top/.rss?t=day",
-      "https://www.reddit.com/r/SomebodyMakeThis/top/.rss?t=day",
-      "https://www.reddit.com/r/freelance/top/.rss?t=day",
-      "https://www.reddit.com/r/EntrepreneurRideAlong/top/.rss?t=day",
-      "https://www.reddit.com/r/juststart/top/.rss?t=day",
-      "https://www.reddit.com/r/passive_income/top/.rss?t=day",
-      "https://v2ex.com/feed/create.xml"
+      "https://v2ex.com/feed/create.xml",
+      "https://changelog.com/feed",
+      "https://www.saastr.com/feed/"
     ],
     "search_seeds": [
       "side project revenue case study",
@@ -48,10 +45,10 @@
       "http://www.chinadaily.com.cn/rss/world_rss.xml",
       "http://www.chinadaily.com.cn/rss/bizchina_rss.xml",
       "https://feeds.bbci.co.uk/news/world/rss.xml",
-      "https://www.reddit.com/r/digitalnomad/top/.rss?t=day",
-      "https://www.reddit.com/r/expats/top/.rss?t=day",
-      "https://www.reddit.com/r/InternetIsBeautiful/top/.rss?t=day",
-      "https://www.producthunt.com/feed"
+      "https://www.producthunt.com/feed",
+      "https://technode.com/feed/",
+      "https://e27.co/feed/",
+      "https://asia.nikkei.com/rss/feed/nar"
     ],
     "search_seeds": [
       "overseas market China information gap",
@@ -70,9 +67,11 @@
       "https://www.theverge.com/rss/index.xml",
       "https://techcrunch.com/feed/",
       "https://www.cnbc.com/id/100003114/device/rss/rss.html",
-      "https://www.reddit.com/r/cscareerquestions/top/.rss?t=day",
-      "https://www.reddit.com/r/ExperiencedDevs/top/.rss?t=day",
-      "https://www.reddit.com/r/layoffs/top/.rss?t=day"
+      "https://stackoverflow.blog/feed/",
+      "https://www.axios.com/feeds/feed.rss",
+      "https://feeds.bloomberg.com/technology/news.rss",
+      "https://www.fastcompany.com/technology/rss",
+      "https://www.theregister.com/headlines.atom"
     ],
     "search_seeds": [
       "tech layoffs 2025",
