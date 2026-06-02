@@ -79,6 +79,8 @@ WECHAT_APP_ID = os.environ.get("WECHAT_APP_ID", "")
 WECHAT_APP_SECRET = os.environ.get("WECHAT_APP_SECRET", "")
 WECHAT_AUTHOR = os.environ.get("WECHAT_AUTHOR", "老花")
 WECHAT_DRAFT_ENABLED = os.environ.get("WECHAT_DRAFT_ENABLED", "true").lower() not in {"0", "false", "no"}
+WECHAT_TITLE_MAX_BYTES = 48
+WECHAT_DIGEST_MAX_CHARS = 120
 SOURCES_CONFIG_PATH = Path(os.environ.get("SOURCES_CONFIG_PATH", ROOT / "config" / "sources.json"))
 SILICONFLOW_API_KEY = os.environ.get("SILICONFLOW_API_KEY")
 ALLOW_POLLINATIONS_COVER = os.environ.get("ALLOW_POLLINATIONS_COVER", "true").lower() not in {"0", "false", "no"}
@@ -1597,6 +1599,29 @@ def yaml_scalar(value: str) -> str:
     return json.dumps(value, ensure_ascii=False)
 
 
+def truncate_by_bytes(text: str, max_bytes: int) -> str:
+    if len(text.encode("utf-8")) <= max_bytes:
+        return text
+    ellipsis = "..."
+    budget = max_bytes - len(ellipsis.encode("utf-8"))
+    out: list[str] = []
+    total = 0
+    for ch in text:
+        size = len(ch.encode("utf-8"))
+        if total + size > budget:
+            break
+        out.append(ch)
+        total += size
+    return "".join(out).rstrip() + ellipsis
+
+
+def truncate_chars(text: str, max_chars: int) -> str:
+    text = text.strip()
+    if len(text) <= max_chars:
+        return text
+    return text[: max_chars - 3].rstrip() + "..."
+
+
 def count_words(text: str) -> int:
     """Count CJK characters + English words for reading-time estimation."""
     cjk   = len(re.findall(r'[一-鿿㐀-䶿豈-﫿]', text))
@@ -1817,13 +1842,15 @@ def upload_wechat_cover(access_token: str, cover_path: Path) -> str:
 
 def add_wechat_draft(access_token: str, article: dict[str, Any], thumb_media_id: str) -> str:
     title = str(article.get("title") or "公众号文章")
+    safe_title = truncate_by_bytes(title.strip(), WECHAT_TITLE_MAX_BYTES)
+    safe_digest = truncate_chars(str(article.get("summary") or ""), WECHAT_DIGEST_MAX_CHARS)
     content_html = markdown_to_wechat_html(str(article.get("content_md") or ""))
     payload = {
         "articles": [
             {
-                "title": title[:64],
+                "title": safe_title,
                 "author": WECHAT_AUTHOR,
-                "digest": str(article.get("summary") or "")[:120],
+                "digest": safe_digest,
                 "content": content_html,
                 "content_source_url": str(article.get("site_url") or ""),
                 "thumb_media_id": thumb_media_id,
@@ -1836,7 +1863,8 @@ def add_wechat_draft(access_token: str, article: dict[str, Any], thumb_media_id:
     resp = requests.post(
         "https://api.weixin.qq.com/cgi-bin/draft/add",
         params={"access_token": access_token},
-        json=payload,
+        data=json.dumps(payload, ensure_ascii=False).encode("utf-8"),
+        headers={"Content-Type": "application/json; charset=utf-8"},
         timeout=60,
     )
     resp.raise_for_status()

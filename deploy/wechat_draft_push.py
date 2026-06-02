@@ -17,6 +17,8 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 WECHAT_APP_ID = os.environ.get("WECHAT_APP_ID", "")
 WECHAT_APP_SECRET = os.environ.get("WECHAT_APP_SECRET", "")
 WECHAT_AUTHOR = os.environ.get("WECHAT_AUTHOR", "老花")
+WECHAT_TITLE_MAX_BYTES = 48
+WECHAT_DIGEST_MAX_CHARS = 120
 
 
 def load_server_config() -> None:
@@ -53,6 +55,13 @@ def truncate_by_bytes(text: str, max_bytes: int) -> str:
         out.append(ch)
         total += b
     return "".join(out) + ellipsis
+
+
+def truncate_chars(text: str, max_chars: int) -> str:
+    text = text.strip()
+    if len(text) <= max_chars:
+        return text
+    return text[: max_chars - 3].rstrip() + "..."
 
 
 def inline_markdown(text: str) -> str:
@@ -166,17 +175,23 @@ def upload_cover(access_token: str, cover_path: Path) -> str:
 
 def add_draft(access_token: str, payload: Dict[str, Any], thumb_media_id: str) -> str:
     title = str(payload.get("title") or "公众号文章")
-    safe_title = truncate_by_bytes(title, 48)
+    safe_title = truncate_by_bytes(title.strip(), WECHAT_TITLE_MAX_BYTES)
+    safe_digest = truncate_chars(str(payload.get("summary") or ""), WECHAT_DIGEST_MAX_CHARS)
     print(
-        "Draft title bytes: original=%d sent=%d"
-        % (len(title.encode("utf-8")), len(safe_title.encode("utf-8")))
+        "Draft title bytes: original=%d sent=%d; digest chars: original=%d sent=%d"
+        % (
+            len(title.encode("utf-8")),
+            len(safe_title.encode("utf-8")),
+            len(str(payload.get("summary") or "")),
+            len(safe_digest),
+        )
     )
     data = {
         "articles": [
             {
                 "title": safe_title,
                 "author": WECHAT_AUTHOR,
-                "digest": str(payload.get("summary") or "")[:120],
+                "digest": safe_digest,
                 "content": markdown_to_wechat_html(str(payload.get("content_md") or "")),
                 "content_source_url": str(payload.get("site_url") or ""),
                 "thumb_media_id": thumb_media_id,
@@ -189,7 +204,8 @@ def add_draft(access_token: str, payload: Dict[str, Any], thumb_media_id: str) -
     resp = requests.post(
         "https://api.weixin.qq.com/cgi-bin/draft/add",
         params={"access_token": access_token},
-        json=data,
+        data=json.dumps(data, ensure_ascii=False).encode("utf-8"),
+        headers={"Content-Type": "application/json; charset=utf-8"},
         timeout=60,
     )
     resp.raise_for_status()
