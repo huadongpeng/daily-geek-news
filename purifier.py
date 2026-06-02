@@ -1615,6 +1615,38 @@ def truncate_by_bytes(text: str, max_bytes: int) -> str:
     return "".join(out).rstrip() + ellipsis
 
 
+def wechat_safe_title(title: str, summary: str = "") -> str:
+    """Create a readable WeChat-only title without changing the website title."""
+    raw = re.sub(r"\s+", " ", (title or "").strip())
+    if not raw:
+        raw = re.sub(r"\s+", " ", (summary or "").strip()) or "老花今天追到的新信号"
+
+    candidates = [raw]
+    for pattern in (r"[：:，,。！？!?；;]", r"\s+-\s+", r"\s+—\s+"):
+        head = re.split(pattern, raw, maxsplit=1)[0].strip()
+        if head and head != raw:
+            candidates.append(head)
+
+    # Long generated titles often start with a personal action scene. Keep that hook,
+    # but remove the trailing explanatory clause that usually breaks the byte limit.
+    hook = re.match(r"^(我[^，,。！？!?；;]{4,24})", raw)
+    if hook:
+        candidates.append(hook.group(1).strip())
+
+    # Prefer the longest candidate that fits; it reads better than a hard cut.
+    fitting = [c for c in candidates if len(c.encode("utf-8")) <= WECHAT_TITLE_MAX_BYTES]
+    if fitting:
+        return max(fitting, key=lambda value: len(value.encode("utf-8")))
+    return truncate_by_bytes(raw, WECHAT_TITLE_MAX_BYTES)
+
+
+def wechat_safe_digest(summary: str, content_md: str = "") -> str:
+    raw = re.sub(r"\s+", " ", (summary or "").strip())
+    if not raw:
+        raw = strip_tags(content_md).strip()
+    return truncate_by_bytes(raw, WECHAT_DIGEST_MAX_BYTES)
+
+
 def count_words(text: str) -> int:
     """Count CJK characters + English words for reading-time estimation."""
     cjk   = len(re.findall(r'[一-鿿㐀-䶿豈-﫿]', text))
@@ -1834,8 +1866,8 @@ def upload_wechat_cover(access_token: str, cover_path: Path) -> str:
 
 
 def add_wechat_draft(access_token: str, article: dict[str, Any], thumb_media_id: str) -> str:
-    title = str(article.get("title") or "公众号文章")
-    summary = str(article.get("summary") or "")
+    title = str(article.get("wechat_title") or article.get("title") or "公众号文章")
+    summary = str(article.get("wechat_digest") or article.get("summary") or "")
     safe_title = truncate_by_bytes(title.strip(), WECHAT_TITLE_MAX_BYTES)
     safe_digest = truncate_by_bytes(summary.strip(), WECHAT_DIGEST_MAX_BYTES)
     content_html = markdown_to_wechat_html(str(article.get("content_md") or ""))
@@ -2100,13 +2132,20 @@ def save_wechat_outputs(
 
     for article in wechat_articles[:3]:
         title = article.get("title", "公众号文章")
+        summary = str(article.get("summary") or "")
         cover_url = absolute_site_url(str(article.get("cover") or ""))
         site_url = str(article.get("site_url") or "")
         body_md = article.get("content_md", "")
         body_wechat = normalize_wechat_body(body_md)
+        wechat_title = wechat_safe_title(str(title), summary)
+        wechat_digest = wechat_safe_digest(summary, str(body_md))
 
         path = WECHAT_OUTPUT_DIR / f"{date_slug}-{slot}-{slugify(title)}.md"
-        content_parts = ["标题", title, ""]
+        content_parts = ["标题", str(title), ""]
+        if wechat_title != str(title):
+            content_parts.extend(["公众号标题", wechat_title, ""])
+        if wechat_digest:
+            content_parts.extend(["公众号摘要", wechat_digest, ""])
         if cover_url:
             content_parts.extend(["封面图", cover_url, ""])
         if site_url:
@@ -2118,8 +2157,10 @@ def save_wechat_outputs(
 
         draft_payload_path = WECHAT_OUTPUT_DIR / f"{date_slug}-{slot}-{slugify(title)}-draft.json"
         draft_payload = {
-            "title": title,
-            "summary": str(article.get("summary") or ""),
+            "title": str(title),
+            "summary": summary,
+            "wechat_title": wechat_title,
+            "wechat_digest": wechat_digest,
             "cover": str(article.get("cover") or ""),
             "cover_url": cover_url,
             "site_url": site_url,

@@ -179,8 +179,8 @@ def upload_cover(access_token: str, cover_path: Path) -> str:
 
 
 def add_draft(access_token: str, payload: Dict[str, Any], thumb_media_id: str) -> str:
-    title = str(payload.get("title") or "公众号文章")
-    summary = str(payload.get("summary") or "")
+    title = str(payload.get("wechat_title") or payload.get("title") or "公众号文章")
+    summary = str(payload.get("wechat_digest") or payload.get("summary") or "")
     safe_title = truncate_by_bytes(title.strip(), WECHAT_TITLE_MAX_BYTES)
     safe_digest = truncate_by_bytes(summary.strip(), WECHAT_DIGEST_MAX_BYTES)
     print(
