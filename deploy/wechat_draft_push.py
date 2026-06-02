@@ -233,28 +233,73 @@ def main() -> None:
 
     load_server_config()
     payload_paths = iter_payloads(args.input_dir)
+    results_path = args.input_dir / "wechat_draft_results.json"
     if not payload_paths:
         print(f"No draft payloads found in {args.input_dir}")
+        results_path.write_text(json.dumps({"results": []}, ensure_ascii=False, indent=2), encoding="utf-8")
         return
 
-    access_token = get_access_token()
+    results: List[Dict[str, Any]] = []
+    errors: List[Exception] = []
+    try:
+        access_token = get_access_token()
+    except Exception as exc:
+        results_path.write_text(
+            json.dumps({"results": [], "error": str(exc)}, ensure_ascii=False, indent=2),
+            encoding="utf-8",
+        )
+        raise
     for payload_path in payload_paths:
         payload = json.loads(payload_path.read_text(encoding="utf-8"))
         title = str(payload.get("title") or payload_path.stem)
+        wechat_title = str(payload.get("wechat_title") or title)
         cover_url = str(payload.get("cover_url") or "")
         if not cover_url:
             print(f"SKIP {title}: missing cover_url")
+            results.append(
+                {
+                    "payload": payload_path.name,
+                    "title": title,
+                    "wechat_title": wechat_title,
+                    "status": "skipped",
+                    "reason": "missing cover_url",
+                }
+            )
             continue
         cover_path = download_cover(cover_url)
         try:
             thumb_media_id = upload_cover(access_token, cover_path)
             draft_media_id = add_draft(access_token, payload, thumb_media_id)
             print(f"OK {title}: {draft_media_id}")
+            results.append(
+                {
+                    "payload": payload_path.name,
+                    "title": title,
+                    "wechat_title": wechat_title,
+                    "status": "ok",
+                    "draft_media_id": draft_media_id,
+                }
+            )
+        except Exception as exc:
+            print(f"FAIL {title}: {exc}")
+            results.append(
+                {
+                    "payload": payload_path.name,
+                    "title": title,
+                    "wechat_title": wechat_title,
+                    "status": "failed",
+                    "error": str(exc),
+                }
+            )
+            errors.append(exc)
         finally:
             try:
                 cover_path.unlink()
             except OSError:
                 pass
+    results_path.write_text(json.dumps({"results": results}, ensure_ascii=False, indent=2), encoding="utf-8")
+    if errors:
+        raise errors[0]
 
 
 if __name__ == "__main__":

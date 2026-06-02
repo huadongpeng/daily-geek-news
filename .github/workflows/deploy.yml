@@ -1,19 +1,6 @@
 name: Easton Radar — Build & Deploy
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - "astro.config.mjs"
-      - "package.json"
-      - "package-lock.json"
-      - "requirements.txt"
-      - "purifier.py"
-      - "config/**"
-      - "src/**"
-      - "public/**"
-      - "deploy/**"
-      - ".github/workflows/deploy.yml"
   schedule:
     - cron: "0 22 * * *"   # 06:00 BJT (UTC+8)
     - cron: "0 10 * * *"   # 18:00 BJT
@@ -36,7 +23,6 @@ concurrency:
 
 jobs:
   generate-content:
-    if: github.event_name != 'push'
     runs-on: ubuntu-latest
     outputs:
       build_ref: ${{ steps.content-commit.outputs.build_ref }}
@@ -124,14 +110,13 @@ jobs:
 
   build:
     needs: [generate-content]
-    if: ${{ always() && (github.event_name == 'push' || needs.generate-content.result == 'success' || needs.generate-content.result == 'skipped') }}
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout latest main
         uses: actions/checkout@v5
         with:
-          ref: ${{ github.event_name == 'push' && github.sha || needs.generate-content.outputs.build_ref || 'main' }}
+          ref: ${{ needs.generate-content.outputs.build_ref || 'main' }}
 
       - name: Setup Node.js 22
         uses: actions/setup-node@v6
@@ -173,7 +158,6 @@ jobs:
           path: dist
 
       - name: Download pipeline artifacts
-        if: github.event_name != 'push'
         continue-on-error: true
         uses: actions/download-artifact@v5
         with:
@@ -182,7 +166,6 @@ jobs:
 
       - name: Detect WeChat draft payloads
         id: wechat_drafts
-        if: github.event_name != 'push'
         run: |
           if [ -d radar-runtime-artifacts ] && find radar-runtime-artifacts -name '*-draft.json' -print -quit | grep -q .; then
             echo "found=true" >> "$GITHUB_OUTPUT"
@@ -207,7 +190,7 @@ jobs:
             "${{ secrets.VPS_USER }}@${{ secrets.VPS_IP }}:/ws/web/www.huadongpeng.com/"
 
       - name: Sync WeChat draft helper to VPS
-        if: github.event_name != 'push' && steps.wechat_drafts.outputs.found == 'true'
+        if: steps.wechat_drafts.outputs.found == 'true'
         env:
           DRAFT_SCRIPT_PATH: ${{ vars.WECHAT_DRAFT_SCRIPT_PATH || '/ws/scripts/easton_wechat_draft_push.py' }}
         run: |
@@ -219,7 +202,7 @@ jobs:
             "${{ secrets.VPS_USER }}@${{ secrets.VPS_IP }}:$DRAFT_SCRIPT_PATH"
 
       - name: Push WeChat drafts from VPS
-        if: github.event_name != 'push' && steps.wechat_drafts.outputs.found == 'true'
+        if: steps.wechat_drafts.outputs.found == 'true'
         env:
           DRAFT_REMOTE_DIR: ${{ vars.WECHAT_DRAFT_REMOTE_DIR || '/tmp/easton-radar-wechat' }}
           DRAFT_SCRIPT_PATH: ${{ vars.WECHAT_DRAFT_SCRIPT_PATH || '/ws/scripts/easton_wechat_draft_push.py' }}
@@ -233,4 +216,21 @@ jobs:
             wechat-drafts/ \
             "${{ secrets.VPS_USER }}@${{ secrets.VPS_IP }}:$DRAFT_REMOTE_DIR/"
           ssh -i ~/.ssh/deploy_key "${{ secrets.VPS_USER }}@${{ secrets.VPS_IP }}" "python3 -c 'import requests' || python3 -m pip install --user requests"
+          set +e
           ssh -i ~/.ssh/deploy_key "${{ secrets.VPS_USER }}@${{ secrets.VPS_IP }}" "PYTHONIOENCODING=utf-8 python3 \"$DRAFT_SCRIPT_PATH\" \"$DRAFT_REMOTE_DIR\""
+          DRAFT_STATUS=$?
+          set -e
+          rsync -avz \
+            -e "ssh -i ~/.ssh/deploy_key" \
+            "${{ secrets.VPS_USER }}@${{ secrets.VPS_IP }}:$DRAFT_REMOTE_DIR/wechat_draft_results.json" \
+            ./wechat_draft_results.json || true
+          exit "$DRAFT_STATUS"
+
+      - name: Upload WeChat draft results
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: wechat-draft-results
+          path: wechat_draft_results.json
+          if-no-files-found: ignore
+          retention-days: 14
