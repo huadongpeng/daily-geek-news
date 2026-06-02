@@ -1995,6 +1995,10 @@ def save_website_outputs(
             updated_at=update_time,
         )
         briefing["site_url"] = site_url_for_post_path(briefing_path)
+        briefing["cover"] = briefing_cover
+        briefing["content_md"] = body
+        briefing["summary"] = briefing_summary
+        briefing["title"] = briefing_title
         paths.append(briefing_path)
 
     valid_topics = {t.slug for t in TOPICS}
@@ -2143,6 +2147,26 @@ def build_wechat_articles_from_reports(investigation_reports: list[dict[str, Any
             }
         )
     return articles
+
+
+def build_wechat_articles_from_briefing(briefing: dict[str, Any]) -> list[dict[str, Any]]:
+    if not briefing.get("items"):
+        return []
+    title = str(briefing.get("title") or "每日简讯")
+    summary = str(briefing.get("summary") or "")
+    content_md = ensure_personal_footer(str(briefing.get("content_md") or ""))
+    return [
+        {
+            "topic": "daily-briefing",
+            "title": title,
+            "summary": summary,
+            "cover_prompt_en": "",
+            "cover_prompt_zh": "",
+            "cover": str(briefing.get("cover") or ""),
+            "content_md": content_md,
+            "site_url": str(briefing.get("site_url") or ""),
+        }
+    ]
 
 
 # ─── 搜索引擎主动推送 ─────────────────────────────────────────────────────────
@@ -2407,10 +2431,13 @@ def main() -> None:
     # 阶段二：公众号源文件直接复用网站文章 + 发邮件
     if investigation_reports:
         wechat_articles = build_wechat_articles_from_reports(investigation_reports)
+    else:
+        wechat_articles = build_wechat_articles_from_briefing(briefing_report.get("briefing", {}))
+    if wechat_articles:
         save_wechat_outputs(wechat_articles, slot)
         publish_wechat_drafts(wechat_articles, slot)
     else:
-        wechat_articles = []
+        print("📭 没有可用于公众号草稿的文章，跳过公众号输出")
 
     # Telegram 通知
     if not args.no_telegram:

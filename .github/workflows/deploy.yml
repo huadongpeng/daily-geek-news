@@ -180,6 +180,17 @@ jobs:
           name: radar-runtime-artifacts
           path: radar-runtime-artifacts
 
+      - name: Detect WeChat draft payloads
+        id: wechat_drafts
+        if: github.event_name != 'push'
+        run: |
+          if [ -d radar-runtime-artifacts ] && find radar-runtime-artifacts -name '*-draft.json' -print -quit | grep -q .; then
+            echo "found=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "found=false" >> "$GITHUB_OUTPUT"
+            echo "No WeChat draft payloads found; skip draft push."
+          fi
+
       - name: Setup SSH for VPS deploy
         run: |
           mkdir -p ~/.ssh
@@ -196,7 +207,7 @@ jobs:
             "${{ secrets.VPS_USER }}@${{ secrets.VPS_IP }}:/ws/web/www.huadongpeng.com/"
 
       - name: Sync WeChat draft helper to VPS
-        if: github.event_name != 'push'
+        if: github.event_name != 'push' && steps.wechat_drafts.outputs.found == 'true'
         env:
           DRAFT_SCRIPT_PATH: ${{ vars.WECHAT_DRAFT_SCRIPT_PATH || '/ws/scripts/easton_wechat_draft_push.py' }}
         run: |
@@ -208,19 +219,11 @@ jobs:
             "${{ secrets.VPS_USER }}@${{ secrets.VPS_IP }}:$DRAFT_SCRIPT_PATH"
 
       - name: Push WeChat drafts from VPS
-        if: github.event_name != 'push'
+        if: github.event_name != 'push' && steps.wechat_drafts.outputs.found == 'true'
         env:
           DRAFT_REMOTE_DIR: ${{ vars.WECHAT_DRAFT_REMOTE_DIR || '/tmp/easton-radar-wechat' }}
           DRAFT_SCRIPT_PATH: ${{ vars.WECHAT_DRAFT_SCRIPT_PATH || '/ws/scripts/easton_wechat_draft_push.py' }}
         run: |
-          if [ ! -d radar-runtime-artifacts ]; then
-            echo "No pipeline artifacts found; skip WeChat draft push."
-            exit 0
-          fi
-          if ! find radar-runtime-artifacts -name '*-draft.json' -print -quit | grep -q .; then
-            echo "No WeChat draft payloads found; skip."
-            exit 0
-          fi
           rm -rf wechat-drafts
           mkdir -p wechat-drafts
           find radar-runtime-artifacts -name '*-draft.json' -exec cp {} wechat-drafts/ \;
