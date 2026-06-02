@@ -39,10 +39,10 @@ def load_server_config() -> None:
 
 def truncate_by_bytes(text: str, max_bytes: int) -> str:
     """WeChat counts title length in UTF-8 bytes (ASCII=1, CJK/full-width=3, emoji=4) and
-    rejects over-limit titles with errcode 45003. Trim on a char boundary, append … if cut."""
+    rejects over-limit titles with errcode 45003. Trim on a char boundary, append ... if cut."""
     if len(text.encode("utf-8")) <= max_bytes:
         return text
-    ellipsis = "…"
+    ellipsis = "..."
     budget = max_bytes - len(ellipsis.encode("utf-8"))
     out = []
     total = 0
@@ -166,10 +166,15 @@ def upload_cover(access_token: str, cover_path: Path) -> str:
 
 def add_draft(access_token: str, payload: Dict[str, Any], thumb_media_id: str) -> str:
     title = str(payload.get("title") or "公众号文章")
+    safe_title = truncate_by_bytes(title, 48)
+    print(
+        "Draft title bytes: original=%d sent=%d"
+        % (len(title.encode("utf-8")), len(safe_title.encode("utf-8")))
+    )
     data = {
         "articles": [
             {
-                "title": truncate_by_bytes(title, 64),
+                "title": safe_title,
                 "author": WECHAT_AUTHOR,
                 "digest": str(payload.get("summary") or "")[:120],
                 "content": markdown_to_wechat_html(str(payload.get("content_md") or "")),
