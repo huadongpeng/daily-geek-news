@@ -89,6 +89,7 @@ MAX_SEARCH_PAGE_FETCHES = 12
 MAX_EVIDENCE_TEXT_CHARS = 5000
 MIN_COVER_BYTES = 10_000
 EXPECTED_COVER_SIZE = (1024, 576)
+BAIDU_MAX_PER_PUSH = 10  # 百度普通收录免费每日配额很小，单次推送上限，避免积压一次性超配额被整批拒绝
 # Many publishers (Economist, The Hill, NPR, NYT…) 403 a bot UA but serve a browser UA fine.
 BROWSER_UA = (
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
@@ -99,8 +100,11 @@ BROWSER_HEADERS = {
     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
     "Accept-Language": "en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7",
 }
+# RSS/Atom providers (esp. Reddit) tolerate a descriptive, identified bot UA but block a
+# generic browser UA from datacenter IPs as a scraper signature. Keep feeds on the identified UA;
+# only article-page fetching (paywalls) uses BROWSER_HEADERS above.
 FEED_HEADERS = {
-    "User-Agent": BROWSER_UA,
+    "User-Agent": "EastonRadar/4.0 (+https://radar.huadongpeng.com)",
     "Accept": "application/rss+xml,application/atom+xml,application/xml,text/xml;q=0.9,*/*;q=0.8",
     "Accept-Language": "en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7",
 }
@@ -2103,29 +2107,40 @@ def submit_indexnow(urls: list[str]) -> None:
 
 
 def submit_baidu(urls: list[str]) -> None:
-    """Push new URLs to Baidu via Active Push API."""
+    """Push new URLs to Baidu via Active Push API.
+
+    Baidu 普通收录 has a small daily quota; if we resend the whole accumulated backlog every run
+    it exceeds the quota and Baidu rejects the entire batch ("over quota"), so nothing ever drains.
+    Push newest-first in capped batches and keep the remainder pending to drain over later runs.
+    """
     if not urls:
         return
-    urls = merged_push_urls("baidu", urls)
+    pending = load_pending_push_urls("baidu")
+    # This run's fresh URLs first, then backlog — newest content matters most for indexing.
+    ordered = list(dict.fromkeys([*urls, *pending]))
+    if pending:
+        print(f"   🔁 合并待补推 URL: {len(pending)} 条")
     if not BAIDU_PUSH_TOKEN:
-        save_pending_push_urls("baidu", urls)
+        save_pending_push_urls("baidu", ordered)
         print("   📭 未配置 BAIDU_PUSH_TOKEN，已暂存本批 URL，等待后续补推")
         return
+    batch = ordered[:BAIDU_MAX_PER_PUSH]
+    rest = ordered[len(batch):]
     # 百度站长平台验证的域名为 www.huadongpeng.com，与 SITE_URL 一致。
     site = urlparse(SITE_URL).hostname or "www.huadongpeng.com"
     try:
         resp = requests.post(
             f"http://data.zz.baidu.com/urls?site={site}&token={BAIDU_PUSH_TOKEN}",
-            data="\n".join(urls),
+            data="\n".join(batch),
             headers={"Content-Type": "text/plain"},
             timeout=15,
         )
         result = resp.json()
-        # Baidu returns {"error":N,"message":...} on auth/site mismatch — surface it instead of
-        # silently reporting "成功 0 条", which hides token/site-verification problems.
+        # Baidu returns {"error":N,"message":...} on quota/auth/site problems — surface it instead of
+        # silently reporting "成功 0 条", which hides the real cause.
         if "error" in result:
             print(f"   ⚠️ 百度推送被拒: error={result.get('error')} {result.get('message', '')} (site={site})")
-            save_pending_push_urls("baidu", urls)
+            save_pending_push_urls("baidu", ordered)
             return
         success = int(result.get("success", 0))
         not_same = result.get("not_same_site") or []
@@ -2135,14 +2150,12 @@ def submit_baidu(urls: list[str]) -> None:
             detail += f"，站点不匹配 {len(not_same)} 条（核对百度站长验证域名是否为 {site}）"
         if not_valid:
             detail += f"，非法 URL {len(not_valid)} 条"
-        print(f"   🔍 百度主动推送 {len(urls)} 条 → 成功 {success} 条{detail}")
-        if success >= len(urls):
-            save_pending_push_urls("baidu", [])
-        else:
-            save_pending_push_urls("baidu", urls)
+        print(f"   🔍 百度主动推送 {len(batch)} 条 → 成功 {success} 条{detail}")
+        # Keep the un-pushed remainder pending; on partial failure, retry the whole ordered set.
+        save_pending_push_urls("baidu", rest if success >= len(batch) else ordered)
     except Exception as exc:
         print(f"   ⚠️ 百度推送失败: {exc}")
-        save_pending_push_urls("baidu", urls)
+        save_pending_push_urls("baidu", ordered)
 
 
 # ─── Telegram 通知 ────────────────────────────────────────────────────────────
