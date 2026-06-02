@@ -279,8 +279,9 @@ def generate_cover_image(prompt: str, filename_stem: str) -> str:
                 json={
                     "model": "black-forest-labs/FLUX.1-schnell",
                     "prompt": prompt,
+                    "negative_prompt": "text, watermark, logo, words, letters, numbers, blurry, low quality, nsfw",
                     "image_size": "1024x576",
-                    "num_inference_steps": 4,
+                    "num_inference_steps": 20,
                 },
                 timeout=120,
             )
