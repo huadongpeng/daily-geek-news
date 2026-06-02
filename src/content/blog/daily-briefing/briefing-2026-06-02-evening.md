@@ -1,139 +1,175 @@
 ---
-title: "AI工具、副业机会与安全警示：今日信息差速览"
+title: "AI 工具前线：NVIDIA CPU 与低成本视频生成，副业机会浮现"
 date: 2026-06-02T18:00:00+08:00
-updated: 2026-06-02T16:18:25+08:00
+updated: 2026-06-02T17:24:01+08:00
 categories: ["daily-briefing"]
 tags: ["简讯", "evening"]
-wordCount: 922
+wordCount: 1285
 draft: false
-description: "AI视频生成成本降至35美元，本地多Agent协作工具涌现，但Meta AI客服漏洞警示安全风险。关注低成本副业工具，同时警惕AI系统权限控制。"
+description: "NVIDIA 进军 CPU 市场将重塑 AI PC 生态，低成本视频生成 API 和 AI SDR Agent 为副业提供新可能，同时无 AI 搜索需求增长，值得关注。"
 cover: "/images/covers/briefing-2026-06-02-evening.jpg"
 ---
 
-> 2026年06月02日 · evening · 12 条简讯
+> 2026年06月02日 · evening · 16 条简讯
 
-AI视频生成成本降至35美元，本地多Agent协作工具涌现，但Meta AI客服漏洞警示安全风险。关注低成本副业工具，同时警惕AI系统权限控制。
+NVIDIA 进军 CPU 市场将重塑 AI PC 生态，低成本视频生成 API 和 AI SDR Agent 为副业提供新可能，同时无 AI 搜索需求增长，值得关注。
 
 ## AI 工具前线
 
-### Pasted File Editor：粘贴即附件
+### NVIDIA 进军 CPU 市场，推 AI Agent PC
 
-**来源**：Simon Willison's Weblog `高`  
-https://simonwillison.net/2026/Jun/2/pasted-file-editor/#atom-everything
+**来源**：TechCrunch `高`  
+https://techcrunch.com/2026/06/01/nvidia-chases-200b-cpu-market-with-ai-agent-pcs-from-microsoft-dell-and-hp/
 
-与AI对话时自动将粘贴内容转为附件，省去手动上传，提升编码效率。
+NVIDIA 做 CPU 意味着未来 PC 可能标配 AI Agent，买电脑要考虑兼容性，开发者需关注新生态。
 
-> 打开Claude或Codex，粘贴一段长代码，观察是否自动转为附件。
+> 关注 NVIDIA CPU 的 AI Agent PC 评测，评估是否值得升级或开发适配应用。
 
-### AI Video Factory：35美元Pi跑视频工厂
+### DuckDuckGo 推无 AI 搜索扩展，流量暴涨
+
+**来源**：TechCrunch `高`  
+https://techcrunch.com/2026/06/01/duckduckgo-makes-its-no-ai-search-engine-easier-to-access-as-its-traffic-booms/
+
+AI 搜索泛滥，无 AI 搜索成为新需求，可考虑做无 AI 工具或内容，迎合反 AI 用户。
+
+> 安装 DuckDuckGo 无 AI 扩展，体验差异并思考副业切入点。
+
+### LTX-Video 视频生成 API 仅 $0.005 起
 
 **来源**：DEV Community `中`  
-https://dev.to/ulnit/were-live-on-product-hunt-ai-video-factory-35-pi-zero-humans-5953
+https://dev.to/deapi/getting-started-with-ltx-video-text-to-video-generation-api-python-30k7
 
-全自动视频生成跑在树莓派上，零云成本，为低成本内容创作副业提供可能。
+视频生成成本降至极低，可尝试自动化视频内容副业，比如生成短视频素材。
 
-> 访问Product Hunt页面了解详情，评估是否可复现用于自动化视频内容。
+> 注册 deAPI，用免费额度跑一个文本转视频 demo。
 
-### Mellum2：JetBrains开源12B MoE模型
+### MCP Marketplace：千个 Agent 按调用付费
 
-**来源**：Hugging Face Blog `高`  
-https://huggingface.co/blog/JetBrains/mellum2-launch
+**来源**：DEV Community `中`  
+https://dev.to/rileycraig14/mcp-marketplace-1000-bots-any-capability-earn-per-call-52315-59c3
 
-12B参数仅2.5B激活，适合本地部署，可能降低AI辅助编程的硬件门槛。
+Agent 经济化，开发者可发布 Agent 赚取被动收入，类似 API 市场。
 
-> 在Hugging Face下载模型，尝试在本地运行并对比代码补全效果。
+> 研究 MCP Marketplace 注册流程，尝试发布一个简单 Agent。
 
-### Gemini Spark：Google 24/7 AI代理实测
+### AI 手势引擎优化后跑在 12 年老笔记本
 
-**来源**：The Verge `高`  
-https://www.theverge.com/tech/941138/google-gemini-spark-ai-agent-hands-on
+**来源**：DEV Community `中`  
+https://dev.to/arshalaromal/how-i-optimized-a-python-ai-gesture-engine-to-run-on-a-12-year-old-laptop-4p72
 
-AI代理能自主完成任务，但隐私和成本问题值得关注，影响开发者工具选型。
+AI 模型轻量化趋势，低配设备也能运行，降低副业硬件门槛，旧电脑也能用。
 
-> 申请Gemini Spark试用，测试其完成一个实际任务（如整理邮件）的效果。
+> 阅读优化方法，尝试在自己旧设备上复现。
+
+### 降低 LLM API 成本：兼容 OpenAI SDK 方案
+
+**来源**：DEV Community `中`  
+https://dev.to/jacksoul_c3a27b9c8184/cutting-llm-api-cost-without-rewriting-your-openai-sdk-integration-4i
+
+切换更便宜模型无需重写代码，直接降低 AI 产品运营成本，适合个人项目。
+
+> 检查现有 AI 项目，替换为更便宜的兼容模型。
 
 ---
 
 ## 副业实验室
 
-### OpenBiliClaw：打破信息茧房的Agent
+### 4 个 AI SDR Agent 替代人工销售
+
+**来源**：SaaStr `高`  
+https://www.saastr.com/right-now-we-run-4-ai-sdr-agents-heres-why/
+
+AI 销售代理已实战，可低成本搭建自动化获客系统，适合 B2B 副业。
+
+> 研究 Artisan 等 AI SDR 工具，用免费版测试外呼效果。
+
+### Papaya Global 用 AI 搭建合规 Agent
+
+**来源**：SaaStr `高`  
+https://www.saastr.com/your-ai-agent-will-get-you-sued-how-papaya-global-built-a-compliance-ai-it-could-put-its-name-on/
+
+合规 Agent 有高价值，可尝试为特定行业开发合规助手，比如财税、医疗。
+
+> 分析 Papaya Global 的架构，思考可复用的合规场景。
+
+### 开源 gojaja：本地多 Agent 协作 CLI
 
 **来源**：V2EX `中`  
-https://www.v2ex.com/t/1217243#reply2
+https://www.v2ex.com/t/1217316
 
-开源跨平台内容发现Agent，可定制推荐，为内容创作者提供精准选题工具。
+本地多 Agent 协作工具，可搭建个人 AI 开发团队，无需云服务。
 
-> 克隆GitHub仓库，配置个人兴趣画像，运行一周观察推荐质量。
-
-### gojaja：本地多Agent协作CLI
-
-**来源**：V2EX `中`  
-https://www.v2ex.com/t/1217316#reply0
-
-低成本组建AI开发团队，适合个人开发者或小团队提升效率。
-
-> 安装gojaja，配置两个模型（如Claude+Gemini），尝试完成一个小型编码任务。
+> 克隆 gojaja 仓库，本地运行看板并测试多 Agent 协作。
 
 ---
 
 ## 出海信号
 
-### Meta AI客服被利用劫持Instagram
-
-**来源**：TechCrunch `高`  
-https://techcrunch.com/2026/06/01/hackers-hijacked-instagram-accounts-by-tricking-meta-ai-support-chatbot-into-granting-access/
-
-AI客服安全漏洞导致账户被劫持，提醒开发者注意AI系统的权限控制。
-
-> 检查自己或客户的AI客服系统，确保账户恢复流程有严格验证。
-
-### 印度AI交易挑战美国云主导
+### 印度与阿联酋 AI 合作挑战美国云主导
 
 **来源**：Rest of World `高`  
 https://restofworld.org/2026/india-uae-g42-cerebras-ai-sovereignty/
 
-印度部署自主AI硬件，可能改变全球云市场格局，影响出海企业的技术选型。
+AI 硬件主权化趋势，可能影响云服务选择和出海策略，需关注印度市场。
 
-> 关注G42和Cerebras的后续动态，评估对AWS/GCP定价的潜在影响。
+> 关注印度 AI 基础设施进展，评估对出海业务的影响。
+
+### Minimax 和智谱 AI 计划双重上市
+
+**来源**：Nikkei Asia `高`  
+https://asia.nikkei.com/business/technology/artificial-intelligence/minimax-and-zhipu-aim-to-further-tap-china-s-ai-fever-with-dual-listings
+
+中国 AI 公司出海上市，可能带来新的投资和合作机会，模型能力值得关注。
+
+> 研究 Minimax 和智谱的模型能力，评估集成到项目的可能性。
 
 ---
 
 ## 生活信号
 
-### Anthropic正式提交IPO申请
-
-**来源**：The Verge `高`  
-https://www.theverge.com/ai-artificial-intelligence/941016/anthropic-has-officially-filed-to-go-public
-
-AI巨头上市将影响行业估值和就业市场，可能带来新的投资机会。
-
-> 阅读Anthropic的S-1文件，了解其财务状况和风险因素。
-
-### Alphabet计划融资800亿美元建AI
+### Alphabet 计划融资 800 亿美元建 AI
 
 **来源**：TechCrunch `高`  
 https://techcrunch.com/2026/06/01/alphabet-plans-to-raise-80-billion-to-pay-for-ai-buildout/
 
-巨额AI投资表明行业竞争白热化，可能带动相关岗位需求，但也增加泡沫风险。
+AI 基础设施投资巨大，可能推高算力成本，影响个人 AI 项目预算。
 
-> 关注Alphabet后续招聘计划，评估自身技能是否匹配AI基础设施岗位。
+> 评估个人 AI 项目对云服务的依赖，考虑本地化方案。
 
-### NVIDIA进军PC芯片市场
+### 三分之一英国人认为大学学位不值
 
-**来源**：TechCrunch `高`  
-https://techcrunch.com/2026/06/01/nvidia-chases-200b-cpu-market-with-ai-agent-pcs-from-microsoft-dell-and-hp/
+**来源**：BBC `高`  
+https://www.bbc.com/news/articles/c2e29gk73rjo
 
-NVIDIA入局CPU可能改变PC生态，影响开发者硬件选型和AI PC市场。
+学历贬值趋势，技能和副业可能比学位更重要，需加强实用技能。
 
-> 关注RTX Spark芯片的评测，评估是否值得升级设备。
+> 反思个人技能树，增加实用技能和副业投入。
 
-### 佛罗里达州起诉OpenAI
+### 中国整治‘幽灵厨房’外卖乱象
 
-**来源**：BBC News `高`  
-https://www.bbc.com/news/articles/czx2j0v8d2xo
+**来源**：BBC `高`  
+https://www.bbc.com/news/articles/cj4p7zglq5no
 
-首例州政府起诉AI公司，可能引发AI监管连锁反应，影响AI工具使用边界。
+外卖监管收紧，可能影响餐饮副业和外卖平台生态，需注意合规。
 
-> 阅读起诉书，了解具体指控，评估自身AI应用合规风险。
+> 如果涉及外卖副业，检查合规性并调整策略。
+
+### AI 混乱部署伤害企业并困惑员工
+
+**来源**：BBC `高`  
+https://www.bbc.com/news/articles/c74d1ydv01eo
+
+企业 AI 落地混乱，个人可提供 AI 咨询或培训服务，帮助中小企业。
+
+> 总结企业 AI 部署常见问题，准备一份咨询方案。
+
+### SK 海力士五年内晶圆产能翻倍
+
+**来源**：Nikkei Asia `高`  
+https://asia.nikkei.com/business/technology/artificial-intelligence/chipmaker-sk-hynix-to-double-wafer-capacity-in-5-years-to-meet-ai-demand
+
+AI 芯片产能扩张，可能降低硬件成本，利好 AI 开发者。
+
+> 关注 HBM 等 AI 内存价格走势，规划硬件采购时机。
 
 ---
