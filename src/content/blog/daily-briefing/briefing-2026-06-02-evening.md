@@ -1,157 +1,157 @@
 ---
-title: "AI 工具降价、自托管代理崛起，副业门槛再降"
+title: "AI 工具变天，副业机会暗流涌动"
 date: 2026-06-02T18:00:00+08:00
-updated: 2026-06-02T21:55:03+08:00
+updated: 2026-06-02T22:19:32+08:00
 categories: ["daily-briefing"]
 tags: ["简讯", "evening"]
-wordCount: 1120
+wordCount: 1109
 draft: false
-description: "GitHub Copilot 个人版上线评估模型和按用量计费，自托管 AI 代理 OpenClaw 获 34 万星，非技术人员也能用 AI 建 SaaS。这些变化降低了个人开发者和副业者的试错成本，值得今天动手验证。"
+description: "GitHub Copilot 按量计费上线，JetBrains 开源 Mellum2，AI 编码工具竞争白热化。副业方面，MCP 协议可能颠覆电商 SEO，非技术创始人用 Claude 月入 20 美元。海外印度主权 AI 崛起，国内外卖监管收紧。今天重点关注工具切换和 MCP 趋势。"
 cover: "/images/covers/briefing-2026-06-02-evening.jpg"
 ---
 
 > 2026年06月02日 · evening · 14 条简讯
 
-GitHub Copilot 个人版上线评估模型和按用量计费，自托管 AI 代理 OpenClaw 获 34 万星，非技术人员也能用 AI 建 SaaS。这些变化降低了个人开发者和副业者的试错成本，值得今天动手验证。
+GitHub Copilot 按量计费上线，JetBrains 开源 Mellum2，AI 编码工具竞争白热化。副业方面，MCP 协议可能颠覆电商 SEO，非技术创始人用 Claude 月入 20 美元。海外印度主权 AI 崛起，国内外卖监管收紧。今天重点关注工具切换和 MCP 趋势。
 
 ## AI 工具前线
 
-### GitHub Copilot 个人版可选评估模型
-
-**来源**：GitHub Changelog `高`  
-https://github.blog/changelog/2026-06-01-evaluation-models-in-auto-for-individual-plans
-
-个人开发者也能用评估模型优化代码质量，相当于白嫖一个代码审查工具。
-
-> 打开 GitHub Copilot 设置，查看是否已启用评估模型，对比代码补全效果。
-
 ### GitHub Copilot 按用量计费上线
 
-**来源**：GitHub Changelog `高`  
+**来源**：GitHub Blog `高`  
 https://github.blog/changelog/2026-06-01-updates-to-github-copilot-billing-and-plans
 
-按用量计费可能降低个人和小团队使用 Copilot 的门槛，但需关注成本。
+个人开发者和小团队可按需付费，不再被固定订阅绑死，适合低频使用场景。
 
-> 检查自己的 Copilot 计划是否已切换为按用量计费，估算每月费用变化。
+> 检查你的 Copilot 用量，评估是否切换到按量计费更划算。
 
-### OpenClaw 自托管 AI 代理获 34 万星
+### JetBrains 开源 Mellum2 编码模型
 
-**来源**：DEV Community `中`  
-https://dev.to/rishi_kora/openclaw-340k-stars-and-the-self-hosted-agent-stack-d76
+**来源**：The New Stack `高`  
+https://thenewstack.io/jetbrains-mellum2-open-source-coding-model/
 
-自托管 AI 代理可本地运行，数据不外传，适合隐私敏感场景。
+12B 参数、2.5B 激活，可本地部署，适合对数据隐私要求高的团队。
 
-> 访问 GitHub 仓库，阅读 README，评估是否值得本地部署测试。
+> 拉取 Mellum2 模型在本地跑一下代码补全，对比 Claude Code 的体验。
 
-### Pasted File Editor：粘贴即文件
+### Claude Code vs Cursor vs Codex 六个月的对比
 
-**来源**：Simon Willison's Weblog `高`  
-https://simonwillison.net/2026/Jun/2/pasted-file-editor/#atom-everything
+**来源**：The New Stack `高`  
+https://thenewstack.io/claude-code-vs-cursor-vs-codex-vs-antigravity-2026/
 
-Claude 的大粘贴自动转文件功能很实用，这个原型可自己搭建。
+帮你选对工具，避免在多个 AI 编程助手上浪费时间和预算。
 
-> 克隆仓库，本地运行，体验粘贴大文本自动转为文件附件的流程。
+> 阅读对比文章，根据你的工作流选择最合适的工具。
 
-### Meta AI 客服被黑客骗走账号
+### AI 编码工具 Skipper 无需反馈直接交付
 
-**来源**：Simon Willison's Weblog `高`  
-https://simonwillison.net/2026/Jun/1/hackers-simply-asked-meta-ai/#atom-everything
+**来源**：The New Stack `中`  
+https://thenewstack.io/skiplabs-skipper-ai-coding-tool-agent/
 
-AI 客服权限过大可能被滥用，提醒我们注意 AI 系统的安全边界。
+新范式：AI 自主完成编码并交付，可能改变开发者的工作方式。
 
-> 检查自己使用的 AI 客服工具权限设置，确保最小化原则。
-
-### Stanford CS336 课程 AI 代理指南
-
-**来源**：Hacker News `高`  
-https://github.com/stanford-cs336/assignment1-basics/blob/main/CLAUDE.md
-
-斯坦福课程明确 AI 代理使用规范，可作为团队制定 AI 编码规范的参考。
-
-> 阅读该指南，提取关键规则，应用到自己的开发流程中。
+> 试用 Skipper，观察它生成的代码质量是否真的不需要人工审查。
 
 ---
 
 ## 副业实验室
 
-### 非技术创始人用 Claude 建等待列表工具
+### 非技术创始人用 Claude 搭建 SaaS 月入 20 美元
 
-**来源**：Hacker News `中`  
-https://waitspot.io
+**来源**：Reddit r/SaaS `中`  
+https://www.reddit.com/r/SaaS/comments/1ttw78n/i_vibecoded_2_saas_tools_for_internal_use_that/
 
-非技术人员也能用 AI 快速搭建 SaaS 工具，副业门槛降低。
+证明即使不发布产品，用 AI 自动化内部流程也能直接提升收入。
 
-> 试用 waitspot，分析其功能，思考能否用类似思路做其他小工具。
+> 梳理你工作中重复的手动流程，用 AI 工具尝试自动化。
 
-### Shopify 应用商店 21509 个应用索引
+### 用 Claude 做 SEO 三个月 150 万曝光
 
-**来源**：Hacker News `中`  
-https://www.appstorepulse.com/reports/state-of-shopify-app-store-may-2026
+**来源**：Reddit r/SaaS `中`  
+https://www.reddit.com/r/SaaS/comments/1tukbxt/15m_impressions_129k_clicks_in_3_months_my_entire/
 
-Shopify 应用市场数据可帮助发现未被满足的需求，寻找副业切入点。
+单人 + AI 即可实现可观 SEO 效果，低成本获客路径。
 
-> 浏览报告，找出增长快但竞争小的应用类别，评估开发可行性。
+> 用 Claude 生成 10 篇针对长尾关键词的博客文章，观察流量变化。
 
-### 本地命令行 AI 代理适配 DeepSeek
+### MCP 服务器将重构电商 SEO
 
-**来源**：V2EX `中`  
-https://www.v2ex.com/t/1217385#reply2
+**来源**：DEV Community `中`  
+https://dev.to/robertatkinson3570/mcp-servers-are-going-to-eat-ecommerce-seo-here-ec
 
-DeepSeek 便宜且能力足够，本地代理可替代昂贵服务，适合预算有限的开发者。
+MCP 协议让 AI 直接调用电商数据，传统 SEO 策略可能失效。
 
-> 克隆项目，配置 DeepSeek API Key，测试代码生成和重构效果。
+> 为你的电商网站添加 MCP 端点，测试 AI 代理如何获取商品信息。
 
 ---
 
 ## 出海信号
 
-### 印度 AI 交易挑战美国云主导
+### 印度主权 AI 挑战美国云主导
 
 **来源**：Rest of World `高`  
 https://restofworld.org/2026/india-uae-g42-cerebras-ai-sovereignty/
 
-印度部署美国设计的超算，可能改变全球 AI 基础设施格局，影响云服务选择。
+印度部署自主 AI 基础设施，可能改变全球云服务格局，影响出海企业的技术选型。
 
-> 关注该超算的开放情况，评估未来是否可租用算力。
+> 关注印度 AI 政策，评估是否需要在当地部署算力。
 
 ### 全球电动车价格下降，美国除外
 
 **来源**：Rest of World `高`  
 https://restofworld.org/2026/iea-global-ev-outlook-us-sales-drop/
 
-美国电动车市场因政策缺失和偏好大车而落后，可能影响相关产业链。
+美国因政策与偏好导致电动车贵，其他市场更便宜，可能影响出海产品定价。
 
-> 对比中美电动车价格差异，思考是否有跨境套利或信息差机会。
+> 如果你做跨境电商，关注目标市场的电动车补贴政策。
 
 ---
 
 ## 生活信号
 
-### 英国三分之一认为大学不值
+### 英国三分之一的人认为大学学位不值
 
-**来源**：BBC News `高`  
+**来源**：BBC `高`  
 https://www.bbc.com/news/articles/c2e29gk73rjo
 
-大学性价比争议可能影响教育投资决策，尤其对 IT 从业者。
+高等教育投资回报率下降，可能影响个人教育决策和职业路径。
 
-> 反思自己的教育投入产出比，考虑是否值得继续深造或转行。
+> 重新评估你的技能投资方向，考虑性价比更高的认证或实践项目。
 
-### 中国整治幽灵厨房
+### 亚马逊 Prime Day 2026 定档 6 月 23-26 日
 
-**来源**：BBC News `高`  
+**来源**：TechCrunch `高`  
+https://techcrunch.com/2026/06/02/amazon-prime-day-2026-takes-place-june-23-26/
+
+促销时间提前，消费者和卖家都需要调整策略。
+
+> 如果你是卖家，提前备货并优化 listing；消费者可提前列购物清单。
+
+### 中国整治幽灵厨房，外卖平台受冲击
+
+**来源**：BBC `高`  
 https://www.bbc.com/news/articles/cj4p7zglq5no
 
-外卖平台监管加强，可能影响餐饮副业和外卖消费习惯。
+监管收紧可能影响外卖行业就业和创业机会。
 
-> 检查自己常点的外卖店铺是否有实体店，注意食品安全。
+> 如果你在外卖或餐饮相关行业，关注合规要求变化。
 
-### AI 混乱部署困扰企业
+### 企业 AI 部署混乱，员工困惑
 
-**来源**：BBC News `高`  
+**来源**：BBC `高`  
 https://www.bbc.com/news/articles/c74d1ydv01eo
 
-企业 AI 部署混乱，员工困惑，说明 AI 落地仍需谨慎规划。
+公司盲目推 AI 工具导致效率下降，个人需主动规划 AI 使用方式。
 
-> 评估自己公司的 AI 使用情况，提出改进建议。
+> 与团队沟通 AI 工具的使用目标，避免盲目跟风。
+
+### Anthropic 提交 IPO 申请，估值近万亿
+
+**来源**：TechCrunch `高`  
+https://techcrunch.com/2026/06/01/anthropic-files-to-go-public/
+
+AI 公司上市潮可能影响行业薪资和就业市场。
+
+> 关注 Anthropic IPO 进展，评估对 AI 从业者薪酬的影响。
 
 ---
