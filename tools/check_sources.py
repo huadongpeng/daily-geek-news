@@ -20,11 +20,14 @@ def validate_shape(data: Dict[str, Any]) -> List[str]:
     for topic, config in data.items():
         feeds = config.get("feeds")
         search_seeds = config.get("search_seeds")
+        api_sources = config.get("api_sources", [])
         if not isinstance(feeds, list):
             errors.append(f"{topic}: feeds must be a list")
             continue
         if not isinstance(search_seeds, list):
             errors.append(f"{topic}: search_seeds must be a list")
+        if not isinstance(api_sources, list):
+            errors.append(f"{topic}: api_sources must be a list")
         for url in feeds:
             if not isinstance(url, str) or not url.startswith(("http://", "https://")):
                 errors.append(f"{topic}: invalid feed URL: {url!r}")
@@ -32,6 +35,9 @@ def validate_shape(data: Dict[str, Any]) -> List[str]:
             if url in seen:
                 errors.append(f"{topic}: duplicate feed also used by {seen[url]}: {url}")
             seen[url] = topic
+        for url in api_sources:
+            if not isinstance(url, str) or not url.startswith(("http://", "https://")):
+                errors.append(f"{topic}: invalid API URL: {url!r}")
     return errors
 
 
@@ -65,7 +71,8 @@ def main() -> int:
     errors = validate_shape(data)
     total_feeds = sum(len(config.get("feeds", [])) for config in data.values())
     total_seeds = sum(len(config.get("search_seeds", [])) for config in data.values())
-    print(f"topics={len(data)} feeds={total_feeds} search_seeds={total_seeds}")
+    total_api_sources = sum(len(config.get("api_sources", [])) for config in data.values())
+    print(f"topics={len(data)} feeds={total_feeds} search_seeds={total_seeds} api_sources={total_api_sources}")
     if errors:
         for error in errors:
             print(f"ERROR {error}")

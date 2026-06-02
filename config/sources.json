@@ -32,6 +32,9 @@
       "site:github.blog/changelog Copilot agent model release",
       "AI coding agent changelog pricing limit developer update",
       "open source LLM coding agent benchmark GitHub"
+    ],
+    "api_sources": [
+      "https://aihot.virxact.com/api/public/items?mode=selected&take=50"
     ]
   },
   "side-hustle": {

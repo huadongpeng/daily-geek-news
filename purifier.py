@@ -149,6 +149,7 @@ class Topic:
     intent: str
     feeds: tuple[str, ...]
     search_seeds: tuple[str, ...]
+    api_sources: tuple[str, ...] = ()
 
 
 @dataclass(frozen=True)
@@ -273,13 +274,19 @@ def load_topic_source_overrides(topics: tuple[Topic, ...]) -> tuple[Topic, ...]:
 
         feeds = item.get("feeds")
         search_seeds = item.get("search_seeds")
+        api_sources = item.get("api_sources")
         new_feeds = tuple(str(v).strip() for v in feeds if str(v).strip()) if isinstance(feeds, list) else topic.feeds
         new_search_seeds = (
             tuple(str(v).strip() for v in search_seeds if str(v).strip())
             if isinstance(search_seeds, list)
             else topic.search_seeds
         )
-        updated.append(replace(topic, feeds=new_feeds, search_seeds=new_search_seeds))
+        new_api_sources = (
+            tuple(str(v).strip() for v in api_sources if str(v).strip())
+            if isinstance(api_sources, list)
+            else topic.api_sources
+        )
+        updated.append(replace(topic, feeds=new_feeds, search_seeds=new_search_seeds, api_sources=new_api_sources))
 
     try:
         display_path = SOURCES_CONFIG_PATH.relative_to(ROOT)
@@ -731,6 +738,63 @@ def fetch_feed(url: str, limit: int, max_age_hours: int) -> list[dict[str, Any]]
     return items
 
 
+def parse_api_item_time(value: Any) -> datetime | None:
+    if not value:
+        return None
+    text = str(value).strip()
+    try:
+        if text.endswith("Z"):
+            text = text[:-1] + "+00:00"
+        return datetime.fromisoformat(text).astimezone(BJT)
+    except Exception:
+        return None
+
+
+def fetch_api_source(url: str, limit: int, max_age_hours: int) -> list[dict[str, Any]]:
+    try:
+        resp = requests.get(url, timeout=20, headers=BROWSER_HEADERS)
+        resp.raise_for_status()
+        data = resp.json()
+        update_source_health(url, True)
+    except Exception as exc:
+        print(f"   ⚠️ API 源失败: {url} | {exc}")
+        update_source_health(url, False, str(exc))
+        return []
+
+    raw_items = data.get("items") if isinstance(data, dict) else data
+    if not isinstance(raw_items, list):
+        return []
+    cutoff = bj_now() - timedelta(hours=max_age_hours)
+    items: list[dict[str, Any]] = []
+    for entry in raw_items[: limit * 2]:
+        if not isinstance(entry, dict):
+            continue
+        title = strip_tags(str(entry.get("title") or entry.get("title_en") or ""))
+        if not title:
+            continue
+        published_at = parse_api_item_time(entry.get("publishedAt") or entry.get("published_at") or entry.get("date"))
+        if published_at and published_at < cutoff:
+            continue
+        summary = strip_tags(str(entry.get("summary") or entry.get("description") or ""))[:600]
+        source = str(entry.get("source") or hostname(str(entry.get("url") or "")) or "API Source")
+        category = str(entry.get("category") or "")
+        source_label = f"AI HOT · {source}" if "aihot.virxact.com" in url else source
+        if category:
+            source_label = f"{source_label} · {category}"
+        items.append(
+            {
+                "title": title,
+                "url": str(entry.get("url") or ""),
+                "summary": summary,
+                "published_at": published_at.isoformat() if published_at else "",
+                "source": source_label,
+            }
+        )
+        if len(items) >= limit:
+            break
+    return items
+
+
 def collect_sources(max_age_hours: int) -> dict[str, list[dict[str, Any]]]:
     print("📡 抓取一手/近源信息...")
     collected: dict[str, list[dict[str, Any]]] = {topic.slug: [] for topic in TOPICS}
@@ -739,6 +803,8 @@ def collect_sources(max_age_hours: int) -> dict[str, list[dict[str, Any]]]:
         for topic in TOPICS:
             for feed in topic.feeds:
                 tasks[pool.submit(fetch_feed, feed, 8, max_age_hours)] = topic
+            for api_source in topic.api_sources:
+                tasks[pool.submit(fetch_api_source, api_source, 12, max_age_hours)] = topic
         for future in concurrent.futures.as_completed(tasks):
             topic = tasks[future]
             collected[topic.slug].extend(future.result())
