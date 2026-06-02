@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-from __future__ import annotations
-
+# NOTE: must stay compatible with the VPS Python (3.6) — no PEP 585 builtin generics
+# (dict[...]/list[...]) and no `from __future__ import annotations` (added in 3.7).
 import argparse
 import html
 import json
@@ -8,7 +8,7 @@ import os
 import re
 import tempfile
 from pathlib import Path
-from typing import Any
+from typing import Any, Dict, List
 
 import requests
 
@@ -23,7 +23,7 @@ def load_server_config() -> None:
     global WECHAT_APP_ID, WECHAT_APP_SECRET, WECHAT_AUTHOR
     secrets_py = SCRIPT_DIR / "wechat_draft_secrets.py"
     if secrets_py.exists():
-        namespace: dict[str, Any] = {}
+        namespace: Dict[str, Any] = {}
         exec(secrets_py.read_text(encoding="utf-8"), namespace)
         WECHAT_APP_ID = WECHAT_APP_ID or str(namespace.get("WECHAT_APP_ID", ""))
         WECHAT_APP_SECRET = WECHAT_APP_SECRET or str(namespace.get("WECHAT_APP_SECRET", ""))
@@ -44,8 +44,8 @@ def inline_markdown(text: str) -> str:
 
 
 def markdown_to_wechat_html(md: str) -> str:
-    blocks: list[str] = []
-    list_items: list[str] = []
+    blocks: List[str] = []
+    list_items: List[str] = []
 
     def flush_list() -> None:
         nonlocal list_items
@@ -146,7 +146,7 @@ def upload_cover(access_token: str, cover_path: Path) -> str:
     return str(media_id)
 
 
-def add_draft(access_token: str, payload: dict[str, Any], thumb_media_id: str) -> str:
+def add_draft(access_token: str, payload: Dict[str, Any], thumb_media_id: str) -> str:
     title = str(payload.get("title") or "公众号文章")
     data = {
         "articles": [
@@ -177,7 +177,7 @@ def add_draft(access_token: str, payload: dict[str, Any], thumb_media_id: str) -
     return str(media_id)
 
 
-def iter_payloads(input_dir: Path) -> list[Path]:
+def iter_payloads(input_dir: Path) -> List[Path]:
     return sorted(path for path in input_dir.glob("*-draft.json") if path.is_file())
 
 
