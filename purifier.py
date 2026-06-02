@@ -639,17 +639,17 @@ def llm_json(
                 "不要代码块，不要解释文字，字符串里的换行必须正确转义。\n\n"
                 + user
             )
-        thinking: dict[str, str] = {"type": chosen_thinking}
-        if chosen_thinking == "enabled":
-            thinking["reasoning_effort"] = chosen_effort
         payload: dict[str, Any] = {
             "model": chosen_model,
-            "temperature": 0.2,
             "max_tokens": max_tokens,
             "response_format": {"type": "json_object"},
-            "thinking": thinking,
+            "thinking": {"type": chosen_thinking},
             "messages": [{"role": "system", "content": system}, {"role": "user", "content": user_content}],
         }
+        if chosen_thinking == "enabled":
+            payload["reasoning_effort"] = chosen_effort
+        else:
+            payload["temperature"] = 0.2
         resp = requests.post(
             "https://api.deepseek.com/chat/completions",
             headers={"Authorization": f"Bearer {DEEPSEEK_API_KEY}", "Content-Type": "application/json"},
