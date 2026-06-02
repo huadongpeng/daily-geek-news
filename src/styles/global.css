@@ -221,6 +221,19 @@ img { max-width: 100%; height: auto; display: block; border-radius: var(--r); }
 .prose hr { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
 .prose img { margin: 1.5rem auto; box-shadow: var(--shadow-sm); }
 
+.copy-tools {
+  display: flex; align-items: center; gap: .75rem;
+  margin: 1.6rem 0 0; padding: .85rem 0;
+  border-top: 1px solid var(--border);
+}
+.copy-button {
+  border: 1px solid var(--border); border-radius: 6px;
+  background: var(--bg-card); color: var(--text);
+  padding: .45rem .75rem; font-size: .86rem; cursor: pointer;
+}
+.copy-button:hover { border-color: var(--accent); color: var(--accent); }
+.copy-status { font-size: .82rem; color: var(--muted); }
+
 /* ── Sources ─────────────────────────────────────────────────── */
 .sources {
   margin: 2.5rem 0 .5rem; padding: 1.1rem 1.3rem;

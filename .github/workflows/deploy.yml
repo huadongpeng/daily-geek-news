@@ -7,6 +7,9 @@ on:
       - "astro.config.mjs"
       - "package.json"
       - "package-lock.json"
+      - "requirements.txt"
+      - "purifier.py"
+      - "config/**"
       - "src/**"
       - "public/**"
       - "deploy/**"
@@ -40,12 +43,12 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
       - name: Setup Python 3.11
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.11"
           cache: pip
@@ -67,9 +70,17 @@ jobs:
           TELEGRAM_BOT_TOKEN:              ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHAT_ID:                ${{ secrets.TELEGRAM_CHAT_ID }}
           TG_THREAD_BRIEFING:              ${{ secrets.TG_THREAD_BRIEFING }}
+          TG_THREAD_AI:                    ${{ secrets.TG_THREAD_AI }}
+          TG_THREAD_ARBITRAGE:             ${{ secrets.TG_THREAD_ARBITRAGE }}
+          TG_THREAD_CHINA:                 ${{ secrets.TG_THREAD_CHINA }}
+          TG_THREAD_CROSS:                 ${{ secrets.TG_THREAD_CROSS }}
+          TG_THREAD_DEV:                   ${{ secrets.TG_THREAD_DEV }}
+          TG_THREAD_MACRO:                 ${{ secrets.TG_THREAD_MACRO }}
           EMAIL_FROM:                      ${{ secrets.EMAIL_FROM }}
           EMAIL_PASSWORD:                  ${{ secrets.EMAIL_PASSWORD }}
           EMAIL_TO:                        ${{ secrets.EMAIL_TO }}
+          WECHAT_AUTHOR:                   ${{ vars.WECHAT_AUTHOR || '老花' }}
+          WECHAT_DRAFT_ENABLED:            "false"
           INDEXNOW_KEY:                    ${{ secrets.INDEXNOW_KEY || 'hdop-indexnow-key' }}
           BAIDU_PUSH_TOKEN:                ${{ secrets.BAIDU_PUSH_TOKEN }}
           PYTHONIOENCODING:                "utf-8"
@@ -77,12 +88,13 @@ jobs:
 
       - name: Upload pipeline cache/log artifacts
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: radar-runtime-artifacts
           path: |
             .cache/radar/pending_push_urls_*.json
             .cache/radar/source_health.json
+            outputs/wechat_articles/*.md
             outputs/wechat_articles/*.json
           if-no-files-found: ignore
           retention-days: 14
@@ -94,6 +106,7 @@ jobs:
           git config user.name  "GitHub Action"
 
           git add src/content/blog/ public/images/covers/
+          git status --short
           if git diff --staged --quiet; then
             echo "✅ No new content this run"
             echo "build_ref=${GITHUB_SHA}" >> "$GITHUB_OUTPUT"
@@ -113,12 +126,12 @@ jobs:
 
     steps:
       - name: Checkout latest main
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           ref: ${{ github.event_name == 'push' && github.sha || needs.generate-content.outputs.build_ref || 'main' }}
 
       - name: Setup Node.js 22
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
           node-version: "22"
           cache: npm
@@ -136,7 +149,7 @@ jobs:
         run: npm run build
 
       - name: Upload dist artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: astro-dist
           path: dist/
@@ -147,11 +160,22 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout deployment helpers
+        uses: actions/checkout@v5
+
       - name: Download dist artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: astro-dist
           path: dist
+
+      - name: Download pipeline artifacts
+        if: github.event_name != 'push'
+        continue-on-error: true
+        uses: actions/download-artifact@v5
+        with:
+          name: radar-runtime-artifacts
+          path: radar-runtime-artifacts
 
       - name: Setup SSH for VPS deploy
         run: |
@@ -167,3 +191,40 @@ jobs:
             -e "ssh -i ~/.ssh/deploy_key" \
             dist/ \
             "${{ secrets.VPS_USER }}@${{ secrets.VPS_IP }}:/ws/web/www.huadongpeng.com/"
+
+      - name: Sync WeChat draft helper to VPS
+        if: github.event_name != 'push'
+        env:
+          DRAFT_SCRIPT_PATH: ${{ vars.WECHAT_DRAFT_SCRIPT_PATH || '/ws/scripts/easton_wechat_draft_push.py' }}
+        run: |
+          DRAFT_SCRIPT_DIR="${DRAFT_SCRIPT_PATH%/*}"
+          ssh -i ~/.ssh/deploy_key "${{ secrets.VPS_USER }}@${{ secrets.VPS_IP }}" "mkdir -p \"$DRAFT_SCRIPT_DIR\""
+          rsync -avz \
+            -e "ssh -i ~/.ssh/deploy_key" \
+            deploy/wechat_draft_push.py \
+            "${{ secrets.VPS_USER }}@${{ secrets.VPS_IP }}:$DRAFT_SCRIPT_PATH"
+
+      - name: Push WeChat drafts from VPS
+        if: github.event_name != 'push'
+        env:
+          DRAFT_REMOTE_DIR: ${{ vars.WECHAT_DRAFT_REMOTE_DIR || '/tmp/easton-radar-wechat' }}
+          DRAFT_SCRIPT_PATH: ${{ vars.WECHAT_DRAFT_SCRIPT_PATH || '/ws/scripts/easton_wechat_draft_push.py' }}
+        run: |
+          if [ ! -d radar-runtime-artifacts ]; then
+            echo "No pipeline artifacts found; skip WeChat draft push."
+            exit 0
+          fi
+          if ! find radar-runtime-artifacts -name '*-draft.json' -print -quit | grep -q .; then
+            echo "No WeChat draft payloads found; skip."
+            exit 0
+          fi
+          rm -rf wechat-drafts
+          mkdir -p wechat-drafts
+          find radar-runtime-artifacts -name '*-draft.json' -exec cp {} wechat-drafts/ \;
+          ssh -i ~/.ssh/deploy_key "${{ secrets.VPS_USER }}@${{ secrets.VPS_IP }}" "rm -rf \"$DRAFT_REMOTE_DIR\" && mkdir -p \"$DRAFT_REMOTE_DIR\""
+          rsync -avz \
+            -e "ssh -i ~/.ssh/deploy_key" \
+            wechat-drafts/ \
+            "${{ secrets.VPS_USER }}@${{ secrets.VPS_IP }}:$DRAFT_REMOTE_DIR/"
+          ssh -i ~/.ssh/deploy_key "${{ secrets.VPS_USER }}@${{ secrets.VPS_IP }}" "python3 -c 'import requests' || python3 -m pip install --user requests"
+          ssh -i ~/.ssh/deploy_key "${{ secrets.VPS_USER }}@${{ secrets.VPS_IP }}" "python3 \"$DRAFT_SCRIPT_PATH\" \"$DRAFT_REMOTE_DIR\""

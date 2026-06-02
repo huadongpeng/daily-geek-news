@@ -46,6 +46,23 @@ DEEPSEEK_API_KEY = os.environ.get("DEEPSEEK_API_KEY")
 TG_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
 TG_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID")
 TG_THREAD_BRIEFING = os.environ.get("TG_THREAD_BRIEFING")
+
+
+def first_env(*names: str) -> str | None:
+    for name in names:
+        value = os.environ.get(name)
+        if value:
+            return value
+    return None
+
+
+TG_THREAD_BY_TOPIC = {
+    "daily-briefing": TG_THREAD_BRIEFING,
+    "ai-tools": first_env("TG_THREAD_AI_TOOLS", "TG_THREAD_AI", "TG_THREAD_DEV"),
+    "side-hustle": first_env("TG_THREAD_SIDE_HUSTLE", "TG_THREAD_ARBITRAGE"),
+    "overseas": first_env("TG_THREAD_OVERSEAS", "TG_THREAD_CROSS"),
+    "life-signal": first_env("TG_THREAD_LIFE_SIGNAL", "TG_THREAD_MACRO", "TG_THREAD_CHINA"),
+}
 EMAIL_FROM = os.environ.get("EMAIL_FROM", "")
 EMAIL_PASSWORD = os.environ.get("EMAIL_PASSWORD", "")
 EMAIL_TO = os.environ.get("EMAIL_TO", "huadongpeng@outlook.com")
@@ -58,6 +75,10 @@ CONTENT_DIR = ROOT / "src" / "content" / "blog"
 CACHE_DIR = ROOT / ".cache" / "radar"
 WECHAT_OUTPUT_DIR = ROOT / "outputs" / "wechat_articles"
 COVERS_DIR = ROOT / "public" / "images" / "covers"
+WECHAT_APP_ID = os.environ.get("WECHAT_APP_ID", "")
+WECHAT_APP_SECRET = os.environ.get("WECHAT_APP_SECRET", "")
+WECHAT_AUTHOR = os.environ.get("WECHAT_AUTHOR", "老花")
+WECHAT_DRAFT_ENABLED = os.environ.get("WECHAT_DRAFT_ENABLED", "true").lower() not in {"0", "false", "no"}
 SOURCES_CONFIG_PATH = Path(os.environ.get("SOURCES_CONFIG_PATH", ROOT / "config" / "sources.json"))
 SILICONFLOW_API_KEY = os.environ.get("SILICONFLOW_API_KEY")
 ALLOW_POLLINATIONS_COVER = os.environ.get("ALLOW_POLLINATIONS_COVER", "true").lower() not in {"0", "false", "no"}
@@ -269,6 +290,9 @@ WRITING_METHOD_DEFAULT = """
 写作原则：
 开头必须从一个具体细节切入（时间、价格、页面、报错、聊天句子），绝不用"在当今AI快速发展的时代"。
 文章风格是有见识的普通技术人在认真聊一件打动他的事，不是媒体报道，不是知识付费教程。
+读者要的不是产品说明书，是买家秀：具体的人在具体处境里留下的攻略、体验、感受和踩坑。产品说明书才论优不优秀，买家秀只论真不真实。
+不要追求渊博，不要为了显得全面而堆"行业认为/有研究表明/某某观点"。每段都要问：这是说明书谁都能写，还是只有活过、查过、卡过、犹豫过的我才能写？
+面对没有标准答案的问题，不要把 A/B/C 各方观点罗列一遍当全面；要站在 Easton 自己的经历、处境和约束里，给出那个不完整但真实的判断。
 反证和不确定性嵌在正文中间出现，不单独开一节。
 来源可信度在正文引用时就带出来，不在文章末尾单独开"信息来源与可信度"一节。
 标题要短，避免夸张承诺，宁可少写也不要水。
@@ -279,6 +303,7 @@ WRITING_METHOD_DEFAULT = """
 - 禁止"本周/两周内/一个月内"三段时间轴行动计划
 - 禁止工具推荐列满四五个选项，只写自己真正用过或打算用的那一两个
 - 禁止引用数据不带个人判断（说明来源动机、说明我信几成）
+- 禁止把文章写成全知全能但没有个人经历的产品说明书
 """
 
 
@@ -372,14 +397,19 @@ def generate_cover_prompt(title: str, summary: str) -> str:
     try:
         result = llm_json(
             system=(
-                "You are a creative director. Generate a concise English image prompt for an article cover."
+                "You are an editorial art director for a Chinese tech-and-society publication. "
+                "Generate one specific, image-generator-ready English prompt for an article cover. "
+                "Avoid generic AI/technology cliches, abstract glowing networks, random robots, floating orbs, "
+                "screens filled with unreadable text, logos, letters, numbers, watermarks, and human faces. "
                 " Output only valid JSON, no markdown."
             ),
             user=(
                 f"Article title: {title}\n"
                 f"Summary: {summary[:300]}\n\n"
-                "Generate an English image prompt under 30 words for a 16:9 cover image. "
-                "Minimalist or flat-vector style. No text, no logos, no human faces. "
+                "Generate an English prompt under 55 words for a 16:9 cover image. "
+                "Use a concrete visual metaphor tied to the article, with 1 clear focal object, "
+                "editorial illustration or realistic product-photo style, clean composition, natural contrast, "
+                "no text, no logos, no human faces. "
                 'Output JSON: {"prompt": "..."}'
             ),
             max_tokens=200,
@@ -388,10 +418,10 @@ def generate_cover_prompt(title: str, summary: str) -> str:
             reasoning_effort="low",
         )
         prompt = (result.get("prompt") or "").strip()
-        return prompt or f"Minimalist digital art representing '{title[:40]}', clean background, technology aesthetic, 16:9"
+        return prompt or f"Editorial cover image for '{title[:40]}', one concrete focal object, clean 16:9 composition, no text, no logos, no human faces"
     except Exception as exc:
         print(f"   ⚠️ 封面提示词生成失败: {exc}")
-        return f"Minimalist digital art, clean background, technology aesthetic, 16:9"
+        return "Editorial tech cover image, one concrete focal object, clean 16:9 composition, natural contrast, no text, no logos, no human faces"
 
 
 def generate_cover_image(prompt: str, filename_stem: str) -> str:
@@ -1258,6 +1288,9 @@ def compose_investigation_reports(
 
 阅读原则：
 - 开头 2-4 段必须从一个具体细节切入：一个日期、金额、产品页面、公告措辞、论坛帖子、功能按钮、价格、限制条件或反直觉数字。不要用宏大背景开场。
+- 文章必须是买家秀，不是产品说明书。读者要看的是 Easton 这个具体的人如何理解、卡住、取舍和判断，不是全知全能地复述资料。
+- 不要为了显得渊博而把掌握的材料全塞进去。研究素材只取真正服务文章主线的部分；能不用就不用。
+- 面对没有标准答案的问题，不要中立罗列 A/B/C 各方观点当全面。可以理解对立面，但最后要站在 Easton 自己的经历、现实约束和风险偏好里，给出不完整但真实的判断。
 - 先把读者最该知道的核心矛盾讲出来，再自然展开证据；不要把证据按目录机械排队。
 - 每个 H2 标题必须像文章小标题，不要叫"导言"、"核心段"、"证据展开"、"反驳视角"、"影响与悬问"、"信息分层结论"、"证据质量评估"。
 - 可以使用少量 H2/H3，但不要过度 Markdown 化；如果只是两个短点，用自然段讲，不要列表。
@@ -1293,6 +1326,7 @@ def compose_investigation_reports(
 - 可使用 H2、H3 标题、表格、引用块等 Markdown 格式，但只在真正帮助阅读时使用。
 - 禁止输出固定模板标题："导言"、"核心段"、"证据展开"、"反驳视角"、"影响与悬问"、"已确认的事实"、"高概率推断"、"对普通技术经理的现实影响"。
 - 禁止把行动建议写成成功学口号；如果给行动建议，必须说明成本、边界和停止条件。不要为了显得有用而硬凑建议。
+- 生成后自检一次：这是一份具体人的买家秀，还是一份没有人生经历的产品说明书？如果更像产品说明书，必须重写。
 - 有实质深度，不是新闻摘要——字数服从内容需要，不要为凑字数堆废话。
 - sources 只收录文章正文中实际引用的高/中可信来源，格式 [{{"name": "来源名", "url": "https://..."}}]，2-8 个，url 必须是完整链接，不得用线索级来源。
 """,
@@ -1333,6 +1367,17 @@ def email_attachment_name(title: str) -> str:
     return f"{safe_title or '公众号文章'}.txt"
 
 
+def absolute_site_url(path_or_url: str) -> str:
+    value = (path_or_url or "").strip()
+    if not value:
+        return ""
+    if value.startswith(("http://", "https://")):
+        return value
+    if not value.startswith("/"):
+        value = f"/{value}"
+    return f"{SITE_URL}{value}"
+
+
 def send_email_articles(articles: list[dict[str, str]], slot: str) -> None:
     if not EMAIL_FROM or not EMAIL_PASSWORD:
         print("📭 未配置 EMAIL_FROM / EMAIL_PASSWORD，跳过邮件发送")
@@ -1348,25 +1393,26 @@ def send_email_articles(articles: list[dict[str, str]], slot: str) -> None:
     body_parts = [
         f"本批次共 {len(articles)} 篇公众号文章。",
         "正文见附件；每个附件为一篇文章，文件名为文章标题。",
+        "封面图已在内容生成流程中生成，下面直接给出图片链接，不再附图片提示词。",
     ]
     for index, article in enumerate(articles, 1):
+        cover_url = article.get("cover_url", "")
+        site_url = article.get("site_url", "")
         body_parts.extend(
             [
                 "",
                 f"## {index}. {article['title']}",
-                "",
-                "封面图提示词（英文版，Midjourney / DALL-E）：",
-                article["prompt_en"],
-                "",
-                "封面图提示词（中文版，即梦 / 通义万相）：",
-                article["prompt_zh"],
             ]
         )
+        if cover_url:
+            body_parts.append(f"封面图：{cover_url}")
+        if site_url:
+            body_parts.append(f"网站链接：{site_url}")
     msg.attach(MIMEText("\n".join(body_parts), "plain", "utf-8"))
 
     for article in articles:
         attachment = MIMEBase("text", "plain")
-        attachment.set_payload(article["body_txt"].encode("utf-8"))
+        attachment.set_payload(article["attachment_txt"].encode("utf-8"))
         encoders.encode_base64(attachment)
         attachment.add_header("Content-Disposition", "attachment", filename=email_attachment_name(article["title"]))
         msg.attach(attachment)
@@ -1455,6 +1501,12 @@ def write_post(
     return path
 
 
+def site_url_for_post_path(path: Path) -> str:
+    rel = path.relative_to(CONTENT_DIR)
+    url_path = "/blog/" + "/".join(rel.with_suffix("").parts) + "/"
+    return SITE_URL + url_path
+
+
 def render_briefing_md(briefing: dict[str, Any], slot: str) -> str:
     topic_titles = {t.slug: t.title for t in TOPICS}
     lines = [
@@ -1511,6 +1563,175 @@ def normalize_wechat_body(md: str) -> str:
     return re.sub(r"\n{3,}", "\n\n", text)
 
 
+def inline_markdown_to_wechat_html(text: str) -> str:
+    escaped = html.escape(text.strip())
+    escaped = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", escaped)
+    return escaped
+
+
+def markdown_to_wechat_html(md: str) -> str:
+    """Convert article Markdown into conservative WeChat draft HTML."""
+    blocks: list[str] = []
+    list_items: list[str] = []
+
+    def flush_list() -> None:
+        nonlocal list_items
+        if not list_items:
+            return
+        blocks.append(
+            '<ul style="margin: 0 0 16px 1.2em; padding: 0;">'
+            + "".join(f'<li style="margin: 0 0 6px 0;">{item}</li>' for item in list_items)
+            + "</ul>"
+        )
+        list_items = []
+
+    for raw in (md or "").splitlines():
+        line = raw.strip()
+        if not line:
+            flush_list()
+            continue
+        if line.startswith("!["):
+            continue
+        heading = re.match(r"^(#{1,6})\s+(.+)$", line)
+        if heading:
+            flush_list()
+            level = len(heading.group(1))
+            text = inline_markdown_to_wechat_html(heading.group(2))
+            if level <= 2:
+                blocks.append(f'<h2 style="font-size: 18px; font-weight: 700; margin: 28px 0 12px;">{text}</h2>')
+            else:
+                blocks.append(f'<p style="font-weight: 700; margin: 22px 0 10px;">{text}</p>')
+            continue
+        bullet = re.match(r"^[-*+]\s+(.+)$", line)
+        if bullet:
+            list_items.append(inline_markdown_to_wechat_html(bullet.group(1)))
+            continue
+        ordered = re.match(r"^\d+[.)]\s+(.+)$", line)
+        if ordered:
+            list_items.append(inline_markdown_to_wechat_html(ordered.group(1)))
+            continue
+        quote = re.match(r"^>\s*(.+)$", line)
+        if quote:
+            flush_list()
+            text = inline_markdown_to_wechat_html(quote.group(1))
+            blocks.append(
+                '<blockquote style="margin: 18px 0; padding: 10px 14px; '
+                f'border-left: 3px solid #d0d7de; color: #57606a;">{text}</blockquote>'
+            )
+            continue
+        flush_list()
+        line = re.sub(r"\[([^\]]+)\]\(([^)]+)\)", r"\1", line)
+        line = re.sub(r"`([^`]+)`", r"\1", line)
+        blocks.append(f'<p style="margin: 0 0 16px; line-height: 1.8;">{inline_markdown_to_wechat_html(line)}</p>')
+
+    flush_list()
+    return "\n".join(blocks)
+
+
+def local_cover_path(cover: str) -> Path | None:
+    cover = (cover or "").strip()
+    if not cover or cover.startswith(("http://", "https://")):
+        return None
+    if cover.startswith("/images/covers/"):
+        path = ROOT / "public" / cover.lstrip("/")
+        return path if path.exists() else None
+    return None
+
+
+def get_wechat_access_token() -> str:
+    resp = requests.get(
+        "https://api.weixin.qq.com/cgi-bin/token",
+        params={"grant_type": "client_credential", "appid": WECHAT_APP_ID, "secret": WECHAT_APP_SECRET},
+        timeout=30,
+    )
+    resp.raise_for_status()
+    data = resp.json()
+    token = data.get("access_token")
+    if not token:
+        raise RuntimeError(f"获取微信 access_token 失败: {data}")
+    return str(token)
+
+
+def upload_wechat_cover(access_token: str, cover_path: Path) -> str:
+    with cover_path.open("rb") as file_obj:
+        resp = requests.post(
+            "https://api.weixin.qq.com/cgi-bin/material/add_material",
+            params={"access_token": access_token, "type": "image"},
+            files={"media": (cover_path.name, file_obj, "image/jpeg")},
+            timeout=60,
+        )
+    resp.raise_for_status()
+    data = resp.json()
+    media_id = data.get("media_id")
+    if not media_id:
+        raise RuntimeError(f"上传微信封面素材失败: {data}")
+    return str(media_id)
+
+
+def add_wechat_draft(access_token: str, article: dict[str, Any], thumb_media_id: str) -> str:
+    title = str(article.get("title") or "公众号文章")
+    content_html = markdown_to_wechat_html(str(article.get("content_md") or ""))
+    payload = {
+        "articles": [
+            {
+                "title": title[:64],
+                "author": WECHAT_AUTHOR,
+                "digest": str(article.get("summary") or "")[:120],
+                "content": content_html,
+                "content_source_url": str(article.get("site_url") or ""),
+                "thumb_media_id": thumb_media_id,
+                "show_cover_pic": 1,
+                "need_open_comment": 0,
+                "only_fans_can_comment": 0,
+            }
+        ]
+    }
+    resp = requests.post(
+        "https://api.weixin.qq.com/cgi-bin/draft/add",
+        params={"access_token": access_token},
+        json=payload,
+        timeout=60,
+    )
+    resp.raise_for_status()
+    data = resp.json()
+    media_id = data.get("media_id")
+    if not media_id:
+        raise RuntimeError(f"创建微信草稿失败: {data}")
+    return str(media_id)
+
+
+def publish_wechat_drafts(wechat_articles: list[dict[str, Any]], slot: str) -> list[dict[str, str]]:
+    if not WECHAT_DRAFT_ENABLED:
+        print("📭 WECHAT_DRAFT_ENABLED=false，跳过公众号草稿推送")
+        return []
+    if not WECHAT_APP_ID or not WECHAT_APP_SECRET:
+        print("📭 未配置 WECHAT_APP_ID / WECHAT_APP_SECRET，跳过公众号草稿推送")
+        return []
+    print("📝 推送公众号草稿...")
+    results: list[dict[str, str]] = []
+    try:
+        access_token = get_wechat_access_token()
+    except Exception as exc:
+        print(f"   ⚠️ 获取微信 access_token 失败，跳过草稿推送: {exc}")
+        return results
+
+    for article in wechat_articles[:3]:
+        title = str(article.get("title") or "公众号文章")
+        cover_path = local_cover_path(str(article.get("cover") or ""))
+        if not cover_path:
+            print(f"   ⚠️ 缺少本地封面图，跳过草稿: {title[:40]}")
+            continue
+        try:
+            thumb_media_id = upload_wechat_cover(access_token, cover_path)
+            draft_media_id = add_wechat_draft(access_token, article, thumb_media_id)
+            article["wechat_draft_media_id"] = draft_media_id
+            results.append({"title": title, "draft_media_id": draft_media_id})
+            print(f"   ✅ 草稿已创建: {title[:40]} ({draft_media_id})")
+        except Exception as exc:
+            print(f"   ⚠️ 草稿推送失败: {title[:40]} - {exc}")
+    return results
+
+
 def write_wechat_archive_record(email_articles: list[dict[str, str]], slot: str) -> None:
     if not email_articles:
         return
@@ -1524,8 +1745,8 @@ def write_wechat_archive_record(email_articles: list[dict[str, str]], slot: str)
             {
                 "title": article.get("title", ""),
                 "body_chars": len(article.get("body_txt", "")),
-                "has_cover_prompt_en": bool(article.get("prompt_en")),
-                "has_cover_prompt_zh": bool(article.get("prompt_zh")),
+                "has_cover_url": bool(article.get("cover_url")),
+                "site_url": article.get("site_url", ""),
             }
             for article in email_articles
         ],
@@ -1533,36 +1754,6 @@ def write_wechat_archive_record(email_articles: list[dict[str, str]], slot: str)
     path = WECHAT_OUTPUT_DIR / f"{date_slug}-{slot}-archive.json"
     path.write_text(json.dumps(record, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"   🗂️ 公众号归档记录: {path.relative_to(ROOT)}")
-
-
-def normalize_cover_prompt(prompt: str, title: str, lang: str = "zh") -> str:
-    prompt = re.sub(r"\s+", " ", prompt or "").strip()
-    if not prompt:
-        if lang == "en":
-            prompt = (
-                f"Digital art, 2.35:1 landscape format. "
-                f"A minimalist scene representing '{title}', flat vector illustration style, "
-                "clear focal point, cool blue-purple tones, cinematic lighting, "
-                "story-driven atmosphere, no text, no logos, no human faces."
-            )
-        else:
-            prompt = (
-                f"扁平矢量插画，2.35:1 横版，以「{title}」为主题，"
-                "有明确视觉焦点，冷色调科技感，有故事张力，无文字，无logo，无人物面孔。"
-            )
-    if lang == "zh":
-        suffix_parts = []
-        if "900x383" not in prompt and "2.35:1" not in prompt:
-            suffix_parts.append("公众号封面图，900x383，2.35:1 横版构图")
-        if "无文字" not in prompt:
-            suffix_parts.append("无文字")
-        if "无logo" not in prompt:
-            suffix_parts.append("无logo")
-        if "无人物面孔" not in prompt:
-            suffix_parts.append("无人物面孔")
-        if suffix_parts:
-            prompt = f"{prompt}。{', '.join(suffix_parts)}"
-    return prompt
 
 
 def personal_article_footer() -> str:
@@ -1645,19 +1836,19 @@ def save_website_outputs(
             briefing_cover = generate_cover_image(img_prompt, f"briefing-{date_slug}-{slot}")
         except Exception as exc:
             print(f"   ⚠️ 简讯封面图流程异常: {exc}")
-        paths.append(
-            write_post(
-                "daily-briefing",
-                f"briefing-{date_slug}-{slot}.md",
-                briefing_title,
-                ["简讯", slot],
-                body,
-                cover=briefing_cover,
-                description=briefing_summary,
-                published_at=publish_time,
-                updated_at=update_time,
-            )
+        briefing_path = write_post(
+            "daily-briefing",
+            f"briefing-{date_slug}-{slot}.md",
+            briefing_title,
+            ["简讯", slot],
+            body,
+            cover=briefing_cover,
+            description=briefing_summary,
+            published_at=publish_time,
+            updated_at=update_time,
         )
+        briefing["site_url"] = site_url_for_post_path(briefing_path)
+        paths.append(briefing_path)
 
     valid_topics = {t.slug for t in TOPICS}
     for article in investigation_reports[:3]:
@@ -1684,23 +1875,25 @@ def save_website_outputs(
             article["cover_prompt_en"] = img_prompt
             article["cover_prompt_zh"] = article.get("cover_prompt_zh") or ""
             cover_path = generate_cover_image(img_prompt, filename_stem)
+            article["cover"] = cover_path
         except Exception as exc:
             print(f"   ⚠️ 封面图流程异常: {exc}")
+            article["cover"] = cover_path
 
-        paths.append(
-            write_post(
-                topic,
-                f"{filename_stem}.md",
-                title,
-                ["深度调查", slot],
-                body,
-                cover=cover_path,
-                description=summary,
-                sources=sources,
-                published_at=publish_time,
-                updated_at=update_time,
-            )
+        article_path = write_post(
+            topic,
+            f"{filename_stem}.md",
+            title,
+            ["深度调查", slot],
+            body,
+            cover=cover_path,
+            description=summary,
+            sources=sources,
+            published_at=publish_time,
+            updated_at=update_time,
         )
+        article["site_url"] = site_url_for_post_path(article_path)
+        paths.append(article_path)
 
     for path in paths:
         try:
@@ -1712,11 +1905,8 @@ def save_website_outputs(
     # 主动通知搜索引擎收录新文章
     new_urls = []
     for path in paths:
-        # 从文件路径推导 URL：src/content/blog/{cat}/{slug}.md → /blog/{cat}/{slug}/
         try:
-            rel = path.relative_to(CONTENT_DIR)
-            url_path = "/blog/" + "/".join(rel.with_suffix("").parts) + "/"
-            new_urls.append(SITE_URL + url_path)
+            new_urls.append(site_url_for_post_path(path))
         except ValueError:
             pass
     if new_urls:
@@ -1737,37 +1927,41 @@ def save_wechat_outputs(
 
     for article in wechat_articles[:3]:
         title = article.get("title", "公众号文章")
-        prompt_en = normalize_cover_prompt(
-            str(article.get("cover_prompt_en") or article.get("gemini_banana_prompt") or ""),
-            title, lang="en",
-        )
-        prompt_zh = normalize_cover_prompt(
-            str(article.get("cover_prompt_zh") or article.get("gemini_banana_prompt") or ""),
-            title, lang="zh",
-        )
+        cover_url = absolute_site_url(str(article.get("cover") or ""))
+        site_url = str(article.get("site_url") or "")
         body_md = article.get("content_md", "")
         body_wechat = normalize_wechat_body(body_md)
 
         path = WECHAT_OUTPUT_DIR / f"{date_slug}-{slot}-{slugify(title)}.md"
-        content = (
-            "标题\n"
-            f"{title}\n\n"
-            "封面图提示词（英文版，Midjourney / DALL-E）\n"
-            f"{prompt_en}\n\n"
-            "封面图提示词（中文版，即梦 / 通义万相）\n"
-            f"{prompt_zh}\n\n"
-            "正文内容\n"
-            f"{body_wechat}\n"
-        )
+        content_parts = ["标题", title, ""]
+        if cover_url:
+            content_parts.extend(["封面图", cover_url, ""])
+        if site_url:
+            content_parts.extend(["网站链接", site_url, ""])
+        content_parts.extend(["正文内容", body_wechat])
+        content = "\n".join(content_parts).rstrip() + "\n"
         path.write_text(content, encoding="utf-8")
         paths.append(path)
+
+        draft_payload_path = WECHAT_OUTPUT_DIR / f"{date_slug}-{slot}-{slugify(title)}-draft.json"
+        draft_payload = {
+            "title": title,
+            "summary": str(article.get("summary") or ""),
+            "cover": str(article.get("cover") or ""),
+            "cover_url": cover_url,
+            "site_url": site_url,
+            "content_md": body_md,
+        }
+        draft_payload_path.write_text(json.dumps(draft_payload, ensure_ascii=False, indent=2), encoding="utf-8")
+        paths.append(draft_payload_path)
 
         email_articles.append(
             {
                 "title": title,
-                "prompt_en": prompt_en,
-                "prompt_zh": prompt_zh,
+                "cover_url": cover_url,
+                "site_url": site_url,
                 "body_txt": body_wechat,
+                "attachment_txt": content,
             }
         )
 
@@ -1796,7 +1990,9 @@ def build_wechat_articles_from_reports(investigation_reports: list[dict[str, Any
                 "summary": summary,
                 "cover_prompt_en": str(report.get("cover_prompt_en") or report.get("prompt_en") or ""),
                 "cover_prompt_zh": str(report.get("cover_prompt_zh") or ""),
+                "cover": str(report.get("cover") or ""),
                 "content_md": content_md,
+                "site_url": str(report.get("site_url") or ""),
             }
         )
     return articles
@@ -1897,6 +2093,28 @@ def tg_escape(text: str) -> str:
     return text.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
 
 
+def send_telegram_message(lines: list[str], thread_id: str | None = None) -> bool:
+    payload: dict[str, Any] = {
+        "chat_id": TG_CHAT_ID,
+        "text": "\n".join(lines)[:3900],
+        "parse_mode": "HTML",
+        "disable_web_page_preview": False,
+    }
+    if thread_id:
+        try:
+            payload["message_thread_id"] = int(thread_id)
+        except ValueError:
+            print(f"   ⚠️ Telegram topic id 非数字，忽略: {thread_id}")
+    try:
+        resp = requests.post(f"https://api.telegram.org/bot{TG_BOT_TOKEN}/sendMessage", json=payload, timeout=20)
+        if resp.ok:
+            return True
+        print(f"   ⚠️ Telegram 失败: {resp.status_code} {resp.text[:160]}")
+    except Exception as exc:
+        print(f"   ⚠️ Telegram 异常: {exc}")
+    return False
+
+
 def send_telegram(
     briefing: dict[str, Any],
     investigation_reports: list[dict[str, Any]],
@@ -1906,41 +2124,63 @@ def send_telegram(
     if not TG_BOT_TOKEN or not TG_CHAT_ID:
         print("📭 未配置 Telegram，跳过通知")
         return
-    lines = [
-        f"<b>{tg_escape(briefing.get('title', '今日简讯'))}</b>",
-        f"{bj_now().strftime('%Y-%m-%d')} {slot}",
-        "",
-    ]
-    for item in briefing.get("items", [])[:10]:
-        lines.append(f"• {tg_escape(item.get('title', ''))}｜{tg_escape(item.get('source', ''))}")
 
-    if investigation_reports:
-        lines.extend(["", "<b>📋 网站深度文章</b>"])
-        for article in investigation_reports[:3]:
-            lines.append(f"• {tg_escape(article.get('title', ''))}: {tg_escape(article.get('summary', ''))}")
+    topic_titles = {t.slug: t.title for t in TOPICS}
+    briefing_items_by_topic: dict[str, list[dict[str, Any]]] = {}
+    for item in briefing.get("items", []):
+        topic = item.get("topic", "life-signal")
+        briefing_items_by_topic.setdefault(topic, []).append(item)
 
-    if wechat_articles:
-        lines.extend(["", "<b>📱 公众号文章（已发邮件）</b>"])
-        for article in wechat_articles[:3]:
-            lines.append(f"• {tg_escape(article.get('title', ''))}: {tg_escape(article.get('summary', ''))}")
+    reports_by_topic: dict[str, list[dict[str, Any]]] = {}
+    for article in investigation_reports[:3]:
+        topic = article.get("topic", "life-signal")
+        reports_by_topic.setdefault(topic, []).append(article)
 
-    lines.extend(["", SITE_URL])
-    payload: dict[str, Any] = {
-        "chat_id": TG_CHAT_ID,
-        "text": "\n".join(lines)[:3900],
-        "parse_mode": "HTML",
-        "disable_web_page_preview": False,
-    }
-    if TG_THREAD_BRIEFING:
-        payload["message_thread_id"] = int(TG_THREAD_BRIEFING)
-    try:
-        resp = requests.post(f"https://api.telegram.org/bot{TG_BOT_TOKEN}/sendMessage", json=payload, timeout=20)
-        if resp.ok:
-            print("📨 Telegram 通知已发送")
-        else:
-            print(f"   ⚠️ Telegram 失败: {resp.status_code} {resp.text[:160]}")
-    except Exception as exc:
-        print(f"   ⚠️ Telegram 异常: {exc}")
+    sent = 0
+    for topic in [t.slug for t in TOPICS]:
+        items = briefing_items_by_topic.get(topic, [])[:10]
+        reports = reports_by_topic.get(topic, [])
+        if not items and not reports:
+            continue
+        lines = [
+            f"<b>{tg_escape(topic_titles.get(topic, topic))}</b>",
+            f"{bj_now().strftime('%Y-%m-%d')} {slot}",
+            "",
+        ]
+        if items:
+            lines.append("<b>简讯</b>")
+            for item in items:
+                title = tg_escape(item.get("title", ""))
+                source = tg_escape(item.get("source", ""))
+                url = tg_escape(item.get("url", ""))
+                lines.append(f"• {title}｜{source}")
+                if url:
+                    lines.append(url)
+        if reports:
+            if items:
+                lines.append("")
+            lines.append("<b>网站深度文章</b>")
+            for article in reports:
+                title = tg_escape(article.get("title", ""))
+                summary = tg_escape(article.get("summary", ""))
+                url = tg_escape(article.get("site_url", ""))
+                lines.append(f"• {title}")
+                if summary:
+                    lines.append(summary)
+                if url:
+                    lines.append(url)
+
+        if briefing.get("site_url"):
+            lines.extend(["", f"本批简讯：{tg_escape(briefing.get('site_url', ''))}"])
+        if wechat_articles and reports:
+            lines.append("公众号源文件已发邮件。")
+        if send_telegram_message(lines, TG_THREAD_BY_TOPIC.get(topic) or TG_THREAD_BRIEFING):
+            sent += 1
+
+    if sent:
+        print(f"📨 Telegram 分类通知已发送: {sent} 条")
+    else:
+        print("📭 本批次没有可发送的 Telegram 分类内容")
 
 
 # ─── 入口 ─────────────────────────────────────────────────────────────────────
@@ -1996,6 +2236,7 @@ def main() -> None:
     if investigation_reports:
         wechat_articles = build_wechat_articles_from_reports(investigation_reports)
         save_wechat_outputs(wechat_articles, slot)
+        publish_wechat_drafts(wechat_articles, slot)
     else:
         wechat_articles = []
 

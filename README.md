@@ -81,12 +81,12 @@ npm.cmd run dev
 npm.cmd run build
 ```
 
-公众号源文件会额外输出到 `outputs/wechat_articles/`。正文直接复用网站深度文章，不再单独调用 DeepSeek 二次改写；每篇文件包含标题、封面提示词和正文：
+公众号源文件会额外输出到 `outputs/wechat_articles/`。正文直接复用网站深度文章，不再单独调用 DeepSeek 二次改写；封面图已由主流程生成，因此每篇文件包含标题、封面图链接、网站链接和正文：
 
 ```text
 标题
-封面图提示词（英文版，Midjourney / DALL-E）
-封面图提示词（中文版，即梦 / 通义万相）
+封面图
+网站链接
 正文内容
 ```
 
@@ -99,7 +99,11 @@ npm.cmd run build
 | `DEEPSEEK_API_KEY` | 必需，调用 DeepSeek V4 系列模型做分析和写作 |
 | `TELEGRAM_BOT_TOKEN` | 可选，发送 Telegram 通知 |
 | `TELEGRAM_CHAT_ID` | 可选，Telegram 目标群或频道 |
-| `TG_THREAD_BRIEFING` | 可选，Telegram topic id |
+| `TG_THREAD_BRIEFING` | 可选，Telegram 简讯 topic id |
+| `TG_THREAD_AI` / `TG_THREAD_DEV` | 可选，Telegram AI 工具分类 topic id；优先使用 `TG_THREAD_AI` |
+| `TG_THREAD_ARBITRAGE` | 可选，Telegram 副业/机会分类 topic id |
+| `TG_THREAD_CROSS` | 可选，Telegram 出海/跨境分类 topic id |
+| `TG_THREAD_MACRO` / `TG_THREAD_CHINA` | 可选，Telegram 生活信号分类 topic id；优先使用 `TG_THREAD_MACRO` |
 | `SILICONFLOW_API_KEY` | 可选，生成封面图；未配置或失败时会跳过封面 |
 | `ALLOW_POLLINATIONS_COVER` | 可选，是否允许封面降级到 Pollinations，默认 `true`；设为 `false` 可只使用 SiliconFlow |
 | `INDEXNOW_KEY` | 可选，IndexNow 主动推送 key |
@@ -117,7 +121,25 @@ npm.cmd run build
 
 深度检索不会使用 DeepSeek tool-calling。当前流程是 Flash 生成查询，程序抓取 seed URL、DDGS 搜索结果和可访问正文，去重并检查最小证据量；证据不足的候选只保留在简讯，不进入调查报告和公众号长文。
 
-GitHub Actions 每天北京时间 06:00 和 18:00 自动运行，也可以手动触发并选择 `morning/evening`。定时/手动运行会先执行内容管线、提交新 Markdown 和封面图，然后用本次生成后的 commit 构建 Astro 并通过 rsync 部署到 VPS。
+GitHub Actions 每天北京时间 06:00 和 18:00 自动运行，也可以手动触发并选择 `morning/evening`。定时/手动运行会先执行内容管线，同时写入网站 Markdown、生成公众号源文件并发送邮件；随后按 Telegram 分类推送，提交新 Markdown 和封面图，再用本次生成后的 commit 构建 Astro 并通过 rsync 部署到 VPS。
+
+微信公众号草稿推送不在 GitHub runner 里直连微信接口。Actions 会把 `deploy/wechat_draft_push.py` 和本批次 `outputs/wechat_articles/*-draft.json` 同步到 VPS，再由 VPS 执行脚本创建草稿，避免 GitHub 动态 IP 触发微信白名单问题。服务器脚本同目录需要放一个不进 Git 的密钥文件：
+
+```python
+# /ws/scripts/wechat_draft_secrets.py
+WECHAT_APP_ID = "你的公众号 AppID"
+WECHAT_APP_SECRET = "你的公众号 AppSecret"
+WECHAT_AUTHOR = "老花"
+```
+
+可选 GitHub Variables：
+
+| Variable | 说明 |
+| --- | --- |
+| `WECHAT_DRAFT_SCRIPT_PATH` | VPS 上的草稿推送脚本路径，默认 `/ws/scripts/easton_wechat_draft_push.py` |
+| `WECHAT_DRAFT_REMOTE_DIR` | VPS 上本批次草稿载荷临时目录，默认 `/tmp/easton-radar-wechat` |
+
+公众号草稿正文使用朴素 HTML：普通段落、小标题、加粗和少量列表/引用，封面图作为草稿封面展示，不做复杂排版。
 
 `main` 分支 push 也会触发构建部署，但不会运行 `purifier.py`，避免代码修复时误调用 DeepSeek 生成文章。
 
