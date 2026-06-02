@@ -277,7 +277,7 @@ def generate_cover_image(prompt: str, filename_stem: str) -> str:
                     "Content-Type": "application/json",
                 },
                 json={
-                    "model": "black-forest-labs/FLUX.1-schnell",
+                    "model": "Kwai-Kolors/Kolors",
                     "prompt": prompt,
                     "negative_prompt": "text, watermark, logo, words, letters, numbers, blurry, low quality, nsfw",
                     "image_size": "1024x576",
