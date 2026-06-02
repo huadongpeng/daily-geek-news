@@ -82,6 +82,11 @@ WECHAT_DRAFT_ENABLED = os.environ.get("WECHAT_DRAFT_ENABLED", "true").lower() no
 SOURCES_CONFIG_PATH = Path(os.environ.get("SOURCES_CONFIG_PATH", ROOT / "config" / "sources.json"))
 SILICONFLOW_API_KEY = os.environ.get("SILICONFLOW_API_KEY")
 ALLOW_POLLINATIONS_COVER = os.environ.get("ALLOW_POLLINATIONS_COVER", "true").lower() not in {"0", "false", "no"}
+# Reddit IP-blocks datacenter ranges (GitHub Actions) on its public .rss; authenticated OAuth
+# (app-only client_credentials) is exempt. Configure a "script" app's id/secret to enable it.
+REDDIT_CLIENT_ID = os.environ.get("REDDIT_CLIENT_ID", "")
+REDDIT_CLIENT_SECRET = os.environ.get("REDDIT_CLIENT_SECRET", "")
+REDDIT_USER_AGENT = os.environ.get("REDDIT_USER_AGENT", "script:easton-radar:4.0 (by /u/easton-radar)")
 MIN_EVIDENCE_ITEMS = 3
 MIN_EVIDENCE_DOMAINS = 2
 MAX_FULLTEXT_EVIDENCE = 8
@@ -590,7 +595,103 @@ def parse_entry_time(entry: Any) -> datetime | None:
     return datetime.fromtimestamp(time.mktime(parsed), tz=timezone.utc).astimezone(BJT)
 
 
+_reddit_token_cache: dict[str, Any] = {"token": "", "expires_at": 0.0}
+
+
+def is_reddit_feed(url: str) -> bool:
+    host = (urlparse(url).hostname or "").lower()
+    return host == "reddit.com" or host.endswith(".reddit.com")
+
+
+def reddit_access_token() -> str:
+    """App-only (client_credentials) OAuth token, cached until shortly before expiry."""
+    if not (REDDIT_CLIENT_ID and REDDIT_CLIENT_SECRET):
+        return ""
+    if _reddit_token_cache["token"] and time.time() < _reddit_token_cache["expires_at"]:
+        return str(_reddit_token_cache["token"])
+    resp = requests.post(
+        "https://www.reddit.com/api/v1/access_token",
+        auth=(REDDIT_CLIENT_ID, REDDIT_CLIENT_SECRET),
+        data={"grant_type": "client_credentials"},
+        headers={"User-Agent": REDDIT_USER_AGENT},
+        timeout=20,
+    )
+    resp.raise_for_status()
+    data = resp.json()
+    token = str(data.get("access_token") or "")
+    expires_in = float(data.get("expires_in") or 3600)
+    _reddit_token_cache["token"] = token
+    _reddit_token_cache["expires_at"] = time.time() + max(expires_in - 60, 60)
+    return token
+
+
+def reddit_listing_url(feed_url: str) -> str:
+    """Map a public .rss feed URL to the OAuth listing endpoint.
+
+    https://www.reddit.com/r/SaaS/top/.rss?t=day -> https://oauth.reddit.com/r/SaaS/top?t=day
+    """
+    parsed = urlparse(feed_url)
+    path = parsed.path.replace("/.rss", "").replace(".rss", "").rstrip("/")
+    query = f"?{parsed.query}" if parsed.query else ""
+    return f"https://oauth.reddit.com{path}{query}"
+
+
+def fetch_reddit_feed(url: str, limit: int, max_age_hours: int) -> list[dict[str, Any]]:
+    """Fetch a subreddit listing via authenticated OAuth (works from datacenter IPs)."""
+    token = reddit_access_token()
+    if not token:
+        raise RuntimeError("Reddit OAuth 未配置 (REDDIT_CLIENT_ID/SECRET)")
+    api_url = reddit_listing_url(url)
+    sep = "&" if "?" in api_url else "?"
+    resp = requests.get(
+        f"{api_url}{sep}limit={limit * 2}&raw_json=1",
+        headers={"User-Agent": REDDIT_USER_AGENT, "Authorization": f"bearer {token}"},
+        timeout=20,
+    )
+    resp.raise_for_status()
+    children = (resp.json().get("data") or {}).get("children") or []
+    cutoff = bj_now() - timedelta(hours=max_age_hours)
+    items: list[dict[str, Any]] = []
+    for child in children:
+        data = child.get("data") or {}
+        if data.get("stickied"):
+            continue
+        title = strip_tags(str(data.get("title") or ""))
+        if not title:
+            continue
+        created = data.get("created_utc")
+        published_at = (
+            datetime.fromtimestamp(float(created), tz=timezone.utc).astimezone(BJT) if created else None
+        )
+        if published_at and published_at < cutoff:
+            continue
+        permalink = str(data.get("permalink") or "")
+        link = f"https://www.reddit.com{permalink}" if permalink else str(data.get("url") or "")
+        summary = strip_tags(str(data.get("selftext") or ""))[:600]
+        items.append(
+            {
+                "title": title,
+                "url": link,
+                "summary": summary,
+                "published_at": published_at.isoformat() if published_at else "",
+                "source": str(data.get("subreddit_name_prefixed") or "Reddit"),
+            }
+        )
+        if len(items) >= limit:
+            break
+    return items
+
+
 def fetch_feed(url: str, limit: int, max_age_hours: int) -> list[dict[str, Any]]:
+    if is_reddit_feed(url) and REDDIT_CLIENT_ID and REDDIT_CLIENT_SECRET:
+        try:
+            items = fetch_reddit_feed(url, limit, max_age_hours)
+            update_source_health(url, True)
+            return items
+        except Exception as exc:
+            print(f"   ⚠️ Reddit API 失败: {url} | {exc}")
+            update_source_health(url, False, str(exc))
+            return []
     try:
         resp = requests.get(url, timeout=20, headers=FEED_HEADERS)
         resp.raise_for_status()

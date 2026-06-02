@@ -94,6 +94,8 @@ Optional:
 - `EMAIL_FROM` — sender email address (SMTP auto-detected by domain: QQ→ssl:465, Outlook/Gmail→starttls:587)
 - `EMAIL_PASSWORD` — email password or app password
 - `EMAIL_TO` — recipient address (default: huadongpeng@outlook.com)
+- `REDDIT_CLIENT_ID` / `REDDIT_CLIENT_SECRET` — Reddit "script" app credentials. Reddit IP-blocks GitHub Actions' datacenter ranges on its public `.rss`, so without these the Reddit feeds fail with `429 Blocked` from CI. When set, Reddit feeds are fetched via authenticated OAuth (`oauth.reddit.com`), which is exempt. Create a script app at https://www.reddit.com/prefs/apps.
+- `REDDIT_USER_AGENT` — descriptive UA for Reddit API (default `script:easton-radar:4.0 (by /u/...)`).
 - `PERSONA_PATH`
 - `RESEARCH_SKILL_PATH`
 - `WRITING_SKILL_PATH`
