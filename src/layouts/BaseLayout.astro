@@ -61,6 +61,15 @@ const ogImageAbs   = ogImage.startsWith('http') ? ogImage : new URL(ogImage, Ast
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
+  <!-- Google Analytics 4 -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-N4HZZC9JQ8"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-N4HZZC9JQ8');
+  </script>
+
   <!-- WebSite JSON-LD (site-wide, helps AI crawlers index authorship) -->
   <Fragment set:html={`<script type="application/ld+json">${JSON.stringify({
     "@context":"https://schema.org","@type":"WebSite",
