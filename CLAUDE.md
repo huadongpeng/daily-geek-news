@@ -100,13 +100,15 @@ Optional:
 
 ## Deployment
 
-`.github/workflows/deploy.yml` runs twice daily:
+`.github/workflows/deploy.yml` has three triggers:
 
-- 06:00 Beijing
-- 18:00 Beijing
+- **Schedule** — twice daily, 06:00 and 18:00 Beijing time. Runs the full pipeline.
+- **Manual (`workflow_dispatch`)** — run the **full pipeline on demand** to verify the whole flow end to end. GitHub → Actions → "Easton Radar — Build & Deploy" → **Run workflow**, pick a `slot` (`auto` / `morning` / `evening`). Or via CLI: `gh workflow run deploy.yml -f slot=evening`. This behaves exactly like a scheduled run (DeepSeek, covers, email, Telegram, WeChat draft push), so it's the way to validate fixes without waiting for the cron.
+- **Push to `main`** — only builds/deploys the current site (gated by `paths:`). It must **not** run the intelligence pipeline or call DeepSeek.
+
+Pipeline-vs-build gating is driven by `github.event_name != 'push'`: schedule and manual dispatch run `generate-content` and the WeChat-draft steps; pushes skip them and only build/deploy.
 
 The workflow runs `purifier.py`, commits generated Markdown and cover images, builds Astro, and deploys `dist/` to the VPS via rsync.
-Pushes to `main` only build/deploy the current site; they must not run the intelligence pipeline or call DeepSeek.
 
 ## Notes
 
