@@ -974,12 +974,38 @@ def compose_investigation_reports(
 3. overseas：有跨语言/跨地区信息差价值
 4. life-signal：影响普通人生活/工作决策（兜底）
 
-调查报告结构（新闻调查格式）：
-1. **导言（Lede）**：第一段放最重要/最出人意料的发现，直接抓住读者，不要铺垫背景
-2. **核心段（Nutgraf）**：第3-5段交代"这件事为什么现在重要/为什么普通读者应该关心"
-3. **证据展开**：按重要性和逻辑展开，而非罗列，每个来源标注可信度（高可信/中可信/线索级）
-4. **反驳视角**：主动呈现反方证据和不确定性，不回避，不埋在末尾
-5. **影响与悬问**：对读者的实际影响判断，以及最值得继续追的未解疑问
+调查报告结构（根据对象类型自适应，禁止套用固定模板）：
+
+先判断这个对象是什么类型——事件、产品发布、趋势现象、政策变化、人物动向、数据报告还是争议说法——再决定如何展开。不同类型对象的展开重点不同，不得一律用同一套结构。
+
+报告必须包含以下层次（各层深度服从内容需要，可灵活裁剪）：
+
+**① 先看这里**
+1-2段，直接告诉读者：这个对象大概率是什么、最值得关注的核心点是什么、目前最可靠的信息来自哪里、哪些内容仍不确定或有争议。
+
+**② 对象识别**
+说清楚这件事具体是什么类型，有无歧义，最可能的解释路径是什么。
+
+**③ 纵向展开**（按对象类型选取相关维度）
+- 来源/出处/背景
+- 前因后果、发展过程、关键节点
+- 当前状态
+- 未来最值得关注的变化
+
+**④ 横向展开**（如有对比价值则展开，无则省略）
+同类对象、相似概念、对比、差异点、特殊性
+
+**⑤ 信息分层结论**（必须明确区分，不得混写）
+- **已确认事实**：多个独立来源交叉印证，有原始文件支撑
+- **高概率推断**：间接证据共同指向，但无直接证明
+- **待验证线索**：单一来源、无法核实，只作追查方向
+- **观点/立场**：各方态度与解释框架，不等于事实
+
+**⑥ 证据质量评估**
+整体证据强弱 + 主要不确定性所在 + 来源是否有利益动机或立场偏向
+
+**⑦ 最值得继续追的方向**（可选，仅当存在重要未解问题时）
+不是"建议继续研究一切"，而是最关键的1-2个悬而未决的点
 
 硬性要求：
 - 产出 1-3 篇，优中择优，不要凑数。
@@ -1326,13 +1352,23 @@ def save_website_outputs(
 
     if briefing.get("items"):
         body = render_briefing_md(briefing, slot)
+        briefing_title = briefing.get("title") or f"{date_slug} {slot} 简讯"
+        briefing_summary = briefing.get("summary", "")
+        briefing_cover = ""
+        try:
+            img_prompt = generate_cover_prompt(briefing_title, briefing_summary)
+            briefing_cover = generate_cover_image(img_prompt, f"briefing-{date_slug}-{slot}")
+        except Exception as exc:
+            print(f"   ⚠️ 简讯封面图流程异常: {exc}")
         paths.append(
             write_post(
                 "daily-briefing",
                 f"briefing-{date_slug}-{slot}.md",
-                briefing.get("title") or f"{date_slug} {slot} 简讯",
+                briefing_title,
                 ["简讯", slot],
                 body,
+                cover=briefing_cover,
+                description=briefing_summary,
             )
         )
 
