@@ -1647,6 +1647,92 @@ def wechat_safe_digest(summary: str, content_md: str = "") -> str:
     return truncate_by_bytes(raw, WECHAT_DIGEST_MAX_BYTES)
 
 
+def optimize_wechat_metadata(
+    wechat_articles: list[dict[str, Any]],
+    persona: str,
+) -> list[dict[str, str]]:
+    fallback = [
+        {
+            "wechat_title": wechat_safe_title(str(article.get("title") or ""), str(article.get("summary") or "")),
+            "wechat_digest": wechat_safe_digest(
+                str(article.get("summary") or ""),
+                str(article.get("content_md") or ""),
+            ),
+        }
+        for article in wechat_articles
+    ]
+    if not wechat_articles:
+        return fallback
+
+    items = []
+    for index, article in enumerate(wechat_articles):
+        items.append(
+            {
+                "index": index,
+                "topic": str(article.get("topic") or ""),
+                "site_title": str(article.get("title") or ""),
+                "summary": str(article.get("summary") or ""),
+                "content_preview": strip_tags(str(article.get("content_md") or ""))[:900],
+            }
+        )
+
+    try:
+        result = llm_json(
+            system=(
+                "你是老花公众号的标题编辑，专门把网站文章标题改写成适合微信公众号草稿的标题和摘要。"
+                "必须输出合法 JSON，不要 Markdown。"
+            ),
+            user=f"""
+【人设】
+{persona[:6000]}
+
+【硬性限制】
+- 只优化微信公众号草稿字段，不改网站标题。
+- 标题要像老花：第一人称、有追线索/怕踩坑/输不起的真实感；可以有钩子，但不能编造事实。
+- 标题不要像媒体标题，不要成功学，不要夸张承诺，不要“震惊/必看/爆赚/月入”。
+- 标题必须适合 UTF-8 byte 限制：纯中文控制在 14-16 个汉字左右，混合英文也必须短。
+- 摘要必须 1 句话，讲清“这事是什么 + 我为什么警觉/为什么值得看”，不要超过约 40 个汉字。
+- 禁止使用第三人称“老花能不能试/老花怎么看”，可用“我/咱们”。
+
+【待优化文章】
+{json.dumps(items, ensure_ascii=False, indent=2)}
+
+请输出 JSON：
+{{
+  "items": [
+    {{
+      "index": 0,
+      "wechat_title": "公众号标题，尽量短，有钩子但不标题党",
+      "wechat_digest": "公众号摘要，一句话"
+    }}
+  ]
+}}
+""",
+            max_tokens=1200,
+            model=FLASH_MODEL,
+            thinking_type="disabled",
+            reasoning_effort="low",
+        )
+        optimized = fallback[:]
+        for item in result.get("items", []):
+            try:
+                index = int(item.get("index"))
+            except Exception:
+                continue
+            if not (0 <= index < len(optimized)):
+                continue
+            title = str(item.get("wechat_title") or "").strip()
+            digest = str(item.get("wechat_digest") or "").strip()
+            if title:
+                optimized[index]["wechat_title"] = truncate_by_bytes(title, WECHAT_TITLE_MAX_BYTES)
+            if digest:
+                optimized[index]["wechat_digest"] = truncate_by_bytes(digest, WECHAT_DIGEST_MAX_BYTES)
+        return optimized
+    except Exception as exc:
+        print(f"   ⚠️ 微信标题 Flash 优化失败，回退规则标题: {exc}")
+        return fallback
+
+
 def count_words(text: str) -> int:
     """Count CJK characters + English words for reading-time estimation."""
     cjk   = len(re.findall(r'[一-鿿㐀-䶿豈-﫿]', text))
@@ -2124,21 +2210,26 @@ def save_website_outputs(
 def save_wechat_outputs(
     wechat_articles: list[dict[str, Any]],
     slot: str,
+    persona: str,
 ) -> list[Path]:
     print("📱 写入公众号文章并发送邮件...")
     paths: list[Path] = []
     email_articles: list[dict[str, str]] = []
     date_slug = bj_now().strftime("%Y-%m-%d")
+    wechat_metadata = optimize_wechat_metadata(wechat_articles[:3], persona)
 
-    for article in wechat_articles[:3]:
+    for index, article in enumerate(wechat_articles[:3]):
         title = article.get("title", "公众号文章")
         summary = str(article.get("summary") or "")
         cover_url = absolute_site_url(str(article.get("cover") or ""))
         site_url = str(article.get("site_url") or "")
         body_md = article.get("content_md", "")
         body_wechat = normalize_wechat_body(body_md)
-        wechat_title = wechat_safe_title(str(title), summary)
-        wechat_digest = wechat_safe_digest(summary, str(body_md))
+        meta = wechat_metadata[index] if index < len(wechat_metadata) else {}
+        wechat_title = meta.get("wechat_title") or wechat_safe_title(str(title), summary)
+        wechat_digest = meta.get("wechat_digest") or wechat_safe_digest(summary, str(body_md))
+        article["wechat_title"] = wechat_title
+        article["wechat_digest"] = wechat_digest
 
         path = WECHAT_OUTPUT_DIR / f"{date_slug}-{slot}-{slugify(title)}.md"
         content_parts = ["标题", str(title), ""]
@@ -2497,7 +2588,7 @@ def main() -> None:
     else:
         wechat_articles = build_wechat_articles_from_briefing(briefing_report.get("briefing", {}))
     if wechat_articles:
-        save_wechat_outputs(wechat_articles, slot)
+        save_wechat_outputs(wechat_articles, slot, persona)
         publish_wechat_drafts(wechat_articles, slot)
     else:
         print("📭 没有可用于公众号草稿的文章，跳过公众号输出")
