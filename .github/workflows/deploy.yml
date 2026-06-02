@@ -122,14 +122,6 @@ jobs:
             dist/ \
             "${{ secrets.VPS_USER }}@${{ secrets.VPS_IP }}:/ws/web/www.huadongpeng.com/"
 
-      # ── 5b. Deploy to GitHub Pages (overseas / AI crawlers) ──
-      - name: Deploy dist/ to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir:  ./dist
-          # www.huadongpeng.com → 与 VPS 同域名，DNS 境外线路指向 GitHub Pages
-          # canonical/sitemap 两边完全一致，SEO 权重统一归集主站
-          cname:        www.huadongpeng.com
-          # Keep commit history lean
-          force_orphan: true
+      # GitHub Pages deployment removed — all traffic (domestic + overseas)
+      # now routes to VPS via Aliyun DNS default line.
+      # VPS wildcard SSL cert covers HTTPS globally.
