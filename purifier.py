@@ -89,6 +89,21 @@ MAX_SEARCH_PAGE_FETCHES = 12
 MAX_EVIDENCE_TEXT_CHARS = 5000
 MIN_COVER_BYTES = 10_000
 EXPECTED_COVER_SIZE = (1024, 576)
+# Many publishers (Economist, The Hill, NPR, NYT…) 403 a bot UA but serve a browser UA fine.
+BROWSER_UA = (
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+    "(KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36"
+)
+BROWSER_HEADERS = {
+    "User-Agent": BROWSER_UA,
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+    "Accept-Language": "en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7",
+}
+FEED_HEADERS = {
+    "User-Agent": BROWSER_UA,
+    "Accept": "application/rss+xml,application/atom+xml,application/xml,text/xml;q=0.9,*/*;q=0.8",
+    "Accept-Language": "en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7",
+}
 FORBIDDEN_REPORT_HEADINGS = {
     "导言",
     "核心段",
@@ -385,16 +400,15 @@ def image_dimensions(data: bytes) -> tuple[int, int] | None:
 
 
 def validate_cover_response(resp: requests.Response, data: bytes) -> bool:
+    # Trust the magic bytes, not the content-type header: image CDNs (incl. SiliconFlow)
+    # commonly serve real JPEG/PNG/WebP as application/octet-stream.
     content_type = resp.headers.get("content-type", "").lower()
-    if "image/" not in content_type:
-        print(f"   ⚠️ 封面下载内容不是图片: {content_type or 'unknown'}")
-        return False
     if len(data) < MIN_COVER_BYTES:
-        print(f"   ⚠️ 封面文件过小，疑似错误响应: {len(data)} bytes")
+        print(f"   ⚠️ 封面文件过小，疑似错误响应: {len(data)} bytes ({content_type or 'unknown'})")
         return False
     dims = image_dimensions(data)
     if not dims:
-        print("   ⚠️ 无法识别封面图片尺寸，跳过保存")
+        print(f"   ⚠️ 封面下载内容不是有效图片 (content-type={content_type or 'unknown'}, {len(data)} bytes)")
         return False
     if dims != EXPECTED_COVER_SIZE:
         print(f"   ⚠️ 封面尺寸 {dims[0]}x{dims[1]}，期望 {EXPECTED_COVER_SIZE[0]}x{EXPECTED_COVER_SIZE[1]}")
@@ -574,11 +588,7 @@ def parse_entry_time(entry: Any) -> datetime | None:
 
 def fetch_feed(url: str, limit: int, max_age_hours: int) -> list[dict[str, Any]]:
     try:
-        resp = requests.get(
-            url,
-            timeout=20,
-            headers={"User-Agent": "EastonRadar/4.0 (+https://radar.huadongpeng.com)"},
-        )
+        resp = requests.get(url, timeout=20, headers=FEED_HEADERS)
         resp.raise_for_status()
         parsed = feedparser.parse(resp.content)
         if getattr(parsed, "bozo", False):
@@ -934,11 +944,7 @@ def fetch_page_evidence(url: str, source_type: str, query: str = "") -> dict[str
 
     evidence: dict[str, Any] | None = None
     try:
-        resp = requests.get(
-            url,
-            timeout=20,
-            headers={"User-Agent": "EastonRadar/4.0 (+https://radar.huadongpeng.com)"},
-        )
+        resp = requests.get(url, timeout=20, headers=BROWSER_HEADERS)
         resp.raise_for_status()
         content_type = resp.headers.get("content-type", "")
         is_text_like = (
@@ -2105,16 +2111,32 @@ def submit_baidu(urls: list[str]) -> None:
         save_pending_push_urls("baidu", urls)
         print("   📭 未配置 BAIDU_PUSH_TOKEN，已暂存本批 URL，等待后续补推")
         return
+    # 百度站长平台验证的域名为 www.huadongpeng.com，与 SITE_URL 一致。
+    site = urlparse(SITE_URL).hostname or "www.huadongpeng.com"
     try:
         resp = requests.post(
-            f"http://data.zz.baidu.com/urls?site=www.huadongpeng.com&token={BAIDU_PUSH_TOKEN}",
+            f"http://data.zz.baidu.com/urls?site={site}&token={BAIDU_PUSH_TOKEN}",
             data="\n".join(urls),
             headers={"Content-Type": "text/plain"},
             timeout=15,
         )
         result = resp.json()
-        print(f"   🔍 百度主动推送 {len(urls)} 条 → 成功 {result.get('success', 0)} 条")
-        if result.get("success", 0) >= len(urls):
+        # Baidu returns {"error":N,"message":...} on auth/site mismatch — surface it instead of
+        # silently reporting "成功 0 条", which hides token/site-verification problems.
+        if "error" in result:
+            print(f"   ⚠️ 百度推送被拒: error={result.get('error')} {result.get('message', '')} (site={site})")
+            save_pending_push_urls("baidu", urls)
+            return
+        success = int(result.get("success", 0))
+        not_same = result.get("not_same_site") or []
+        not_valid = result.get("not_valid") or []
+        detail = f"，剩余配额 {result.get('remain', '?')}"
+        if not_same:
+            detail += f"，站点不匹配 {len(not_same)} 条（核对百度站长验证域名是否为 {site}）"
+        if not_valid:
+            detail += f"，非法 URL {len(not_valid)} 条"
+        print(f"   🔍 百度主动推送 {len(urls)} 条 → 成功 {success} 条{detail}")
+        if success >= len(urls):
             save_pending_push_urls("baidu", [])
         else:
             save_pending_push_urls("baidu", urls)

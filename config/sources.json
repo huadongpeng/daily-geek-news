@@ -8,7 +8,11 @@
       "https://arxiv.org/rss/cs.LG",
       "https://news.ycombinator.com/rss",
       "https://dev.to/feed/tag/ai",
-      "https://venturebeat.com/category/ai/feed/"
+      "https://venturebeat.com/category/ai/feed/",
+      "https://simonwillison.net/atom/everything/",
+      "https://lobste.rs/t/ai.rss",
+      "https://www.reddit.com/r/LocalLLaMA/top/.rss?t=day",
+      "https://www.reddit.com/r/MachineLearning/top/.rss?t=day"
     ],
     "search_seeds": [
       "AI model release site:openai.com OR site:google.com",
@@ -25,6 +29,9 @@
       "https://www.reddit.com/r/Entrepreneur/top/.rss?t=day",
       "https://www.reddit.com/r/SomebodyMakeThis/top/.rss?t=day",
       "https://www.reddit.com/r/freelance/top/.rss?t=day",
+      "https://www.reddit.com/r/EntrepreneurRideAlong/top/.rss?t=day",
+      "https://www.reddit.com/r/juststart/top/.rss?t=day",
+      "https://www.reddit.com/r/passive_income/top/.rss?t=day",
       "https://v2ex.com/feed/create.xml"
     ],
     "search_seeds": [
@@ -42,6 +49,7 @@
       "http://www.chinadaily.com.cn/rss/bizchina_rss.xml",
       "https://feeds.bbci.co.uk/news/world/rss.xml",
       "https://www.reddit.com/r/digitalnomad/top/.rss?t=day",
+      "https://www.reddit.com/r/expats/top/.rss?t=day",
       "https://www.reddit.com/r/InternetIsBeautiful/top/.rss?t=day",
       "https://www.producthunt.com/feed"
     ],
@@ -61,7 +69,10 @@
       "https://www.theguardian.com/world/rss",
       "https://www.theverge.com/rss/index.xml",
       "https://techcrunch.com/feed/",
-      "https://www.cnbc.com/id/100003114/device/rss/rss.html"
+      "https://www.cnbc.com/id/100003114/device/rss/rss.html",
+      "https://www.reddit.com/r/cscareerquestions/top/.rss?t=day",
+      "https://www.reddit.com/r/ExperiencedDevs/top/.rss?t=day",
+      "https://www.reddit.com/r/layoffs/top/.rss?t=day"
     ],
     "search_seeds": [
       "tech layoffs 2025",
