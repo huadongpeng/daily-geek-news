@@ -3,9 +3,11 @@
 # (dict[...]/list[...]) and no `from __future__ import annotations` (added in 3.7).
 import argparse
 import html
+import io
 import json
 import os
 import re
+import sys
 import tempfile
 from pathlib import Path
 from typing import Any, Dict, List
@@ -19,6 +21,16 @@ WECHAT_APP_SECRET = os.environ.get("WECHAT_APP_SECRET", "")
 WECHAT_AUTHOR = os.environ.get("WECHAT_AUTHOR", "老花")
 WECHAT_TITLE_MAX_BYTES = 48
 WECHAT_DIGEST_MAX_CHARS = 120
+
+
+def ensure_utf8_stdio() -> None:
+    for name in ("stdout", "stderr"):
+        stream = getattr(sys, name)
+        if getattr(stream, "encoding", None) and stream.encoding.lower().replace("-", "") == "utf8":
+            continue
+        buffer = getattr(stream, "buffer", None)
+        if buffer is not None:
+            setattr(sys, name, io.TextIOWrapper(buffer, encoding="utf-8", errors="backslashreplace"))
 
 
 def load_server_config() -> None:
@@ -252,4 +264,5 @@ def main() -> None:
 
 
 if __name__ == "__main__":
+    ensure_utf8_stdio()
     main()
