@@ -80,7 +80,7 @@ WECHAT_APP_SECRET = os.environ.get("WECHAT_APP_SECRET", "")
 WECHAT_AUTHOR = os.environ.get("WECHAT_AUTHOR", "老花")
 WECHAT_DRAFT_ENABLED = os.environ.get("WECHAT_DRAFT_ENABLED", "true").lower() not in {"0", "false", "no"}
 WECHAT_TITLE_MAX_BYTES = 48
-WECHAT_DIGEST_MAX_CHARS = 120
+WECHAT_DIGEST_MAX_BYTES = 120
 SOURCES_CONFIG_PATH = Path(os.environ.get("SOURCES_CONFIG_PATH", ROOT / "config" / "sources.json"))
 SILICONFLOW_API_KEY = os.environ.get("SILICONFLOW_API_KEY")
 ALLOW_POLLINATIONS_COVER = os.environ.get("ALLOW_POLLINATIONS_COVER", "true").lower() not in {"0", "false", "no"}
@@ -1615,13 +1615,6 @@ def truncate_by_bytes(text: str, max_bytes: int) -> str:
     return "".join(out).rstrip() + ellipsis
 
 
-def truncate_chars(text: str, max_chars: int) -> str:
-    text = text.strip()
-    if len(text) <= max_chars:
-        return text
-    return text[: max_chars - 3].rstrip() + "..."
-
-
 def count_words(text: str) -> int:
     """Count CJK characters + English words for reading-time estimation."""
     cjk   = len(re.findall(r'[一-鿿㐀-䶿豈-﫿]', text))
@@ -1842,8 +1835,9 @@ def upload_wechat_cover(access_token: str, cover_path: Path) -> str:
 
 def add_wechat_draft(access_token: str, article: dict[str, Any], thumb_media_id: str) -> str:
     title = str(article.get("title") or "公众号文章")
+    summary = str(article.get("summary") or "")
     safe_title = truncate_by_bytes(title.strip(), WECHAT_TITLE_MAX_BYTES)
-    safe_digest = truncate_chars(str(article.get("summary") or ""), WECHAT_DIGEST_MAX_CHARS)
+    safe_digest = truncate_by_bytes(summary.strip(), WECHAT_DIGEST_MAX_BYTES)
     content_html = markdown_to_wechat_html(str(article.get("content_md") or ""))
     payload = {
         "articles": [

@@ -20,7 +20,7 @@ WECHAT_APP_ID = os.environ.get("WECHAT_APP_ID", "")
 WECHAT_APP_SECRET = os.environ.get("WECHAT_APP_SECRET", "")
 WECHAT_AUTHOR = os.environ.get("WECHAT_AUTHOR", "老花")
 WECHAT_TITLE_MAX_BYTES = 48
-WECHAT_DIGEST_MAX_CHARS = 120
+WECHAT_DIGEST_MAX_BYTES = 120
 
 
 def ensure_utf8_stdio() -> None:
@@ -67,13 +67,6 @@ def truncate_by_bytes(text: str, max_bytes: int) -> str:
         out.append(ch)
         total += b
     return "".join(out) + ellipsis
-
-
-def truncate_chars(text: str, max_chars: int) -> str:
-    text = text.strip()
-    if len(text) <= max_chars:
-        return text
-    return text[: max_chars - 3].rstrip() + "..."
 
 
 def inline_markdown(text: str) -> str:
@@ -187,15 +180,16 @@ def upload_cover(access_token: str, cover_path: Path) -> str:
 
 def add_draft(access_token: str, payload: Dict[str, Any], thumb_media_id: str) -> str:
     title = str(payload.get("title") or "公众号文章")
+    summary = str(payload.get("summary") or "")
     safe_title = truncate_by_bytes(title.strip(), WECHAT_TITLE_MAX_BYTES)
-    safe_digest = truncate_chars(str(payload.get("summary") or ""), WECHAT_DIGEST_MAX_CHARS)
+    safe_digest = truncate_by_bytes(summary.strip(), WECHAT_DIGEST_MAX_BYTES)
     print(
-        "Draft title bytes: original=%d sent=%d; digest chars: original=%d sent=%d"
+        "Draft title bytes: original=%d sent=%d; digest bytes: original=%d sent=%d"
         % (
             len(title.encode("utf-8")),
             len(safe_title.encode("utf-8")),
-            len(str(payload.get("summary") or "")),
-            len(safe_digest),
+            len(summary.encode("utf-8")),
+            len(safe_digest.encode("utf-8")),
         )
     )
     data = {
