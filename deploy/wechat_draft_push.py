@@ -23,6 +23,25 @@ WECHAT_TITLE_MAX_BYTES = 48
 WECHAT_DIGEST_MAX_BYTES = 120
 
 
+def clean_text(value: Any) -> str:
+    """Drop invalid surrogate fragments that can appear in historical model output."""
+    return str(value or "").encode("utf-8", "replace").decode("utf-8")
+
+
+def clean_json_value(value: Any) -> Any:
+    if isinstance(value, str):
+        return clean_text(value)
+    if isinstance(value, dict):
+        return {clean_text(key): clean_json_value(item) for key, item in value.items()}
+    if isinstance(value, list):
+        return [clean_json_value(item) for item in value]
+    return value
+
+
+def write_json(path: Path, value: Any) -> None:
+    path.write_text(json.dumps(clean_json_value(value), ensure_ascii=False, indent=2), encoding="utf-8")
+
+
 def ensure_utf8_stdio() -> None:
     for name in ("stdout", "stderr"):
         stream = getattr(sys, name)
@@ -54,6 +73,7 @@ def load_server_config() -> None:
 def truncate_by_bytes(text: str, max_bytes: int) -> str:
     """WeChat counts title length in UTF-8 bytes (ASCII=1, CJK/full-width=3, emoji=4) and
     rejects over-limit titles with errcode 45003. Trim on a char boundary, append ... if cut."""
+    text = clean_text(text)
     if len(text.encode("utf-8")) <= max_bytes:
         return text
     ellipsis = "..."
@@ -70,7 +90,7 @@ def truncate_by_bytes(text: str, max_bytes: int) -> str:
 
 
 def inline_markdown(text: str) -> str:
-    escaped = html.escape(text.strip())
+    escaped = html.escape(clean_text(text).strip())
     escaped = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", escaped)
     return escaped
 
@@ -90,7 +110,7 @@ def markdown_to_wechat_html(md: str) -> str:
         )
         list_items = []
 
-    for raw in (md or "").splitlines():
+    for raw in clean_text(md).splitlines():
         line = raw.strip()
         if not line:
             flush_list()
@@ -179,8 +199,9 @@ def upload_cover(access_token: str, cover_path: Path) -> str:
 
 
 def add_draft(access_token: str, payload: Dict[str, Any], thumb_media_id: str) -> str:
-    title = str(payload.get("wechat_title") or payload.get("title") or "公众号文章")
-    summary = str(payload.get("wechat_digest") or payload.get("summary") or "")
+    payload = clean_json_value(payload)
+    title = clean_text(payload.get("wechat_title") or payload.get("title") or "公众号文章")
+    summary = clean_text(payload.get("wechat_digest") or payload.get("summary") or "")
     safe_title = truncate_by_bytes(title.strip(), WECHAT_TITLE_MAX_BYTES)
     safe_digest = truncate_by_bytes(summary.strip(), WECHAT_DIGEST_MAX_BYTES)
     print(
@@ -198,8 +219,8 @@ def add_draft(access_token: str, payload: Dict[str, Any], thumb_media_id: str) -
                 "title": safe_title,
                 "author": WECHAT_AUTHOR,
                 "digest": safe_digest,
-                "content": markdown_to_wechat_html(str(payload.get("content_md") or "")),
-                "content_source_url": str(payload.get("site_url") or ""),
+                "content": markdown_to_wechat_html(payload.get("content_md") or ""),
+                "content_source_url": clean_text(payload.get("site_url") or ""),
                 "thumb_media_id": thumb_media_id,
                 "show_cover_pic": 1,
                 "need_open_comment": 0,
@@ -236,7 +257,7 @@ def main() -> None:
     results_path = args.input_dir / "wechat_draft_results.json"
     if not payload_paths:
         print(f"No draft payloads found in {args.input_dir}")
-        results_path.write_text(json.dumps({"results": []}, ensure_ascii=False, indent=2), encoding="utf-8")
+        write_json(results_path, {"results": []})
         return
 
     results: List[Dict[str, Any]] = []
@@ -244,16 +265,13 @@ def main() -> None:
     try:
         access_token = get_access_token()
     except Exception as exc:
-        results_path.write_text(
-            json.dumps({"results": [], "error": str(exc)}, ensure_ascii=False, indent=2),
-            encoding="utf-8",
-        )
+        write_json(results_path, {"results": [], "error": clean_text(exc)})
         raise
     for payload_path in payload_paths:
-        payload = json.loads(payload_path.read_text(encoding="utf-8"))
-        title = str(payload.get("title") or payload_path.stem)
-        wechat_title = str(payload.get("wechat_title") or title)
-        cover_url = str(payload.get("cover_url") or "")
+        payload = clean_json_value(json.loads(payload_path.read_text(encoding="utf-8")))
+        title = clean_text(payload.get("title") or payload_path.stem)
+        wechat_title = clean_text(payload.get("wechat_title") or title)
+        cover_url = clean_text(payload.get("cover_url") or "")
         if not cover_url:
             print(f"SKIP {title}: missing cover_url")
             results.append(
@@ -270,7 +288,7 @@ def main() -> None:
         try:
             thumb_media_id = upload_cover(access_token, cover_path)
             draft_media_id = add_draft(access_token, payload, thumb_media_id)
-            print(f"OK {title}: {draft_media_id}")
+            print(f"OK {clean_text(title)}: {draft_media_id}")
             results.append(
                 {
                     "payload": payload_path.name,
@@ -281,14 +299,14 @@ def main() -> None:
                 }
             )
         except Exception as exc:
-            print(f"FAIL {title}: {exc}")
+            print(f"FAIL {clean_text(title)}: {clean_text(exc)}")
             results.append(
                 {
                     "payload": payload_path.name,
                     "title": title,
                     "wechat_title": wechat_title,
                     "status": "failed",
-                    "error": str(exc),
+                    "error": clean_text(exc),
                 }
             )
             errors.append(exc)
@@ -297,7 +315,7 @@ def main() -> None:
                 cover_path.unlink()
             except OSError:
                 pass
-    results_path.write_text(json.dumps({"results": results}, ensure_ascii=False, indent=2), encoding="utf-8")
+    write_json(results_path, {"results": results})
     if errors:
         raise errors[0]
 

@@ -1652,6 +1652,7 @@ def send_email_articles(articles: list[dict[str, str]], slot: str) -> None:
 # ─── 文件输出 ─────────────────────────────────────────────────────────────────
 
 def slugify(text: str) -> str:
+    text = clean_unicode_text(text)
     base = re.sub(r"[^a-zA-Z0-9一-鿿]+", "-", text).strip("-").lower()
     if not base:
         base = hashlib.sha1(text.encode("utf-8")).hexdigest()[:8]
@@ -1662,10 +1663,25 @@ def slugify(text: str) -> str:
 
 
 def yaml_scalar(value: str) -> str:
-    return json.dumps(value, ensure_ascii=False)
+    return json.dumps(clean_unicode_text(value), ensure_ascii=False)
+
+
+def clean_unicode_text(value: Any) -> str:
+    return str(value or "").encode("utf-8", "replace").decode("utf-8")
+
+
+def clean_json_value(value: Any) -> Any:
+    if isinstance(value, str):
+        return clean_unicode_text(value)
+    if isinstance(value, dict):
+        return {clean_unicode_text(key): clean_json_value(item) for key, item in value.items()}
+    if isinstance(value, list):
+        return [clean_json_value(item) for item in value]
+    return value
 
 
 def truncate_by_bytes(text: str, max_bytes: int) -> str:
+    text = clean_unicode_text(text)
     if len(text.encode("utf-8")) <= max_bytes:
         return text
     ellipsis = "..."
@@ -1683,9 +1699,9 @@ def truncate_by_bytes(text: str, max_bytes: int) -> str:
 
 def wechat_safe_title(title: str, summary: str = "") -> str:
     """Create a readable WeChat-only title without changing the website title."""
-    raw = re.sub(r"\s+", " ", (title or "").strip())
+    raw = re.sub(r"\s+", " ", clean_unicode_text(title).strip())
     if not raw:
-        raw = re.sub(r"\s+", " ", (summary or "").strip()) or "老花今天追到的新信号"
+        raw = re.sub(r"\s+", " ", clean_unicode_text(summary).strip()) or "老花今天追到的新信号"
 
     candidates = [raw]
     for pattern in (r"[：:，,。！？!?；;]", r"\s+-\s+", r"\s+—\s+"):
@@ -1707,9 +1723,9 @@ def wechat_safe_title(title: str, summary: str = "") -> str:
 
 
 def wechat_safe_digest(summary: str, content_md: str = "") -> str:
-    raw = re.sub(r"\s+", " ", (summary or "").strip())
+    raw = re.sub(r"\s+", " ", clean_unicode_text(summary).strip())
     if not raw:
-        raw = strip_tags(content_md).strip()
+        raw = strip_tags(clean_unicode_text(content_md)).strip()
     return truncate_by_bytes(raw, WECHAT_DIGEST_MAX_BYTES)
 
 
@@ -1897,7 +1913,7 @@ def render_briefing_md(briefing: dict[str, Any], slot: str) -> str:
 def normalize_wechat_body(md: str) -> str:
     """Keep paragraphs and **bold** only for WeChat editor copy/paste."""
     lines: list[str] = []
-    for raw in md.splitlines():
+    for raw in clean_unicode_text(md).splitlines():
         line = raw.strip()
         if not line:
             if lines and lines[-1] != "":
@@ -1916,7 +1932,7 @@ def normalize_wechat_body(md: str) -> str:
 
 
 def inline_markdown_to_wechat_html(text: str) -> str:
-    escaped = html.escape(text.strip())
+    escaped = html.escape(clean_unicode_text(text).strip())
     escaped = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", escaped)
     return escaped
 
@@ -1937,7 +1953,7 @@ def markdown_to_wechat_html(md: str) -> str:
         )
         list_items = []
 
-    for raw in (md or "").splitlines():
+    for raw in clean_unicode_text(md).splitlines():
         line = raw.strip()
         if not line:
             flush_list()
@@ -2021,11 +2037,12 @@ def upload_wechat_cover(access_token: str, cover_path: Path) -> str:
 
 
 def add_wechat_draft(access_token: str, article: dict[str, Any], thumb_media_id: str) -> str:
-    title = str(article.get("wechat_title") or article.get("title") or "公众号文章")
-    summary = str(article.get("wechat_digest") or article.get("summary") or "")
+    article = clean_json_value(article)
+    title = clean_unicode_text(article.get("wechat_title") or article.get("title") or "公众号文章")
+    summary = clean_unicode_text(article.get("wechat_digest") or article.get("summary") or "")
     safe_title = truncate_by_bytes(title.strip(), WECHAT_TITLE_MAX_BYTES)
     safe_digest = truncate_by_bytes(summary.strip(), WECHAT_DIGEST_MAX_BYTES)
-    content_html = markdown_to_wechat_html(str(article.get("content_md") or ""))
+    content_html = markdown_to_wechat_html(article.get("content_md") or "")
     payload = {
         "articles": [
             {
@@ -2033,7 +2050,7 @@ def add_wechat_draft(access_token: str, article: dict[str, Any], thumb_media_id:
                 "author": WECHAT_AUTHOR,
                 "digest": safe_digest,
                 "content": content_html,
-                "content_source_url": str(article.get("site_url") or ""),
+                "content_source_url": clean_unicode_text(article.get("site_url") or ""),
                 "thumb_media_id": thumb_media_id,
                 "show_cover_pic": 1,
                 "need_open_comment": 0,
@@ -2044,7 +2061,7 @@ def add_wechat_draft(access_token: str, article: dict[str, Any], thumb_media_id:
     resp = requests.post(
         "https://api.weixin.qq.com/cgi-bin/draft/add",
         params={"access_token": access_token},
-        data=json.dumps(payload, ensure_ascii=False).encode("utf-8"),
+        data=json.dumps(clean_json_value(payload), ensure_ascii=False).encode("utf-8"),
         headers={"Content-Type": "application/json; charset=utf-8"},
         timeout=60,
     )
@@ -2288,21 +2305,21 @@ def save_wechat_outputs(
     wechat_metadata = optimize_wechat_metadata(wechat_articles[:3], persona)
 
     for index, article in enumerate(wechat_articles[:3]):
-        title = article.get("title", "公众号文章")
-        summary = str(article.get("summary") or "")
-        cover_url = absolute_site_url(str(article.get("cover") or ""))
-        site_url = str(article.get("site_url") or "")
-        body_md = article.get("content_md", "")
+        title = clean_unicode_text(article.get("title", "公众号文章"))
+        summary = clean_unicode_text(article.get("summary") or "")
+        cover_url = absolute_site_url(clean_unicode_text(article.get("cover") or ""))
+        site_url = clean_unicode_text(article.get("site_url") or "")
+        body_md = clean_unicode_text(article.get("content_md", ""))
         body_wechat = normalize_wechat_body(body_md)
         meta = wechat_metadata[index] if index < len(wechat_metadata) else {}
-        wechat_title = meta.get("wechat_title") or wechat_safe_title(str(title), summary)
-        wechat_digest = meta.get("wechat_digest") or wechat_safe_digest(summary, str(body_md))
+        wechat_title = clean_unicode_text(meta.get("wechat_title") or wechat_safe_title(title, summary))
+        wechat_digest = clean_unicode_text(meta.get("wechat_digest") or wechat_safe_digest(summary, body_md))
         article["wechat_title"] = wechat_title
         article["wechat_digest"] = wechat_digest
 
         path = WECHAT_OUTPUT_DIR / f"{date_slug}-{slot}-{slugify(title)}.md"
         content_parts = ["标题", str(title), ""]
-        if wechat_title != str(title):
+        if wechat_title != title:
             content_parts.extend(["公众号标题", wechat_title, ""])
         if wechat_digest:
             content_parts.extend(["公众号摘要", wechat_digest, ""])
@@ -2317,16 +2334,19 @@ def save_wechat_outputs(
 
         draft_payload_path = WECHAT_OUTPUT_DIR / f"{date_slug}-{slot}-{slugify(title)}-draft.json"
         draft_payload = {
-            "title": str(title),
+            "title": title,
             "summary": summary,
             "wechat_title": wechat_title,
             "wechat_digest": wechat_digest,
-            "cover": str(article.get("cover") or ""),
+            "cover": clean_unicode_text(article.get("cover") or ""),
             "cover_url": cover_url,
             "site_url": site_url,
             "content_md": body_md,
         }
-        draft_payload_path.write_text(json.dumps(draft_payload, ensure_ascii=False, indent=2), encoding="utf-8")
+        draft_payload_path.write_text(
+            json.dumps(clean_json_value(draft_payload), ensure_ascii=False, indent=2),
+            encoding="utf-8",
+        )
         paths.append(draft_payload_path)
 
         email_articles.append(
