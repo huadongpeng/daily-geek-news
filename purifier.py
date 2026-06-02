@@ -17,7 +17,7 @@ import os
 import re
 import smtplib
 import time
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from datetime import datetime, timedelta, timezone
 from email import encoders
 from email.mime.base import MIMEBase
@@ -56,7 +56,9 @@ CONTENT_DIR = ROOT / "src" / "content" / "blog"
 CACHE_DIR = ROOT / ".cache" / "radar"
 WECHAT_OUTPUT_DIR = ROOT / "outputs" / "wechat_articles"
 COVERS_DIR = ROOT / "public" / "images" / "covers"
+SOURCES_CONFIG_PATH = Path(os.environ.get("SOURCES_CONFIG_PATH", ROOT / "config" / "sources.json"))
 SILICONFLOW_API_KEY = os.environ.get("SILICONFLOW_API_KEY")
+ALLOW_POLLINATIONS_COVER = os.environ.get("ALLOW_POLLINATIONS_COVER", "true").lower() not in {"0", "false", "no"}
 MIN_EVIDENCE_ITEMS = 3
 MIN_EVIDENCE_DOMAINS = 2
 MAX_FULLTEXT_EVIDENCE = 8
@@ -72,6 +74,12 @@ class Topic:
     intent: str
     feeds: tuple[str, ...]
     search_seeds: tuple[str, ...]
+
+
+@dataclass(frozen=True)
+class PublishedIndex:
+    titles: list[str]
+    source_urls: set[str]
 
 
 TOPICS: tuple[Topic, ...] = (
@@ -166,6 +174,47 @@ TOPICS: tuple[Topic, ...] = (
         search_seeds=("tech layoffs 2025", "platform policy change affects workers", "consumer economy trend"),
     ),
 )
+
+
+def load_topic_source_overrides(topics: tuple[Topic, ...]) -> tuple[Topic, ...]:
+    """Allow RSS feeds/search seeds to be maintained in config/sources.json."""
+    if not SOURCES_CONFIG_PATH.exists():
+        return topics
+    try:
+        raw = json.loads(SOURCES_CONFIG_PATH.read_text(encoding="utf-8"))
+    except Exception as exc:
+        print(f"   ⚠️ 来源配置读取失败，继续使用内置来源: {exc}")
+        return topics
+    if not isinstance(raw, dict):
+        print("   ⚠️ 来源配置格式错误，继续使用内置来源")
+        return topics
+
+    updated: list[Topic] = []
+    for topic in topics:
+        item = raw.get(topic.slug)
+        if not isinstance(item, dict):
+            updated.append(topic)
+            continue
+
+        feeds = item.get("feeds")
+        search_seeds = item.get("search_seeds")
+        new_feeds = tuple(str(v).strip() for v in feeds if str(v).strip()) if isinstance(feeds, list) else topic.feeds
+        new_search_seeds = (
+            tuple(str(v).strip() for v in search_seeds if str(v).strip())
+            if isinstance(search_seeds, list)
+            else topic.search_seeds
+        )
+        updated.append(replace(topic, feeds=new_feeds, search_seeds=new_search_seeds))
+
+    try:
+        display_path = SOURCES_CONFIG_PATH.relative_to(ROOT)
+    except ValueError:
+        display_path = SOURCES_CONFIG_PATH
+    print(f"   🧩 已加载来源配置: {display_path}")
+    return tuple(updated)
+
+
+TOPICS = load_topic_source_overrides(TOPICS)
 
 
 PERSONA_DEFAULT = """
@@ -296,7 +345,15 @@ def generate_cover_image(prompt: str, filename_stem: str) -> str:
                 print(f"   🎨 封面图已生成 (SiliconFlow): {output_path.name}")
                 return f"/images/covers/{output_path.name}"
         except Exception as exc:
-            print(f"   ⚠️ SiliconFlow 生图失败，降级到 Pollinations: {exc}")
+            if ALLOW_POLLINATIONS_COVER:
+                print(f"   ⚠️ SiliconFlow 生图失败，降级到 Pollinations: {exc}")
+            else:
+                print(f"   ⚠️ SiliconFlow 生图失败，已按配置跳过封面: {exc}")
+
+    if not ALLOW_POLLINATIONS_COVER:
+        if not SILICONFLOW_API_KEY:
+            print("   📭 未配置 SILICONFLOW_API_KEY，且 ALLOW_POLLINATIONS_COVER=false，跳过封面")
+        return ""
 
     try:
         encoded = quote(prompt, safe="")
@@ -496,10 +553,11 @@ def source_digest(collected: dict[str, list[dict[str, Any]]]) -> str:
     return "\n".join(blocks)
 
 
-def load_recent_titles(days: int = 7) -> list[str]:
-    """扫描 content/posts/ 下近 N 天内生成的深度文章标题，用于防重复。"""
+def load_recent_published_index(days: int = 7) -> PublishedIndex:
+    """扫描 src/content/blog/ 下近 N 天内生成的深度文章标题和来源 URL，用于防重复。"""
     cutoff = bj_now() - timedelta(days=days)
     titles: list[str] = []
+    source_urls: set[str] = set()
     for category in ("ai-tools", "side-hustle", "overseas", "life-signal"):
         cat_dir = CONTENT_DIR / category
         if not cat_dir.exists():
@@ -513,25 +571,37 @@ def load_recent_titles(days: int = 7) -> list[str]:
                 m = re.search(r'^title:\s*"([^"]+)"', text, re.MULTILINE)
                 if m:
                     titles.append(m.group(1))
+                for url in re.findall(r'^\s*url:\s*"([^"]+)"', text, re.MULTILINE):
+                    normalized = normalize_url_for_dedupe(url)
+                    if normalized:
+                        source_urls.add(normalized)
             except Exception:
                 continue
-    if titles:
-        print(f"   📚 近 {days} 天已发布深度文章: {len(titles)} 篇，用于防重复选题")
-    return titles
+    if titles or source_urls:
+        print(
+            f"   📚 近 {days} 天已发布深度文章: {len(titles)} 篇，"
+            f"来源 URL: {len(source_urls)} 个，用于防重复选题"
+        )
+    return PublishedIndex(titles=titles, source_urls=source_urls)
 
 
 def initial_filter(
     collected: dict[str, list[dict[str, Any]]],
     persona: str,
-    recent_titles: list[str],
+    recent_index: PublishedIndex,
 ) -> dict[str, Any]:
     print("🧭 初筛符合人设和关注方向的信息...")
     topics = "\n".join(f"- {t.title}: {t.intent}" for t in TOPICS)
     recent_block = ""
-    if recent_titles:
+    if recent_index.titles:
         recent_block = (
             "\n【近7天已发布深度文章（选 deep_candidates 时主动回避主题高度重合的话题）】\n"
-            + "\n".join(f"- {t}" for t in recent_titles)
+            + "\n".join(f"- {t}" for t in recent_index.titles)
+        )
+    if recent_index.source_urls:
+        recent_block += (
+            "\n【近7天已使用过的深度来源 URL（相同来源或同一事件换标题时跳过）】\n"
+            + "\n".join(f"- {u}" for u in sorted(recent_index.source_urls)[:80])
         )
     return llm_json(
         system=(
@@ -610,6 +680,14 @@ def hostname(url: str) -> str:
     except Exception:
         return ""
     return host.removeprefix("www.")
+
+
+def normalize_url_for_dedupe(url: str) -> str:
+    parsed = urlparse((url or "").strip())
+    if not parsed.scheme or not parsed.netloc:
+        return ""
+    path = parsed.path.rstrip("/")
+    return f"{parsed.scheme.lower()}://{parsed.netloc.lower().removeprefix('www.')}{path}"
 
 
 def web_search(query: str, max_results: int = 6) -> list[dict[str, str]]:
@@ -728,6 +806,19 @@ def _has_minimum_evidence(evidence: list[dict[str, Any]]) -> bool:
     return len(evidence) >= MIN_EVIDENCE_ITEMS and len(domains) >= MIN_EVIDENCE_DOMAINS and bool(substantive)
 
 
+def _evidence_failure_reasons(evidence: list[dict[str, Any]]) -> list[str]:
+    substantive = [item for item in evidence if item.get("body_type") == "page_text" and len(str(item.get("body") or "")) >= 500]
+    domains = {d for d in _evidence_domains(evidence) if d}
+    reasons: list[str] = []
+    if len(evidence) < MIN_EVIDENCE_ITEMS:
+        reasons.append(f"证据条数 {len(evidence)}/{MIN_EVIDENCE_ITEMS}")
+    if len(domains) < MIN_EVIDENCE_DOMAINS:
+        reasons.append(f"独立域名 {len(domains)}/{MIN_EVIDENCE_DOMAINS}")
+    if not substantive:
+        reasons.append("缺少可抓取正文")
+    return reasons
+
+
 def _collect_evidence(candidate: dict[str, Any], queries: list[str]) -> list[dict[str, Any]]:
     evidence: list[dict[str, Any]] = []
     seed_urls = [url for url in candidate.get("seed_urls", []) if isinstance(url, str)]
@@ -837,9 +928,11 @@ def research_with_tools(candidates: list[dict[str, Any]]) -> list[dict[str, Any]
         page_count = len([item for item in evidence if item.get("body_type") == "page_text"])
         print(f"      📚 证据 {len(evidence)} 条，正文 {page_count} 条，独立域名 {len(domains)} 个")
         if not _has_minimum_evidence(evidence):
+            reasons = "；".join(_evidence_failure_reasons(evidence))
             print(
                 "      ⚠️ 证据不足，跳过该候选 "
-                f"（需要≥{MIN_EVIDENCE_ITEMS}条证据、≥{MIN_EVIDENCE_DOMAINS}个域名、至少1条正文）"
+                f"（{reasons or '未达到门槛'}；需要≥{MIN_EVIDENCE_ITEMS}条证据、"
+                f"≥{MIN_EVIDENCE_DOMAINS}个域名、至少1条正文）"
             )
             continue
 
@@ -856,6 +949,26 @@ def research_with_tools(candidates: list[dict[str, Any]]) -> list[dict[str, Any]
         })
         print(f"   ✅ 研究完成，笔记 {len(notes)} 字")
     return results
+
+
+def filter_recent_source_duplicates(
+    candidates: list[dict[str, Any]],
+    recent_index: PublishedIndex,
+) -> list[dict[str, Any]]:
+    if not recent_index.source_urls:
+        return candidates
+    kept: list[dict[str, Any]] = []
+    for cand in candidates:
+        seed_urls = [normalize_url_for_dedupe(url) for url in cand.get("seed_urls", []) if isinstance(url, str)]
+        duplicate_urls = [url for url in seed_urls if url and url in recent_index.source_urls]
+        if duplicate_urls:
+            print(
+                f"   ⏭️ 跳过近期重复来源: {cand.get('title', '')[:50]} "
+                f"({duplicate_urls[0]})"
+            )
+            continue
+        kept.append(cand)
+    return kept
 
 
 def compose_briefing(filtered: dict[str, Any], persona: str, slot: str) -> dict[str, Any]:
@@ -916,23 +1029,31 @@ def compose_investigation_reports(
     filtered: dict[str, Any],
     researched: list[dict[str, Any]],
     research_method: str,
+    writing_method: str,
     slot: str,
-    recent_titles: list[str] | None = None,
+    recent_index: PublishedIndex | None = None,
 ) -> dict[str, Any]:
-    print("📋 阶段一：使用 Pro max 生成深度调查报告（网站版）...")
+    print("📋 阶段一：使用 Pro max 生成深度调查文章（网站版）...")
     topic_titles = {t.slug: t.title for t in TOPICS}
     recent_block = ""
-    if recent_titles:
+    if recent_index and recent_index.titles:
         recent_block = (
             "\n【近7天已发布深度文章（主题高度重合的直接跳过，不要输出）】\n"
-            + "\n".join(f"- {t}" for t in recent_titles)
+            + "\n".join(f"- {t}" for t in recent_index.titles)
+            + "\n"
+        )
+    if recent_index and recent_index.source_urls:
+        recent_block += (
+            "\n【近7天已使用过的深度来源 URL（相同来源或同一事件换标题时直接跳过，不要输出）】\n"
+            + "\n".join(f"- {u}" for u in sorted(recent_index.source_urls)[:80])
             + "\n"
         )
     return llm_json(
         system=(
-            "你是一名专业新闻调查记者，负责撰写供网站发布的中文深度调查报告。"
+            "你是一名专业中文深度作者，负责撰写供网站发布的调查文章。"
             "你的读者主要是 Easton 本人，以及特别在意信息溯源、辨别真假、深度分析的读者——他们想看到来源清晰、不确定性明确标注、论据可查的内容，而不是观点的堆砌。"
-            "写作标准参照《经济学人》和优质路透社深度报道：事实第一，观点有据，不确定性明确标注，结构清晰但不刻板。"
+            "写作标准是：事实第一、观点有据、不确定性明确标注，同时按人类阅读习惯组织材料。"
+            "文章应该像一个耐心的深度作者在把复杂事情讲清楚，不要像固定模板报告。"
             "严格按照【信息探索与研究方法论】的证据标准工作。"
             "必须输出合法 JSON，不要代码块。"
         ),
@@ -942,6 +1063,9 @@ def compose_investigation_reports(
 
 【信息探索与研究方法论（必须严格遵守）】
 {research_method[:40000]}
+
+【网站文章可读性约束（吸收风格规则，但网站版不使用第一人称）】
+{writing_method[:24000]}
 
 {recent_block}
 【主题映射】
@@ -959,9 +1083,9 @@ def compose_investigation_reports(
   "investigation_reports": [
     {{
       "topic": "ai-tools|side-hustle|overseas|life-signal",
-      "title": "调查报告标题",
+      "title": "网站文章标题",
       "summary": "核心发现摘要，100字内",
-      "content_md": "完整调查报告 Markdown 正文",
+      "content_md": "完整网站文章 Markdown 正文",
       "sources": [{{"name": "来源名称", "url": "https://原始链接"}}]
     }}
   ]
@@ -975,38 +1099,27 @@ def compose_investigation_reports(
 3. overseas：有跨语言/跨地区信息差价值
 4. life-signal：影响普通人生活/工作决策（兜底）
 
-调查报告结构（根据对象类型自适应，禁止套用固定模板）：
+网站文章结构（根据对象类型自适应，禁止套用固定模板）：
 
 先判断这个对象是什么类型——事件、产品发布、趋势现象、政策变化、人物动向、数据报告还是争议说法——再决定如何展开。不同类型对象的展开重点不同，不得一律用同一套结构。
 
-报告必须包含以下层次（各层深度服从内容需要，可灵活裁剪）：
+必须按这些阅读原则组织正文：
+- 开头 2-4 段必须从一个具体细节切入：一个日期、金额、产品页面、公告措辞、论坛帖子、功能按钮、价格、限制条件或反直觉数字。不要用宏大背景开场。
+- 先把读者最该知道的核心矛盾讲出来，再自然展开证据；不要把证据按目录机械排队。
+- 每个 H2 标题必须像文章小标题，不要叫"导言"、"核心段"、"证据展开"、"反驳视角"、"影响与悬问"、"信息分层结论"、"证据质量评估"。
+- 可以使用少量 H2/H3，但不要过度 Markdown 化；如果只是两个短点，用自然段讲，不要列表。
+- 来源可信度要嵌在正文里，例如"这是官方公告，可信度高，但它没有披露价格"。不要在正文末尾单独开"信息来源与可信度"。
+- 反证、不确定性、商业动机和利益偏向必须出现，但要随着论证出现，不要集中堆成模板章节。
+- 保持客观网站语气，不使用第一人称"我"；但句子要短一点、段落要短一点，读起来像人写的深度文章。
+- 结尾用 1-3 段收住最关键的判断和待追问题，不要写"综上所述"。
 
-**① 先看这里**
-1-2段，直接告诉读者：这个对象大概率是什么、最值得关注的核心点是什么、目前最可靠的信息来自哪里、哪些内容仍不确定或有争议。
-
-**② 对象识别**
-说清楚这件事具体是什么类型，有无歧义，最可能的解释路径是什么。
-
-**③ 纵向展开**（按对象类型选取相关维度）
-- 来源/出处/背景
-- 前因后果、发展过程、关键节点
-- 当前状态
-- 未来最值得关注的变化
-
-**④ 横向展开**（如有对比价值则展开，无则省略）
-同类对象、相似概念、对比、差异点、特殊性
-
-**⑤ 信息分层结论**（必须明确区分，不得混写）
-- **已确认事实**：多个独立来源交叉印证，有原始文件支撑
-- **高概率推断**：间接证据共同指向，但无直接证明
-- **待验证线索**：单一来源、无法核实，只作追查方向
-- **观点/立场**：各方态度与解释框架，不等于事实
-
-**⑥ 证据质量评估**
-整体证据强弱 + 主要不确定性所在 + 来源是否有利益动机或立场偏向
-
-**⑦ 最值得继续追的方向**（可选，仅当存在重要未解问题时）
-不是"建议继续研究一切"，而是最关键的1-2个悬而未决的点
+必须覆盖的内容层次（不要求按标题顺序出现）：
+- 这件事到底是什么，容易误解在哪里。
+- 哪些事实已经确认，依据来自哪里。
+- 哪些是高概率推断，为什么只能写成推断。
+- 哪些只是待验证线索，不能当事实。
+- 来源有没有商业动机、立场偏向或缺失数据。
+- 对 Easton 这类普通技术经理/普通打工人的现实影响。
 
 硬性要求：
 - 产出 1-3 篇，优中择优，不要凑数。
@@ -1014,8 +1127,9 @@ def compose_investigation_reports(
 - 直接使用 research_notes 里的已确认事实作为核心论据，不要基于训练知识编造来源。
 - 来源在正文引用时标注名称和可信度，禁止在文末单独列"参考来源"一节。
 - 严格区分已确认事实、高概率推断、待验证线索——不把推断写成结论。
-- 客观调查语气，无第一人称"我"的叙述视角。
-- 可使用 H2、H3 标题、表格、引用块等完整 Markdown 格式。
+- 客观网站文章语气，无第一人称"我"的叙述视角。
+- 可使用 H2、H3 标题、表格、引用块等 Markdown 格式，但只在真正帮助阅读时使用。
+- 禁止输出固定模板标题："导言"、"核心段"、"证据展开"、"反驳视角"、"影响与悬问"、"已确认的事实"、"高概率推断"。
 - 有实质深度，不是新闻摘要——字数服从内容需要，不要为凑字数堆废话。
 - sources 只收录文章正文中实际引用的高/中可信来源，格式 [{{"name": "来源名", "url": "https://..."}}]，2-8 个，url 必须是完整链接，不得用线索级来源。
 """,
@@ -1238,6 +1352,7 @@ def write_post(
         "---",
         f"title: {yaml_scalar(title)}",
         f"date: {date}",
+        f"updated: {date}",
         f"categories: {json.dumps([category], ensure_ascii=False)}",
         f"tags: {json.dumps(tags, ensure_ascii=False)}",
         f"wordCount: {count_words(body)}",
@@ -1605,22 +1720,23 @@ def main() -> None:
     )
 
     # 防重复
-    recent_titles = load_recent_titles(days=7)
+    recent_index = load_recent_published_index(days=7)
 
     # 采集 & 初筛
     collected = collect_sources(args.max_age_hours)
-    filtered = initial_filter(collected, persona, recent_titles)
+    filtered = initial_filter(collected, persona, recent_index)
 
     # 简讯
     briefing_report = compose_briefing(filtered, persona, slot)
 
     # 深度检索
     candidates = filtered.get("deep_candidates", [])
+    candidates = filter_recent_source_duplicates(candidates, recent_index)
     researched = research_with_tools(candidates)
 
     # 阶段一：网站调查报告
     if researched:
-        inv_result = compose_investigation_reports(filtered, researched, research_method, slot, recent_titles)
+        inv_result = compose_investigation_reports(filtered, researched, research_method, writing_method, slot, recent_index)
         investigation_reports = inv_result.get("investigation_reports", [])
     else:
         print("📋 没有深度候选通过证据门槛，本批次跳过调查报告和公众号长文")

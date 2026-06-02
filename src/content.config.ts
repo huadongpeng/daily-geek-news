@@ -7,6 +7,7 @@ const blog = defineCollection({
     title: z.string(),
     // z.coerce.date() accepts ISO-8601 strings like "2026-06-01T10:30:00+08:00"
     date: z.coerce.date(),
+    updated: z.coerce.date().optional(),
     description: z.string().optional().default(''),
     cover: z.string().optional().default(''),
     categories: z.array(z.string()).optional().default([]),

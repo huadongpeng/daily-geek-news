@@ -1,0 +1,72 @@
+{
+  "ai-tools": {
+    "feeds": [
+      "https://openai.com/blog/rss.xml",
+      "https://blog.google/technology/ai/rss/",
+      "https://huggingface.co/blog/feed.xml",
+      "https://arxiv.org/rss/cs.AI",
+      "https://arxiv.org/rss/cs.LG",
+      "https://news.ycombinator.com/rss",
+      "https://dev.to/feed/tag/ai",
+      "https://venturebeat.com/category/ai/feed/"
+    ],
+    "search_seeds": [
+      "AI model release site:openai.com OR site:google.com",
+      "AI coding agent new feature",
+      "AI tool developer update"
+    ]
+  },
+  "side-hustle": {
+    "feeds": [
+      "https://news.ycombinator.com/rss",
+      "https://www.producthunt.com/feed",
+      "https://www.reddit.com/r/SaaS/top/.rss?t=day",
+      "https://www.reddit.com/r/SideProject/top/.rss?t=day",
+      "https://www.reddit.com/r/Entrepreneur/top/.rss?t=day",
+      "https://www.reddit.com/r/SomebodyMakeThis/top/.rss?t=day",
+      "https://www.reddit.com/r/freelance/top/.rss?t=day",
+      "https://v2ex.com/feed/create.xml"
+    ],
+    "search_seeds": [
+      "side project revenue case study",
+      "indie hacker success story",
+      "micro saas market gap"
+    ]
+  },
+  "overseas": {
+    "feeds": [
+      "https://restofworld.org/feed/latest/",
+      "https://www.wired.com/feed/rss",
+      "https://www.semafor.com/rss.xml",
+      "http://www.chinadaily.com.cn/rss/world_rss.xml",
+      "http://www.chinadaily.com.cn/rss/bizchina_rss.xml",
+      "https://feeds.bbci.co.uk/news/world/rss.xml",
+      "https://www.reddit.com/r/digitalnomad/top/.rss?t=day",
+      "https://www.reddit.com/r/InternetIsBeautiful/top/.rss?t=day",
+      "https://www.producthunt.com/feed"
+    ],
+    "search_seeds": [
+      "overseas market China information gap",
+      "emerging market platform opportunity",
+      "cross-border business trend 2025"
+    ]
+  },
+  "life-signal": {
+    "feeds": [
+      "https://www.federalreserve.gov/feeds/press_all.xml",
+      "https://www.sec.gov/news/pressreleases.rss",
+      "https://www.ecb.europa.eu/rss/press.html",
+      "http://www.chinadaily.com.cn/rss/china_rss.xml",
+      "https://feeds.bbci.co.uk/news/business/rss.xml",
+      "https://www.theguardian.com/world/rss",
+      "https://www.theverge.com/rss/index.xml",
+      "https://techcrunch.com/feed/",
+      "https://www.cnbc.com/id/100003114/device/rss/rss.html"
+    ],
+    "search_seeds": [
+      "tech layoffs 2025",
+      "platform policy change affects workers",
+      "consumer economy trend"
+    ]
+  }
+}

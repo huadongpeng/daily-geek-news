@@ -17,7 +17,7 @@ first-hand / near-source RSS
   -> persona-based filtering
   -> daily briefing
   -> deep research on selected candidates
-  -> Phase 1: investigation report (objective, structured) -> Hugo website
+  -> Phase 1: investigation article (evidence-grounded, readable) -> Astro website
   -> Phase 2: WeChat article (personal voice re-telling) -> email + outputs/wechat_articles/
   -> Telegram notification
 ```
@@ -30,8 +30,12 @@ pip install feedparser requests ddgs
 python purifier.py --slot morning
 python purifier.py --slot evening
 
-hugo serve
-hugo --minify
+npm run dev
+npm run build
+
+# Windows PowerShell may block npm.ps1; use npm.cmd if needed:
+npm.cmd run dev
+npm.cmd run build
 ```
 
 ## Configuration
@@ -41,6 +45,7 @@ Prompt and editorial configuration lives in `config/`:
 - `config/persona.md`
 - `config/research_skill.md`
 - `config/writing_skill.md`
+- `config/sources.json`
 
 These can be overridden with:
 
@@ -56,7 +61,7 @@ These can be overridden with:
 2. Ask the LLM to filter items against the persona and four focus areas.
 3. Generate the daily briefing.
 4. Research selected deep candidates: FLASH generates targeted queries, seed URLs and search results are fetched, evidence is deduplicated, and weak-evidence candidates are skipped.
-5. **Phase 1** — Ask Pro model to write objective investigation reports → save to Hugo under `content/posts/{category}/investigation-*.md`.
+5. **Phase 1** — Ask Pro model to write evidence-grounded investigation articles → save to Astro under `src/content/blog/{category}/investigation-*.md`.
 6. **Phase 2** — Ask Pro model to rewrite each report in Easton's personal voice → save to `outputs/wechat_articles/` and send by email.
 7. Send a Telegram summary if configured.
 
@@ -95,18 +100,19 @@ Optional:
 
 ## Deployment
 
-`.github/workflows/main.yml` runs twice daily:
+`.github/workflows/deploy.yml` runs twice daily:
 
 - 06:00 Beijing
 - 18:00 Beijing
 
-The workflow runs `purifier.py`, commits generated Markdown and WeChat-ready source files, builds Hugo, and deploys to GitHub Pages.
+The workflow runs `purifier.py`, commits generated Markdown and cover images, builds Astro, and deploys `dist/` to the VPS via rsync.
 
 ## Notes
 
 - Do not reintroduce WeChat API publishing or image-generation API calls into the main path unless explicitly requested.
-- Keep generated content under `content/posts/`.
+- Keep generated website content under `src/content/blog/`.
 - Keep generated WeChat-ready article source files under `outputs/wechat_articles/` (gitignored — not committed to repo).
 - The project has historical content under older category slugs. New generated content must use the four new slugs above.
 - Research uses guarded AI-guided search: FLASH generates queries → seed/search pages are fetched → evidence is deduplicated and checked → PRO+thinking analyzes only candidates that pass the evidence threshold. No DeepSeek tool-calling (causes 400 errors).
 - WeChat articles are written as Easton Hua / 老花 (first person identity, not ghostwriter). Fixed sign-off format required at the end of every article.
+- Website investigation articles should be readable articles, not rigid reports. Avoid fixed headings like "导言 / 核心段 / 证据展开 / 反驳视角 / 影响与悬问"; keep evidence labels in the body where they matter.

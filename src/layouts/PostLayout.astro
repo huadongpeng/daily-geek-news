@@ -9,6 +9,7 @@ interface Props {
 
 const { frontmatter, postId } = Astro.props;
 const { title, date, description, cover, categories, tags, sources = [], wordCount = 0 } = frontmatter;
+const updated = frontmatter.updated ?? date;
 
 const CAT_LABELS: Record<string, string> = {
   'ai-tools':       'AI 工具前线',
@@ -46,7 +47,7 @@ const jsonLd: Record<string, unknown> = {
   headline:   title,
   ...(description && { description }),
   datePublished: date.toISOString(),
-  dateModified:  date.toISOString(),
+  dateModified:  updated.toISOString(),
   url:           canonURL,
   image:         ogImageAbs,
   inLanguage:    'zh-CN',
