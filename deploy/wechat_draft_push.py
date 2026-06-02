@@ -37,6 +37,24 @@ def load_server_config() -> None:
         WECHAT_AUTHOR = str(data.get("WECHAT_AUTHOR", WECHAT_AUTHOR))
 
 
+def truncate_by_bytes(text: str, max_bytes: int) -> str:
+    """WeChat counts title length in UTF-8 bytes (ASCII=1, CJK/full-width=3, emoji=4) and
+    rejects over-limit titles with errcode 45003. Trim on a char boundary, append … if cut."""
+    if len(text.encode("utf-8")) <= max_bytes:
+        return text
+    ellipsis = "…"
+    budget = max_bytes - len(ellipsis.encode("utf-8"))
+    out = []
+    total = 0
+    for ch in text:
+        b = len(ch.encode("utf-8"))
+        if total + b > budget:
+            break
+        out.append(ch)
+        total += b
+    return "".join(out) + ellipsis
+
+
 def inline_markdown(text: str) -> str:
     escaped = html.escape(text.strip())
     escaped = re.sub(r"\*\*(.+?)\*\*", r"<strong>\1</strong>", escaped)
@@ -151,7 +169,7 @@ def add_draft(access_token: str, payload: Dict[str, Any], thumb_media_id: str) -
     data = {
         "articles": [
             {
-                "title": title[:64],
+                "title": truncate_by_bytes(title, 64),
                 "author": WECHAT_AUTHOR,
                 "digest": str(payload.get("summary") or "")[:120],
                 "content": markdown_to_wechat_html(str(payload.get("content_md") or "")),
