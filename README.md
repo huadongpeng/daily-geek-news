@@ -17,9 +17,9 @@
         ↓
 优中择优生成深度好文
         ↓
-生成 Gemini Banana 公众号封面提示词
+写成兼具调查严谨性和老花个人判断的网站深度文章
         ↓
-写入 Astro 内容目录 + 公众号源文件 + Telegram 通知 + VPS 部署
+复用同一篇文章生成公众号源文件 + Telegram 通知 + VPS 部署
 ```
 
 ## 当前关注主题
@@ -81,7 +81,7 @@ npm.cmd run dev
 npm.cmd run build
 ```
 
-公众号文章会额外输出到 `outputs/wechat_articles/`，每篇文件包含标题、封面提示词和正文：
+公众号源文件会额外输出到 `outputs/wechat_articles/`。正文直接复用网站深度文章，不再单独调用 DeepSeek 二次改写；每篇文件包含标题、封面提示词和正文：
 
 ```text
 标题
@@ -106,10 +106,20 @@ npm.cmd run build
 | `BAIDU_PUSH_TOKEN` | 可选，百度主动推送 token |
 | `EMAIL_FROM` / `EMAIL_PASSWORD` / `EMAIL_TO` | 可选，发送公众号源文件邮件 |
 | `SOURCES_CONFIG_PATH` | 可选，覆盖默认 `config/sources.json` 来源配置路径 |
+| `PUBLIC_ENABLE_ANALYTICS` | Astro 构建变量，设为 `false` 时不注入 GA |
+| `PUBLIC_ENABLE_ADS` | Astro 构建变量，设为 `false` 时不注入 AdSense |
 
 默认轻量步骤使用 `deepseek-v4-flash`，包括初筛和简讯整理；深度长文使用 `deepseek-v4-pro`，并默认启用 Thinking Mode + `max`。
 如需临时切换，可在 GitHub Variables 里设置 `DEEPSEEK_FLASH_MODEL` 或 `DEEPSEEK_PRO_MODEL`。
 
 深度检索不会使用 DeepSeek tool-calling。当前流程是 Flash 生成查询，程序抓取 seed URL、DDGS 搜索结果和可访问正文，去重并检查最小证据量；证据不足的候选只保留在简讯，不进入调查报告和公众号长文。
 
-GitHub Actions 每天北京时间 06:00 和 18:00 自动运行，也可以手动触发并选择 `morning/evening`。工作流会运行内容管线、提交新 Markdown 和封面图、构建 Astro，并通过 rsync 部署到 VPS。
+GitHub Actions 每天北京时间 06:00 和 18:00 自动运行，也可以手动触发并选择 `morning/evening`。定时/手动运行会先执行内容管线、提交新 Markdown 和封面图，再构建 Astro 并通过 rsync 部署到 VPS。
+
+`main` 分支 push 也会触发构建部署，但不会运行 `purifier.py`，避免代码修复时误调用 DeepSeek 生成文章。
+
+运行期状态：
+
+- `.cache/radar/source_health.json`：记录 RSS 源连续失败次数，便于发现长期失效来源。
+- `.cache/radar/pending_push_urls_*.json`：记录 IndexNow / 百度推送失败后待补推 URL。
+- `outputs/wechat_articles/*-archive.json`：记录公众号源文件邮件发送批次和文章元数据，不提交到 Git。

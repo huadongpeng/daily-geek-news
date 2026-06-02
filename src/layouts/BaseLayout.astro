@@ -21,6 +21,8 @@ const {
 const canonicalURL = Astro.props.canonicalURL ?? new URL(Astro.url.pathname, Astro.site).href;
 const siteTitle    = title.includes('hdop家') ? title : `${title} · hdop家`;
 const ogImageAbs   = ogImage.startsWith('http') ? ogImage : new URL(ogImage, Astro.site).href;
+const enableAds = import.meta.env.PUBLIC_ENABLE_ADS !== 'false';
+const enableAnalytics = import.meta.env.PUBLIC_ENABLE_ANALYTICS !== 'false';
 ---
 
 <!DOCTYPE html>
@@ -29,7 +31,7 @@ const ogImageAbs   = ogImage.startsWith('http') ? ogImage : new URL(ogImage, Ast
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="generator" content={Astro.generator} />
-  <meta name="google-adsense-account" content="ca-pub-4007535026028552" />
+  {enableAds && <meta name="google-adsense-account" content="ca-pub-4007535026028552" />}
   <!-- 百度搜索资源平台 — 申请后替换 BAIDU_VERIFY_CODE -->
   <meta name="baidu-site-verification" content="codeva-yNSx2HYKbG" />
 
@@ -55,20 +57,28 @@ const ogImageAbs   = ogImage.startsWith('http') ? ogImage : new URL(ogImage, Ast
   <!-- RSS autodiscovery -->
   <link rel="alternate" type="application/rss+xml" title="hdop家 RSS" href="/rss.xml" />
 
-  <!-- Google AdSense Auto Ads -->
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4007535026028552" crossorigin="anonymous"></script>
+  {enableAds && (
+    <>
+      <!-- Google AdSense Auto Ads -->
+      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4007535026028552" crossorigin="anonymous"></script>
+    </>
+  )}
 
   <!-- Favicon -->
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
-  <!-- Google Analytics 4 -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-LR1QZPH754"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-LR1QZPH754');
-  </script>
+  {enableAnalytics && (
+    <>
+      <!-- Google Analytics 4 -->
+      <script async src="https://www.googletagmanager.com/gtag/js?id=G-LR1QZPH754"></script>
+      <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-LR1QZPH754');
+      </script>
+    </>
+  )}
 
   <!-- WebSite JSON-LD (site-wide, helps AI crawlers index authorship) -->
   <Fragment set:html={`<script type="application/ld+json">${JSON.stringify({

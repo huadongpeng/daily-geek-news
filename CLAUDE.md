@@ -17,8 +17,8 @@ first-hand / near-source RSS
   -> persona-based filtering
   -> daily briefing
   -> deep research on selected candidates
-  -> Phase 1: investigation article (evidence-grounded, readable) -> Astro website
-  -> Phase 2: WeChat article (personal voice re-telling) -> email + outputs/wechat_articles/
+  -> Phase 1: investigation article (evidence-grounded, with Easton's personal closing) -> Astro website
+  -> Phase 2: reuse the same article for WeChat-ready source files -> email + outputs/wechat_articles/
   -> Telegram notification
 ```
 
@@ -61,8 +61,8 @@ These can be overridden with:
 2. Ask the LLM to filter items against the persona and four focus areas.
 3. Generate the daily briefing.
 4. Research selected deep candidates: FLASH generates targeted queries, seed URLs and search results are fetched, evidence is deduplicated, and weak-evidence candidates are skipped.
-5. **Phase 1** — Ask Pro model to write evidence-grounded investigation articles → save to Astro under `src/content/blog/{category}/investigation-*.md`.
-6. **Phase 2** — Ask Pro model to rewrite each report in Easton's personal voice → save to `outputs/wechat_articles/` and send by email.
+5. **Phase 1** — Ask Pro model to write evidence-grounded investigation articles with a first-person Easton closing → save to Astro under `src/content/blog/{category}/investigation-*.md`.
+6. **Phase 2** — Reuse the same article body for WeChat-ready source files → save to `outputs/wechat_articles/` and send by email. Do not run a second LLM rewrite for WeChat.
 7. Send a Telegram summary if configured.
 
 Focus areas (priority order — pick first match):
@@ -106,6 +106,7 @@ Optional:
 - 18:00 Beijing
 
 The workflow runs `purifier.py`, commits generated Markdown and cover images, builds Astro, and deploys `dist/` to the VPS via rsync.
+Pushes to `main` only build/deploy the current site; they must not run the intelligence pipeline or call DeepSeek.
 
 ## Notes
 
@@ -116,3 +117,5 @@ The workflow runs `purifier.py`, commits generated Markdown and cover images, bu
 - Research uses guarded AI-guided search: FLASH generates queries → seed/search pages are fetched → evidence is deduplicated and checked → PRO+thinking analyzes only candidates that pass the evidence threshold. No DeepSeek tool-calling (causes 400 errors).
 - WeChat articles are written as Easton Hua / 老花 (first person identity, not ghostwriter). Fixed sign-off format required at the end of every article.
 - Website investigation articles should be readable articles, not rigid reports. Avoid fixed headings like "导言 / 核心段 / 证据展开 / 反驳视角 / 影响与悬问"; keep evidence labels in the body where they matter.
+- Avoid stiff phrases like "对普通技术经理的现实影响" or "像 Easton 这样的普通技术经理". Use Easton's actual voice near the end: "咱们这些快毕业/刚毕业的 IT 打工人", "35 岁门槛前后的程序员", "大龄程序员", "怕失业的人", etc.
+- Runtime health files live under `.cache/radar/`: source health and pending search-engine push queues. These are diagnostics/artifacts, not source content.

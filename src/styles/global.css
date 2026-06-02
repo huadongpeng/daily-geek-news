@@ -130,6 +130,14 @@ img { max-width: 100%; height: auto; display: block; border-radius: var(--r); }
   margin-bottom: 1.2rem; padding-bottom: .4rem;
   border-bottom: 2px solid var(--border);
 }
+.section-block { margin-bottom: 2.8rem; }
+.section-head {
+  display: flex; align-items: baseline; justify-content: space-between;
+  gap: 1rem; margin-bottom: 1.2rem; border-bottom: 2px solid var(--border);
+}
+.section-head .sec-title { margin-bottom: 0; border-bottom: 0; }
+.section-link { font-size: .8rem; color: var(--muted); white-space: nowrap; }
+.section-link:hover { color: var(--accent); }
 
 /* ── Post grid ───────────────────────────────────────────────── */
 .grid {
@@ -137,6 +145,9 @@ img { max-width: 100%; height: auto; display: block; border-radius: var(--r); }
   grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
   gap: 1.1rem;
   margin-bottom: 3rem;
+}
+.grid-compact {
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
 }
 
 /* ── Post card ───────────────────────────────────────────────── */
@@ -223,6 +234,24 @@ img { max-width: 100%; height: auto; display: block; border-radius: var(--r); }
 .sources-list li::before { content: "↗ "; color: var(--accent); font-size: .78em; }
 .sources-list a { font-size: .87rem; }
 
+/* ── Prev/next article nav ───────────────────────────────────── */
+.post-nav {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: .8rem; margin: 2rem 0 0;
+}
+.post-nav a {
+  display: block; padding: .9rem 1rem; border: 1px solid var(--border);
+  border-radius: var(--r); background: var(--bg-card); color: var(--text);
+}
+.post-nav a:hover { text-decoration: none; border-color: var(--accent); }
+.post-nav span {
+  display: block; font-size: .72rem; color: var(--muted);
+  margin-bottom: .25rem; text-transform: uppercase; letter-spacing: .05em;
+}
+.post-nav strong {
+  display: block; font-size: .9rem; line-height: 1.45; font-weight: 600;
+}
+
 /* ── Category page ───────────────────────────────────────────── */
 .cat-header { padding: 2rem 0 1.5rem; border-bottom: 1px solid var(--border); margin-bottom: 2rem; }
 .cat-title { font-size: 1.8rem; font-weight: 700; margin: .4rem 0 .3rem; }
@@ -242,6 +271,8 @@ img { max-width: 100%; height: auto; display: block; border-radius: var(--r); }
 /* ── Responsive ──────────────────────────────────────────────── */
 @media (max-width: 600px) {
   .grid { grid-template-columns: 1fr; }
+  .section-head { align-items: center; }
+  .post-nav { grid-template-columns: 1fr; }
   .prose { font-size: .98rem; }
   .article-title { font-size: 1.4rem; }
 }

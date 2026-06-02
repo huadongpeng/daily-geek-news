@@ -7,6 +7,8 @@ const allPosts = await getCollection('blog', ({ data }) => !data.draft);
 const posts = allPosts
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
   .slice(0, 18);
+const briefings = posts.filter(post => post.data.categories?.includes('daily-briefing')).slice(0, 4);
+const investigations = posts.filter(post => !post.data.categories?.includes('daily-briefing')).slice(0, 12);
 ---
 
 <BaseLayout>
@@ -23,10 +25,29 @@ const posts = allPosts
 
     {posts.length > 0 ? (
       <>
-        <p class="sec-title">最新文章</p>
-        <div class="grid">
-          {posts.map(post => <PostCard post={post} />)}
-        </div>
+        {briefings.length > 0 && (
+          <section class="section-block">
+            <div class="section-head">
+              <p class="sec-title">每日简讯</p>
+              <a href="/categories/daily-briefing/" class="section-link">全部简讯</a>
+            </div>
+            <div class="grid grid-compact">
+              {briefings.map(post => <PostCard post={post} />)}
+            </div>
+          </section>
+        )}
+
+        {investigations.length > 0 && (
+          <section class="section-block">
+            <div class="section-head">
+              <p class="sec-title">深度文章</p>
+              <a href="/blog/" class="section-link">全部文章</a>
+            </div>
+            <div class="grid">
+              {investigations.map(post => <PostCard post={post} />)}
+            </div>
+          </section>
+        )}
       </>
     ) : (
       <p style="color:var(--muted);padding:3rem 0">内容生成中，请稍后…</p>

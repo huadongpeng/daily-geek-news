@@ -4,17 +4,22 @@ import PostLayout from '../../layouts/PostLayout.astro';
 
 // Astro 5: post.id = "ai-tools/investigation-xxx" (full path, no extension)
 export async function getStaticPaths() {
-  const posts = await getCollection('blog', ({ data }) => !data.draft);
-  return posts.map(post => ({
+  const posts = (await getCollection('blog', ({ data }) => !data.draft))
+    .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+  return posts.map((post, index) => ({
     params: { slug: post.id },
-    props:  { post },
+    props:  {
+      post,
+      prevPost: posts[index - 1] ?? null,
+      nextPost: posts[index + 1] ?? null,
+    },
   }));
 }
 
-const { post }   = Astro.props;
+const { post, prevPost, nextPost } = Astro.props;
 const { Content } = await render(post);
 ---
 
-<PostLayout frontmatter={post.data} postId={post.id}>
+<PostLayout frontmatter={post.data} postId={post.id} prevPost={prevPost} nextPost={nextPost}>
   <Content />
 </PostLayout>

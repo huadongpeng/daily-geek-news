@@ -1,6 +1,16 @@
 name: Easton Radar — Build & Deploy
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - "astro.config.mjs"
+      - "package.json"
+      - "package-lock.json"
+      - "src/**"
+      - "public/**"
+      - "deploy/**"
+      - ".github/workflows/deploy.yml"
   schedule:
     - cron: "0 22 * * *"   # 06:00 BJT (UTC+8)
     - cron: "0 10 * * *"   # 18:00 BJT
@@ -13,30 +23,25 @@ on:
         type: choice
         options: [auto, morning, evening]
 
-# Only need write access to push generated content back to the repo
 permissions:
   contents: write
+  actions: read
 
-# Prevent concurrent runs from pushing to main simultaneously.
-# cancel-in-progress: false → queue the second run, don't kill the first.
-# This is the root-cause fix for "rejected: fetch first" errors.
 concurrency:
   group: ${{ github.workflow }}
   cancel-in-progress: false
 
 jobs:
-  pipeline:
+  generate-content:
+    if: github.event_name != 'push'
     runs-on: ubuntu-latest
 
     steps:
-      # ── 1. Checkout ──────────────────────────────────────────
       - name: Checkout
         uses: actions/checkout@v4
         with:
-          # No submodules needed (Hugo theme is no longer used in build)
           fetch-depth: 0
 
-      # ── 2. Python: run intelligence pipeline ─────────────────
       - name: Setup Python 3.11
         uses: actions/setup-python@v5
         with:
@@ -50,6 +55,7 @@ jobs:
         env:
           DEEPSEEK_API_KEY:                ${{ secrets.DEEPSEEK_API_KEY }}
           SILICONFLOW_API_KEY:             ${{ secrets.SILICONFLOW_API_KEY }}
+          ALLOW_POLLINATIONS_COVER:        ${{ vars.ALLOW_POLLINATIONS_COVER || 'true' }}
           DEEPSEEK_FLASH_MODEL:            ${{ vars.DEEPSEEK_FLASH_MODEL    || 'deepseek-v4-flash' }}
           DEEPSEEK_FLASH_THINKING:         ${{ vars.DEEPSEEK_FLASH_THINKING || 'disabled' }}
           DEEPSEEK_FLASH_REASONING_EFFORT: ${{ vars.DEEPSEEK_FLASH_REASONING_EFFORT || 'low' }}
@@ -67,10 +73,19 @@ jobs:
           PYTHONIOENCODING:                "utf-8"
         run: python purifier.py --slot "${{ github.event.inputs.slot || 'auto' }}"
 
-      # ── 3. Commit generated content + cover images ───────────
+      - name: Upload pipeline cache/log artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: radar-runtime-artifacts
+          path: |
+            .cache/radar/pending_push_urls_*.json
+            .cache/radar/source_health.json
+            outputs/wechat_articles/*.json
+          if-no-files-found: ignore
+          retention-days: 14
+
       - name: Commit generated content
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config user.email "action@github.com"
           git config user.name  "GitHub Action"
@@ -81,17 +96,22 @@ jobs:
             exit 0
           fi
 
-          git commit -m "chore: generate Easton Radar content [$(date -u '+%Y-%m-%d %H:%M UTC')]"
-
-          # concurrency:group=deploy guarantees only one run reaches this line
-          # at a time, so a simple push is always a fast-forward.
-          # git fetch+rebase is still here as a safety net for the edge case
-          # where a developer pushes a hotfix from their local machine mid-run.
+          git commit -m "chore: generate Easton Radar content [skip ci] [$(date -u '+%Y-%m-%d %H:%M UTC')]"
           git fetch origin main
           git rebase origin/main
           git push origin HEAD:main
 
-      # ── 4. Node.js: build Astro ───────────────────────────────
+  build:
+    needs: [generate-content]
+    if: ${{ always() && (github.event_name == 'push' || needs.generate-content.result == 'success' || needs.generate-content.result == 'skipped') }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout latest main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+
       - name: Setup Node.js 22
         uses: actions/setup-node@v4
         with:
@@ -102,16 +122,34 @@ jobs:
         run: npm ci
 
       - name: Build Astro static site
+        env:
+          PUBLIC_ENABLE_ANALYTICS: ${{ vars.PUBLIC_ENABLE_ANALYTICS || 'true' }}
+          PUBLIC_ENABLE_ADS:       ${{ vars.PUBLIC_ENABLE_ADS || 'true' }}
         run: npm run build
-        # Outputs to dist/
 
-      # ── 5a. Deploy to VPS via rsync (domestic users) ─────────
+      - name: Upload dist artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: astro-dist
+          path: dist/
+          retention-days: 7
+
+  deploy-vps:
+    needs: [build]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download dist artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: astro-dist
+          path: dist
+
       - name: Setup SSH for VPS deploy
         run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.VPS_SSH_KEY }}" > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
-          # Add VPS host key to known_hosts (avoids interactive prompt)
           ssh-keyscan -H "${{ secrets.VPS_IP }}" >> ~/.ssh/known_hosts
 
       - name: Deploy dist/ to VPS via rsync
@@ -121,7 +159,3 @@ jobs:
             -e "ssh -i ~/.ssh/deploy_key" \
             dist/ \
             "${{ secrets.VPS_USER }}@${{ secrets.VPS_IP }}:/ws/web/www.huadongpeng.com/"
-
-      # GitHub Pages deployment removed — all traffic (domestic + overseas)
-      # now routes to VPS via Aliyun DNS default line.
-      # VPS wildcard SSL cert covers HTTPS globally.

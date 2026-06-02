@@ -26,9 +26,33 @@ const allPosts = await getCollection('blog', ({ data }) => !data.draft);
 const posts = allPosts
   .filter(p => p.data.categories?.includes(category))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const categoryUrl = new URL(`/categories/${category}/`, Astro.site).href;
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: meta.label,
+  description: meta.desc,
+  url: categoryUrl,
+  inLanguage: 'zh-CN',
+  isPartOf: {
+    '@type': 'WebSite',
+    name: 'hdop家',
+    url: 'https://www.huadongpeng.com',
+  },
+  mainEntity: {
+    '@type': 'ItemList',
+    itemListElement: posts.slice(0, 20).map((post, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      name: post.data.title,
+      url: new URL(`/blog/${post.id}/`, Astro.site).href,
+    })),
+  },
+};
 ---
 
-<BaseLayout title={meta.label} description={meta.desc}>
+<BaseLayout title={meta.label} description={meta.desc} canonicalURL={categoryUrl} jsonLd={jsonLd}>
   <div class="wrap">
 
     <div class="cat-header">

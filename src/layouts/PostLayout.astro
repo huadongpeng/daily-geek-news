@@ -5,9 +5,11 @@ import type { CollectionEntry } from 'astro:content';
 interface Props {
   frontmatter: CollectionEntry<'blog'>['data'];
   postId: string;        // Astro 5 post.id, e.g. "ai-tools/investigation-xxx"
+  prevPost?: CollectionEntry<'blog'> | null;
+  nextPost?: CollectionEntry<'blog'> | null;
 }
 
-const { frontmatter, postId } = Astro.props;
+const { frontmatter, postId, prevPost, nextPost } = Astro.props;
 const { title, date, description, cover, categories, tags, sources = [], wordCount = 0 } = frontmatter;
 const updated = frontmatter.updated ?? date;
 
@@ -151,6 +153,23 @@ const readMins = wordCount > 0 ? Math.max(1, Math.round(wordCount / 300)) : null
           ))}
         </ul>
       </aside>
+    )}
+
+    {(prevPost || nextPost) && (
+      <nav class="post-nav" aria-label="相邻文章">
+        {prevPost ? (
+          <a href={`/blog/${prevPost.id}/`} rel="prev">
+            <span>上一篇</span>
+            <strong>{prevPost.data.title}</strong>
+          </a>
+        ) : <div></div>}
+        {nextPost ? (
+          <a href={`/blog/${nextPost.id}/`} rel="next">
+            <span>下一篇</span>
+            <strong>{nextPost.data.title}</strong>
+          </a>
+        ) : <div></div>}
+      </nav>
     )}
 
   </div>
