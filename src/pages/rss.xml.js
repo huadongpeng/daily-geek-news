@@ -1,6 +1,14 @@
 import rss from '@astrojs/rss';
 import { getCollection } from 'astro:content';
 
+function escapeXmlAttr(value) {
+  return String(value)
+    .replaceAll('&', '&amp;')
+    .replaceAll('"', '&quot;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;');
+}
+
 export async function GET(context) {
   const posts = await getCollection('blog', ({ data }) => !data.draft);
   posts.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
@@ -23,7 +31,7 @@ export async function GET(context) {
         categories,
         customData: [
           post.data.updated ? `<updated>${post.data.updated.toISOString()}</updated>` : '',
-          cover ? `<media:content url="${cover}" medium="image" />` : '',
+          cover ? `<media:content url="${escapeXmlAttr(cover)}" medium="image" />` : '',
         ].filter(Boolean).join(''),
       };
     }),

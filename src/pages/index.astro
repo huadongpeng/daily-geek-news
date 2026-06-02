@@ -5,8 +5,7 @@ import PostCard from '../components/PostCard.astro';
 
 const allPosts = await getCollection('blog', ({ data }) => !data.draft);
 const posts = allPosts
-  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
-  .slice(0, 18);
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 const briefings = posts.filter(post => post.data.categories?.includes('daily-briefing')).slice(0, 4);
 const investigations = posts.filter(post => !post.data.categories?.includes('daily-briefing')).slice(0, 12);
 ---

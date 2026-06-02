@@ -35,6 +35,8 @@ jobs:
   generate-content:
     if: github.event_name != 'push'
     runs-on: ubuntu-latest
+    outputs:
+      build_ref: ${{ steps.content-commit.outputs.build_ref }}
 
     steps:
       - name: Checkout
@@ -86,6 +88,7 @@ jobs:
           retention-days: 14
 
       - name: Commit generated content
+        id: content-commit
         run: |
           git config user.email "action@github.com"
           git config user.name  "GitHub Action"
@@ -93,12 +96,14 @@ jobs:
           git add src/content/blog/ public/images/covers/
           if git diff --staged --quiet; then
             echo "✅ No new content this run"
+            echo "build_ref=${GITHUB_SHA}" >> "$GITHUB_OUTPUT"
             exit 0
           fi
 
           git commit -m "chore: generate Easton Radar content [skip ci] [$(date -u '+%Y-%m-%d %H:%M UTC')]"
           git fetch origin main
           git rebase origin/main
+          echo "build_ref=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
           git push origin HEAD:main
 
   build:
@@ -110,7 +115,7 @@ jobs:
       - name: Checkout latest main
         uses: actions/checkout@v4
         with:
-          ref: main
+          ref: ${{ github.event_name == 'push' && github.sha || needs.generate-content.outputs.build_ref || 'main' }}
 
       - name: Setup Node.js 22
         uses: actions/setup-node@v4
@@ -125,6 +130,9 @@ jobs:
         env:
           PUBLIC_ENABLE_ANALYTICS: ${{ vars.PUBLIC_ENABLE_ANALYTICS || 'true' }}
           PUBLIC_ENABLE_ADS:       ${{ vars.PUBLIC_ENABLE_ADS || 'true' }}
+          PUBLIC_GA_ID:            ${{ vars.PUBLIC_GA_ID || 'G-LR1QZPH754' }}
+          PUBLIC_ADSENSE_CLIENT:   ${{ vars.PUBLIC_ADSENSE_CLIENT || 'ca-pub-4007535026028552' }}
+          PUBLIC_BAIDU_VERIFY:     ${{ vars.PUBLIC_BAIDU_VERIFY || 'codeva-yNSx2HYKbG' }}
         run: npm run build
 
       - name: Upload dist artifact

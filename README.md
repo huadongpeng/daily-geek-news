@@ -108,13 +108,16 @@ npm.cmd run build
 | `SOURCES_CONFIG_PATH` | 可选，覆盖默认 `config/sources.json` 来源配置路径 |
 | `PUBLIC_ENABLE_ANALYTICS` | Astro 构建变量，设为 `false` 时不注入 GA |
 | `PUBLIC_ENABLE_ADS` | Astro 构建变量，设为 `false` 时不注入 AdSense |
+| `PUBLIC_GA_ID` | Astro 构建变量，GA4 Measurement ID，默认使用当前站点 ID |
+| `PUBLIC_ADSENSE_CLIENT` | Astro 构建变量，AdSense client id，默认使用当前站点 ID |
+| `PUBLIC_BAIDU_VERIFY` | Astro 构建变量，百度搜索资源平台校验码，默认使用当前站点校验码 |
 
 默认轻量步骤使用 `deepseek-v4-flash`，包括初筛和简讯整理；深度长文使用 `deepseek-v4-pro`，并默认启用 Thinking Mode + `max`。
 如需临时切换，可在 GitHub Variables 里设置 `DEEPSEEK_FLASH_MODEL` 或 `DEEPSEEK_PRO_MODEL`。
 
 深度检索不会使用 DeepSeek tool-calling。当前流程是 Flash 生成查询，程序抓取 seed URL、DDGS 搜索结果和可访问正文，去重并检查最小证据量；证据不足的候选只保留在简讯，不进入调查报告和公众号长文。
 
-GitHub Actions 每天北京时间 06:00 和 18:00 自动运行，也可以手动触发并选择 `morning/evening`。定时/手动运行会先执行内容管线、提交新 Markdown 和封面图，再构建 Astro 并通过 rsync 部署到 VPS。
+GitHub Actions 每天北京时间 06:00 和 18:00 自动运行，也可以手动触发并选择 `morning/evening`。定时/手动运行会先执行内容管线、提交新 Markdown 和封面图，然后用本次生成后的 commit 构建 Astro 并通过 rsync 部署到 VPS。
 
 `main` 分支 push 也会触发构建部署，但不会运行 `purifier.py`，避免代码修复时误调用 DeepSeek 生成文章。
 

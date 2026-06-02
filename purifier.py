@@ -628,7 +628,8 @@ def llm_json(
         raise last_error or ValueError("No JSON object found")
 
     last_error: Exception | None = None
-    for attempt in range(2):
+    max_attempts = 3
+    for attempt in range(max_attempts):
         chosen_model = model or FLASH_MODEL
         chosen_thinking = FLASH_THINKING if thinking_type is None else thinking_type
         chosen_effort = FLASH_REASONING_EFFORT if reasoning_effort is None else reasoning_effort
@@ -663,9 +664,11 @@ def llm_json(
         text = choice.get("message", {}).get("content") or ""
         if finish_reason == "length":
             last_error = ValueError("DeepSeek response was truncated because finish_reason=length")
+            print(f"   ⚠️ DeepSeek JSON 第 {attempt + 1}/{max_attempts} 次被截断，准备重试")
             continue
         if not text.strip():
             last_error = ValueError("DeepSeek returned empty content")
+            print(f"   ⚠️ DeepSeek JSON 第 {attempt + 1}/{max_attempts} 次返回空内容，准备重试")
             continue
         try:
             return parse_json_object(text)
@@ -673,8 +676,12 @@ def llm_json(
             last_error = exc
             debug_path = CACHE_DIR / f"bad-json-{bj_now().strftime('%Y%m%d-%H%M%S')}-try{attempt + 1}.txt"
             debug_path.write_text(text, encoding="utf-8")
+            print(
+                f"   ⚠️ DeepSeek JSON 第 {attempt + 1}/{max_attempts} 次解析失败，"
+                f"长度 {len(text)} 字符，已保存 {debug_path.name}: {exc}"
+            )
 
-    raise ValueError(f"LLM JSON parse failed after retry: {last_error}") from last_error
+    raise ValueError(f"LLM JSON parse failed after {max_attempts} attempts: {last_error}") from last_error
 
 
 def source_digest(collected: dict[str, list[dict[str, Any]]]) -> str:
@@ -1674,6 +1681,8 @@ def save_website_outputs(
         cover_path = ""
         try:
             img_prompt = generate_cover_prompt(title, summary)
+            article["cover_prompt_en"] = img_prompt
+            article["cover_prompt_zh"] = article.get("cover_prompt_zh") or ""
             cover_path = generate_cover_image(img_prompt, filename_stem)
         except Exception as exc:
             print(f"   ⚠️ 封面图流程异常: {exc}")
@@ -1785,8 +1794,8 @@ def build_wechat_articles_from_reports(investigation_reports: list[dict[str, Any
                 "topic": report.get("topic", "life-signal"),
                 "title": title,
                 "summary": summary,
-                "cover_prompt_en": "",
-                "cover_prompt_zh": "",
+                "cover_prompt_en": str(report.get("cover_prompt_en") or report.get("prompt_en") or ""),
+                "cover_prompt_zh": str(report.get("cover_prompt_zh") or ""),
                 "content_md": content_md,
             }
         )
@@ -1857,11 +1866,13 @@ def submit_indexnow(urls: list[str]) -> None:
 
 def submit_baidu(urls: list[str]) -> None:
     """Push new URLs to Baidu via Active Push API."""
-    if not BAIDU_PUSH_TOKEN or not urls:
-        if not BAIDU_PUSH_TOKEN:
-            print("   📭 未配置 BAIDU_PUSH_TOKEN，跳过百度推送")
+    if not urls:
         return
     urls = merged_push_urls("baidu", urls)
+    if not BAIDU_PUSH_TOKEN:
+        save_pending_push_urls("baidu", urls)
+        print("   📭 未配置 BAIDU_PUSH_TOKEN，已暂存本批 URL，等待后续补推")
+        return
     try:
         resp = requests.post(
             f"http://data.zz.baidu.com/urls?site=www.huadongpeng.com&token={BAIDU_PUSH_TOKEN}",

@@ -23,6 +23,9 @@ const siteTitle    = title.includes('hdop家') ? title : `${title} · hdop家`;
 const ogImageAbs   = ogImage.startsWith('http') ? ogImage : new URL(ogImage, Astro.site).href;
 const enableAds = import.meta.env.PUBLIC_ENABLE_ADS !== 'false';
 const enableAnalytics = import.meta.env.PUBLIC_ENABLE_ANALYTICS !== 'false';
+const adsenseClient = import.meta.env.PUBLIC_ADSENSE_CLIENT || 'ca-pub-4007535026028552';
+const baiduVerifyCode = import.meta.env.PUBLIC_BAIDU_VERIFY || 'codeva-yNSx2HYKbG';
+const gaId = import.meta.env.PUBLIC_GA_ID || 'G-LR1QZPH754';
 ---
 
 <!DOCTYPE html>
@@ -31,9 +34,8 @@ const enableAnalytics = import.meta.env.PUBLIC_ENABLE_ANALYTICS !== 'false';
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="generator" content={Astro.generator} />
-  {enableAds && <meta name="google-adsense-account" content="ca-pub-4007535026028552" />}
-  <!-- 百度搜索资源平台 — 申请后替换 BAIDU_VERIFY_CODE -->
-  <meta name="baidu-site-verification" content="codeva-yNSx2HYKbG" />
+  {enableAds && adsenseClient && <meta name="google-adsense-account" content={adsenseClient} />}
+  {baiduVerifyCode && <meta name="baidu-site-verification" content={baiduVerifyCode} />}
 
   <title>{siteTitle}</title>
   <meta name="description" content={description} />
@@ -60,7 +62,7 @@ const enableAnalytics = import.meta.env.PUBLIC_ENABLE_ANALYTICS !== 'false';
   {enableAds && (
     <>
       <!-- Google AdSense Auto Ads -->
-      <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4007535026028552" crossorigin="anonymous"></script>
+      <script async src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsenseClient}`} crossorigin="anonymous"></script>
     </>
   )}
 
@@ -70,12 +72,12 @@ const enableAnalytics = import.meta.env.PUBLIC_ENABLE_ANALYTICS !== 'false';
   {enableAnalytics && (
     <>
       <!-- Google Analytics 4 -->
-      <script async src="https://www.googletagmanager.com/gtag/js?id=G-LR1QZPH754"></script>
-      <script>
+      <script async src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}></script>
+      <script define:vars={{ gaId }}>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
         gtag('js', new Date());
-        gtag('config', 'G-LR1QZPH754');
+        gtag('config', gaId);
       </script>
     </>
   )}
