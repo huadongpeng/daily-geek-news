@@ -21,6 +21,8 @@ WECHAT_APP_SECRET = os.environ.get("WECHAT_APP_SECRET", "")
 WECHAT_AUTHOR = os.environ.get("WECHAT_AUTHOR", "老花")
 WECHAT_TITLE_MAX_BYTES = 48
 WECHAT_DIGEST_MAX_BYTES = 120
+WECHAT_DRAFT_GROUP_MODE = os.environ.get("WECHAT_DRAFT_GROUP_MODE", "1").lower() not in ("0", "false", "no")
+WECHAT_DRAFT_MAX_ARTICLES = int(os.environ.get("WECHAT_DRAFT_MAX_ARTICLES", "8") or "8")
 
 
 def clean_text(value: Any) -> str:
@@ -95,6 +97,34 @@ def inline_markdown(text: str) -> str:
     return escaped
 
 
+def split_long_plain_paragraph(text: str, limit: int = 120) -> List[str]:
+    text = clean_text(text).strip()
+    if len(text) <= limit:
+        return [text] if text else []
+    parts = re.findall(r"[^。！？!?；;，,、]+[。！？!?；;，,、]?", text) or [text]
+    chunks: List[str] = []
+    current = ""
+    for part in parts:
+        if len(part) > limit:
+            if current.strip():
+                chunks.append(current.strip())
+                current = ""
+            for start in range(0, len(part), limit):
+                chunk = part[start:start + limit].strip()
+                if chunk:
+                    chunks.append(chunk)
+            continue
+        next_text = current + part
+        if current and len(next_text) > limit:
+            chunks.append(current.strip())
+            current = part
+        else:
+            current = next_text
+    if current.strip():
+        chunks.append(current.strip())
+    return chunks
+
+
 def markdown_to_wechat_html(md: str) -> str:
     blocks: List[str] = []
     list_items: List[str] = []
@@ -147,7 +177,8 @@ def markdown_to_wechat_html(md: str) -> str:
         flush_list()
         line = re.sub(r"\[([^\]]+)\]\(([^)]+)\)", r"\1", line)
         line = re.sub(r"`([^`]+)`", r"\1", line)
-        blocks.append(f'<p style="margin: 0 0 16px; line-height: 1.8;">{inline_markdown(line)}</p>')
+        for paragraph in split_long_plain_paragraph(line):
+            blocks.append(f'<p style="margin: 0 0 18px; line-height: 1.9;">{inline_markdown(paragraph)}</p>')
 
     flush_list()
     return "\n".join(blocks)
@@ -198,7 +229,7 @@ def upload_cover(access_token: str, cover_path: Path) -> str:
     return str(media_id)
 
 
-def add_draft(access_token: str, payload: Dict[str, Any], thumb_media_id: str) -> str:
+def build_draft_article(payload: Dict[str, Any], thumb_media_id: str) -> Dict[str, Any]:
     payload = clean_json_value(payload)
     title = clean_text(payload.get("wechat_title") or payload.get("title") or "公众号文章")
     summary = clean_text(payload.get("wechat_digest") or payload.get("summary") or "")
@@ -213,20 +244,21 @@ def add_draft(access_token: str, payload: Dict[str, Any], thumb_media_id: str) -
             len(safe_digest.encode("utf-8")),
         )
     )
+    return {
+        "title": safe_title,
+        "author": clean_text(payload.get("author") or WECHAT_AUTHOR),
+        "digest": safe_digest,
+        "content": markdown_to_wechat_html(payload.get("content_md") or ""),
+        "content_source_url": clean_text(payload.get("site_url") or ""),
+        "thumb_media_id": thumb_media_id,
+        "show_cover_pic": 1,
+        "need_open_comment": 1,
+    }
+
+
+def add_draft_articles(access_token: str, articles: List[Dict[str, Any]]) -> str:
     data = {
-        "articles": [
-            {
-                "title": safe_title,
-                "author": WECHAT_AUTHOR,
-                "digest": safe_digest,
-                "content": markdown_to_wechat_html(payload.get("content_md") or ""),
-                "content_source_url": clean_text(payload.get("site_url") or ""),
-                "thumb_media_id": thumb_media_id,
-                "show_cover_pic": 1,
-                "need_open_comment": 0,
-                "only_fans_can_comment": 0,
-            }
-        ]
+        "articles": articles
     }
     resp = requests.post(
         "https://api.weixin.qq.com/cgi-bin/draft/add",
@@ -241,6 +273,10 @@ def add_draft(access_token: str, payload: Dict[str, Any], thumb_media_id: str) -
     if not media_id:
         raise RuntimeError(f"add draft failed: {result}")
     return str(media_id)
+
+
+def add_draft(access_token: str, payload: Dict[str, Any], thumb_media_id: str) -> str:
+    return add_draft_articles(access_token, [build_draft_article(payload, thumb_media_id)])
 
 
 def iter_payloads(input_dir: Path) -> List[Path]:
@@ -267,6 +303,77 @@ def main() -> None:
     except Exception as exc:
         write_json(results_path, {"results": [], "error": clean_text(exc)})
         raise
+
+    if WECHAT_DRAFT_GROUP_MODE:
+        draft_articles: List[Dict[str, Any]] = []
+        grouped_items: List[Dict[str, Any]] = []
+        for payload_path in payload_paths[:WECHAT_DRAFT_MAX_ARTICLES]:
+            payload = clean_json_value(json.loads(payload_path.read_text(encoding="utf-8")))
+            title = clean_text(payload.get("title") or payload_path.stem)
+            wechat_title = clean_text(payload.get("wechat_title") or title)
+            cover_url = clean_text(payload.get("cover_url") or "")
+            if not cover_url:
+                print(f"SKIP {title}: missing cover_url")
+                results.append(
+                    {
+                        "payload": payload_path.name,
+                        "title": title,
+                        "wechat_title": wechat_title,
+                        "status": "skipped",
+                        "reason": "missing cover_url",
+                    }
+                )
+                continue
+            cover_path = download_cover(cover_url)
+            try:
+                thumb_media_id = upload_cover(access_token, cover_path)
+                draft_articles.append(build_draft_article(payload, thumb_media_id))
+                grouped_items.append(
+                    {
+                        "payload": payload_path.name,
+                        "title": title,
+                        "wechat_title": wechat_title,
+                    }
+                )
+            except Exception as exc:
+                print(f"FAIL {clean_text(title)}: {clean_text(exc)}")
+                results.append(
+                    {
+                        "payload": payload_path.name,
+                        "title": title,
+                        "wechat_title": wechat_title,
+                        "status": "failed",
+                        "error": clean_text(exc),
+                    }
+                )
+                errors.append(exc)
+            finally:
+                try:
+                    cover_path.unlink()
+                except OSError:
+                    pass
+        if draft_articles:
+            try:
+                draft_media_id = add_draft_articles(access_token, draft_articles)
+                print(f"OK grouped draft: {draft_media_id} ({len(draft_articles)} articles)")
+                for item in grouped_items:
+                    item["status"] = "ok"
+                    item["draft_media_id"] = draft_media_id
+                    item["grouped"] = True
+                    results.append(item)
+            except Exception as exc:
+                print(f"FAIL grouped draft: {clean_text(exc)}")
+                for item in grouped_items:
+                    item["status"] = "failed"
+                    item["error"] = clean_text(exc)
+                    item["grouped"] = True
+                    results.append(item)
+                errors.append(exc)
+        write_json(results_path, {"results": results, "grouped": True})
+        if errors:
+            raise errors[0]
+        return
+
     for payload_path in payload_paths:
         payload = clean_json_value(json.loads(payload_path.read_text(encoding="utf-8")))
         title = clean_text(payload.get("title") or payload_path.stem)

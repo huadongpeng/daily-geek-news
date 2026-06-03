@@ -139,7 +139,14 @@ WECHAT_AUTHOR = "老花"
 | `WECHAT_DRAFT_SCRIPT_PATH` | VPS 上的草稿推送脚本路径，默认 `/ws/scripts/easton_wechat_draft_push.py` |
 | `WECHAT_DRAFT_REMOTE_DIR` | VPS 上本批次草稿载荷临时目录，默认 `/tmp/easton-radar-wechat` |
 
-公众号草稿正文使用朴素 HTML：普通段落、小标题、加粗和少量列表/引用，封面图作为草稿封面展示，不做复杂排版。
+公众号草稿默认按多图文合并创建：VPS 脚本会把本批次最多 8 篇 `*-draft.json` 合并到同一个草稿的 `articles` 数组里。可在 VPS 环境或 `wechat_draft_config.json` 中配置：
+
+| 配置 | 默认 | 说明 |
+| --- | --- | --- |
+| `WECHAT_DRAFT_GROUP_MODE` | `1` | `0/false/no` 时改为每篇单独创建草稿 |
+| `WECHAT_DRAFT_MAX_ARTICLES` | `8` | 单个多图文草稿最多合并篇数 |
+
+公众号草稿推送时每篇文章固定设置 `need_open_comment: 1`，不再发送原创、AI 标识、广告或其他未确认字段。公众号草稿正文使用朴素 HTML：短段落、小标题、加粗和少量列表/引用，封面图作为草稿封面展示，不做复杂排版。
 
 `main` 分支 push 也会触发构建部署，但不会运行 `purifier.py`，避免代码修复时误调用 DeepSeek 生成文章。
 

@@ -23,7 +23,12 @@ const CAT_LABELS: Record<string, string> = {
 
 const cat        = categories?.[0] ?? '';
 const catLabel   = CAT_LABELS[cat] ?? cat;
-const dateStr    = date.toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' });
+const dateStr    = date.toLocaleDateString('zh-CN', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+  timeZone: 'Asia/Shanghai',
+});
 const canonURL   = new URL(`/blog/${postId}/`, Astro.site).href;
 
 // BreadcrumbList for article pages
@@ -130,53 +135,37 @@ const readMins = wordCount > 0 ? Math.max(1, Math.round(wordCount / 300)) : null
       <slot />
     </article>
 
-    <div class="copy-tools" data-copy-tools hidden>
-      <button type="button" class="copy-button" data-copy-toutiao>复制今日头条正文</button>
-      <span class="copy-status" data-copy-status></span>
-    </div>
-
     <script is:inline>
       (() => {
-        const params = new URLSearchParams(window.location.search);
-        const enabled = params.has('toutiao') || params.has('copy');
-        const tools = document.querySelector('[data-copy-tools]');
-        const button = document.querySelector('[data-copy-toutiao]');
-        const status = document.querySelector('[data-copy-status]');
-        if (!enabled || !tools || !button) return;
-        tools.hidden = false;
-
-        const setStatus = (text) => {
-          if (!status) return;
-          status.textContent = text;
-          window.setTimeout(() => {
-            status.textContent = '';
-          }, 1800);
-        };
-
-        const copyArticle = async () => {
-          const title = document.querySelector('.article-title')?.textContent?.trim() || '';
-          const body = document.querySelector('.prose')?.innerText?.trim() || '';
-          const text = [title, body].filter(Boolean).join('\n\n').replace(/\n{3,}/g, '\n\n');
-          if (!text) {
-            setStatus('没有可复制内容');
-            return;
+        const prose = document.querySelector('.prose');
+        if (!prose) return;
+        const splitText = (text) => {
+          const parts = text.match(/[^。！？!?；;，,、]+[。！？!?；;，,、]?/g) || [text];
+          const chunks = [];
+          let current = '';
+          for (const part of parts) {
+            const next = current + part;
+            if (current && next.length > 120) {
+              chunks.push(current.trim());
+              current = part;
+            } else {
+              current = next;
+            }
           }
-          try {
-            await navigator.clipboard.writeText(text);
-            setStatus('已复制');
-          } catch (error) {
-            setStatus('复制失败，请手动选中正文');
-          }
+          if (current.trim()) chunks.push(current.trim());
+          return chunks;
         };
-
-        button.addEventListener('click', copyArticle);
-        window.addEventListener('keydown', (event) => {
-          if (event.key?.toLowerCase() !== 'c' || event.ctrlKey || event.metaKey || event.altKey) return;
-          const active = document.activeElement;
-          if (active && ['INPUT', 'TEXTAREA', 'SELECT'].includes(active.tagName)) return;
-          event.preventDefault();
-          copyArticle();
-        });
+        for (const paragraph of Array.from(prose.querySelectorAll('p'))) {
+          if (paragraph.children.length || (paragraph.textContent || '').trim().length < 150) continue;
+          const chunks = splitText(paragraph.textContent || '');
+          if (chunks.length < 2) continue;
+          const replacements = chunks.map((chunk) => {
+            const p = document.createElement('p');
+            p.textContent = chunk;
+            return p;
+          });
+          paragraph.replaceWith(...replacements);
+        }
       })();
     </script>
 

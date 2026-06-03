@@ -20,6 +20,7 @@ const cat      = categories?.[0] ?? '';
 const catLabel = CAT_LABELS[cat] ?? cat;
 const dateStr  = date.toLocaleDateString('zh-CN', {
   year: 'numeric', month: '2-digit', day: '2-digit',
+  timeZone: 'Asia/Shanghai',
 });
 // post.id in Astro 5 = "ai-tools/investigation-xxxx" (subdir/filename, no extension)
 const postUrl  = `/blog/${post.id}/`;

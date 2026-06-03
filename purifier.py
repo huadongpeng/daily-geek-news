@@ -353,6 +353,22 @@ def bj_now() -> datetime:
     return datetime.now(BJT)
 
 
+_BATCH_NOW: datetime | None = None
+
+
+def set_batch_now(value: datetime) -> None:
+    global _BATCH_NOW
+    _BATCH_NOW = value.astimezone(BJT)
+
+
+def batch_now() -> datetime:
+    return _BATCH_NOW or bj_now()
+
+
+def batch_date_slug() -> str:
+    return batch_now().strftime("%Y-%m-%d")
+
+
 def load_optional_text(env_name: str, fallback: str) -> str:
     path = os.environ.get(env_name)
     if not path:
@@ -375,9 +391,64 @@ def load_text_config(env_name: str, default_path: Path, fallback: str) -> str:
 
 def batch_datetime(slot: str) -> datetime:
     """Use stable publish times so reruns of the same batch don't change URLs/metadata semantics."""
-    now = bj_now()
+    now = batch_now()
     hour = 6 if slot == "morning" else 18 if slot == "evening" else now.hour
     return now.replace(hour=hour, minute=0, second=0, microsecond=0)
+
+
+def split_long_plain_paragraph(text: str, limit: int = 120) -> list[str]:
+    text = clean_unicode_text(text).strip()
+    if len(text) <= limit:
+        return [text] if text else []
+    parts = re.findall(r"[^。！？!?；;，,、]+[。！？!?；;，,、]?", text) or [text]
+    chunks: list[str] = []
+    current = ""
+    for part in parts:
+        if len(part) > limit:
+            if current.strip():
+                chunks.append(current.strip())
+                current = ""
+            for start in range(0, len(part), limit):
+                chunk = part[start:start + limit].strip()
+                if chunk:
+                    chunks.append(chunk)
+            continue
+        next_text = current + part
+        if current and len(next_text) > limit:
+            chunks.append(current.strip())
+            current = part
+        else:
+            current = next_text
+    if current.strip():
+        chunks.append(current.strip())
+    return chunks
+
+
+def improve_markdown_readability(md: str) -> str:
+    output: list[str] = []
+    paragraph: list[str] = []
+
+    def flush_paragraph() -> None:
+        if not paragraph:
+            return
+        text = " ".join(part.strip() for part in paragraph if part.strip()).strip()
+        output.extend(split_long_plain_paragraph(text))
+        output.append("")
+        paragraph.clear()
+
+    for raw in clean_unicode_text(md).splitlines():
+        line = raw.rstrip()
+        stripped = line.strip()
+        if not stripped:
+            flush_paragraph()
+            continue
+        if re.match(r"^(#{1,6}\s+|[-*+]\s+|\d+[.)]\s+|>\s*|---+$|!\[)", stripped):
+            flush_paragraph()
+            output.append(line)
+            continue
+        paragraph.append(stripped)
+    flush_paragraph()
+    return re.sub(r"\n{3,}", "\n\n", "\n".join(output)).strip()
 
 
 def image_dimensions(data: bytes) -> tuple[int, int] | None:
@@ -1002,7 +1073,7 @@ def initial_filter(
             "你必须输出合法 JSON，不要 Markdown。"
         ),
         user=f"""
-当前时间：{bj_now().strftime('%Y-%m-%d %H:%M')} BJT
+当前时间：{batch_now().strftime('%Y-%m-%d %H:%M')} BJT
 
 【人设】
 {persona}
@@ -1373,7 +1444,7 @@ def compose_briefing(filtered: dict[str, Any], persona: str, slot: str) -> dict[
             "必须输出合法 JSON，不要代码块。"
         ),
         user=f"""
-当前时间：{bj_now().strftime('%Y-%m-%d %H:%M')} BJT
+当前时间：{batch_now().strftime('%Y-%m-%d %H:%M')} BJT
 本次批次：{slot}
 
 【人设】
@@ -1408,6 +1479,7 @@ def compose_briefing(filtered: dict[str, Any], persona: str, slot: str) -> dict[
 - items 从初筛 briefing_items 中优中择优，保留 10-18 条。
 - 只写和人设相关、能指导关注/行动的信息；不要把来源不明的信息写成事实。
 - why_it_matters 用人话说明与我有什么关系，action 给一个今天能做的小动作。
+- why_it_matters 和 action 都要短，像给朋友发消息，不要写成新闻稿或报告段落。
 """,
         max_tokens=12000,
         model=FLASH_MODEL,
@@ -1452,7 +1524,7 @@ def compose_investigation_reports(
             "必须输出合法 JSON，不要代码块。"
         ),
         user=f"""
-当前时间：{bj_now().strftime('%Y-%m-%d %H:%M')} BJT
+当前时间：{batch_now().strftime('%Y-%m-%d %H:%M')} BJT
 本次批次：{slot}
 
 【信息探索与研究方法论（必须严格遵守）】
@@ -1499,6 +1571,10 @@ def compose_investigation_reports(
 
 阅读原则：
 - 开头 2-4 段必须从一个具体细节切入：一个日期、金额、产品页面、公告措辞、论坛帖子、功能按钮、价格、限制条件或反直觉数字。不要用宏大背景开场。
+- 每段必须短。普通段落 40-120 个中文字符为主，最长不超过 150 个中文字符；超过就拆成多个自然段。移动端阅读优先，禁止一段塞满多个事实、多个转折、多个判断。
+- 段落之间必须有递进：先让读者看见一个具体细节，再写我为什么起疑或被打到，然后写我顺着哪里查，查到什么地方情绪变了，最后再收束成判断。不要一上来就完整总结。
+- 情绪要有层次，但不能空喊。可以有困惑、兴奋、怀疑、破防、冷静下来、算账、收住这些变化；每一次情绪都要被一个具体事实触发。
+- 文章要像真人在讲一件刚追完的事：允许短句单独成段，允许一句话转场，允许承认"这里我还没完全想明白"。不要写成平铺直叙的大段说明。
 - 文章必须呈现一次真实的信息追踪过程，不是直接给结论。要让读者看见老花如何起疑、如何查源头、如何拆隐藏条件、如何算成本和风险、如何判断自己能不能做以及哪些兄弟能做。
 - 文章必须是买家秀，不是产品说明书。读者要看的是 Easton 这个具体的人如何理解、卡住、取舍和判断，不是全知全能地复述资料。
 - 不要为了显得渊博而把掌握的材料全塞进去。研究素材只取真正服务文章主线的部分；能不用就不用。
@@ -1542,6 +1618,8 @@ def compose_investigation_reports(
 - 禁止写"我为什么停下来""我会盯哪 3 个信号""暂时不动的理由""风险评估如下""行动建议如下""对普通人的启示""这件事给我的思考"这类套话。
 - 禁止把行动建议写成成功学口号；如果给行动建议，必须说明成本、边界和停止条件。不要为了显得有用而硬凑建议。
 - 生成后自检一次：这是一份具体人的买家秀，还是一份没有人生经历的产品说明书？如果更像产品说明书，必须重写。
+- 生成后自检一次：有没有连续 2 段都像新闻摘要或资料说明？有就改成"我看到什么 -> 我怎么反应 -> 我去查什么 -> 查完怎么判断"。
+- 生成后自检一次：有没有超过 150 个中文字符的正文段落？有就按语义拆开，不能只机械断句。
 - 有实质深度，不是新闻摘要——字数服从内容需要，不要为凑字数堆废话。
 - sources 只收录文章正文中实际引用的高/中可信来源，格式 [{{"name": "来源名", "url": "https://..."}}]，2-8 个，url 必须是完整链接，不得用线索级来源。
 """,
@@ -1603,7 +1681,7 @@ def send_email_articles(articles: list[dict[str, str]], slot: str) -> None:
     msg = MIMEMultipart()
     msg["From"] = EMAIL_FROM
     msg["To"] = EMAIL_TO
-    msg["Subject"] = f"[公众号] {bj_now().strftime('%Y-%m-%d')} {slot} · {len(articles)} 篇"
+    msg["Subject"] = f"[公众号] {batch_date_slug()} {slot} · {len(articles)} 篇"
 
     body_parts = [
         f"本批次共 {len(articles)} 篇公众号文章。",
@@ -1839,6 +1917,7 @@ def write_post(
 ) -> Path:
     path = CONTENT_DIR / category / filename
     path.parent.mkdir(parents=True, exist_ok=True)
+    body = improve_markdown_readability(body)
     # isoformat() produces "+08:00" (with colon), which is valid ISO-8601 and
     # passes Astro/Zod date parsing without type errors.
     publish_time = published_at or bj_now()
@@ -1878,7 +1957,7 @@ def site_url_for_post_path(path: Path) -> str:
 def render_briefing_md(briefing: dict[str, Any], slot: str) -> str:
     topic_titles = {t.slug: t.title for t in TOPICS}
     lines = [
-        f"> {bj_now().strftime('%Y年%m月%d日')} · {slot} · {len(briefing.get('items', []))} 条简讯",
+        f"> {batch_now().strftime('%Y年%m月%d日')} · {slot} · {len(briefing.get('items', []))} 条简讯",
         "",
         briefing.get("summary", ""),
         "",
@@ -1990,7 +2069,8 @@ def markdown_to_wechat_html(md: str) -> str:
         flush_list()
         line = re.sub(r"\[([^\]]+)\]\(([^)]+)\)", r"\1", line)
         line = re.sub(r"`([^`]+)`", r"\1", line)
-        blocks.append(f'<p style="margin: 0 0 16px; line-height: 1.8;">{inline_markdown_to_wechat_html(line)}</p>')
+        for paragraph in split_long_plain_paragraph(line):
+            blocks.append(f'<p style="margin: 0 0 18px; line-height: 1.9;">{inline_markdown_to_wechat_html(paragraph)}</p>')
 
     flush_list()
     return "\n".join(blocks)
@@ -2036,27 +2116,27 @@ def upload_wechat_cover(access_token: str, cover_path: Path) -> str:
     return str(media_id)
 
 
-def add_wechat_draft(access_token: str, article: dict[str, Any], thumb_media_id: str) -> str:
+def build_wechat_draft_article(article: dict[str, Any], thumb_media_id: str) -> dict[str, Any]:
     article = clean_json_value(article)
     title = clean_unicode_text(article.get("wechat_title") or article.get("title") or "公众号文章")
     summary = clean_unicode_text(article.get("wechat_digest") or article.get("summary") or "")
     safe_title = truncate_by_bytes(title.strip(), WECHAT_TITLE_MAX_BYTES)
     safe_digest = truncate_by_bytes(summary.strip(), WECHAT_DIGEST_MAX_BYTES)
-    content_html = markdown_to_wechat_html(article.get("content_md") or "")
+    return {
+        "title": safe_title,
+        "author": clean_unicode_text(article.get("author") or WECHAT_AUTHOR),
+        "digest": safe_digest,
+        "content": markdown_to_wechat_html(article.get("content_md") or ""),
+        "content_source_url": clean_unicode_text(article.get("site_url") or ""),
+        "thumb_media_id": thumb_media_id,
+        "show_cover_pic": 1,
+        "need_open_comment": 1,
+    }
+
+
+def add_wechat_draft_articles(access_token: str, articles: list[dict[str, Any]]) -> str:
     payload = {
-        "articles": [
-            {
-                "title": safe_title,
-                "author": WECHAT_AUTHOR,
-                "digest": safe_digest,
-                "content": content_html,
-                "content_source_url": clean_unicode_text(article.get("site_url") or ""),
-                "thumb_media_id": thumb_media_id,
-                "show_cover_pic": 1,
-                "need_open_comment": 0,
-                "only_fans_can_comment": 0,
-            }
-        ]
+        "articles": articles
     }
     resp = requests.post(
         "https://api.weixin.qq.com/cgi-bin/draft/add",
@@ -2071,6 +2151,10 @@ def add_wechat_draft(access_token: str, article: dict[str, Any], thumb_media_id:
     if not media_id:
         raise RuntimeError(f"创建微信草稿失败: {data}")
     return str(media_id)
+
+
+def add_wechat_draft(access_token: str, article: dict[str, Any], thumb_media_id: str) -> str:
+    return add_wechat_draft_articles(access_token, [build_wechat_draft_article(article, thumb_media_id)])
 
 
 def publish_wechat_drafts(wechat_articles: list[dict[str, Any]], slot: str) -> list[dict[str, str]]:
@@ -2088,7 +2172,9 @@ def publish_wechat_drafts(wechat_articles: list[dict[str, Any]], slot: str) -> l
         print(f"   ⚠️ 获取微信 access_token 失败，跳过草稿推送: {exc}")
         return results
 
-    for article in wechat_articles[:3]:
+    draft_articles: list[dict[str, Any]] = []
+    grouped_items: list[tuple[str, dict[str, Any]]] = []
+    for article in wechat_articles[:8]:
         title = str(article.get("title") or "公众号文章")
         cover_path = local_cover_path(str(article.get("cover") or ""))
         if not cover_path:
@@ -2096,19 +2182,27 @@ def publish_wechat_drafts(wechat_articles: list[dict[str, Any]], slot: str) -> l
             continue
         try:
             thumb_media_id = upload_wechat_cover(access_token, cover_path)
-            draft_media_id = add_wechat_draft(access_token, article, thumb_media_id)
+            draft_articles.append(build_wechat_draft_article(article, thumb_media_id))
+            grouped_items.append((title, article))
+        except Exception as exc:
+            print(f"   ⚠️ 草稿文章准备失败: {title[:40]} - {exc}")
+    if not draft_articles:
+        return results
+    try:
+        draft_media_id = add_wechat_draft_articles(access_token, draft_articles)
+        for title, article in grouped_items:
             article["wechat_draft_media_id"] = draft_media_id
             results.append({"title": title, "draft_media_id": draft_media_id})
-            print(f"   ✅ 草稿已创建: {title[:40]} ({draft_media_id})")
-        except Exception as exc:
-            print(f"   ⚠️ 草稿推送失败: {title[:40]} - {exc}")
+        print(f"   ✅ 多图文草稿已创建: {len(draft_articles)} 篇 ({draft_media_id})")
+    except Exception as exc:
+        print(f"   ⚠️ 多图文草稿推送失败: {exc}")
     return results
 
 
 def write_wechat_archive_record(email_articles: list[dict[str, str]], slot: str) -> None:
     if not email_articles:
         return
-    date_slug = bj_now().strftime("%Y-%m-%d")
+    date_slug = batch_date_slug()
     record = {
         "date": date_slug,
         "slot": slot,
@@ -2195,7 +2289,7 @@ def save_website_outputs(
 ) -> list[Path]:
     print("💾 写入网站内容（简讯 + 调查报告）...")
     paths: list[Path] = []
-    date_slug = bj_now().strftime("%Y-%m-%d")
+    date_slug = batch_date_slug()
     publish_time = batch_datetime(slot)
     update_time = bj_now()
 
@@ -2242,6 +2336,7 @@ def save_website_outputs(
             print(f"   ⚠️ 模型返回固定报告标题，已降级处理: {', '.join(sorted(set(forbidden_headings)))}")
             body = soften_report_template_headings(body)
         body = ensure_personal_footer(body)
+        body = improve_markdown_readability(body)
         warn_if_action_advice_unbounded(body, title)
         article["content_md"] = body
         filename_stem = f"investigation-{date_slug}-{slot}-{slugify(title)}"
@@ -2301,7 +2396,7 @@ def save_wechat_outputs(
     print("📱 写入公众号文章并发送邮件...")
     paths: list[Path] = []
     email_articles: list[dict[str, str]] = []
-    date_slug = bj_now().strftime("%Y-%m-%d")
+    date_slug = batch_date_slug()
     wechat_metadata = optimize_wechat_metadata(wechat_articles[:3], persona)
 
     for index, article in enumerate(wechat_articles[:3]):
@@ -2309,7 +2404,8 @@ def save_wechat_outputs(
         summary = clean_unicode_text(article.get("summary") or "")
         cover_url = absolute_site_url(clean_unicode_text(article.get("cover") or ""))
         site_url = clean_unicode_text(article.get("site_url") or "")
-        body_md = clean_unicode_text(article.get("content_md", ""))
+        body_md = improve_markdown_readability(clean_unicode_text(article.get("content_md", "")))
+        article["content_md"] = body_md
         body_wechat = normalize_wechat_body(body_md)
         meta = wechat_metadata[index] if index < len(wechat_metadata) else {}
         wechat_title = clean_unicode_text(meta.get("wechat_title") or wechat_safe_title(title, summary))
@@ -2342,6 +2438,7 @@ def save_wechat_outputs(
             "cover_url": cover_url,
             "site_url": site_url,
             "content_md": body_md,
+            "need_open_comment": 1,
         }
         draft_payload_path.write_text(
             json.dumps(clean_json_value(draft_payload), ensure_ascii=False, indent=2),
@@ -2583,7 +2680,7 @@ def send_telegram(
             continue
         lines = [
             f"<b>{tg_escape(topic_titles.get(topic, topic))}</b>",
-            f"{bj_now().strftime('%Y-%m-%d')} {slot}",
+            f"{batch_date_slug()} {slot}",
             "",
         ]
         if items:
@@ -2636,6 +2733,7 @@ def main() -> None:
     args = parse_args()
     ensure_runtime()
     now = bj_now()
+    set_batch_now(now)
     slot = detect_slot(now, args.slot)
     persona = load_text_config("PERSONA_PATH", ROOT / "config" / "persona.md", PERSONA_DEFAULT)
     research_method = load_text_config("RESEARCH_SKILL_PATH", ROOT / "config" / "research_skill.md", RESEARCH_METHOD_DEFAULT)
