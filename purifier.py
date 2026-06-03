@@ -775,6 +775,8 @@ def fetch_feed(url: str, limit: int, max_age_hours: int) -> list[dict[str, Any]]
             return []
     try:
         resp = requests.get(url, timeout=20, headers=FEED_HEADERS)
+        if resp.status_code in {403, 429}:
+            resp = requests.get(url, timeout=20, headers=BROWSER_HEADERS)
         resp.raise_for_status()
         parsed = feedparser.parse(resp.content)
         if getattr(parsed, "bozo", False):

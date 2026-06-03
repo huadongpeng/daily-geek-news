@@ -3,7 +3,7 @@
     "feeds": [
       "https://openai.com/news/rss.xml",
       "https://blog.google/technology/ai/rss/",
-      "https://deepmind.google/discover/blog/rss.xml",
+      "https://deepmind.google/blog/rss.xml",
       "https://huggingface.co/blog/feed.xml",
       "https://github.blog/changelog/feed/",
       "https://github.blog/ai-and-ml/feed/",
@@ -28,7 +28,7 @@
     "search_seeds": [
       "site:openai.com/news model API Codex ChatGPT release",
       "site:anthropic.com/news Claude model API agent release",
-      "site:deepmind.google/discover/blog Gemini model release developer",
+      "site:deepmind.google/blog Gemini model release developer",
       "site:github.blog/changelog Copilot agent model release",
       "AI coding agent changelog pricing limit developer update",
       "open source LLM coding agent benchmark GitHub"
@@ -42,15 +42,18 @@
       "https://hnrss.org/show",
       "https://hnrss.org/launches",
       "https://hnrss.org/newest?q=Show+HN+OR+side+project+OR+SaaS+OR+microSaaS",
+      "https://news.ycombinator.com/rss",
       "https://www.producthunt.com/feed",
-      "https://ihrss.io/top/today",
-      "https://ihrss.io/group/building-in-public",
-      "https://ihrss.io/group/growth",
       "https://v2ex.com/feed/create.xml",
       "https://www.reddit.com/r/SaaS/top/.rss?t=day",
       "https://www.reddit.com/r/microsaas/top/.rss?t=day",
       "https://www.reddit.com/r/SideProject/top/.rss?t=day",
       "https://www.reddit.com/r/indiehackers/top/.rss?t=day",
+      "https://www.reddit.com/r/Entrepreneur/top/.rss?t=day",
+      "https://www.reddit.com/r/freelance/top/.rss?t=day",
+      "https://www.reddit.com/r/SomebodyMakeThis/top/.rss?t=day",
+      "https://www.reddit.com/r/passive_income/top/.rss?t=day",
+      "https://www.reddit.com/r/EntrepreneurRideAlong/top/.rss?t=day",
       "https://changelog.com/feed",
       "https://www.saastr.com/feed/",
       "https://www.indiehackers.com/feed"
@@ -67,24 +70,28 @@
   "overseas": {
     "feeds": [
       "https://restofworld.org/feed/latest/",
+      "https://restofworld.org/feed/all/",
       "https://www.wired.com/feed/rss",
       "https://www.semafor.com/rss.xml",
       "https://feeds.bbci.co.uk/news/world/rss.xml",
       "https://technode.com/feed/",
       "https://e27.co/feed/",
       "https://www.techinasia.com/feed",
-      "https://www.dealstreetasia.com/feed",
       "https://kr-asia.com/feed",
+      "https://pandaily.com/feed/",
       "https://www.techpoint.africa/feed/",
       "https://www.medianama.com/feed/",
-      "https://asia.nikkei.com/rss/feed/nar"
+      "https://asia.nikkei.com/rss/feed/nar",
+      "https://www.reddit.com/r/digitalnomad/top/.rss?t=day",
+      "https://www.reddit.com/r/ExpatFinance/top/.rss?t=day"
     ],
     "search_seeds": [
       "emerging market AI startup regulation opportunity ordinary developer",
       "cross-border SaaS payment policy platform change",
       "India Southeast Asia AI cloud developer market",
       "remote work digital nomad tax visa policy update",
-      "Chinese founders overseas SaaS AI product launch"
+      "Chinese founders overseas SaaS AI product launch",
+      "information asymmetry China overseas tech market 2026"
     ]
   },
   "life-signal": {
@@ -108,7 +115,8 @@
       "https://www.bleepingcomputer.com/feed/",
       "https://www.ftc.gov/news-events/news/press-releases/rss",
       "https://hnrss.org/whoishiring/jobs",
-      "https://hnrss.org/newest?q=layoff+OR+salary+OR+hiring+OR+remote+work"
+      "https://hnrss.org/newest?q=layoff+OR+salary+OR+hiring+OR+remote+work",
+      "https://www.reddit.com/r/cscareerquestions/top/.rss?t=day"
     ],
     "search_seeds": [
       "tech layoffs hiring salary remote work 2026",
