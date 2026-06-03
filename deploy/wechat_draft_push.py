@@ -19,7 +19,7 @@ SCRIPT_DIR = Path(__file__).resolve().parent
 WECHAT_APP_ID = os.environ.get("WECHAT_APP_ID", "")
 WECHAT_APP_SECRET = os.environ.get("WECHAT_APP_SECRET", "")
 WECHAT_AUTHOR = os.environ.get("WECHAT_AUTHOR", "老花")
-WECHAT_TITLE_MAX_BYTES = 48
+WECHAT_TITLE_MAX_CHARS = 64
 WECHAT_DIGEST_MAX_BYTES = 120
 WECHAT_DRAFT_GROUP_MODE = os.environ.get("WECHAT_DRAFT_GROUP_MODE", "1").lower() not in ("0", "false", "no")
 WECHAT_DRAFT_MAX_ARTICLES = int(os.environ.get("WECHAT_DRAFT_MAX_ARTICLES", "8") or "8")
@@ -72,9 +72,16 @@ def load_server_config() -> None:
         WECHAT_AUTHOR = str(data.get("WECHAT_AUTHOR", WECHAT_AUTHOR))
 
 
+def truncate_by_chars(text: str, max_chars: int) -> str:
+    """WeChat title limit is 64 Unicode characters (errcode 45003 when exceeded)."""
+    text = clean_text(text)
+    if len(text) <= max_chars:
+        return text
+    return text[: max_chars - 3] + "..."
+
+
 def truncate_by_bytes(text: str, max_bytes: int) -> str:
-    """WeChat counts title length in UTF-8 bytes (ASCII=1, CJK/full-width=3, emoji=4) and
-    rejects over-limit titles with errcode 45003. Trim on a char boundary, append ... if cut."""
+    """Used for digest field which is still byte-limited."""
     text = clean_text(text)
     if len(text.encode("utf-8")) <= max_bytes:
         return text
@@ -233,13 +240,13 @@ def build_draft_article(payload: Dict[str, Any], thumb_media_id: str) -> Dict[st
     payload = clean_json_value(payload)
     title = clean_text(payload.get("wechat_title") or payload.get("title") or "公众号文章")
     summary = clean_text(payload.get("wechat_digest") or payload.get("summary") or "")
-    safe_title = truncate_by_bytes(title.strip(), WECHAT_TITLE_MAX_BYTES)
+    safe_title = truncate_by_chars(title.strip(), WECHAT_TITLE_MAX_CHARS)
     safe_digest = truncate_by_bytes(summary.strip(), WECHAT_DIGEST_MAX_BYTES)
     print(
-        "Draft title bytes: original=%d sent=%d; digest bytes: original=%d sent=%d"
+        "Draft title chars: original=%d sent=%d; digest bytes: original=%d sent=%d"
         % (
-            len(title.encode("utf-8")),
-            len(safe_title.encode("utf-8")),
+            len(title),
+            len(safe_title),
             len(summary.encode("utf-8")),
             len(safe_digest.encode("utf-8")),
         )
