@@ -1171,6 +1171,112 @@ def web_search(query: str, max_results: int = 6) -> list[dict[str, str]]:
     return results
 
 
+WEATHER_CODE_LABELS = {
+    0: "晴",
+    1: "大部晴朗",
+    2: "多云",
+    3: "阴",
+    45: "有雾",
+    48: "有雾凇",
+    51: "小毛毛雨",
+    53: "毛毛雨",
+    55: "较强毛毛雨",
+    61: "小雨",
+    63: "中雨",
+    65: "大雨",
+    80: "阵雨",
+    81: "较强阵雨",
+    82: "强阵雨",
+    95: "雷雨",
+}
+
+
+def fetch_shanghai_weather_context() -> str:
+    try:
+        resp = requests.get(
+            "https://api.open-meteo.com/v1/forecast",
+            params={
+                "latitude": 31.2304,
+                "longitude": 121.4737,
+                "current": "temperature_2m,relative_humidity_2m,precipitation,weather_code,wind_speed_10m",
+                "timezone": "Asia/Shanghai",
+                "forecast_days": 1,
+            },
+            timeout=12,
+        )
+        resp.raise_for_status()
+        current = resp.json().get("current") or {}
+        temp = current.get("temperature_2m")
+        humidity = current.get("relative_humidity_2m")
+        rain = current.get("precipitation")
+        wind = current.get("wind_speed_10m")
+        code = current.get("weather_code")
+        label = WEATHER_CODE_LABELS.get(int(code), f"天气代码 {code}") if code is not None else "天气未知"
+        parts = [f"上海当前天气：{label}"]
+        if temp is not None:
+            parts.append(f"{temp}℃")
+        if humidity is not None:
+            parts.append(f"湿度 {humidity}%")
+        if rain is not None:
+            parts.append(f"降水 {rain}mm")
+        if wind is not None:
+            parts.append(f"风速 {wind}km/h")
+        return "，".join(parts)
+    except Exception as exc:
+        print(f"   ⚠️ 上海天气上下文获取失败: {exc}")
+        return ""
+
+
+def fetch_shanghai_hot_context(slot: str) -> list[str]:
+    date_text = batch_now().strftime("%Y-%m-%d")
+    if slot == "morning":
+        queries = [
+            f"{date_text} 上海 早间 热点 通勤 地铁",
+            f"{date_text} 上海 天气 早上 出行 新闻",
+        ]
+    else:
+        queries = [
+            f"{date_text} 上海 晚间 热点 生活",
+            f"{date_text} 上海 天气 傍晚 出行 新闻",
+        ]
+    items: list[str] = []
+    seen: set[str] = set()
+    for query in queries:
+        for hit in web_search(query, max_results=4):
+            title = clean_unicode_text(str(hit.get("title") or "")).strip()
+            body = clean_unicode_text(str(hit.get("body") or "")).strip()
+            url = str(hit.get("url") or "").strip()
+            key = normalize_url_for_dedupe(url) or title
+            if not title or key in seen:
+                continue
+            seen.add(key)
+            text = title
+            if body:
+                text += f" — {body[:90]}"
+            items.append(text)
+            if len(items) >= 5:
+                return items
+    return items
+
+
+def build_local_context(slot: str) -> str:
+    weather = fetch_shanghai_weather_context()
+    hot_items = fetch_shanghai_hot_context(slot)
+    lines = [
+        "【上海当天轻量上下文（可选素材，不得硬蹭）】",
+        "用途：只在能自然增强开头或转场时使用；如果和选题无关，宁可不用。",
+        "禁止：不能把天气/热点写成文章主角，不能每篇都用“兄弟们，上海最近……”开头，不能编造自己亲历热点事件。",
+    ]
+    if weather:
+        lines.append(f"- {weather}")
+    if hot_items:
+        lines.append("- 当天上海/生活/出行检索片段：")
+        lines.extend(f"  - {item}" for item in hot_items)
+    if len(lines) == 3:
+        lines.append("- 本次未获取到可靠本地上下文；请不要编造天气或城市热点。")
+    return "\n".join(lines)
+
+
 def fetch_page_evidence(url: str, source_type: str, query: str = "") -> dict[str, Any] | None:
     """Fetch a lightweight text snapshot for stronger evidence than search snippets."""
     url = (url or "").strip()
@@ -1374,45 +1480,57 @@ def _analyze_evidence(candidate: dict[str, Any], evidence: list[dict[str, Any]])
     return result.get("research_notes", "")
 
 
+def _research_candidate(cand: dict[str, Any]) -> dict[str, Any] | None:
+    """Research one deep candidate; returns enriched dict or None if skipped."""
+    title = cand.get("title", "")
+    print(f"   📌 {title[:50]}")
+    queries = _generate_search_queries(cand)
+    print(f"      📝 生成 {len(queries)} 个检索查询")
+    if not queries:
+        print("      ⚠️ 未生成有效查询，跳过该候选")
+        return None
+    evidence = _collect_evidence(cand, queries)
+    domains = {d for d in _evidence_domains(evidence) if d}
+    page_count = len([item for item in evidence if item.get("body_type") == "page_text"])
+    print(f"      📚 证据 {len(evidence)} 条，正文 {page_count} 条，独立域名 {len(domains)} 个")
+    if not _has_minimum_evidence(evidence):
+        reasons = "；".join(_evidence_failure_reasons(evidence))
+        print(
+            "      ⚠️ 证据不足，跳过该候选 "
+            f"（{reasons or '未达到门槛'}；需要≥{MIN_EVIDENCE_ITEMS}条证据、"
+            f"≥{MIN_EVIDENCE_DOMAINS}个域名、至少1条正文）"
+        )
+        return None
+    notes = _analyze_evidence(cand, evidence)
+    if not notes.strip():
+        print("      ⚠️ 研究笔记为空，跳过该候选")
+        return None
+    print(f"   ✅ 研究完成，笔记 {len(notes)} 字")
+    return {
+        **cand,
+        "research_method": "ai-guided-search",
+        "evidence_count": len(evidence),
+        "evidence_domains": sorted(domains),
+        "research_notes": notes,
+    }
+
+
 def research_with_tools(candidates: list[dict[str, Any]]) -> list[dict[str, Any]]:
-    """Research deep candidates: FLASH generates queries → DDGS executes → PRO synthesizes."""
-    print("🔎 AI 主导深度检索（Flash生成查询 → DDGS执行 → Pro分析）...")
+    """Research deep candidates in parallel: FLASH generates queries → DDGS executes → PRO synthesizes."""
+    print("🔎 AI 主导深度检索（Flash生成查询 → DDGS执行 → Pro分析，候选并行）...")
+    target = candidates[:4]
+    if not target:
+        return []
     results: list[dict[str, Any]] = []
-    for cand in candidates[:4]:
-        title = cand.get("title", "")
-        print(f"   📌 {title[:50]}")
-
-        queries = _generate_search_queries(cand)
-        print(f"      📝 生成 {len(queries)} 个检索查询")
-        if not queries:
-            print("      ⚠️ 未生成有效查询，跳过该候选")
-            continue
-
-        evidence = _collect_evidence(cand, queries)
-        domains = {d for d in _evidence_domains(evidence) if d}
-        page_count = len([item for item in evidence if item.get("body_type") == "page_text"])
-        print(f"      📚 证据 {len(evidence)} 条，正文 {page_count} 条，独立域名 {len(domains)} 个")
-        if not _has_minimum_evidence(evidence):
-            reasons = "；".join(_evidence_failure_reasons(evidence))
-            print(
-                "      ⚠️ 证据不足，跳过该候选 "
-                f"（{reasons or '未达到门槛'}；需要≥{MIN_EVIDENCE_ITEMS}条证据、"
-                f"≥{MIN_EVIDENCE_DOMAINS}个域名、至少1条正文）"
-            )
-            continue
-
-        notes = _analyze_evidence(cand, evidence)
-        if not notes.strip():
-            print("      ⚠️ 研究笔记为空，跳过该候选")
-            continue
-        results.append({
-            **cand,
-            "research_method": "ai-guided-search",
-            "evidence_count": len(evidence),
-            "evidence_domains": sorted(domains),
-            "research_notes": notes,
-        })
-        print(f"   ✅ 研究完成，笔记 {len(notes)} 字")
+    with concurrent.futures.ThreadPoolExecutor(max_workers=len(target)) as pool:
+        futures = [pool.submit(_research_candidate, cand) for cand in target]
+        for future in concurrent.futures.as_completed(futures):
+            try:
+                result = future.result()
+                if result is not None:
+                    results.append(result)
+            except Exception as exc:
+                print(f"   ⚠️ 候选研究异常: {exc}")
     return results
 
 
@@ -1514,6 +1632,7 @@ def compose_investigation_reports(
             + "\n".join(f"- {u}" for u in sorted(recent_index.source_urls)[:80])
             + "\n"
         )
+    local_context = build_local_context(slot)
     return llm_json(
         system=(
             "你是一名专业中文深度作者，负责撰写供网站和公众号复用的老花式信息追踪文章。"
@@ -1527,6 +1646,15 @@ def compose_investigation_reports(
         user=f"""
 当前时间：{batch_now().strftime('%Y-%m-%d %H:%M')} BJT
 本次批次：{slot}
+
+【当前写作现场约束（优先级高于风格化表达）】
+- 如果不知道 Easton 看到某条消息时的真实地点，不要编造具体生活场景；优先从线索本身切入：标题、数字、截图文字、产品页、价格、评论或公告措辞。
+- 不要机械使用"昨天""前几天""上周"。只有材料明确发生时间或当前批次能支撑时才使用；不确定时写"最新刷到""这两天看到""整理今天线索时看到"。
+- 工作日白天 Easton 通常在公司上班，不能写成下午在奥乐齐/河马奥莱排队、露营、喝酒或长时间闲逛。
+- 可用但不能滥用的合理生活场景：早晚通勤、上海地铁二号线长距离单程接近两小时、等车换乘、午休短暂刷手机、下班骑小电驴回家、晚饭后散步、做饭或洗碗时想起线索。
+- 同一批文章不要都以生活场景开头；如果没有真实必要，直接从"一个反直觉数字/一句原帖标题/一个产品页面"开始。
+
+{local_context}
 
 【信息探索与研究方法论（必须严格遵守）】
 {research_method[:40000]}
@@ -1571,7 +1699,7 @@ def compose_investigation_reports(
 先判断这个对象是什么类型——事件、产品发布、趋势现象、政策变化、人物动向、数据报告还是争议说法——再决定如何展开。不同类型对象的展开重点不同，不得一律用同一套结构。
 
 阅读原则：
-- 开头 2-4 段必须从一个具体细节切入：一个日期、金额、产品页面、公告措辞、论坛帖子、功能按钮、价格、限制条件或反直觉数字。不要用宏大背景开场。
+- 开头不要用宏大背景开场（"在当今AI快速发展的时代……"这类一律禁止）。入口必须选【老花文章可读性约束】里的某一种：具体细节/数字/报错切入、日常情绪铺垫（3-4句后转入正题）、直接点名读者（"兄弟们，不知道你们刷到了没"）、随手一查发现（做事→闪念→搜→发现）、读者/朋友触发型。每种都合法，但不能编造不合理场景，情绪铺垫不能超过4句。同一批文章不要都用同一种入口。
 - 每段必须短。普通段落 40-120 个中文字符为主，最长不超过 150 个中文字符；超过就拆成多个自然段。移动端阅读优先，禁止一段塞满多个事实、多个转折、多个判断。
 - 段落之间必须有递进：先让读者看见一个具体细节，再写我为什么起疑或被打到，然后写我顺着哪里查，查到什么地方情绪变了，最后再收束成判断。不要一上来就完整总结。
 - 情绪要有层次，但不能空喊。可以有困惑、兴奋、怀疑、破防、冷静下来、算账、收住这些变化；每一次情绪都要被一个具体事实触发。
@@ -1621,6 +1749,9 @@ def compose_investigation_reports(
 - 生成后自检一次：这是一份具体人的买家秀，还是一份没有人生经历的产品说明书？如果更像产品说明书，必须重写。
 - 生成后自检一次：有没有连续 2 段都像新闻摘要或资料说明？有就改成"我看到什么 -> 我怎么反应 -> 我去查什么 -> 查完怎么判断"。
 - 生成后自检一次：有没有超过 150 个中文字符的正文段落？有就按语义拆开，不能只机械断句。
+- 生成后自检一次：开头是否编造了 Easton 的地点、动作、购物、喝酒、露营场景？如果没有证据支撑，必须改成线索本身开头。
+- 生成后自检一次：是否把工作日白天写成超市排队、露营、喝酒等不合理场景？如果有，必须重写。
+- 生成后自检一次：是否机械使用"昨天""前几天""上周"？如果时间不确定，改成"最新刷到""这两天看到""整理今天线索时看到"。
 - 有实质深度，不是新闻摘要——字数服从内容需要，不要为凑字数堆废话。
 - sources 只收录文章正文中实际引用的高/中可信来源，格式 [{{"name": "来源名", "url": "https://..."}}]，2-8 个，url 必须是完整链接，不得用线索级来源。
 """,
@@ -2239,6 +2370,7 @@ def personal_article_footer() -> str:
         "我是老花，一个 30 多岁、还在一线摸爬滚打的小公司 IT 技术经理。"
         "这里不教成功，只记录我追过的信号、踩过的坑，和我暂时想明白的一点判断。\n\n"
         "以上。\n\n"
+        "既然看到这里了，觉得有点用的话，点个赞或者转发一下，让更多朋友看到。\n\n"
         "我们下次再聊。\n\n"
         "老花 / Easton Hua"
     )
@@ -2304,19 +2436,65 @@ def save_website_outputs(
     publish_time = batch_datetime(slot)
     update_time = bj_now()
 
+    briefing_stem = f"briefing-{date_slug}-{slot}"
+    briefing_title = briefing.get("title") or f"{date_slug} {slot} 简讯"
+    briefing_summary = briefing.get("summary", "")
+
+    # Pre-process articles (cheap, sequential)
+    valid_topics = {t.slug for t in TOPICS}
+    preprocessed: list[dict[str, Any]] = []
+    article_stems: list[str] = []
+    for article in investigation_reports[:3]:
+        raw_topic = article.get("topic", "life-signal")
+        topic = raw_topic if raw_topic in valid_topics else "life-signal"
+        if topic != raw_topic:
+            print(f"   ⚠️ 模型返回了未知分类 '{raw_topic}'，已回退到 life-signal")
+        title = article.get("title", "深度调查")
+        body = article.get("content_md", "")
+        forbidden_headings = detect_forbidden_report_headings(body)
+        if forbidden_headings:
+            print(f"   ⚠️ 模型返回固定报告标题，已降级处理: {', '.join(sorted(set(forbidden_headings)))}")
+            body = soften_report_template_headings(body)
+        body = ensure_personal_footer(body)
+        body = improve_markdown_readability(body)
+        warn_if_action_advice_unbounded(body, title)
+        article["content_md"] = body
+        article["topic"] = topic
+        stem = f"investigation-{date_slug}-{slot}-{slugify(title)}"
+        article_stems.append(stem)
+        preprocessed.append(article)
+
+    # Generate all covers in parallel (Flash prompt + image API)
+    def _gen_cover(title: str, summary: str, stem: str) -> tuple[str, str, str]:
+        try:
+            prompt = generate_cover_prompt(title, summary)
+            path = generate_cover_image(prompt, stem)
+            return stem, prompt, path
+        except Exception as exc:
+            print(f"   ⚠️ 封面图流程异常: {exc}")
+            return stem, "", ""
+
+    cover_tasks: list[tuple[str, str, str]] = []
+    if briefing.get("items"):
+        cover_tasks.append((briefing_title, briefing_summary, briefing_stem))
+    for article, stem in zip(preprocessed, article_stems):
+        cover_tasks.append((article.get("title", "深度调查"), article.get("summary", ""), stem))
+
+    cover_map: dict[str, tuple[str, str]] = {}  # stem -> (prompt, path)
+    if cover_tasks:
+        with concurrent.futures.ThreadPoolExecutor(max_workers=len(cover_tasks)) as pool:
+            fmap = {pool.submit(_gen_cover, t, s, stem): stem for t, s, stem in cover_tasks}
+            for future in concurrent.futures.as_completed(fmap):
+                stem_key, prompt, cpath = future.result()
+                cover_map[stem_key] = (prompt, cpath)
+
+    # Write briefing
     if briefing.get("items"):
         body = render_briefing_md(briefing, slot)
-        briefing_title = briefing.get("title") or f"{date_slug} {slot} 简讯"
-        briefing_summary = briefing.get("summary", "")
-        briefing_cover = ""
-        try:
-            img_prompt = generate_cover_prompt(briefing_title, briefing_summary)
-            briefing_cover = generate_cover_image(img_prompt, f"briefing-{date_slug}-{slot}")
-        except Exception as exc:
-            print(f"   ⚠️ 简讯封面图流程异常: {exc}")
+        _, briefing_cover = cover_map.get(briefing_stem, ("", ""))
         briefing_path = write_post(
             "daily-briefing",
-            f"briefing-{date_slug}-{slot}.md",
+            f"{briefing_stem}.md",
             briefing_title,
             ["简讯", slot],
             body,
@@ -2332,40 +2510,20 @@ def save_website_outputs(
         briefing["title"] = briefing_title
         paths.append(briefing_path)
 
-    valid_topics = {t.slug for t in TOPICS}
-    for article in investigation_reports[:3]:
-        raw_topic = article.get("topic", "life-signal")
-        topic = raw_topic if raw_topic in valid_topics else "life-signal"
-        if topic != raw_topic:
-            print(f"   ⚠️ 模型返回了未知分类 '{raw_topic}'，已回退到 life-signal")
+    # Write articles
+    for article, stem in zip(preprocessed, article_stems):
+        topic = str(article.get("topic", "life-signal"))
         title = article.get("title", "深度调查")
         body = article.get("content_md", "")
         summary = article.get("summary", "")
         sources = article.get("sources") or []
-        forbidden_headings = detect_forbidden_report_headings(body)
-        if forbidden_headings:
-            print(f"   ⚠️ 模型返回固定报告标题，已降级处理: {', '.join(sorted(set(forbidden_headings)))}")
-            body = soften_report_template_headings(body)
-        body = ensure_personal_footer(body)
-        body = improve_markdown_readability(body)
-        warn_if_action_advice_unbounded(body, title)
-        article["content_md"] = body
-        filename_stem = f"investigation-{date_slug}-{slot}-{slugify(title)}"
-
-        cover_path = ""
-        try:
-            img_prompt = generate_cover_prompt(title, summary)
-            article["cover_prompt_en"] = img_prompt
-            article["cover_prompt_zh"] = article.get("cover_prompt_zh") or ""
-            cover_path = generate_cover_image(img_prompt, filename_stem)
-            article["cover"] = cover_path
-        except Exception as exc:
-            print(f"   ⚠️ 封面图流程异常: {exc}")
-            article["cover"] = cover_path
-
+        cover_prompt, cover_path = cover_map.get(stem, ("", ""))
+        article["cover_prompt_en"] = cover_prompt
+        article["cover_prompt_zh"] = article.get("cover_prompt_zh") or ""
+        article["cover"] = cover_path
         article_path = write_post(
             topic,
-            f"{filename_stem}.md",
+            f"{stem}.md",
             title,
             ["深度调查", slot],
             body,
@@ -2393,7 +2551,6 @@ def save_website_outputs(
         except ValueError:
             pass
     save_new_push_urls(new_urls)
-
     return paths
 
 
@@ -2761,13 +2918,14 @@ def main() -> None:
     collected = collect_sources(args.max_age_hours)
     filtered = initial_filter(collected, persona, recent_index)
 
-    # 简讯
-    briefing_report = compose_briefing(filtered, persona, slot)
-
-    # 深度检索
+    # 简讯与深度检索并行（两者都只依赖 filtered，互不阻塞）
     candidates = filtered.get("deep_candidates", [])
     candidates = filter_recent_source_duplicates(candidates, recent_index)
-    researched = research_with_tools(candidates)
+    with concurrent.futures.ThreadPoolExecutor(max_workers=2) as pool:
+        briefing_future = pool.submit(compose_briefing, filtered, persona, slot)
+        research_future = pool.submit(research_with_tools, candidates)
+        briefing_report = briefing_future.result()
+        researched = research_future.result()
 
     # 阶段一：网站调查报告
     if researched:
