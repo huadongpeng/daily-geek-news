@@ -1008,11 +1008,13 @@ def source_digest(collected: dict[str, list[dict[str, Any]]]) -> str:
         topic = topic_map[slug]
         blocks.append(f"\n## {topic.title}\n关注目标：{topic.intent}")
         for i, item in enumerate(items, 1):
+            pub = item.get('published_at', '')
+            time_str = pub if pub else "⚠️ 无发布日期（时效性未知，谨慎选为deep_candidate）"
             blocks.append(
                 f"{i}. {item['title']}\n"
                 f"source={item.get('source','')}\n"
                 f"url={item.get('url','')}\n"
-                f"time={item.get('published_at','')}\n"
+                f"time={time_str}\n"
                 f"summary={item.get('summary','')}"
             )
     return "\n".join(blocks)
@@ -1455,6 +1457,7 @@ def _analyze_evidence(candidate: dict[str, Any], evidence: list[dict[str, Any]])
             "必须输出合法 JSON，不要代码块。"
         ),
         user=(
+            f"当前日期：{batch_now().strftime('%Y-%m-%d')}\n"
             f"新闻线索：{candidate.get('title', '')}\n"
             f"核心问题：{candidate.get('core_question', '')}\n\n"
             f"【检索证据（共 {len(evidence)} 条）】\n"
@@ -1462,6 +1465,9 @@ def _analyze_evidence(candidate: dict[str, Any], evidence: list[dict[str, Any]])
             "请根据以上证据输出结构化研究笔记。\n"
             '输出 JSON：{"research_notes": "完整研究笔记（中文）"}\n\n'
             "研究笔记必须包含以下几块：\n"
+            "【事件时效性】列出证据中各核心事件/数据的发布或发生日期。"
+            f"若任何核心事件发生在距今超过 60 天（即早于 {(batch_now() - __import__('datetime').timedelta(days=60)).strftime('%Y-%m-%d')}），"
+            "必须在此节开头加注：⚠️ 核心事件已超60天，文章须注明时效或重新评估是否适合写成当期报道。\n"
             "【已确认事实】只写输入证据中有多来源印证的事实，标注来源名称和可信级别（高可信/中可信）；没有就写'暂无足够证据'\n"
             "【高概率推断】单来源或间接证据支持，标注来源\n"
             "【待验证线索】无法核实的说法，标注来源\n"
@@ -1738,6 +1744,7 @@ def compose_investigation_reports(
 硬性要求：
 - 产出 1-3 篇，优中择优，不要凑数。
 - 只能围绕【已通过证据门槛的深度候选】写调查报告；如果 researched 为空或证据不足，返回空数组，不要根据初筛结果硬写。
+- 【事件时效性强制检查】写每篇文章前，先读 research_notes 里的【事件时效性】节。若该节标注了"⚠️ 核心事件已超60天"，则：(a) 如果文章的核心价值是"这件事现在才发生/值得现在追"，直接跳过，不要输出这篇；(b) 如果核心价值是"这件事虽然发生在过去，但今天依然有新的判断/新的数据/新的影响需要说"，则在文章开头明确交代时间背景（例如"这是 N 个月前的事，但我最近重新追了一遍，因为……"），不能把旧事包装成当期新闻。
 - 直接使用 research_notes 里的已确认事实作为核心论据，不要基于训练知识编造来源。
 - 来源在正文引用时标注名称和可信度，禁止在文末单独列"参考来源"一节。
 - 严格区分已确认事实、高概率推断、待验证线索——不把推断写成结论。
