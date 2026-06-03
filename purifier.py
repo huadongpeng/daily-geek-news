@@ -80,7 +80,7 @@ WECHAT_APP_ID = os.environ.get("WECHAT_APP_ID", "")
 WECHAT_APP_SECRET = os.environ.get("WECHAT_APP_SECRET", "")
 WECHAT_AUTHOR = os.environ.get("WECHAT_AUTHOR", "老花")
 WECHAT_DRAFT_ENABLED = os.environ.get("WECHAT_DRAFT_ENABLED", "true").lower() not in {"0", "false", "no"}
-WECHAT_TITLE_MAX_BYTES = 48
+WECHAT_TITLE_MAX_BYTES = 60  # 20 Chinese chars × 3 bytes; WeChat API hard limit is 64 bytes
 WECHAT_DIGEST_MAX_BYTES = 120
 SOURCES_CONFIG_PATH = Path(os.environ.get("SOURCES_CONFIG_PATH", ROOT / "config" / "sources.json"))
 SILICONFLOW_API_KEY = os.environ.get("SILICONFLOW_API_KEY")
@@ -1991,8 +1991,8 @@ def optimize_wechat_metadata(
 - 爆款元素只能来自真实材料：具体数字、反差、风险、隐藏条件、我查了一圈后的警觉、普通人能不能试。
 - 可以用钩子，但钩子必须求真：让人想点开是因为“这里有坑/有反差/有新判断”，不是因为夸张许诺。
 - 标题不要像媒体标题，不要成功学，不要夸张承诺，不要“震惊/必看/爆赚/月入/稳赚/逆袭/封神”。
-- 标题必须适合 UTF-8 byte 限制：纯中文控制在 14-16 个汉字左右，混合英文也必须短。
-- 摘要必须 1 句话，讲清“这事是什么 + 我为什么警觉/为什么值得看”，不要超过约 40 个汉字。
+- 标题必须适合 UTF-8 byte 限制（接口上限 64 字节）：纯中文写在 20 个汉字以内（约 60 字节），混合英文字母时也要严格控制总字节数不超过 60。宁可截短意思，不要让系统截断标题。
+- 摘要必须 1 句话，讲清”这事是什么 + 我为什么警觉/为什么值得看”，不要超过 40 个汉字（120 字节）。
 - 禁止使用第三人称“老花能不能试/老花怎么看”，可用“我/咱们”。
 - 每篇先在脑子里生成 3 类标题：具体动作型、风险反差型、普通人关系型；最后只输出你判断最适合公众号的一条。
 
