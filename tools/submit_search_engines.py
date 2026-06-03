@@ -8,7 +8,7 @@ import json
 import os
 from pathlib import Path
 from urllib.error import HTTPError, URLError
-from urllib.parse import urlparse
+from urllib.parse import quote, urlsplit, urlunsplit
 from urllib.request import Request, urlopen
 
 
@@ -18,16 +18,32 @@ BAIDU_PUSH_TOKEN = os.environ.get("BAIDU_PUSH_TOKEN", "")
 BAIDU_MAX_PER_PUSH = int(os.environ.get("BAIDU_MAX_PER_PUSH", "10"))
 
 
+def normalize_url(url: str) -> str:
+    parsed = urlsplit(url.strip())
+    hostname = parsed.hostname.encode("idna").decode("ascii") if parsed.hostname else ""
+    netloc = hostname
+    if parsed.port:
+        netloc = f"{netloc}:{parsed.port}"
+    if parsed.username:
+        userinfo = quote(parsed.username, safe="")
+        if parsed.password:
+            userinfo += f":{quote(parsed.password, safe='')}"
+        netloc = f"{userinfo}@{netloc}"
+    path = quote(parsed.path or "/", safe="/%")
+    query = quote(parsed.query, safe="=&;%:+,/?")
+    return urlunsplit((parsed.scheme, netloc, path, query, parsed.fragment))
+
+
 def load_urls(path: Path) -> list[str]:
     if not path.exists():
         return []
-    raw = path.read_text(encoding="utf-8").strip()
+    raw = path.read_text(encoding="utf-8-sig").strip()
     if not raw:
         return []
     data = json.loads(raw)
     if not isinstance(data, list):
         raise ValueError(f"{path} must contain a JSON array")
-    return list(dict.fromkeys(str(url) for url in data if str(url).startswith("http")))
+    return list(dict.fromkeys(normalize_url(str(url)) for url in data if str(url).startswith("http")))
 
 
 def save_json(path: Path, data: object) -> None:
@@ -75,7 +91,7 @@ def submit_indexnow(urls: list[str]) -> dict:
     if not urls:
         return {"submitted": 0, "status": "skipped"}
     payload = {
-        "host": urlparse(SITE_URL).hostname or "www.huadongpeng.com",
+        "host": urlsplit(SITE_URL).hostname or "www.huadongpeng.com",
         "key": INDEXNOW_KEY,
         "keyLocation": f"{SITE_URL}/{INDEXNOW_KEY}.txt",
         "urlList": urls[:100],
@@ -104,7 +120,7 @@ def submit_baidu(urls: list[str]) -> dict:
 
     batch = urls[:BAIDU_MAX_PER_PUSH]
     rest = urls[len(batch):]
-    site = urlparse(SITE_URL).hostname or "www.huadongpeng.com"
+    site = urlsplit(SITE_URL).hostname or "www.huadongpeng.com"
     endpoint = f"http://data.zz.baidu.com/urls?site={site}&token={BAIDU_PUSH_TOKEN}"
     try:
         status, result = request_json(
