@@ -1,112 +1,116 @@
 ---
-title: "AI工具大爆发：微软新模型、Copilot SDK、本地Agent齐上阵"
+title: "AI coding成本失控，GitHub Agent生态爆发"
 date: 2026-06-03T18:00:00+08:00
-updated: 2026-06-03T19:43:42+08:00
+updated: 2026-06-03T21:45:04+08:00
 categories: ["daily-briefing"]
 tags: ["简讯", "evening"]
-wordCount: 1070
+wordCount: 943
 draft: false
-description: "微软发布专为Copilot优化的MAI-Code-1-Flash，成本更低；GitHub Copilot SDK正式GA，可嵌入自有应用；Holo3.1本地Agent开源。同时，英国强制谷歌允许出版商退出AI搜索，AI Agent成本飙升催生优化需求。"
+description: "Uber四个月烧光全年AI预算，每人每月限$1500；GitHub连发Copilot SDK、Agent Apps、沙箱等重磅更新。AI工具成本已成企业级问题，但新生态也带来机会。"
 cover: "/images/covers/briefing-2026-06-03-evening.jpg"
 ---
 
-> 2026年06月03日 · evening · 14 条简讯
-微软发布专为Copilot优化的MAI-Code-1-Flash，成本更低；GitHub Copilot SDK正式GA，可嵌入自有应用；Holo3.1本地Agent开源。同时，英国强制谷歌允许出版商退出AI搜索，
-AI Agent成本飙升催生优化需求。
+> 2026年06月03日 · evening · 15 条简讯
+Uber四个月烧光全年AI预算，每人每月限$1500；GitHub连发Copilot SDK、Agent Apps、沙箱等重磅更新。AI工具成本已成企业级问题，但新生态也带来机会。
 
 ## AI 工具前线
+### Copilot SDK正式GA
+**来源**：GitHub Blog `高` https://github.blog/changelog/2026-06-02-copilot-sdk-is-now-generally-available
+
+你可以把Copilot的agent引擎嵌入自己的应用，稳定API+生产支持，开发者可直接调用。
+
+> 阅读SDK文档，评估是否集成到自己的工具链或产品中。
+### Copilot CLI大更新
+**来源**：GitHub Blog `高` https://github.blog/changelog/2026-06-02-copilot-cli-improved-ui-rubber-duck-prompt-scheduling-an
+d-voice-input
+
+新增语音输入、rubber duck调试、prompt调度，CLI体验大幅提升。
+
+> 更新Copilot CLI，试用语音输入和rubber duck功能。
+### Copilot沙箱公测
+**来源**：GitHub Blog `高` https://github.blog/changelog/2026-06-02-cloud-and-local-sandboxes-for-github-copilot-now-in-publ
+ic-preview
+
+Copilot可在本地和云端隔离沙箱中运行，安全执行代码，防止误操作。
+
+> 申请公测，配置本地沙箱环境。
+### Agent Apps上架GitHub
+**来源**：GitHub Blog `高` https://github.blog/changelog/2026-06-02-extend-github-with-agent-apps
+
+第三方AI agent可直接安装到GitHub，像普通App一样使用，扩展工作流。
+
+> 浏览Marketplace，安装感兴趣的agent app试用。
+### Uber限制AI工具月消费
+**来源**：Bloomberg via Simon Willison `高` https://simonwillison.net/2026/Jun/3/uber-caps-usage/
+
+Uber给每人每月$1500 token上限，AI coding成本失控已成企业级问题。
+
+> 检查自己团队的AI工具支出，设定预算上限。
 ### 微软MAI-Code-1-Flash发布
-**来源**：Simon Willison `高` https://simonwillison.net/2026/Jun/2/microsofts-new-models/
+**来源**：Simon Willison's Weblog `高` https://simonwillison.net/2026/Jun/2/microsofts-new-models/
 
-137B参数5B激活，专为Copilot优化，成本更低，开发者可立即在VS Code中体验。
+137B参数仅5B激活，专为Copilot设计，低成本高性能，开发者可关注。
 
-> 打开VS Code，检查Copilot是否已切换到MAI-Code-1-Flash，对比编码速度和准确性。
-### GitHub Copilot SDK正式GA
-**来源**：GitHub Changelog `高` https://github.blog/changelog/2026-06-02-copilot-sdk-is-now-generally-available
+> 在VS Code中体验MAI-Code-1-Flash模型效果。
+### WhatsApp Business AI Agent
+**来源**：TechCrunch `高` https://techcrunch.com/2026/06/03/metas-ai-agent-for-whatsapp-business-is-now-available-globally/
 
-可将Copilot代理引擎嵌入自有应用，稳定API+生产支持，开发者新玩具来了。
+Meta的AI客服正式上线WhatsApp Business，按token收费，小商家可低成本接入。
 
-> 阅读SDK文档，构思一个将Copilot集成到内部工具或副业产品的方案。
-### Copilot CLI大更新：语音输入+沙箱
-**来源**：GitHub Changelog `高` https://github.blog/changelog/2026-06-02-copilot-cli-improved-ui-rubber-duck-prompt-scheduli
-ng-and-voice-input
+> 注册WhatsApp Business API，测试AI agent自动回复效果。
+### Coralogix融资2亿监控AI
+**来源**：TechCrunch `高` https://techcrunch.com/2026/06/03/coralogix-raises-200m-in-race-to-build-the-monitoring-layer-for-
+ai-agents/
 
-语音输入、定时提示、本地/云端沙箱，终端AI体验升级，适合懒人开发。
+AI agent监控成为新赛道，企业需要工具追踪agent行为和成本。
 
-> 更新GitHub Copilot CLI，尝试语音输入一个复杂命令，体验新UI。
-### Holo3.1：本地计算机使用Agent
-**来源**：Hugging Face `中` https://huggingface.co/blog/Hcompany/holo31
-
-本地运行，无需联网，可控制电脑执行任务，隐私友好，适合自动化。
-
-> 克隆Holo3.1仓库，在本地运行demo，测试其控制浏览器或文件操作的能力。
-### Anthropic开源11个知识工作插件
-**来源**：DEV Community `中` https://dev.to/agentic_engineer/the-plugin-wars-begin-the-agentic-engineer-15-905
-
-文件式、无代码、无构建，Claude Cowork插件生态启动，可扩展工作流。
-
-> 浏览Anthropic开源插件列表，选择一个安装到Claude Cowork中试用。
-### Microsoft Scout：OpenClaw风格助手
-**来源**：TechCrunch `高` https://techcrunch.com/2026/06/02/microsoft-launches-scout-an-openclaw-inspired-personal-assistant
-/
-
-微软将OpenClaw能力引入M365，个人AI助手新形态，办公自动化新入口。
-
-> 关注Scout预览版发布，申请试用，评估其与现有工作流的整合度。
-### Google假电话检测防AI深度伪造
-**来源**：TechCrunch `高` https://techcrunch.com/2026/06/02/google-rolls-out-fake-call-detection-to-protect-against-ai-deepf
-ake-impersonation-scams/
-
-AI冒充诈骗泛滥，此功能可识别伪造号码和声音，保护个人财产安全。
-
-> 检查Android手机是否已收到更新，开启假电话检测功能。
+> 了解Coralogix的AI监控方案，评估是否适合自己团队。
 ---
 ## 副业实验室
-### Rudus：AI混凝土估算工具
-**来源**：Hacker News `中` https://news.ycombinator.com/item?id=48374528
+### AI反推Prompt工具
+**来源**：V2EX `中` https://www.v2ex.com/t/1217706
 
-建筑行业AI工具，可自动化测量和估算，节省数小时人工，副业机会。
+免费工具可将参考图拆解为结构化prompt，适合学习AI生图技巧。
 
-> 访问rudus.ai观看demo，评估是否可向本地承包商推荐或代理。
-### AI Agent消耗超人类，成本飙升
-**来源**：SaaStr `高` https://www.saastr.com/agents-just-passed-humans-in-token-usage-and-they-burn-far-more-than-anyone-bud
-geted-a-deep-dive-with-openrouters-coo/
+> 试用reverseprompt.art，分析一张喜欢的AI图并复现。
+### Shopify主题AI编辑器
+**来源**：Hacker News Show HN `中` https://apps.shopify.com/droppable-ai
 
-OpenRouter数据显示Agent token用量超人类，成本失控，但催生优化工具需求。
+用自然语言修改Shopify主题，无需懂代码，适合跨境电商卖家。
 
-> 检查自己AI工具的使用量，考虑设置预算上限或改用更便宜的模型。
+> 安装Droppable AI，尝试修改一个Shopify主题元素。
 ---
 ## 出海信号
-### 英国强制谷歌允许出版商退出AI搜索
-**来源**：BBC `高` https://www.bbc.com/news/articles/c775pp26yz5o
+### 英国允许出版商退出AI搜索
+**来源**：BBC News `高` https://www.bbc.com/news/articles/c775pp26yz5o
 
-内容创作者可拒绝AI抓取，保护版权，影响SEO和内容变现策略。
+Google必须让出版商选择不被AI Overviews抓取，影响内容创作者流量策略。
 
-> 如果你是内容创作者，检查网站robots.txt，考虑是否屏蔽AI爬虫。
-### 旧金山房产可用Anthropic股票交换
-**来源**：WIRED `高` https://www.wired.com/story/whats-worth-more-than-san-francisco-real-estate-anthropic-stock/
+> 检查自己的网站是否被AI Overviews抓取，考虑设置opt-out。
+### 美国拟对60国加征强迫劳动关税
+**来源**：BBC News `高` https://www.bbc.com/news/articles/cq6pe7nvldmo
 
-AI公司股票被视为硬通货，反映科技财富新形态，可能影响投资决策。
+新关税可能影响跨境电商供应链成本，做外贸的需关注。
 
-> 关注Anthropic IPO进展，评估其股票作为另类资产的可行性。
+> 关注美国贸易代表办公室公告，评估供应链风险。
 ---
 ## 生活信号
-### 英国75%工人养老金储备不足
-**来源**：BBC `高` https://www.bbc.com/news/articles/c3928m30v89o
+### 英国养老金报告：3/4人储蓄不足
+**来源**：BBC News `高` https://www.bbc.com/news/articles/c3928m30v89o
 
-退休生活成本上升，多数人未达标，需提前规划补充收入。
+中等退休生活年需3.27万英镑，多数人未达标，提醒个人养老金规划。
 
-> 计算自己当前养老金缺口，考虑增加储蓄或探索副业补充。
-### Lloyds银行App大规模宕机
-**来源**：BBC `高` https://www.bbc.com/news/articles/c9d37gdxp7xo
+> 计算自己的退休储蓄缺口，调整每月储蓄计划。
+### Lloyds银行App宕机
+**来源**：BBC News `高` https://www.bbc.com/news/articles/c9d37gdxp7xo
 
-银行系统故障影响数千用户，提醒分散资金风险，备好应急现金。
+银行App故障影响用户支付，提醒准备备用支付方式。
 
-> 检查自己主要银行App稳定性，考虑开设第二个银行账户备用。
-### Meta允许员工暂停点击追踪30分钟
-**来源**：BBC `高` https://www.bbc.com/news/articles/c93x0k194yno
+> 检查自己常用银行App稳定性，保留实体卡备用。
+### Meta员工可暂停追踪30分钟
+**来源**：BBC News `高` https://www.bbc.com/news/articles/c93x0k194yno
 
-职场监控引发隐私争议，员工可短暂关闭追踪，但治标不治本。
+工作场所监控引发隐私讨论，普通人应关注自身数据被收集情况。
 
-> 了解自己公司的监控政策，必要时与HR沟通隐私边界。
+> 检查工作设备上的监控软件，了解公司数据收集政策。
 ---
