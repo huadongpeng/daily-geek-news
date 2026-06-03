@@ -138,6 +138,7 @@ WECHAT_AUTHOR = "老花"
 | --- | --- |
 | `WECHAT_DRAFT_SCRIPT_PATH` | VPS 上的草稿推送脚本路径，默认 `/ws/scripts/easton_wechat_draft_push.py` |
 | `WECHAT_DRAFT_REMOTE_DIR` | VPS 上本批次草稿载荷临时目录，默认 `/tmp/easton-radar-wechat` |
+| `SEARCH_PUSH_STATE_DIR` | VPS 上的搜索引擎补推状态目录，默认 `/ws/state/easton-radar-search-push` |
 
 公众号草稿默认按多图文合并创建：VPS 脚本会把本批次最多 8 篇 `*-draft.json` 合并到同一个草稿的 `articles` 数组里。可在 VPS 环境或 `wechat_draft_config.json` 中配置：
 
@@ -153,5 +154,7 @@ WECHAT_AUTHOR = "老花"
 运行期状态：
 
 - `.cache/radar/source_health.json`：记录 RSS 源连续失败次数，便于发现长期失效来源。
-- `.cache/radar/pending_push_urls_*.json`：记录 IndexNow / 百度推送失败后待补推 URL。
+- `.cache/radar/new_push_urls.json`：记录本批次新生成的站内文章 URL，部署完成后再用于 IndexNow / 百度主动推送。
+- `search-push-results` artifact：记录部署后 URL 可访问性、IndexNow / 百度推送结果，以及仍需补推的 URL。
+- VPS `SEARCH_PUSH_STATE_DIR`：持久保存 IndexNow / 百度推送失败或暂未上线的 URL，下次部署后自动合并补推。
 - `outputs/wechat_articles/*-archive.json`：记录公众号源文件邮件发送批次和文章元数据，不提交到 Git。

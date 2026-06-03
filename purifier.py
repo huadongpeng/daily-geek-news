@@ -74,6 +74,7 @@ ROOT = Path(__file__).resolve().parent
 CONTENT_DIR = ROOT / "src" / "content" / "blog"
 CACHE_DIR = ROOT / ".cache" / "radar"
 WECHAT_OUTPUT_DIR = ROOT / "outputs" / "wechat_articles"
+NEW_PUSH_URLS_PATH = CACHE_DIR / "new_push_urls.json"
 COVERS_DIR = ROOT / "public" / "images" / "covers"
 WECHAT_APP_ID = os.environ.get("WECHAT_APP_ID", "")
 WECHAT_APP_SECRET = os.environ.get("WECHAT_APP_SECRET", "")
@@ -96,7 +97,7 @@ MAX_SEARCH_PAGE_FETCHES = 12
 MAX_EVIDENCE_TEXT_CHARS = 5000
 MIN_COVER_BYTES = 10_000
 EXPECTED_COVER_SIZE = (1024, 576)
-BAIDU_MAX_PER_PUSH = 10  # 百度普通收录免费每日配额很小，单次推送上限，避免积压一次性超配额被整批拒绝
+BAIDU_MAX_PER_PUSH = 10
 # Many publishers (Economist, The Hill, NPR, NYT…) 403 a bot UA but serve a browser UA fine.
 BROWSER_UA = (
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
@@ -1948,6 +1949,16 @@ def write_post(
     return path
 
 
+def save_new_push_urls(urls: list[str]) -> None:
+    unique = list(dict.fromkeys(url for url in urls if url.startswith("http")))
+    if not unique:
+        if NEW_PUSH_URLS_PATH.exists():
+            NEW_PUSH_URLS_PATH.unlink()
+        return
+    NEW_PUSH_URLS_PATH.write_text(json.dumps(unique, ensure_ascii=False, indent=2), encoding="utf-8")
+    print(f"   🧾 已记录待部署后推送 URL: {len(unique)} 条")
+
+
 def site_url_for_post_path(path: Path) -> str:
     rel = path.relative_to(CONTENT_DIR)
     url_path = "/blog/" + "/".join(rel.with_suffix("").parts) + "/"
@@ -2374,16 +2385,14 @@ def save_website_outputs(
             display_path = path
         print(f"   ✅ {display_path}")
 
-    # 主动通知搜索引擎收录新文章
+    # Search-engine push happens after deployment, when the URLs are live.
     new_urls = []
     for path in paths:
         try:
             new_urls.append(site_url_for_post_path(path))
         except ValueError:
             pass
-    if new_urls:
-        submit_indexnow(new_urls)
-        submit_baidu(new_urls)
+    save_new_push_urls(new_urls)
 
     return paths
 

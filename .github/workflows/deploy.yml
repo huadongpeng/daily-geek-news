@@ -81,6 +81,7 @@ jobs:
         with:
           name: radar-runtime-artifacts
           path: |
+            .cache/radar/new_push_urls.json
             .cache/radar/pending_push_urls_*.json
             .cache/radar/source_health.json
             outputs/wechat_articles/*.md
@@ -189,6 +190,36 @@ jobs:
             dist/ \
             "${{ secrets.VPS_USER }}@${{ secrets.VPS_IP }}:/ws/web/www.huadongpeng.com/"
 
+      - name: Submit deployed URLs to search engines
+        env:
+          SITE_URL:                ${{ vars.SITE_URL || 'https://www.huadongpeng.com' }}
+          INDEXNOW_KEY:           ${{ secrets.INDEXNOW_KEY || 'hdop-indexnow-key' }}
+          BAIDU_PUSH_TOKEN:       ${{ secrets.BAIDU_PUSH_TOKEN }}
+          SEARCH_PUSH_STATE_DIR:  ${{ vars.SEARCH_PUSH_STATE_DIR || '/ws/state/easton-radar-search-push' }}
+        run: |
+          URLS_FILE="$(find radar-runtime-artifacts -name 'new_push_urls.json' -print -quit 2>/dev/null || true)"
+          if [ -z "$URLS_FILE" ]; then
+            echo "No newly generated site URLs found; skip search-engine push."
+            exit 0
+          fi
+          mkdir -p radar-runtime-artifacts/.cache/radar
+          mkdir -p search-push-state
+          ssh -i ~/.ssh/deploy_key "${{ secrets.VPS_USER }}@${{ secrets.VPS_IP }}" "mkdir -p \"$SEARCH_PUSH_STATE_DIR\""
+          ssh -i ~/.ssh/deploy_key "${{ secrets.VPS_USER }}@${{ secrets.VPS_IP }}" "cat \"$SEARCH_PUSH_STATE_DIR/pending_push_urls_indexnow.json\" 2>/dev/null || true" > search-push-state/pending_push_urls_indexnow.json
+          ssh -i ~/.ssh/deploy_key "${{ secrets.VPS_USER }}@${{ secrets.VPS_IP }}" "cat \"$SEARCH_PUSH_STATE_DIR/pending_push_urls_baidu.json\" 2>/dev/null || true" > search-push-state/pending_push_urls_baidu.json
+          python3 tools/submit_search_engines.py \
+            --urls-file "$URLS_FILE" \
+            --output-dir radar-runtime-artifacts/.cache/radar \
+            --pending-dir search-push-state
+          for service in indexnow baidu; do
+            file="search-push-state/pending_push_urls_${service}.json"
+            if [ -s "$file" ]; then
+              scp -i ~/.ssh/deploy_key "$file" "${{ secrets.VPS_USER }}@${{ secrets.VPS_IP }}:$SEARCH_PUSH_STATE_DIR/"
+            else
+              ssh -i ~/.ssh/deploy_key "${{ secrets.VPS_USER }}@${{ secrets.VPS_IP }}" "rm -f \"$SEARCH_PUSH_STATE_DIR/pending_push_urls_${service}.json\""
+            fi
+          done
+
       - name: Sync WeChat draft helper to VPS
         if: steps.wechat_drafts.outputs.found == 'true'
         env:
@@ -232,5 +263,16 @@ jobs:
         with:
           name: wechat-draft-results
           path: wechat_draft_results.json
+          if-no-files-found: ignore
+          retention-days: 14
+
+      - name: Upload search push results
+        if: always()
+        uses: actions/upload-artifact@v6
+        with:
+          name: search-push-results
+          path: |
+            radar-runtime-artifacts/.cache/radar/search_push_results.json
+            radar-runtime-artifacts/.cache/radar/pending_push_urls_*.json
           if-no-files-found: ignore
           retention-days: 14
