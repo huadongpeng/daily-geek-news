@@ -86,6 +86,8 @@ jobs:
             .cache/radar/source_health.json
             outputs/wechat_articles/*.md
             outputs/wechat_articles/*.json
+            outputs/x_drafts/*.md
+            outputs/x_drafts/*.json
           if-no-files-found: ignore
           retention-days: 14
 

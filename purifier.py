@@ -74,6 +74,7 @@ ROOT = Path(__file__).resolve().parent
 CONTENT_DIR = ROOT / "src" / "content" / "blog"
 CACHE_DIR = ROOT / ".cache" / "radar"
 WECHAT_OUTPUT_DIR = ROOT / "outputs" / "wechat_articles"
+X_DRAFT_OUTPUT_DIR = ROOT / "outputs" / "x_drafts"
 NEW_PUSH_URLS_PATH = CACHE_DIR / "new_push_urls.json"
 COVERS_DIR = ROOT / "public" / "images" / "covers"
 WECHAT_APP_ID = os.environ.get("WECHAT_APP_ID", "")
@@ -2686,6 +2687,182 @@ def build_wechat_articles_from_briefing(briefing: dict[str, Any]) -> list[dict[s
 
 # ─── 搜索引擎主动推送 ─────────────────────────────────────────────────────────
 
+# ─── X manual posting drafts ─────────────────────────────────────────────────
+
+X_POST_CHAR_LIMIT = 270
+X_THREAD_ITEM_LIMIT = 6
+
+
+def compact_plain_text(text: str, strip_urls: bool = True) -> str:
+    text = strip_tags(clean_unicode_text(text))
+    if strip_urls:
+        text = re.sub(r"https?://\S+", "", text)
+    text = re.sub(r"\s+", " ", text)
+    return text.strip()
+
+
+def x_trim(text: str, limit: int = X_POST_CHAR_LIMIT) -> str:
+    text = compact_plain_text(text, strip_urls=False)
+    if len(text) <= limit:
+        return text
+    budget = max(0, limit - 3)
+    cut = text[:budget]
+    for sep in ("。", "！", "？", ".", "!", "?", "，", ",", " "):
+        pos = cut.rfind(sep)
+        if pos >= 60:
+            cut = cut[: pos + 1]
+            break
+    return cut.rstrip() + "..."
+
+
+def first_meaningful_lines(content_md: str, limit: int = 4) -> list[str]:
+    lines: list[str] = []
+    for raw in clean_unicode_text(content_md).splitlines():
+        line = raw.strip()
+        if not line or line.startswith("---") or line.startswith("#"):
+            continue
+        if line.startswith("**来源**") or line.startswith("**鏉ユ簮**"):
+            continue
+        line = re.sub(r"^>\s*", "", line).strip()
+        line = compact_plain_text(line)
+        if line:
+            lines.append(line)
+        if len(lines) >= limit:
+            break
+    return lines
+
+
+def build_x_article_draft(article: dict[str, Any], index: int) -> dict[str, Any]:
+    title = compact_plain_text(str(article.get("title") or ""))
+    summary = compact_plain_text(str(article.get("summary") or ""))
+    site_url = clean_unicode_text(article.get("site_url") or "")
+    content_md = clean_unicode_text(article.get("content_md") or "")
+    topic = clean_unicode_text(article.get("topic") or "life-signal")
+    detail_lines = first_meaningful_lines(content_md, 3)
+
+    hook = summary or (detail_lines[0] if detail_lines else title)
+    short_post = x_trim(
+        "\n\n".join(
+            part
+            for part in [
+                f"我今天追到一个值得留意的信号：{title}",
+                hook,
+                "这类事别只看热闹，关键是它会不会改变工具、获客或普通人的赚钱路径。",
+                site_url,
+            ]
+            if part
+        )
+    )
+
+    thread = [
+        x_trim(f"1/ 我今天追到一个信号：{title}"),
+        x_trim(f"2/ {hook}"),
+    ]
+    for offset, line in enumerate(detail_lines[:2], start=3):
+        thread.append(x_trim(f"{offset}/ {line}"))
+    thread.append(x_trim(f"{len(thread) + 1}/ 我的判断：先别急着跟风，先看它背后的入口、成本和失败条件。"))
+    if site_url:
+        thread.append(x_trim(f"{len(thread) + 1}/ 完整拆解：\n{site_url}"))
+
+    return {
+        "index": index,
+        "topic": topic,
+        "title": title,
+        "site_url": site_url,
+        "short_post": short_post,
+        "thread": thread[:X_THREAD_ITEM_LIMIT],
+    }
+
+
+def build_x_briefing_draft(briefing: dict[str, Any]) -> dict[str, Any] | None:
+    items = briefing.get("items") or []
+    if not items:
+        return None
+    title = compact_plain_text(str(briefing.get("title") or "今日简报"))
+    summary = compact_plain_text(str(briefing.get("summary") or ""))
+    site_url = clean_unicode_text(briefing.get("site_url") or "")
+    signals = [compact_plain_text(str(item.get("title") or "")) for item in items[:5]]
+    signals = [item for item in signals if item]
+
+    short_lines = ["今天值得看 3 个信号："]
+    short_lines.extend(f"{idx}. {x_trim(signal, 72)}" for idx, signal in enumerate(signals[:3], start=1))
+    if site_url:
+        short_lines.extend(["", site_url])
+
+    thread = [
+        x_trim(f"1/ {title}"),
+        x_trim(f"2/ {summary}" if summary else "2/ 我把今天值得留意的技术、AI、副业和生活风险信号放在一起看。"),
+    ]
+    for idx, signal in enumerate(signals[:3], start=3):
+        thread.append(x_trim(f"{idx}/ {signal}"))
+    if site_url:
+        thread.append(x_trim(f"{len(thread) + 1}/ 完整简报：\n{site_url}"))
+
+    return {
+        "index": 0,
+        "topic": "daily-briefing",
+        "title": title,
+        "site_url": site_url,
+        "short_post": x_trim("\n".join(short_lines)),
+        "thread": thread[:X_THREAD_ITEM_LIMIT],
+    }
+
+
+def format_x_draft_text(draft: dict[str, Any]) -> str:
+    lines = [
+        f"标题: {draft.get('title', '')}",
+        "",
+        "短帖版:",
+        str(draft.get("short_post") or ""),
+        "",
+        "Thread 版:",
+    ]
+    lines.extend(str(item) for item in draft.get("thread") or [])
+    if draft.get("site_url"):
+        lines.extend(["", f"原文: {draft.get('site_url')}"])
+    return "\n".join(lines).rstrip() + "\n"
+
+
+def save_x_drafts(
+    briefing: dict[str, Any],
+    investigation_reports: list[dict[str, Any]],
+    slot: str,
+) -> list[dict[str, Any]]:
+    X_DRAFT_OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    date_slug = batch_date_slug()
+    drafts: list[dict[str, Any]] = []
+
+    briefing_draft = build_x_briefing_draft(briefing)
+    if briefing_draft:
+        drafts.append(briefing_draft)
+
+    for index, article in enumerate(investigation_reports[:3], start=1):
+        drafts.append(build_x_article_draft(article, index))
+
+    paths: list[Path] = []
+    for draft in drafts:
+        stem = f"{date_slug}-{slot}-{draft.get('index', 0)}-{slugify(str(draft.get('title') or 'x-draft'))}"
+        path = X_DRAFT_OUTPUT_DIR / f"{stem}.md"
+        path.write_text(format_x_draft_text(draft), encoding="utf-8")
+        paths.append(path)
+
+    index_path = X_DRAFT_OUTPUT_DIR / f"{date_slug}-{slot}-x-drafts.json"
+    index_path.write_text(json.dumps(clean_json_value(drafts), ensure_ascii=False, indent=2), encoding="utf-8")
+    paths.append(index_path)
+
+    if drafts:
+        print(f"🐦 X 手动发帖草稿已生成: {len(drafts)} 份")
+        for path in paths:
+            try:
+                display_path = path.relative_to(ROOT)
+            except ValueError:
+                display_path = path
+            print(f"   ✓ {display_path}")
+    else:
+        print("📭 本批次没有可生成的 X 发帖草稿")
+    return drafts
+
+
 def pending_push_path(service: str) -> Path:
     return CACHE_DIR / f"pending_push_urls_{service}.json"
 
@@ -2896,6 +3073,39 @@ def send_telegram(
 
 # ─── 入口 ─────────────────────────────────────────────────────────────────────
 
+def send_x_drafts_to_telegram(x_drafts: list[dict[str, Any]], slot: str) -> None:
+    if not x_drafts:
+        return
+    if not TG_BOT_TOKEN or not TG_CHAT_ID:
+        print("📭 未配置 Telegram，跳过 X 草稿推送")
+        return
+
+    sent = 0
+    for draft in x_drafts:
+        title = tg_escape(str(draft.get("title") or "X 草稿"))
+        short_post = tg_escape(str(draft.get("short_post") or ""))
+        thread = [tg_escape(str(item)) for item in draft.get("thread") or []]
+        site_url = tg_escape(str(draft.get("site_url") or ""))
+        lines = [
+            "<b>X 手动发帖草稿</b>",
+            f"{batch_date_slug()} {tg_escape(slot)}",
+            f"标题：{title}",
+            "",
+            "<b>短帖版</b>",
+            short_post,
+            "",
+            "<b>Thread 版</b>",
+        ]
+        lines.extend(thread)
+        if site_url:
+            lines.extend(["", f"原文：{site_url}"])
+        topic = str(draft.get("topic") or "daily-briefing")
+        if send_telegram_message(lines, TG_THREAD_BY_TOPIC.get(topic) or TG_THREAD_BRIEFING):
+            sent += 1
+
+    print(f"🐦 X 手动发帖草稿已推送到 Telegram: {sent}/{len(x_drafts)} 条")
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Easton Radar source-first intelligence pipeline")
     parser.add_argument("--slot", choices=["auto", "morning", "evening"], default="auto", help="日报批次")
@@ -2943,13 +3153,15 @@ def main() -> None:
     else:
         print("📋 没有深度候选通过证据门槛，本批次跳过调查报告和公众号长文")
         investigation_reports = []
-    save_website_outputs(briefing_report.get("briefing", {}), investigation_reports, slot)
+    briefing = briefing_report.get("briefing", {})
+    save_website_outputs(briefing, investigation_reports, slot)
+    x_drafts = save_x_drafts(briefing, investigation_reports, slot)
 
     # 阶段二：公众号源文件直接复用网站文章 + 发邮件
     if investigation_reports:
         wechat_articles = build_wechat_articles_from_reports(investigation_reports)
     else:
-        wechat_articles = build_wechat_articles_from_briefing(briefing_report.get("briefing", {}))
+        wechat_articles = build_wechat_articles_from_briefing(briefing)
     if wechat_articles:
         save_wechat_outputs(wechat_articles, slot, persona)
         publish_wechat_drafts(wechat_articles, slot)
@@ -2958,7 +3170,8 @@ def main() -> None:
 
     # Telegram 通知
     if not args.no_telegram:
-        send_telegram(briefing_report.get("briefing", {}), investigation_reports, wechat_articles, slot)
+        send_telegram(briefing, investigation_reports, wechat_articles, slot)
+        send_x_drafts_to_telegram(x_drafts, slot)
 
     print("🏁 完成")
 
