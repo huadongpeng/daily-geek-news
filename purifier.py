@@ -81,7 +81,7 @@ WECHAT_APP_ID = os.environ.get("WECHAT_APP_ID", "")
 WECHAT_APP_SECRET = os.environ.get("WECHAT_APP_SECRET", "")
 WECHAT_AUTHOR = os.environ.get("WECHAT_AUTHOR", "老花")
 WECHAT_DRAFT_ENABLED = os.environ.get("WECHAT_DRAFT_ENABLED", "true").lower() not in {"0", "false", "no"}
-WECHAT_TITLE_MAX_BYTES = 60  # 20 Chinese chars × 3 bytes; WeChat API hard limit is 64 bytes
+WECHAT_TITLE_MAX_CHARS = 64
 WECHAT_DIGEST_MAX_BYTES = 120
 SOURCES_CONFIG_PATH = Path(os.environ.get("SOURCES_CONFIG_PATH", ROOT / "config" / "sources.json"))
 SILICONFLOW_API_KEY = os.environ.get("SILICONFLOW_API_KEY")
@@ -137,6 +137,10 @@ FORBIDDEN_REPORT_HEADINGS = {
     "风险评估如下",
     "行动建议",
     "行动建议如下",
+    "老花我现在怎么做",
+    "我现在怎么做",
+    "换成我会怎么做",
+    "我不是建议你立刻冲",
     "对普通人的启示",
     "这件事给我的思考",
 }
@@ -341,6 +345,7 @@ WRITING_METHOD_DEFAULT = """
 来源可信度在正文引用时就带出来，不在文章末尾单独开"信息来源与可信度"一节。
 标题要短，避免夸张承诺，宁可少写也不要水。
 文章内核是闭环：事实、依据、分析、判断、方案/观察。但这不是固定目录；能行动才写方案，不适合行动就写观察指标、证据缺口或暂时不动的理由。
+不要为了凑完整结构强行加入"我会怎么做"。能行动才自然写一两句；不适合行动时，可以一句话说清楚"这事我先不碰"或"目前只适合观察"，然后结束。
 
 结构禁令：
 - 禁止"一、二、三、四、五、六"数字编号大标题
@@ -348,6 +353,7 @@ WRITING_METHOD_DEFAULT = """
 - 禁止工具推荐列满四五个选项，只写自己真正用过或打算用的那一两个
 - 禁止引用数据不带个人判断（说明来源动机、说明我信几成）
 - 禁止把文章写成全知全能但没有个人经历的产品说明书
+- 禁止把"我会怎么做/我现在怎么做/我不是建议你立刻冲"写成固定小标题或固定尾段
 """
 
 
@@ -1730,6 +1736,8 @@ def compose_investigation_reports(
 - 如果需要谈读者启示，可以用口语化小标题，例如"这事对咱们这些 IT 打工人有什么用"、"站在 35 岁门槛前后看这件事"；如果文章更适合吃瓜或事实拆解，也可以不单独开这一节。
 - 个人判断里可以使用"我"和"咱们"，但不要自我煽情。要把事实拉回现实处境：负债逾期过、输不起、时间少、本金少、怕踩坑、怕失业、怕被新工具甩开、想找一点能验证的方向。负债经历只作为判断力来源，不连续卖惨。
 - 如果选题适合行动，给真实可行的小方案，说明适合谁、第一步、成本边界、主要风险、停止信号，以及老花自己能不能做；如果不适合行动，不要硬凑方案，写清楚卡在钱、时间、良心、合规、资源还是执行门槛。
+- "怎么做"不是必选栏目。只有证据和选题本身自然推到行动时才写；如果只是新闻、争议、融资、监管、行业风向或证据不足的线索，可以用一两句自然收住，不要为了完整感硬加操作建议。
+- 不要把个人动作写成 H2/H3 小标题，例如"老花我现在怎么做""我不是建议你立刻冲""换成我会怎么做"。真有必要写，就并进自然段里，像聊天时顺手补一句。
 - 正文最后必须追加一个简短账号介绍和署名，格式不要像硬广告。可以参考但不必逐字照抄："我是老花，一个跌过坑、还在小公司打工维生的十年老程序员。这里不教成功，只记录我追过的信号、踩过的坑，和我拆出来的一点路。"
 - 结尾不要写"综上所述"。
 
@@ -1743,6 +1751,7 @@ def compose_investigation_reports(
 - 哪些兄弟可以试，前提是什么；哪些人别硬冲。
 - 如果适合行动，给 1-3 个低成本动作，并说明适合谁、今天怎么做、最多投入多少时间/钱、什么情况应该停止。
 - 如果不适合行动，写清楚目前还缺哪块证据，或者卡在什么条件上。不要写"观察 3 个信号"这种 AI 味表达。
+- 如果这里没有新的信息量，允许一句话带过，不要硬凑一节。
 
 硬性要求：
 - 产出 1-3 篇，优中择优，不要凑数。
@@ -1755,6 +1764,7 @@ def compose_investigation_reports(
 - 可使用 H2、H3 标题、表格、引用块等 Markdown 格式，但只在真正帮助阅读时使用。
 - 禁止输出固定模板标题："导言"、"核心段"、"证据展开"、"反驳视角"、"影响与悬问"、"已确认的事实"、"高概率推断"、"对普通技术经理的现实影响"。
 - 禁止写"我为什么停下来""我会盯哪 3 个信号""暂时不动的理由""风险评估如下""行动建议如下""对普通人的启示""这件事给我的思考"这类套话。
+- 禁止写"老花我现在怎么做""我现在怎么做""换成我会怎么做""我不是建议你立刻冲"这类固定小标题；相关内容只能自然并入正文，且没有新信息量时不要写。
 - 禁止把行动建议写成成功学口号；如果给行动建议，必须说明成本、边界和停止条件。不要为了显得有用而硬凑建议。
 - 生成后自检一次：这是一份具体人的买家秀，还是一份没有人生经历的产品说明书？如果更像产品说明书，必须重写。
 - 生成后自检一次：有没有连续 2 段都像新闻摘要或资料说明？有就改成"我看到什么 -> 我怎么反应 -> 我去查什么 -> 查完怎么判断"。
@@ -1917,29 +1927,19 @@ def truncate_by_bytes(text: str, max_bytes: int) -> str:
     return "".join(out).rstrip() + ellipsis
 
 
+def truncate_by_chars(text: str, max_chars: int) -> str:
+    text = clean_unicode_text(text)
+    if len(text) <= max_chars:
+        return text
+    return text[: max_chars - 3].rstrip() + "..."
+
+
 def wechat_safe_title(title: str, summary: str = "") -> str:
-    """Create a readable WeChat-only title without changing the website title."""
+    """Keep the WeChat title aligned with the website title unless the API limit forces a cut."""
     raw = re.sub(r"\s+", " ", clean_unicode_text(title).strip())
     if not raw:
         raw = re.sub(r"\s+", " ", clean_unicode_text(summary).strip()) or "老花今天追到的新信号"
-
-    candidates = [raw]
-    for pattern in (r"[：:，,。！？!?；;]", r"\s+-\s+", r"\s+—\s+"):
-        head = re.split(pattern, raw, maxsplit=1)[0].strip()
-        if head and head != raw:
-            candidates.append(head)
-
-    # Long generated titles often start with a personal action scene. Keep that hook,
-    # but remove the trailing explanatory clause that usually breaks the byte limit.
-    hook = re.match(r"^(我[^，,。！？!?；;]{4,24})", raw)
-    if hook:
-        candidates.append(hook.group(1).strip())
-
-    # Prefer the longest candidate that fits; it reads better than a hard cut.
-    fitting = [c for c in candidates if len(c.encode("utf-8")) <= WECHAT_TITLE_MAX_BYTES]
-    if fitting:
-        return max(fitting, key=lambda value: len(value.encode("utf-8")))
-    return truncate_by_bytes(raw, WECHAT_TITLE_MAX_BYTES)
+    return truncate_by_chars(raw, WECHAT_TITLE_MAX_CHARS)
 
 
 def wechat_safe_digest(summary: str, content_md: str = "") -> str:
@@ -1953,7 +1953,10 @@ def optimize_wechat_metadata(
     wechat_articles: list[dict[str, Any]],
     persona: str,
 ) -> list[dict[str, str]]:
-    fallback = [
+    _ = persona
+    # Keep draft titles aligned with site titles. The VPS push script also applies
+    # the same 64-character guard, so this only changes titles when the API requires it.
+    return [
         {
             "wechat_title": wechat_safe_title(str(article.get("title") or ""), str(article.get("summary") or "")),
             "wechat_digest": wechat_safe_digest(
@@ -1963,79 +1966,6 @@ def optimize_wechat_metadata(
         }
         for article in wechat_articles
     ]
-    if not wechat_articles:
-        return fallback
-
-    items = []
-    for index, article in enumerate(wechat_articles):
-        items.append(
-            {
-                "index": index,
-                "topic": str(article.get("topic") or ""),
-                "site_title": str(article.get("title") or ""),
-                "summary": str(article.get("summary") or ""),
-                "content_preview": strip_tags(str(article.get("content_md") or ""))[:900],
-            }
-        )
-
-    try:
-        result = llm_json(
-            system=(
-                "你是老花公众号的标题编辑，专门把网站文章标题改写成适合微信公众号草稿的标题和摘要。"
-                "必须输出合法 JSON，不要 Markdown。"
-            ),
-            user=f"""
-【人设】
-{persona[:6000]}
-
-【硬性限制】
-- 只优化微信公众号草稿字段，不改网站标题。
-- 标题要像老花：第一人称、有追线索/怕踩坑/输不起的真实感；可以有钩子，但不能编造事实。
-- 爆款元素只能来自真实材料：具体数字、反差、风险、隐藏条件、我查了一圈后的警觉、普通人能不能试。
-- 可以用钩子，但钩子必须求真：让人想点开是因为“这里有坑/有反差/有新判断”，不是因为夸张许诺。
-- 标题不要像媒体标题，不要成功学，不要夸张承诺，不要“震惊/必看/爆赚/月入/稳赚/逆袭/封神”。
-- 标题必须适合 UTF-8 byte 限制（接口上限 64 字节）：纯中文写在 20 个汉字以内（约 60 字节），混合英文字母时也要严格控制总字节数不超过 60。宁可截短意思，不要让系统截断标题。
-- 摘要必须 1 句话，讲清”这事是什么 + 我为什么警觉/为什么值得看”，不要超过 40 个汉字（120 字节）。
-- 禁止使用第三人称“老花能不能试/老花怎么看”，可用“我/咱们”。
-- 每篇先在脑子里生成 3 类标题：具体动作型、风险反差型、普通人关系型；最后只输出你判断最适合公众号的一条。
-
-【待优化文章】
-{json.dumps(items, ensure_ascii=False, indent=2)}
-
-请输出 JSON：
-{{
-  "items": [
-    {{
-      "index": 0,
-      "wechat_title": "公众号标题，尽量短，有钩子但不标题党",
-      "wechat_digest": "公众号摘要，一句话"
-    }}
-  ]
-}}
-""",
-            max_tokens=1200,
-            model=FLASH_MODEL,
-            thinking_type="disabled",
-            reasoning_effort="low",
-        )
-        optimized = fallback[:]
-        for item in result.get("items", []):
-            try:
-                index = int(item.get("index"))
-            except Exception:
-                continue
-            if not (0 <= index < len(optimized)):
-                continue
-            title = str(item.get("wechat_title") or "").strip()
-            digest = str(item.get("wechat_digest") or "").strip()
-            if title:
-                optimized[index]["wechat_title"] = truncate_by_bytes(title, WECHAT_TITLE_MAX_BYTES)
-            if digest:
-                optimized[index]["wechat_digest"] = truncate_by_bytes(digest, WECHAT_DIGEST_MAX_BYTES)
-        return optimized
-    except Exception as exc:
-        print(f"   ⚠️ 微信标题 Flash 优化失败，回退规则标题: {exc}")
-        return fallback
 
 
 def count_words(text: str) -> int:
@@ -2272,7 +2202,7 @@ def build_wechat_draft_article(article: dict[str, Any], thumb_media_id: str) -> 
     article = clean_json_value(article)
     title = clean_unicode_text(article.get("wechat_title") or article.get("title") or "公众号文章")
     summary = clean_unicode_text(article.get("wechat_digest") or article.get("summary") or "")
-    safe_title = truncate_by_bytes(title.strip(), WECHAT_TITLE_MAX_BYTES)
+    safe_title = truncate_by_chars(title.strip(), WECHAT_TITLE_MAX_CHARS)
     safe_digest = truncate_by_bytes(summary.strip(), WECHAT_DIGEST_MAX_BYTES)
     return {
         "title": safe_title,
