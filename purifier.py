@@ -1649,13 +1649,10 @@ def compose_investigation_reports(
     if recent_index and recent_index.source_urls:
         recent_block += (
             "\n【近7天已使用过的深度来源 URL（相同来源或同一事件换标题时直接跳过，不要输出）】\n"
-            + "\n".join(f"- {u}" for u in sorted(recent_index.source_urls)[:40])
+            + "\n".join(f"- {u}" for u in sorted(recent_index.source_urls)[:80])
             + "\n"
         )
     local_context = build_local_context(slot)
-    filtered_context = {
-        "deep_candidates": filtered.get("deep_candidates", []),
-    }
     return llm_json(
         system=(
             "你是一名专业中文深度作者，负责撰写供网站和公众号复用的老花式信息追踪文章。"
@@ -1680,21 +1677,21 @@ def compose_investigation_reports(
 {local_context}
 
 【信息探索与研究方法论（必须严格遵守）】
-{research_method[:24000]}
+{research_method[:40000]}
 
 【老花文章可读性约束（吸收风格规则；严谨调查内核，真实追踪过程外形）】
-{writing_method[:18000]}
+{writing_method[:24000]}
 
 {recent_block}
 【主题映射】
 {json.dumps(topic_titles, ensure_ascii=False)}
 
 【初筛结果】
-{json.dumps(filtered_context, ensure_ascii=False)[:30000]}
+{json.dumps(filtered, ensure_ascii=False)[:80000]}
 
 【已通过证据门槛的深度候选与 AI 引导检索研究笔记】
 （每个候选包含 research_notes / evidence_count / evidence_domains 字段：基于 seed URL、DDGS 搜索结果和可抓取正文生成，含已确认事实/推断/来源分层）
-{json.dumps(researched, ensure_ascii=False)[:180000]}
+{json.dumps(researched, ensure_ascii=False)[:300000]}
 
 请输出 JSON：
 {{
@@ -1789,6 +1786,84 @@ def compose_investigation_reports(
         thinking_type=PRO_THINKING,
         reasoning_effort=PRO_REASONING_EFFORT,
     )
+
+
+def compose_investigation_reports_per_candidate(
+    researched: list[dict[str, Any]],
+    research_method: str,
+    writing_method: str,
+    slot: str,
+    recent_index: PublishedIndex | None = None,
+) -> dict[str, Any]:
+    """Fallback path: generate articles one candidate at a time with full per-candidate evidence."""
+    print("📋 批量成文失败，降级为逐候选多次成文...")
+    topic_titles = {t.slug: t.title for t in TOPICS}
+    recent_titles = recent_index.titles if recent_index else []
+    reports: list[dict[str, Any]] = []
+    for index, candidate in enumerate(researched[:3], start=1):
+        title = str(candidate.get("title") or candidate.get("core_question") or "")[:80]
+        print(f"   ✍️ 逐篇生成 {index}/{min(len(researched), 3)}: {title}")
+        try:
+            result = llm_json(
+                system=(
+                    "你是一名专业中文深度作者，负责把单个已完成研究的候选写成网站文章。"
+                    "只能使用输入里的研究笔记和证据，不得补训练记忆。"
+                    "必须输出合法 JSON，不要代码块。"
+                ),
+                user=f"""
+当前时间：{batch_now().strftime('%Y-%m-%d %H:%M')} BJT
+本次批次：{slot}
+
+【主题映射】
+{json.dumps(topic_titles, ensure_ascii=False)}
+
+【近7天已发布深度文章，主题重复时不要输出】
+{json.dumps(recent_titles[:80], ensure_ascii=False)}
+
+【信息探索与研究方法论】
+{research_method[:24000]}
+
+【老花文章可读性约束】
+{writing_method[:18000]}
+
+【单个深度候选完整研究材料】
+{json.dumps(candidate, ensure_ascii=False)[:180000]}
+
+请输出 JSON：
+{{
+  "investigation_reports": [
+    {{
+      "topic": "ai-tools|side-hustle|overseas|life-signal",
+      "title": "网站文章标题",
+      "summary": "核心发现摘要，100字内",
+      "content_md": "完整网站文章 Markdown 正文",
+      "sources": [{{"name": "来源名称", "url": "https://原始链接"}}]
+    }}
+  ]
+}}
+
+硬性要求：
+- 只围绕这个候选写 0 或 1 篇；证据不足或主题重复就返回空数组。
+- 直接使用 research_notes 里的已确认事实作为核心论据，不要基于训练知识编造来源。
+- 严格区分已确认事实、高概率推断、待验证线索。
+- 来源可信度嵌入正文，不要在文末单独列参考来源。
+- 普通段落 40-120 个中文字符为主，一个段落只讲一个意思；长短句交替，不要靠程序后处理拆段。
+- 不要写固定栏目："我会盯哪 3 个信号"、"行动建议如下"、"老花我现在怎么做"、"我不是建议你立刻冲"。
+- 需要行动建议时自然并入正文；没有新信息量就一句话收住。
+- sources 只收录正文实际引用的高/中可信来源，2-8 个。
+""",
+                max_tokens=min(PRO_ARTICLE_MAX_TOKENS, 18000),
+                model=PRO_MODEL,
+                thinking_type=PRO_THINKING,
+                reasoning_effort="high" if PRO_REASONING_EFFORT == "max" else PRO_REASONING_EFFORT,
+            )
+        except Exception as exc:
+            print(f"   ⚠️ 逐篇生成失败，跳过该候选: {title} - {exc}")
+            continue
+        item_reports = result.get("investigation_reports") or []
+        if item_reports:
+            reports.append(item_reports[0])
+    return {"investigation_reports": reports}
 
 
 # ─── 邮件发送 ────────────────────────────────────────────────────────────────
@@ -3086,7 +3161,17 @@ def main() -> None:
 
     # 阶段一：网站调查报告
     if researched:
-        inv_result = compose_investigation_reports(filtered, researched, research_method, writing_method, slot, recent_index)
+        try:
+            inv_result = compose_investigation_reports(filtered, researched, research_method, writing_method, slot, recent_index)
+        except Exception as exc:
+            print(f"   ⚠️ 批量深度文章生成失败，启动逐候选降级: {exc}")
+            inv_result = compose_investigation_reports_per_candidate(
+                researched,
+                research_method,
+                writing_method,
+                slot,
+                recent_index,
+            )
         investigation_reports = inv_result.get("investigation_reports", [])
     else:
         print("📋 没有深度候选通过证据门槛，本批次跳过调查报告和公众号长文")
