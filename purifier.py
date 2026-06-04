@@ -340,6 +340,7 @@ WRITING_METHOD_DEFAULT = """
 开头必须从一个具体细节切入（时间、价格、页面、报错、聊天句子），绝不用"在当今AI快速发展的时代"。
 文章风格是有见识的普通技术人在认真聊一件打动他的事，不是媒体报道，不是知识付费教程。
 读者要的不是产品说明书，是买家秀：具体的人在具体处境里留下的攻略、体验、感受和踩坑。产品说明书才论优不优秀，买家秀只论真不真实。
+段落必须由写作阶段自然拆短，不依赖发布程序二次截断。一个段落只讲一个意思，普通段落 40-120 个中文字符；需要加重情绪、转场或判断时，可以单句成段。长短句要交替出现，不能连续输出大块长段。
 不要追求渊博，不要为了显得全面而堆"行业认为/有研究表明/某某观点"。每段都要问：这是说明书谁都能写，还是只有活过、查过、卡过、犹豫过的我才能写？
 面对没有标准答案的问题，不要把 A/B/C 各方观点罗列一遍当全面；要站在 Easton 自己的经历、处境和约束里，给出那个不完整但真实的判断。
 反证和不确定性嵌在正文中间出现，不单独开一节。
@@ -405,34 +406,6 @@ def batch_datetime(slot: str) -> datetime:
     return now.replace(hour=hour, minute=0, second=0, microsecond=0)
 
 
-def split_long_plain_paragraph(text: str, limit: int = 120) -> list[str]:
-    text = clean_unicode_text(text).strip()
-    if len(text) <= limit:
-        return [text] if text else []
-    parts = re.findall(r"[^。！？!?；;，,、]+[。！？!?；;，,、]?", text) or [text]
-    chunks: list[str] = []
-    current = ""
-    for part in parts:
-        if len(part) > limit:
-            if current.strip():
-                chunks.append(current.strip())
-                current = ""
-            for start in range(0, len(part), limit):
-                chunk = part[start:start + limit].strip()
-                if chunk:
-                    chunks.append(chunk)
-            continue
-        next_text = current + part
-        if current and len(next_text) > limit:
-            chunks.append(current.strip())
-            current = part
-        else:
-            current = next_text
-    if current.strip():
-        chunks.append(current.strip())
-    return chunks
-
-
 def improve_markdown_readability(md: str) -> str:
     output: list[str] = []
     paragraph: list[str] = []
@@ -441,8 +414,9 @@ def improve_markdown_readability(md: str) -> str:
         if not paragraph:
             return
         text = " ".join(part.strip() for part in paragraph if part.strip()).strip()
-        output.extend(split_long_plain_paragraph(text))
-        output.append("")
+        if text:
+            output.append(text)
+            output.append("")
         paragraph.clear()
 
     for raw in clean_unicode_text(md).splitlines():
@@ -1749,7 +1723,8 @@ def compose_investigation_reports(
 
 阅读原则：
 - 开头不要用宏大背景开场（"在当今AI快速发展的时代……"这类一律禁止）。入口必须选【老花文章可读性约束】里的某一种：具体细节/数字/报错切入、日常情绪铺垫（3-4句后转入正题）、直接点名读者（"兄弟们，不知道你们刷到了没"）、随手一查发现（做事→闪念→搜→发现）、读者/朋友触发型。每种都合法，但不能编造不合理场景，情绪铺垫不能超过4句。同一批文章不要都用同一种入口。
-- 每段必须短。普通段落 40-120 个中文字符为主，最长不超过 150 个中文字符；超过就拆成多个自然段。移动端阅读优先，禁止一段塞满多个事实、多个转折、多个判断。
+- 每段必须短。普通段落 40-120 个中文字符为主，尽量不要超过 150 个中文字符；这是写作要求，不是后处理要求。你必须在生成时按语义自然分段，一个段落只讲一个意思，禁止一段塞满多个事实、多个转折、多个判断。
+- 长短句要交替。重要判断、情绪反应、转场可以单独成段；信息密度高的段落后面，必须接一个短句或短段落让读者喘口气。
 - 段落之间必须有递进：先让读者看见一个具体细节，再写我为什么起疑或被打到，然后写我顺着哪里查，查到什么地方情绪变了，最后再收束成判断。不要一上来就完整总结。
 - 情绪要有层次，但不能空喊。可以有困惑、兴奋、怀疑、破防、冷静下来、算账、收住这些变化；每一次情绪都要被一个具体事实触发。
 - 文章要像真人在讲一件刚追完的事：允许短句单独成段，允许一句话转场，允许承认"这里我还没完全想明白"。不要写成平铺直叙的大段说明。
@@ -1802,7 +1777,7 @@ def compose_investigation_reports(
 - 禁止把行动建议写成成功学口号；如果给行动建议，必须说明成本、边界和停止条件。不要为了显得有用而硬凑建议。
 - 生成后自检一次：这是一份具体人的买家秀，还是一份没有人生经历的产品说明书？如果更像产品说明书，必须重写。
 - 生成后自检一次：有没有连续 2 段都像新闻摘要或资料说明？有就改成"我看到什么 -> 我怎么反应 -> 我去查什么 -> 查完怎么判断"。
-- 生成后自检一次：有没有超过 150 个中文字符的正文段落？有就按语义拆开，不能只机械断句。
+- 生成后自检一次：有没有超过 150 个中文字符的正文段落？有就按语义重写成 2-3 个自然段，不能只机械断句或按标点硬切。
 - 生成后自检一次：开头是否编造了 Easton 的地点、动作、购物、喝酒、露营场景？如果没有证据支撑，必须改成线索本身开头。
 - 生成后自检一次：是否把工作日白天写成超市排队、露营、喝酒等不合理场景？如果有，必须重写。
 - 生成后自检一次：是否机械使用"昨天""前几天""上周"？如果时间不确定，改成"最新刷到""这两天看到""整理今天线索时看到"。
@@ -2185,8 +2160,7 @@ def markdown_to_wechat_html(md: str) -> str:
         flush_list()
         line = re.sub(r"\[([^\]]+)\]\(([^)]+)\)", r"\1", line)
         line = re.sub(r"`([^`]+)`", r"\1", line)
-        for paragraph in split_long_plain_paragraph(line):
-            blocks.append(f'<p style="margin: 0 0 18px; line-height: 1.9;">{inline_markdown_to_wechat_html(paragraph)}</p>')
+        blocks.append(f'<p style="margin: 0 0 18px; line-height: 1.9;">{inline_markdown_to_wechat_html(line)}</p>')
 
     flush_list()
     return "\n".join(blocks)

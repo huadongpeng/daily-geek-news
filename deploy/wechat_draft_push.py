@@ -104,34 +104,6 @@ def inline_markdown(text: str) -> str:
     return escaped
 
 
-def split_long_plain_paragraph(text: str, limit: int = 120) -> List[str]:
-    text = clean_text(text).strip()
-    if len(text) <= limit:
-        return [text] if text else []
-    parts = re.findall(r"[^。！？!?；;，,、]+[。！？!?；;，,、]?", text) or [text]
-    chunks: List[str] = []
-    current = ""
-    for part in parts:
-        if len(part) > limit:
-            if current.strip():
-                chunks.append(current.strip())
-                current = ""
-            for start in range(0, len(part), limit):
-                chunk = part[start:start + limit].strip()
-                if chunk:
-                    chunks.append(chunk)
-            continue
-        next_text = current + part
-        if current and len(next_text) > limit:
-            chunks.append(current.strip())
-            current = part
-        else:
-            current = next_text
-    if current.strip():
-        chunks.append(current.strip())
-    return chunks
-
-
 def markdown_to_wechat_html(md: str) -> str:
     blocks: List[str] = []
     list_items: List[str] = []
@@ -184,8 +156,7 @@ def markdown_to_wechat_html(md: str) -> str:
         flush_list()
         line = re.sub(r"\[([^\]]+)\]\(([^)]+)\)", r"\1", line)
         line = re.sub(r"`([^`]+)`", r"\1", line)
-        for paragraph in split_long_plain_paragraph(line):
-            blocks.append(f'<p style="margin: 0 0 18px; line-height: 1.9;">{inline_markdown(paragraph)}</p>')
+        blocks.append(f'<p style="margin: 0 0 18px; line-height: 1.9;">{inline_markdown(line)}</p>')
 
     flush_list()
     return "\n".join(blocks)
