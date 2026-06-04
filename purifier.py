@@ -42,6 +42,7 @@ FLASH_THINKING = os.environ.get("DEEPSEEK_FLASH_THINKING", "disabled")
 FLASH_REASONING_EFFORT = os.environ.get("DEEPSEEK_FLASH_REASONING_EFFORT", "low")
 PRO_THINKING = os.environ.get("DEEPSEEK_PRO_THINKING", os.environ.get("DEEPSEEK_THINKING", "enabled"))
 PRO_REASONING_EFFORT = os.environ.get("DEEPSEEK_PRO_REASONING_EFFORT", os.environ.get("DEEPSEEK_REASONING_EFFORT", "max"))
+PRO_ARTICLE_MAX_TOKENS = int(os.environ.get("DEEPSEEK_PRO_ARTICLE_MAX_TOKENS", "24000"))
 DEEPSEEK_API_KEY = os.environ.get("DEEPSEEK_API_KEY")
 TG_BOT_TOKEN = os.environ.get("TELEGRAM_BOT_TOKEN")
 TG_CHAT_ID = os.environ.get("TELEGRAM_CHAT_ID")
@@ -932,10 +933,14 @@ def llm_json(
 
     last_error: Exception | None = None
     max_attempts = 3
+    downgraded_reasoning = False
+    capped_max_tokens = max_tokens
     for attempt in range(max_attempts):
         chosen_model = model or FLASH_MODEL
         chosen_thinking = FLASH_THINKING if thinking_type is None else thinking_type
         chosen_effort = FLASH_REASONING_EFFORT if reasoning_effort is None else reasoning_effort
+        if downgraded_reasoning and chosen_effort == "max":
+            chosen_effort = "high"
         user_content = user
         if attempt:
             user_content = (
@@ -945,7 +950,7 @@ def llm_json(
             )
         payload: dict[str, Any] = {
             "model": chosen_model,
-            "max_tokens": max_tokens,
+            "max_tokens": capped_max_tokens,
             "response_format": {"type": "json_object"},
             "thinking": {"type": chosen_thinking},
             "messages": [{"role": "system", "content": system}, {"role": "user", "content": user_content}],
@@ -966,6 +971,32 @@ def llm_json(
         except requests.exceptions.HTTPError as exc:
             last_error = exc
             status_code = exc.response.status_code if exc.response is not None else None
+            response_text = ""
+            if exc.response is not None:
+                try:
+                    response_text = exc.response.text[:1200]
+                except Exception:
+                    response_text = ""
+            print(
+                "   ⚠️ DeepSeek HTTP error: "
+                f"status={status_code} model={chosen_model} thinking={chosen_thinking} "
+                f"effort={chosen_effort} max_tokens={capped_max_tokens} "
+                f"prompt_chars={len(system) + len(user_content)} response={response_text}"
+            )
+            if (
+                status_code == 400
+                and chosen_thinking == "enabled"
+                and chosen_effort == "max"
+                and not downgraded_reasoning
+                and attempt < max_attempts - 1
+            ):
+                downgraded_reasoning = True
+                print("   ↪️ Pro max 请求被拒，改用 Pro high 重试一次")
+                continue
+            if status_code == 400 and capped_max_tokens > 16000 and attempt < max_attempts - 1:
+                capped_max_tokens = 16000
+                print("   ↪️ 请求仍被拒，临时将 max_tokens 降到 16000 后重试")
+                continue
             if status_code and status_code >= 500 and attempt < max_attempts - 1:
                 wait_s = 5 * (attempt + 1)
                 print(f"   ⚠️ DeepSeek HTTP {status_code}，第 {attempt + 1}/{max_attempts} 次失败，{wait_s}s 后重试")
@@ -1644,10 +1675,13 @@ def compose_investigation_reports(
     if recent_index and recent_index.source_urls:
         recent_block += (
             "\n【近7天已使用过的深度来源 URL（相同来源或同一事件换标题时直接跳过，不要输出）】\n"
-            + "\n".join(f"- {u}" for u in sorted(recent_index.source_urls)[:80])
+            + "\n".join(f"- {u}" for u in sorted(recent_index.source_urls)[:40])
             + "\n"
         )
     local_context = build_local_context(slot)
+    filtered_context = {
+        "deep_candidates": filtered.get("deep_candidates", []),
+    }
     return llm_json(
         system=(
             "你是一名专业中文深度作者，负责撰写供网站和公众号复用的老花式信息追踪文章。"
@@ -1672,21 +1706,21 @@ def compose_investigation_reports(
 {local_context}
 
 【信息探索与研究方法论（必须严格遵守）】
-{research_method[:40000]}
+{research_method[:24000]}
 
 【老花文章可读性约束（吸收风格规则；严谨调查内核，真实追踪过程外形）】
-{writing_method[:24000]}
+{writing_method[:18000]}
 
 {recent_block}
 【主题映射】
 {json.dumps(topic_titles, ensure_ascii=False)}
 
 【初筛结果】
-{json.dumps(filtered, ensure_ascii=False)[:80000]}
+{json.dumps(filtered_context, ensure_ascii=False)[:30000]}
 
 【已通过证据门槛的深度候选与 AI 引导检索研究笔记】
 （每个候选包含 research_notes / evidence_count / evidence_domains 字段：基于 seed URL、DDGS 搜索结果和可抓取正文生成，含已确认事实/推断/来源分层）
-{json.dumps(researched, ensure_ascii=False)[:300000]}
+{json.dumps(researched, ensure_ascii=False)[:180000]}
 
 请输出 JSON：
 {{
@@ -1775,7 +1809,7 @@ def compose_investigation_reports(
 - 有实质深度，不是新闻摘要——字数服从内容需要，不要为凑字数堆废话。
 - sources 只收录文章正文中实际引用的高/中可信来源，格式 [{{"name": "来源名", "url": "https://..."}}]，2-8 个，url 必须是完整链接，不得用线索级来源。
 """,
-        max_tokens=64000,
+        max_tokens=PRO_ARTICLE_MAX_TOKENS,
         model=PRO_MODEL,
         thinking_type=PRO_THINKING,
         reasoning_effort=PRO_REASONING_EFFORT,
