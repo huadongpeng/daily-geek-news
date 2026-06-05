@@ -1,95 +1,95 @@
 ---
-title: "AI工具大升级，副业新路子来了"
+title: "AI工具降价、副业新方向、出海信号与生活信号"
 date: 2026-06-05T06:00:00+08:00
-updated: 2026-06-05T06:38:41+08:00
+updated: 2026-06-05T09:53:32+08:00
 categories: ["daily-briefing"]
 tags: ["简讯", "morning"]
-wordCount: 858
+wordCount: 1054
 draft: false
-description: "GitHub Copilot百万token上下文和OpenAI记忆升级，程序员效率要起飞；AI目录站副业月成本25美元，普通人可试；加拿大数字游民规则明确，远程工作新选择。"
+description: "GitHub Copilot百万token上下文上线，Cursor降价，AI代理进入苹果消息平台，Meta推出AI创作者助手，Anthropic开源漏洞框架。副业方面，AI穿搭和转录工具有新机会。出海关注稀缺性驱动的AI创新，生活信号关注AI安全与能源政策。"
 cover: "/images/covers/briefing-2026-06-05-morning.jpg"
 ---
 
 > 2026年06月05日 · morning · 12 条简讯
-GitHub Copilot百万token上下文和OpenAI记忆升级，程序员效率要起飞；AI目录站副业月成本25美元，普通人可试；加拿大数字游民规则明确，远程工作新选择。
+GitHub Copilot百万token上下文上线，Cursor降价，AI代理进入苹果消息平台，Meta推出AI创作者助手，Anthropic开源漏洞框架。副业方面，AI穿搭和转录工具有新机会。出海关注稀缺性驱动的AI创新，生活信号关注AI安全与能源政策。
 
 ## AI 工具前线
-### GitHub Copilot百万token上下文
-**来源**：GitHub Changelog `高` https://github.blog/changelog/2026-06-04-larger-context-windows-and-configurable-reasoning-levels-for-github-copilot
+### GitHub Copilot百万token上下文上线
+**来源**：GitHub Blog `高` https://github.blog/changelog/2026-06-04-larger-context-windows-and-configurable-reasoning-levels-for-github-copilot
 
-百万token意味着Copilot能看懂整个项目，重构、debug效率翻倍，老花我准备升级Pro+试试。
+百万token上下文意味着Copilot能理解整个大型代码库，调试和重构效率可能大幅提升。
 
-> 升级到Copilot Pro+，在VS Code中打开一个大型项目，测试上下文理解效果。
-### Copilot Agent Tasks REST API
-**来源**：GitHub Changelog `高` https://github.blog/changelog/2026-06-04-agent-tasks-rest-api-now-available-for-copilot-pro-pro-and-max
+> 如果你是Copilot Pro/Pro+/Max用户，今天就在设置中开启更大上下文窗口，试试处理一个复杂PR。
+### Cursor降价并增加企业支出控制
+**来源**：The New Stack `高` https://thenewstack.io/cursor-pricing-token-billing/
 
-能编程调用Copilot自动修CI失败，省去手动排查时间，适合小团队自动化。
+Cursor调整定价模式，可能影响AI编码工具的性价比格局，个人开发者和小团队受益。
 
-> 查看API文档，写个脚本让Copilot自动修复失败的GitHub Actions。
-### OpenAI ChatGPT记忆系统升级
-**来源**：OpenAI News `高` https://openai.com/index/chatgpt-memory-dreaming
-
-ChatGPT记住你的偏好，不用每次重复说，日常用起来更顺手。
-
-> 在ChatGPT设置中开启记忆，测试跨会话是否记住你的代码风格。
-### Apple批准Poke为Messages AI代理
+> 检查你的Cursor订阅计划，如果之前因价格犹豫，现在可以重新评估是否值得切换。
+### Apple批准Poke为首个Messages AI代理
 **来源**：TechCrunch `高` https://techcrunch.com/2026/06/04/apple-approves-poke-as-the-first-ai-agent-on-its-messages-for-business-platform/
 
-AI代理进入iMessage企业客服，可能成为新渠道，值得关注。
+AI代理进入苹果商业消息平台，可能开启新的客服和自动化副业机会。
 
-> 注册Poke，测试通过iMessage调用AI代理完成简单任务。
-### Meta推出Facebook AI创作者助手
+> 如果你是iOS开发者，研究Poke的API文档，评估能否为自己的业务集成类似功能。
+### Meta在Facebook推出AI创作者助手
 **来源**：TechCrunch `高` https://techcrunch.com/2026/06/04/meta-rolls-out-a-new-ai-creator-assistant-on-facebook/
 
-AI帮你分析数据、优化发布时间，做内容副业的有福了。
+AI助手帮助创作者分析数据、优化发布时间，可能改变内容创作和运营方式。
 
-> 在Facebook创作者工作室启用AI助手，查询最佳发布时间。
+> 如果你是Facebook创作者，今天就在Creator Studio中尝试使用AI助手，提问“何时发布最佳”。
+### Anthropic开源AI漏洞发现框架
+**来源**：GitHub `高` https://github.com/anthropics/defending-code-reference-harness
+
+开源框架让开发者能用AI自动发现代码漏洞，降低安全审计成本。
+
+> 克隆仓库并运行示例，测试在你的项目中发现漏洞的效果。
 ---
 ## 副业实验室
-### AI策展目录对抗Google AI Overview
-**来源**：DEV Community `中` https://dev.to/morinaga/why-im-betting-on-ai-curated-directories-when-google-ai-overviews-answer-the-same-queries-i5m
+### AI穿搭小程序：Vibe Coding新方向
+**来源**：V2EX `中` https://www.v2ex.com/t/1218042#reply0
 
-月成本25美元建目录站，对抗AI Overview，副业新思路，但流量为零需验证。
+AI时尚赛道门槛低，个人开发者可用AI快速验证需求，适合副业尝试。
 
-> 研究其架构，尝试用AI工具搭建一个细分领域的目录站。
-### AI安全扫描器OpenHack开源
-**来源**：Hacker News `中` https://github.com/openhackai/openhack
+> 用AI图像API（如Ideogram 4.0）搭建一个简单的穿搭评分原型，测试用户反馈。
+### AI转录总结工具上线sipsip.ai
+**来源**：V2EX `中` https://www.v2ex.com/t/1218020#reply0
 
-开源安全扫描，成本比商业方案低40倍，可自建安全服务。
+开源项目转在线服务，证明AI转录总结有市场需求，可复制模式。
 
-> 克隆仓库，在本地或CI中运行扫描，评估效果。
+> 分析sipsip.ai的功能和定价，考虑是否能用类似思路做垂直领域（如播客、课程）的转录工具。
 ---
 ## 出海信号
-### 加拿大明确数字游民规则
-**来源**：Reddit r/digitalnomad `高` https://www.reddit.com/r/digitalnomad/comments/1twzq37/canadian_government_clarifies_rules_around/
+### 稀缺性驱动硅谷外AI创新
+**来源**：Rest of World `高` https://restofworld.org/2026/scarcity-is-driving-ai-innovation-outside-silicon-valley/
 
-加拿大允许远程工作者停留6个月，不视为进入劳动力市场，利好数字游民。
+印度、巴西、非洲等地因算力稀缺催生本地AI栈，可能成为出海机会。
 
-> 查看IRCC官方声明，评估是否符合条件，准备签证材料。
-### Meta智能眼镜隐藏面部识别代码
+> 阅读文章，关注这些地区的AI基础设施和创业生态，评估是否有可迁移的技术或商业模式。
+### Meta智能眼镜悄悄加入面部识别代码
 **来源**：WIRED `高` https://www.wired.com/story/meta-smart-glasses-face-recognition-nametag-connections/
 
-面部识别可能引发隐私争议，影响智能眼镜市场接受度。
+面部识别功能可能引发隐私争议，影响智能眼镜市场和相关应用开发。
 
-> 关注Meta官方回应，评估对Ray-Ban Meta眼镜购买决策的影响。
-### Uber限制AI工具月费1500美元
-**来源**：Simon Willison's Weblog `高` https://simonwillison.net/2026/Jun/3/uber-caps-usage/
-
-企业AI成本控制成为趋势，个人开发者可能受益于工具降价。
-
-> 对比Claude Code和Copilot定价，选择性价比最高的工具。
+> 如果你在开发AR/VR应用，关注Meta的隐私政策变化，评估对产品合规的影响。
 ---
 ## 生活信号
-### SpaceX估值1.75万亿美元IPO
+### Anthropic联合创始人呼吁AI需“刹车”
+**来源**：BBC News `高` https://www.bbc.com/news/articles/cx2124z7g45o
+
+AI安全讨论升温，可能影响监管政策，进而影响AI工具的使用和开发。
+
+> 关注Anthropic的安全研究，思考如何在项目中平衡AI能力与风险。
+### 特朗普动用战时权力投资7亿美元煤炭
+**来源**：BBC News `高` https://www.bbc.com/news/articles/cy0209r62k5o
+
+能源政策转向可能推高电价，影响数据中心运营成本和AI训练费用。
+
+> 如果你是独立开发者，评估云服务商是否因能源成本涨价，考虑提前锁定价格。
+### SpaceX估值1.75万亿美元启动IPO
 **来源**：BBC News `高` https://www.bbc.com/news/articles/cvgz237n40jo
 
-SpaceX IPO可能成为史上最大，影响科技股和散户投资机会。
+SpaceX上市可能带动太空经济投资热潮，相关技术岗位和创业机会增加。
 
-> 关注IPO日期，评估是否参与打新。
-### Meta用帐篷建数据中心降本
-**来源**：TechCrunch `高` https://techcrunch.com/2026/06/04/meta-steals-a-tactic-from-tesla-and-builds-data-centers-in-tents/
-
-数据中心成本创新低，可能降低AI服务价格，利好开发者。
-
-> 关注Meta后续API降价动态。
+> 关注IPO细节，评估是否参与投资，或研究太空技术相关副业（如卫星数据应用）。
 ---
