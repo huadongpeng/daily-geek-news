@@ -13,5 +13,5 @@ node_modules/
 # Hugo legacy (can be removed once fully migrated)
 resources/_gen/
 
-# WeChat article drafts — delivered by email, not committed
+# WeChat article drafts — delivered by artifacts/drafts, not committed
 outputs/wechat_articles/

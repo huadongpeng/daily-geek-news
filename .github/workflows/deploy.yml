@@ -69,6 +69,7 @@ jobs:
           EMAIL_FROM:                      ${{ secrets.EMAIL_FROM }}
           EMAIL_PASSWORD:                  ${{ secrets.EMAIL_PASSWORD }}
           EMAIL_TO:                        ${{ secrets.EMAIL_TO }}
+          WECHAT_DRAFT_ENABLED:            "false"
           INDEXNOW_KEY:                    ${{ secrets.INDEXNOW_KEY || 'hdop-indexnow-key' }}
           BAIDU_PUSH_TOKEN:                ${{ secrets.BAIDU_PUSH_TOKEN }}
           PYTHONIOENCODING:                "utf-8"
@@ -83,9 +84,7 @@ jobs:
             .cache/radar/new_push_urls.json
             .cache/radar/pending_push_urls_*.json
             .cache/radar/source_health.json
-            outputs/social_assets/**/*
-            outputs/x_drafts/*.md
-            outputs/x_drafts/*.json
+            outputs/wechat_articles/**/*
           if-no-files-found: ignore
           retention-days: 14
 
@@ -180,6 +179,33 @@ jobs:
             -e "ssh -i ~/.ssh/deploy_key" \
             dist/ \
             "${{ secrets.VPS_USER }}@${{ secrets.VPS_IP }}:/ws/web/www.huadongpeng.com/"
+
+      - name: Push WeChat drafts from VPS
+        env:
+          WECHAT_DRAFT_SCRIPT_PATH: ${{ vars.WECHAT_DRAFT_SCRIPT_PATH || '/ws/scripts/easton_wechat_draft_push.py' }}
+          WECHAT_DRAFT_REMOTE_DIR:  ${{ vars.WECHAT_DRAFT_REMOTE_DIR || '/tmp/easton-radar-wechat' }}
+        run: |
+          DRAFT_SRC="$(find radar-runtime-artifacts -path '*/outputs/wechat_articles' -type d -print -quit 2>/dev/null || true)"
+          if [ -z "$DRAFT_SRC" ]; then
+            echo "No WeChat draft artifact directory found; skip WeChat draft push."
+            exit 0
+          fi
+          if ! find "$DRAFT_SRC" -name '*-draft.json' -print -quit | grep -q .; then
+            echo "No WeChat draft payloads found; skip WeChat draft push."
+            exit 0
+          fi
+
+          REMOTE_SCRIPT_DIR="$(dirname "$WECHAT_DRAFT_SCRIPT_PATH")"
+          ssh -i ~/.ssh/deploy_key "${{ secrets.VPS_USER }}@${{ secrets.VPS_IP }}" \
+            "mkdir -p \"$REMOTE_SCRIPT_DIR\" \"$WECHAT_DRAFT_REMOTE_DIR\""
+          rsync -avz -e "ssh -i ~/.ssh/deploy_key" \
+            deploy/wechat_draft_push.py \
+            "${{ secrets.VPS_USER }}@${{ secrets.VPS_IP }}:$WECHAT_DRAFT_SCRIPT_PATH"
+          rsync -avz --delete -e "ssh -i ~/.ssh/deploy_key" \
+            "$DRAFT_SRC/" \
+            "${{ secrets.VPS_USER }}@${{ secrets.VPS_IP }}:$WECHAT_DRAFT_REMOTE_DIR/"
+          ssh -i ~/.ssh/deploy_key "${{ secrets.VPS_USER }}@${{ secrets.VPS_IP }}" \
+            "python3 \"$WECHAT_DRAFT_SCRIPT_PATH\" --input-dir \"$WECHAT_DRAFT_REMOTE_DIR\""
 
       - name: Submit deployed URLs to search engines
         env:
