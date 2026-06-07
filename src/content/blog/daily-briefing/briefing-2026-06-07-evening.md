@@ -1,95 +1,95 @@
 ---
-title: "AI 工具前线：Lockdown Mode 上线，Claude 子代理来了；副业实验室：Vercel 96% 营销靠 AI 代理；出海信号：沙特 NEOM 收缩，腾讯入局企业 AI；生活信号：远程工作有坑，蛋糕棚副业梦碎"
+title: "AI代理3天赚$10K？先别急着冲"
 date: 2026-06-07T18:00:00+08:00
-updated: 2026-06-07T18:53:12+08:00
+updated: 2026-06-07T23:30:35+08:00
 categories: ["daily-briefing"]
 tags: ["简讯", "evening"]
-wordCount: 869
+wordCount: 1003
 draft: false
-description: "今天重点：OpenAI Lockdown Mode 正式上线，开发者必须了解；Vercel 用 AI 代理完成 96% 营销，小团队可复制；沙特 NEOM 取消 160 亿美元合同，可能释放外包资源；远程工作对 Z 世代有职业风险，需主动应对。"
+description: "今晚副业线索扎堆，AI代理赚钱、开源小工具、蛋糕小屋都有真实案例，但沙特项目收缩和远程工作风险提醒我们：机会和坑并存，先查清楚再动手。"
 cover: "/images/covers/briefing-2026-06-07-evening.jpg"
 ---
 
 > 2026年06月07日 · evening · 12 条简讯
-今天重点：OpenAI Lockdown Mode 正式上线，开发者必须了解；Vercel 用 AI 代理完成 96% 营销，小团队可复制；沙特 NEOM 取消 160 亿美元合同，可能释放外包资源；远程工作对 Z 世代有职业风险，需主动应对。
+今晚副业线索扎堆，AI代理赚钱、开源小工具、蛋糕小屋都有真实案例，但沙特项目收缩和远程工作风险提醒我们：机会和坑并存，先查清楚再动手。
 
-## AI 工具前线
-### OpenAI Lockdown Mode 正式上线
-**来源**：TechCrunch `高` https://techcrunch.com/2026/06/06/openai-unveils-lockdown-mode-to-protect-sensitive-data-from-prompt-injection-attacks/
-
-防止提示注入导致数据泄露，如果你用 ChatGPT 处理敏感信息，必须开启。
-
-> 登录 ChatGPT 设置，开启 Lockdown Mode，测试对现有工作流的影响。
-### Anthropic Claude MCP 子代理功能
-**来源**：DEV Community `中` https://dev.to/curatedmcp/anthropic-claude-mcp-run-claude-as-a-sub-agent-inside-claude-5aa6
-
-在 Claude 里嵌套子代理，并行处理复杂任务，效率可能翻倍。
-
-> 安装 MCP 服务器，尝试在 Claude 中调用 Haiku/Sonnet 作为子代理。
-### MicroPython WASM 沙箱发布
-**来源**：Simon Willison's Weblog `高` https://simonwillison.net/2026/Jun/6/micropython-in-a-sandbox/
-
-浏览器里安全跑 Python 代码，适合构建可执行代码的 AI 工具。
-
-> 试用 micropython-wasm 包，在本地运行示例沙箱。
-### Netlify CTO：写代码不再是工作
-**来源**：The New Stack `高` https://thenewstack.io/netlify-agent-experience-engineers/
-
-AI 代理改变开发角色，程序员得转型为代理体验工程师。
-
-> 阅读原文，思考自身技能转型方向。
----
 ## 副业实验室
-### Vercel 96%营销由AI代理完成
-**来源**：SaaStr `高` https://www.saastr.com/how-vercel-runs-on-ai-agents-96-of-marketing-93-of-support-and-an-sdr-team-reabsorbed-a-deep-dive-with-cpo-tom-occhino/
+### AI代理3天赚$10K？实测
+**来源**：DEV Community `线索` https://dev.to/wei_lu_0ee594d83873ac4561/can-an-ai-agent-make-money-on-its-own-i-tried-for-3-days-3eno
 
-Vercel 用 AI 代理干掉了 96% 营销和 93% 支持，小团队可以直接抄作业。
+AI代理自主赚钱的案例，有具体数字和操作步骤，普通人可低成本复现验证。
 
-> 分析 Vercel 的 AI 代理栈，评估哪些工具可免费试用。
-### Aurasell CEO：砍掉GTM堆栈
-**来源**：SaaStr `高` https://www.saastr.com/22-tools-3m-in-fees-11-ops-people-aurasells-case-for-killing-the-gtm-stack/
+> 花1小时阅读原文，记录其GitHub bounty扫描流程，评估是否适合自己试跑。
+### 半年100+小工具开源
+**来源**：V2EX `中` https://www.v2ex.com/t/1218534#reply27
 
-22 个工具年费 300 万美元，AI 可以替代大部分，副业省钱了。
+个人开发者半年产出100+插件，展示低门槛工具开发的可行性和变现潜力。
 
-> 列出自己使用的 GTM 工具，评估哪些可被 AI 替代。
-### 半年写了100+小工具开源
-**来源**：V2EX `中` https://www.v2ex.com/t/1218534
+> 访问TINKER仓库，研究其插件架构，思考自己能做的轻量工具方向。
+### 蛋糕小屋周入£1000
+**来源**：BBC News `高` https://www.bbc.com/news/articles/crlpwd2prd0o
 
-开源工具箱 TINKER，可二次开发或集成到副业产品。
+真实副业案例，展示本地化小生意的收入潜力，但面临监管风险。
 
-> 下载 TINKER，研究其插件架构，考虑贡献或复用。
+> 阅读文章，了解英国蛋糕小屋的运营模式和监管挑战，评估本地类似机会。
+### V2EX接单：K8s运维
+**来源**：V2EX `中` https://www.v2ex.com/t/1218506#reply3
+
+技术技能变现的真实接单案例，展示运维服务的市场需求和定价。
+
+> 分析其服务列表，评估自己的技术栈能否提供类似服务，尝试在平台发布接单帖。
+### AI视频编辑代理副业
+**来源**：DEV Community `线索` https://dev.to/already_herellc_c954583f/how-to-build-a-faceless-youtube-channel-with-ai-in-30-days-320m
+
+30天搭建AI无脸YouTube频道，有具体日程和工具推荐，适合内容创作副业。
+
+> 按文章Day1-7计划，花2小时研究一个细分领域，确定频道定位。
+---
+## AI 工具前线
+### Claude浏览器代理自动化
+**来源**：DEV Community `中` https://dev.to/henryknight_dev/i-built-a-claude-browser-agent-that-automates-playwright-tasks-heres-the-starter-kit-40p9
+
+开源Claude+Playwright自动化方案，解决浏览器测试维护痛点，开发者可立即试用。
+
+> 克隆GitHub仓库，花30分钟运行示例，评估能否用于自己的自动化任务。
+### 本地LLM不烧GPU指南
+**来源**：DEV Community `中` https://dev.to/learnairesource/running-local-llms-without-burning-out-your-gpu-38e9
+
+量化模型部署技巧，让普通开发者低成本运行本地LLM，节省API费用。
+
+> 尝试用GGUF量化模型在本地运行一个7B模型，记录内存和速度表现。
+### Hearth：K8s零成本LLM
+**来源**：DEV Community `中` https://dev.to/kubegopher/hearth-scale-to-zero-llm-serving-on-kubernetes-and-you-can-hack-on-it-without-a-gpu-bn2
+
+开源K8s算子实现LLM按需启动/休眠，节省GPU成本，适合自部署场景。
+
+> 阅读项目README，在本地K8s集群中部署测试，验证scale-to-zero效果。
 ---
 ## 出海信号
-### 沙特NEOM面临160亿美元取消合同
+### 沙特NEOM取消合同$16B
 **来源**：Semafor `高` https://www.semafor.com/article/06/07/2026/saudis-neom-faces-16-billion-bill-to-cancel-neom-contracts
 
-中东大项目收缩，可能释放 IT 外包和人才资源，关注机会。
+沙特超级项目收缩，可能释放大量IT外包和人才资源，影响出海接单机会。
 
-> 关注 NEOM 相关技术供应商动态，评估合作机会。
-### 腾讯正式进入企业AI工程领域
-**来源**：Pandaily `高` https://pandaily.com/tencent-workbuddy-enterprise-ai-jun2026
+> 关注NEOM相关供应商和分包商动态，评估是否有短期技术咨询需求。
+### 腾讯WorkBuddy企业AI
+**来源**：Pandaily `中` https://pandaily.com/tencent-workbuddy-enterprise-ai-jun2026
 
-腾讯发力企业 AI，可能改变国内 AI 应用生态。
+腾讯正式入局企业AI工程化，可能改变国内AI工具生态，影响开发者技术选型。
 
-> 了解腾讯 WorkBuddy 功能，对比现有企业 AI 工具。
+> 阅读文章，了解WorkBuddy功能，对比现有企业AI方案，评估是否值得学习。
 ---
 ## 生活信号
 ### 远程工作对Z世代职业风险
 **来源**：CNBC `高` https://www.cnbc.com/2026/06/06/remote-work-career-risks-for-gen-z-how-to-avoid-the-pitfalls.html
 
-远程工作可能影响晋升和人脉，需要主动弥补。
+哈佛教授指出远程工作对年轻员工的隐性职业伤害，影响个人职业规划。
 
-> 评估自身远程工作模式，制定定期线下社交计划。
-### 美国确认第二例螺旋蝇病例
-**来源**：CNBC `高` https://www.cnbc.com/2026/06/06/us-confirms-second-texas-screwworm-case.html
+> 阅读文章，反思自己的远程工作习惯，制定每周至少一次线下社交计划。
+### 伊朗战争100天市场影响
+**来源**：CNBC `高` https://www.cnbc.com/2026/06/07/iran-war-100-days-trump-stocks-sp500-bonds-oil.html
 
-影响畜牧业和食品价格，可能推高肉类成本。
+地缘冲突持续影响全球市场，可能推高通胀和利率，影响个人投资和消费决策。
 
-> 关注疫情发展，调整家庭食品采购预算。
-### 蛋糕棚每周赚1000英镑但梦碎
-**来源**：BBC `高` https://www.bbc.com/news/articles/crlpwd2prd0o
-
-家庭烘焙副业面临监管风险，需合规经营。
-
-> 若从事食品副业，检查当地法规和许可证要求。
+> 检查个人资产配置，考虑增加避险资产比例，关注油价对日常开支的影响。
 ---
