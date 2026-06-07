@@ -2825,6 +2825,62 @@ def parse_frontmatter_scalar(value: str) -> Any:
         return value
 
 
+def tg_escape(value: Any) -> str:
+    return html.escape(clean_unicode_text(value), quote=False)
+
+
+def send_telegram_message(lines: list[str], thread_id: str | None = None) -> bool:
+    if not TG_BOT_TOKEN or not TG_CHAT_ID:
+        return False
+    text = "\n".join(line for line in lines if line is not None).strip()
+    if not text:
+        return False
+
+    thread_payload: dict[str, int] = {}
+    if thread_id:
+        try:
+            thread_payload["message_thread_id"] = int(thread_id)
+        except (TypeError, ValueError):
+            print(f"   ⚠️ Telegram topic id 无效，改发到默认会话: {thread_id}")
+
+    chunks: list[str] = []
+    current = ""
+    for line in text.splitlines():
+        next_text = f"{current}\n{line}".strip() if current else line
+        if current and len(next_text) > 3900:
+            chunks.append(current)
+            current = line
+        else:
+            current = next_text
+    if current:
+        chunks.append(current)
+
+    ok = True
+    for chunk in chunks:
+        payload: dict[str, Any] = {
+            "chat_id": TG_CHAT_ID,
+            "text": chunk,
+            "parse_mode": "HTML",
+            "disable_web_page_preview": True,
+            **thread_payload,
+        }
+        try:
+            resp = requests.post(
+                f"https://api.telegram.org/bot{TG_BOT_TOKEN}/sendMessage",
+                json=payload,
+                timeout=30,
+            )
+            resp.raise_for_status()
+            data = resp.json()
+            if not data.get("ok"):
+                print(f"   ⚠️ Telegram 发送失败: {data}")
+                ok = False
+        except Exception as exc:
+            print(f"   ⚠️ Telegram 发送失败: {exc}")
+            ok = False
+    return ok
+
+
 def _send_telegram_summary(
     briefing: dict[str, Any],
     investigation_reports: list[dict[str, Any]],
