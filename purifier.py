@@ -13,6 +13,7 @@ if sys.platform == "win32":
 import hashlib
 import html
 import json
+import mimetypes
 import os
 import re
 import smtplib
@@ -68,13 +69,14 @@ EMAIL_FROM = os.environ.get("EMAIL_FROM", "")
 EMAIL_PASSWORD = os.environ.get("EMAIL_PASSWORD", "")
 EMAIL_TO = os.environ.get("EMAIL_TO", "huadongpeng@outlook.com")
 EMAIL_SMTP_HOST = os.environ.get("EMAIL_SMTP_HOST", "")
-EMAIL_SMTP_PORT = int(os.environ.get("EMAIL_SMTP_PORT", "0"))
+EMAIL_SMTP_PORT = int(os.environ.get("EMAIL_SMTP_PORT") or "0")
 INDEXNOW_KEY = os.environ.get("INDEXNOW_KEY", "hdop-indexnow-key")
 BAIDU_PUSH_TOKEN = os.environ.get("BAIDU_PUSH_TOKEN", "")
 ROOT = Path(__file__).resolve().parent
 CONTENT_DIR = ROOT / "src" / "content" / "blog"
 CACHE_DIR = ROOT / ".cache" / "radar"
 WECHAT_OUTPUT_DIR = ROOT / "outputs" / "wechat_articles"
+SOCIAL_OUTPUT_DIR = ROOT / "outputs" / "social_assets"
 X_DRAFT_OUTPUT_DIR = ROOT / "outputs" / "x_drafts"
 NEW_PUSH_URLS_PATH = CACHE_DIR / "new_push_urls.json"
 COVERS_DIR = ROOT / "public" / "images" / "covers"
@@ -86,12 +88,16 @@ WECHAT_TITLE_MAX_CHARS = 64
 WECHAT_DIGEST_MAX_BYTES = 120
 SOURCES_CONFIG_PATH = Path(os.environ.get("SOURCES_CONFIG_PATH", ROOT / "config" / "sources.json"))
 SILICONFLOW_API_KEY = os.environ.get("SILICONFLOW_API_KEY")
+COVER_IMAGE_MODEL = os.environ.get("COVER_IMAGE_MODEL", "Kwai-Kolors/Kolors")
+SOCIAL_IMAGE_MODEL = os.environ.get("SOCIAL_IMAGE_MODEL", "Kwai-Kolors/Kolors")
+SOCIAL_IMAGE_STEPS = int(os.environ.get("SOCIAL_IMAGE_STEPS", "28"))
 ALLOW_POLLINATIONS_COVER = os.environ.get("ALLOW_POLLINATIONS_COVER", "true").lower() not in {"0", "false", "no"}
 # Reddit IP-blocks datacenter ranges (GitHub Actions) on its public .rss; authenticated OAuth
 # (app-only client_credentials) is exempt. Configure a "script" app's id/secret to enable it.
 REDDIT_CLIENT_ID = os.environ.get("REDDIT_CLIENT_ID", "")
 REDDIT_CLIENT_SECRET = os.environ.get("REDDIT_CLIENT_SECRET", "")
 REDDIT_USER_AGENT = os.environ.get("REDDIT_USER_AGENT", "script:easton-radar:4.0 (by /u/easton-radar)")
+TAVILY_API_KEY = os.environ.get("TAVILY_API_KEY", "")
 MIN_EVIDENCE_ITEMS = 3
 MIN_EVIDENCE_DOMAINS = 2
 MAX_FULLTEXT_EVIDENCE = 8
@@ -376,6 +382,13 @@ WRITING_METHOD_DEFAULT = """
 - 禁止把"我会怎么做/我现在怎么做/我不是建议你立刻冲"写成固定小标题或固定尾段
 """
 
+XHS_PERSONA_DEFAULT = """
+快35岁的程序员，用AI系统化构建副业退路。
+真实经历：失业330天→法院起诉→重新就业。
+不教你用AI，只展示AI怎么帮我活下去。
+关注我看真实折腾日记，不打鸡血。
+"""
+
 
 def bj_now() -> datetime:
     return datetime.now(BJT)
@@ -415,6 +428,12 @@ def load_text_config(env_name: str, default_path: Path, fallback: str) -> str:
     if default_path.exists():
         return default_path.read_text(encoding="utf-8").strip()
     return fallback.strip()
+
+
+def load_xhs_persona() -> str:
+    if os.environ.get("XHS_PERSONA_PATH"):
+        return load_optional_text("XHS_PERSONA_PATH", XHS_PERSONA_DEFAULT)
+    return os.environ.get("XHS_PERSONA", XHS_PERSONA_DEFAULT).strip()
 
 
 def batch_datetime(slot: str) -> datetime:
@@ -489,7 +508,7 @@ def image_dimensions(data: bytes) -> tuple[int, int] | None:
     return None
 
 
-def validate_cover_response(resp: requests.Response, data: bytes) -> bool:
+def validate_cover_response(resp: requests.Response, data: bytes, expected_size: tuple[int, int] | None = EXPECTED_COVER_SIZE) -> bool:
     # Trust the magic bytes, not the content-type header: image CDNs (incl. SiliconFlow)
     # commonly serve real JPEG/PNG/WebP as application/octet-stream.
     content_type = resp.headers.get("content-type", "").lower()
@@ -500,8 +519,8 @@ def validate_cover_response(resp: requests.Response, data: bytes) -> bool:
     if not dims:
         print(f"   ⚠️ 封面下载内容不是有效图片 (content-type={content_type or 'unknown'}, {len(data)} bytes)")
         return False
-    if dims != EXPECTED_COVER_SIZE:
-        print(f"   ⚠️ 封面尺寸 {dims[0]}x{dims[1]}，期望 {EXPECTED_COVER_SIZE[0]}x{EXPECTED_COVER_SIZE[1]}")
+    if expected_size and (abs(dims[0] - expected_size[0]) > 32 or abs(dims[1] - expected_size[1]) > 32):
+        print(f"   ⚠️ 封面尺寸 {dims[0]}x{dims[1]}，期望 {expected_size[0]}x{expected_size[1]}")
     return True
 
 
@@ -537,13 +556,55 @@ def generate_cover_prompt(title: str, summary: str) -> str:
         return "Editorial tech cover image, one concrete focal object, clean 16:9 composition, natural contrast, no text, no logos, no human faces"
 
 
-def generate_cover_image(prompt: str, filename_stem: str) -> str:
-    """Generate cover via SiliconFlow FLUX.1-schnell; fall back to Pollinations.ai.
+def _ratio_to_image_size(size: tuple[int, int]) -> str:
+    width, height = size
+    return f"{width}x{height}"
 
-    Returns the public-relative URL path ("/images/covers/foo.jpg") or empty string.
-    """
+
+def generate_siliconflow_image(prompt: str, filename_stem: str, size: tuple[int, int]) -> str:
+    """Generate an image through SiliconFlow using the configured image model."""
     output_path = COVERS_DIR / f"{filename_stem}.jpg"
+    if not SILICONFLOW_API_KEY:
+        return ""
+    try:
+        payload: dict[str, Any] = {
+            "model": SOCIAL_IMAGE_MODEL,
+            "prompt": prompt,
+            "negative_prompt": "text, watermark, logo, words, letters, numbers, blurry, low quality, nsfw",
+            "image_size": _ratio_to_image_size(size),
+            "num_inference_steps": SOCIAL_IMAGE_STEPS,
+            "guidance_scale": 7.5,
+        }
+        resp = requests.post(
+            "https://api.siliconflow.cn/v1/images/generations",
+            headers={
+                "Authorization": f"Bearer {SILICONFLOW_API_KEY}",
+                "Content-Type": "application/json",
+            },
+            json=payload,
+            timeout=120,
+        )
+        resp.raise_for_status()
+        data = resp.json()
+        images = data.get("images") or data.get("data") or []
+        img_url = images[0].get("url", "") if images else ""
+        if not img_url:
+            return ""
+        img_data = requests.get(img_url, timeout=60)
+        img_data.raise_for_status()
+        if not validate_cover_response(img_data, img_data.content, size):
+            return ""
+        output_path.write_bytes(img_data.content)
+        print(f"   🎨 生图已生成 (SiliconFlow:{SOCIAL_IMAGE_MODEL}): {output_path.name}")
+        return f"/images/covers/{output_path.name}"
+    except Exception as exc:
+        print(f"   ⚠️ SiliconFlow 生图失败: {exc}")
+        return ""
 
+
+def generate_cover_image(prompt: str, filename_stem: str) -> str:
+    """Generate article cover via SiliconFlow (Kolors) first; fall back to Pollinations.ai."""
+    output_path = COVERS_DIR / f"{filename_stem}.jpg"
     if SILICONFLOW_API_KEY:
         try:
             resp = requests.post(
@@ -553,11 +614,12 @@ def generate_cover_image(prompt: str, filename_stem: str) -> str:
                     "Content-Type": "application/json",
                 },
                 json={
-                    "model": "Kwai-Kolors/Kolors",
+                    "model": COVER_IMAGE_MODEL,
                     "prompt": prompt,
                     "negative_prompt": "text, watermark, logo, words, letters, numbers, blurry, low quality, nsfw",
                     "image_size": "1024x576",
                     "num_inference_steps": 20,
+                    "guidance_scale": 7.0,
                 },
                 timeout=120,
             )
@@ -571,13 +633,13 @@ def generate_cover_image(prompt: str, filename_stem: str) -> str:
                 if not validate_cover_response(img_data, img_data.content):
                     return ""
                 output_path.write_bytes(img_data.content)
-                print(f"   🎨 封面图已生成 (SiliconFlow): {output_path.name}")
+                print(f"   🎨 封面图已生成 (SiliconFlow:{COVER_IMAGE_MODEL}): {output_path.name}")
                 return f"/images/covers/{output_path.name}"
         except Exception as exc:
             if ALLOW_POLLINATIONS_COVER:
-                print(f"   ⚠️ SiliconFlow 生图失败，降级到 Pollinations: {exc}")
+                print(f"   ⚠️ SiliconFlow 封面生图失败，降级到 Pollinations: {exc}")
             else:
-                print(f"   ⚠️ SiliconFlow 生图失败，已按配置跳过封面: {exc}")
+                print(f"   ⚠️ SiliconFlow 封面生图失败，已按配置跳过封面: {exc}")
 
     if not ALLOW_POLLINATIONS_COVER:
         if not SILICONFLOW_API_KEY:
@@ -608,12 +670,17 @@ def detect_slot(now: datetime, explicit: str | None) -> str:
     return "morning" if now.hour < 12 else "evening"
 
 
-def ensure_runtime() -> None:
-    if not DEEPSEEK_API_KEY:
-        raise SystemExit("❌ 缺少 DEEPSEEK_API_KEY，无法调用 AI 分析。")
+def ensure_output_dirs() -> None:
     CACHE_DIR.mkdir(parents=True, exist_ok=True)
     WECHAT_OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
+    SOCIAL_OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
     COVERS_DIR.mkdir(parents=True, exist_ok=True)
+
+
+def ensure_runtime() -> None:
+    ensure_output_dirs()
+    if not DEEPSEEK_API_KEY:
+        raise SystemExit("❌ 缺少 DEEPSEEK_API_KEY，无法调用 AI 分析。")
 
 
 def source_health_path() -> Path:
@@ -835,7 +902,11 @@ def fetch_api_source(url: str, limit: int, max_age_hours: int) -> list[dict[str,
         update_source_health(url, False, str(exc))
         return []
 
-    raw_items = data.get("items") if isinstance(data, dict) else data
+    is_algolia = "hn.algolia.com" in url
+    if isinstance(data, dict):
+        raw_items = data.get("items") or data.get("hits")
+    else:
+        raw_items = data
     if not isinstance(raw_items, list):
         return []
     cutoff = bj_now() - timedelta(hours=max_age_hours)
@@ -843,22 +914,38 @@ def fetch_api_source(url: str, limit: int, max_age_hours: int) -> list[dict[str,
     for entry in raw_items[: limit * 2]:
         if not isinstance(entry, dict):
             continue
-        title = strip_tags(str(entry.get("title") or entry.get("title_en") or ""))
+        title = strip_tags(str(entry.get("title") or entry.get("story_title") or entry.get("title_en") or ""))
         if not title:
             continue
-        published_at = parse_api_item_time(entry.get("publishedAt") or entry.get("published_at") or entry.get("date"))
+        published_at = parse_api_item_time(
+            entry.get("publishedAt") or entry.get("published_at") or
+            entry.get("date") or entry.get("created_at")
+        )
         if published_at and published_at < cutoff:
             continue
-        summary = strip_tags(str(entry.get("summary") or entry.get("description") or ""))[:600]
-        source = str(entry.get("source") or hostname(str(entry.get("url") or "")) or "API Source")
+        item_url = str(entry.get("url") or "")
+        if not item_url and is_algolia:
+            obj_id = str(entry.get("objectID") or "")
+            if obj_id:
+                item_url = f"https://news.ycombinator.com/item?id={obj_id}"
+        summary = strip_tags(str(
+            entry.get("summary") or entry.get("description") or
+            entry.get("story_text") or entry.get("comment_text") or ""
+        ))[:600]
+        source = str(entry.get("source") or hostname(item_url) or "API Source")
         category = str(entry.get("category") or "")
-        source_label = f"AI HOT · {source}" if "aihot.virxact.com" in url else source
+        if is_algolia:
+            source_label = "Hacker News"
+        elif "aihot.virxact.com" in url:
+            source_label = f"AI HOT · {source}"
+        else:
+            source_label = source
         if category:
             source_label = f"{source_label} · {category}"
         items.append(
             {
                 "title": title,
-                "url": str(entry.get("url") or ""),
+                "url": item_url,
                 "summary": summary,
                 "published_at": published_at.isoformat() if published_at else "",
                 "source": source_label,
@@ -1193,14 +1280,36 @@ def web_search(query: str, max_results: int = 6) -> list[dict[str, str]]:
     cache = search_cache_key(query)
     if cache.exists() and time.time() - cache.stat().st_mtime < 60 * 60 * 12:
         return json.loads(cache.read_text(encoding="utf-8"))
-    try:
-        results = [
-            {"title": r.get("title", ""), "url": r.get("href", ""), "body": r.get("body", "")}
-            for r in DDGS().text(query, max_results=max_results)
-        ]
-    except Exception as exc:
-        print(f"   ⚠️ 检索失败: {query[:80]} | {exc}")
-        results = []
+    results: list[dict[str, str]] = []
+    if TAVILY_API_KEY:
+        try:
+            resp = requests.post(
+                "https://api.tavily.com/search",
+                json={
+                    "api_key": TAVILY_API_KEY,
+                    "query": query,
+                    "max_results": max_results,
+                    "search_depth": "basic",
+                    "include_answer": False,
+                    "include_raw_content": False,
+                },
+                timeout=20,
+            )
+            resp.raise_for_status()
+            results = [
+                {"title": r.get("title", ""), "url": r.get("url", ""), "body": r.get("content", "")}
+                for r in resp.json().get("results", [])
+            ]
+        except Exception as exc:
+            print(f"   ⚠️ Tavily 检索失败，降级到 DDGS: {exc}")
+    if not results:
+        try:
+            results = [
+                {"title": r.get("title", ""), "url": r.get("href", ""), "body": r.get("body", "")}
+                for r in DDGS().text(query, max_results=max_results)
+            ]
+        except Exception as exc:
+            print(f"   ⚠️ 检索失败: {query[:80]} | {exc}")
     cache.write_text(json.dumps(results, ensure_ascii=False, indent=2), encoding="utf-8")
     return results
 
@@ -1468,7 +1577,13 @@ def _generate_search_queries(candidate: dict[str, Any]) -> list[str]:
             f"核心问题：{candidate.get('core_question', '')}\n"
             f"原始来源：{', '.join(candidate.get('seed_urls', [])[:2])}\n"
             f"深挖理由：{candidate.get('reason', '')}\n\n"
-            '请生成 6-8 个最有价值的搜索查询，用于核实事实、寻找一手来源、交叉验证。\n'
+            "请生成 6-8 个最有价值的搜索查询，用于核实事实、寻找一手来源、交叉验证。\n"
+            "必须覆盖以下几类（按照选题类型取舍）：\n"
+            "① 核实核心事实：验证最关键的数字/声明是否属实\n"
+            "② 一手来源溯源：找到官方公告/论文/原始报告\n"
+            "③ 竞品/同类横向对比：谁还在做这件事？有哪些替代方案？先发者/领先者是谁？（产品/公司类选题必须包含）\n"
+            "④ 反驳视角检索：有没有人说这个结论是错的/夸大的/有条件的？\n"
+            "⑤ 中国市场/中文视角：国内同类产品、政策环境、用户反馈\n"
             '输出 JSON：{"queries": ["query1", "query2", ...]}'
         ),
         max_tokens=800,
@@ -1503,6 +1618,10 @@ def _analyze_evidence(candidate: dict[str, Any], evidence: list[dict[str, Any]])
             "【已确认事实】只写输入证据中有多来源印证的事实，标注来源名称和可信级别（高可信/中可信）；没有就写'暂无足够证据'\n"
             "【高概率推断】单来源或间接证据支持，标注来源\n"
             "【待验证线索】无法核实的说法，标注来源\n"
+            "【竞品/同类横向对比】这件事/产品/现象，同类还有谁在做？领先者是谁？差距在哪里？"
+            "如果线索声称'唯一''首创''行业第一'，必须主动核查：证据支持吗？还是营销话术？"
+            "如果是产品类选题（工具/平台/功能），必须对比国内外主要竞品的功能深度、开放程度、用户规模、生态成熟度。"
+            "没有对比证据就写'检索未发现竞品对比数据，以下为已知信息'，不得跳过此节。\n"
             "【最有价值的角度】最反直觉或最让普通打工人停下来的 1-2 个点\n"
             "【读者相关性】分别说明快毕业/刚毕业 IT 人、普通程序员/测试/运维/实施、35 岁前后大龄程序员、小公司技术负责人、副业探索者中，谁最相关，为什么\n"
             "【主要关系和警醒点】说明这件事和普通 IT 人/副业探索者/信息差读者有什么关系，最该警醒的误读、门槛、风险或利益动机是什么\n"
@@ -1794,6 +1913,9 @@ def compose_investigation_reports(
 - 直接使用 research_notes 里的已确认事实作为核心论据，不要基于训练知识编造来源。
 - 来源在正文引用时标注名称和可信度，禁止在文末单独列"参考来源"一节。
 - 严格区分已确认事实、高概率推断、待验证线索——不把推断写成结论。
+- 【竞品/唯一性核验】如果 research_notes 的【竞品/同类横向对比】节列出了同类产品或竞争者，文章不得写成"独家""唯一""首创""国内仅此一家"；必须在正文中交代同类竞品的存在和差异。忽略竞品信息、只渲染单一产品是严重事实错误。
+- 【结论必须从证据推导，禁止跳跃】写任何行动建议或结论前，先在心里检查：这个结论能从 research_notes 中的已确认事实直接推出吗？如果研究说"A 现象对 B 群体有 C 影响"，结论只能是"B 群体需要警惕 C"，不能跳跃成"B 群体应该停止做 A"。影响≠应该停止；风险存在≠一定会发生；有问题≠无价值。
+- 【研究结论边界强制检查】写完行动建议后自检：这个建议是研究本身支持的，还是我自己加戏？研究的样本、范围、条件是否支持这个结论？如果研究只针对特定人群（如美国应届生），结论不能泛化成"所有人"。
 - 文章主体是客观网站文章语气；个人判断部分可以自然使用第一人称"我"或"咱们"，位置服从文章节奏。
 - 可使用 H2、H3 标题、表格、引用块等 Markdown 格式，但只在真正帮助阅读时使用。
 - 禁止输出固定模板标题："导言"、"核心段"、"证据展开"、"反驳视角"、"影响与悬问"、"已确认的事实"、"高概率推断"、"对普通技术经理的现实影响"。
@@ -1807,7 +1929,8 @@ def compose_investigation_reports(
 - 生成后自检一次：是否把工作日白天写成超市排队、露营、喝酒等不合理场景？如果有，必须重写。
 - 生成后自检一次：是否机械使用"昨天""前几天""上周"？如果时间不确定，改成"最新刷到""这两天看到""整理今天线索时看到"。
 - 有实质深度，不是新闻摘要——字数服从内容需要，不要为凑字数堆废话。
-- sources 只收录文章正文中实际引用的高/中可信来源，格式 [{{"name": "来源名", "url": "https://..."}}]，2-8 个，url 必须是完整链接，不得用线索级来源。
+- sources 只收录文章正文中实际引用的高/中可信来源，格式 [{{"name": "来源名", "url": "https://..."}}]，2-8 个，url 必须是完整链接，不得用线索级来源。url 字段只能使用 research_notes 中实际出现的原始 URL；严禁构造或猜测 URL（包括任何含 /12345、-jun2026 等占位符路径）；找不到真实 URL 的来源直接删掉，不要用假链接补充。
+- 文章正文是纯 Markdown 文字，封面图由系统单独生成；禁止在正文任何位置写"图片，说明……"这样的图片占位符文字。
 """,
         max_tokens=PRO_ARTICLE_MAX_TOKENS,
         model=PRO_MODEL,
@@ -1923,7 +2046,21 @@ def _smtp_settings(email: str) -> tuple[str, int, bool]:
 
 def email_attachment_name(title: str) -> str:
     safe_title = re.sub(r'[\\/:*?"<>|\r\n]+', "-", title).strip(" .-")
-    return f"{safe_title or '公众号文章'}.txt"
+    return f"{safe_title or '社媒素材'}.txt"
+
+
+def attach_file_to_email(msg: MIMEMultipart, path: Path, filename: str | None = None) -> bool:
+    if not path.exists() or not path.is_file():
+        print(f"   ⚠️ 邮件附件不存在，跳过: {path}")
+        return False
+    content_type, _ = mimetypes.guess_type(str(path))
+    maintype, subtype = (content_type or "application/octet-stream").split("/", 1)
+    attachment = MIMEBase(maintype, subtype)
+    attachment.set_payload(path.read_bytes())
+    encoders.encode_base64(attachment)
+    attachment.add_header("Content-Disposition", "attachment", filename=filename or path.name)
+    msg.attach(attachment)
+    return True
 
 
 def absolute_site_url(path_or_url: str) -> str:
@@ -1947,34 +2084,63 @@ def send_email_articles(articles: list[dict[str, str]], slot: str) -> None:
     msg = MIMEMultipart()
     msg["From"] = EMAIL_FROM
     msg["To"] = EMAIL_TO
-    msg["Subject"] = f"[公众号] {batch_date_slug()} {slot} · {len(articles)} 篇"
+    msg["Subject"] = f"[小红书+视频素材] {batch_date_slug()} {slot} · {len(articles)} 篇"
 
     body_parts = [
-        f"本批次共 {len(articles)} 篇公众号文章。",
-        "正文见附件；每个附件为一篇文章，文件名为文章标题。",
-        "封面图已在内容生成流程中生成，下面直接给出图片链接，不再附图片提示词。",
+        f"本批次共 {len(articles)} 篇社媒素材。",
+        "文字内容直接在邮件正文中；附件只包含图片素材（小红书图文卡片、视频封面）。",
     ]
     for index, article in enumerate(articles, 1):
-        cover_url = article.get("cover_url", "")
         site_url = article.get("site_url", "")
         body_parts.extend(
             [
                 "",
-                f"## {index}. {article['title']}",
+                "=" * 36,
+                f"第 {index} 篇：{article['title']}",
+                "=" * 36,
+                "",
+                "【小红书标题】",
+                article.get("xhs_title", ""),
+                "",
+                "【小红书正文】",
+                article.get("xhs_body", ""),
+                "",
+                "【小红书标签】",
+                article.get("xhs_tags", ""),
+                "",
+                "【视频标题】",
+                article.get("video_title", ""),
+                "",
+                "【视频描述】",
+                article.get("video_description", ""),
+                "",
+                "【MoneyPrinterTurbo 视频主题】",
+                article.get("video_topic", ""),
+                "",
+                "【MoneyPrinterTurbo 视频文案】",
+                article.get("video_script", ""),
+                "",
+                "【MoneyPrinterTurbo 视频关键词】",
+                article.get("video_keywords", ""),
+                "",
+                "【图片附件】",
+                f"小红书图文卡片：{article.get('card_count', '0')} 张",
+                "视频封面：9:16、3:4 各 1 张",
             ]
         )
-        if cover_url:
-            body_parts.append(f"封面图：{cover_url}")
         if site_url:
-            body_parts.append(f"网站链接：{site_url}")
+            body_parts.extend(["", f"网站原文：{site_url}"])
     msg.attach(MIMEText("\n".join(body_parts), "plain", "utf-8"))
 
+    attachment_count = 0
     for article in articles:
-        attachment = MIMEBase("text", "plain")
-        attachment.set_payload(article["attachment_txt"].encode("utf-8"))
-        encoders.encode_base64(attachment)
-        attachment.add_header("Content-Disposition", "attachment", filename=email_attachment_name(article["title"]))
-        msg.attach(attachment)
+        for raw_path in article.get("attachment_paths", "").splitlines():
+            raw_path = raw_path.strip()
+            if not raw_path:
+                continue
+            path = ROOT / raw_path if not Path(raw_path).is_absolute() else Path(raw_path)
+            if attach_file_to_email(msg, path):
+                attachment_count += 1
 
     host, port, use_ssl = _smtp_settings(EMAIL_FROM)
     try:
@@ -1988,7 +2154,7 @@ def send_email_articles(articles: list[dict[str, str]], slot: str) -> None:
                 server.starttls()
                 server.login(EMAIL_FROM, EMAIL_PASSWORD)
                 server.sendmail(EMAIL_FROM, EMAIL_TO, msg.as_string())
-        print(f"   📧 邮件已发送: {len(articles)} 篇文章，{len(articles)} 个 txt 附件")
+        print(f"   📧 邮件已发送: {len(articles)} 篇社媒素材，{attachment_count} 个附件")
     except Exception as exc:
         print(f"   ⚠️ 邮件发送失败: {exc}")
 
@@ -2736,6 +2902,754 @@ def build_wechat_articles_from_briefing(briefing: dict[str, Any]) -> list[dict[s
     ]
 
 
+def parse_frontmatter_post(path: Path) -> dict[str, Any] | None:
+    try:
+        raw = path.read_text(encoding="utf-8")
+    except OSError:
+        return None
+    match = re.match(r"^---\n(.*?)\n---\n(.*)$", raw, re.S)
+    if not match:
+        return None
+    fm_raw, body = match.groups()
+    data: dict[str, Any] = {}
+    sources: list[dict[str, str]] = []
+    current_source: dict[str, str] | None = None
+    for line in fm_raw.splitlines():
+        if line.startswith("  - name:"):
+            current_source = {"name": parse_frontmatter_scalar(line.split(":", 1)[1].strip())}
+            sources.append(current_source)
+            continue
+        if line.startswith("    url:") and current_source is not None:
+            current_source["url"] = parse_frontmatter_scalar(line.split(":", 1)[1].strip())
+            continue
+        if ":" not in line or line.startswith(" "):
+            continue
+        key, value = line.split(":", 1)
+        data[key.strip()] = parse_frontmatter_scalar(value.strip())
+    if sources:
+        data["sources"] = sources
+    title = str(data.get("title") or path.stem)
+    category = path.parent.name
+    return {
+        "topic": category,
+        "title": title,
+        "summary": str(data.get("description") or ""),
+        "cover": str(data.get("cover") or ""),
+        "content_md": body.strip(),
+        "site_url": site_url_for_post_path(path),
+        "sources": data.get("sources") or [],
+        "published_at": str(data.get("date") or ""),
+        "path": str(path.relative_to(ROOT)),
+    }
+
+
+def parse_frontmatter_scalar(value: str) -> Any:
+    value = value.strip()
+    if not value:
+        return ""
+    try:
+        return json.loads(value)
+    except Exception:
+        return value
+
+
+def latest_site_articles(limit: int, include_briefing: bool = False) -> list[dict[str, Any]]:
+    posts: list[dict[str, Any]] = []
+    for path in CONTENT_DIR.rglob("*.md"):
+        if not include_briefing and path.parent.name == "daily-briefing":
+            continue
+        post = parse_frontmatter_post(path)
+        if post:
+            posts.append(post)
+    posts.sort(key=lambda item: (str(item.get("published_at") or ""), str(item.get("path") or "")), reverse=True)
+    return posts[:limit]
+
+
+# ─── 小红书图文 + MoneyPrinterTurbo 视频素材 ────────────────────────────────
+
+XHS_TITLE_MAX_CHARS = 32
+XHS_BODY_MAX_CHARS = 850
+XHS_CARD_COUNT_MIN = 4
+XHS_CARD_COUNT_MAX = 7
+VIDEO_SCRIPT_MAX_CHARS = 1400
+
+
+def normalize_hashtags(tags: list[Any]) -> list[str]:
+    topic_tags = {
+        "daily-briefing": "每日简讯",
+        "ai-tools": "AI工具",
+        "side-hustle": "副业思考",
+        "overseas": "信息差",
+        "life-signal": "生活信号",
+    }
+    normalized: list[str] = []
+    for raw in tags:
+        tag = topic_tags.get(clean_unicode_text(raw).strip(), clean_unicode_text(raw).strip())
+        tag = re.sub(r"\s+", "", tag.lstrip("#"))
+        tag = re.sub(r"[^\w一-鿿㐀-䶿豈-﫿-]+", "", tag)
+        if re.fullmatch(r"[a-z0-9_-]+", tag.lower()):
+            continue
+        if tag and tag not in normalized:
+            normalized.append(tag)
+    defaults = ["AI资讯", "科技观察", "副业思考", "普通人搞AI"]
+    for tag in defaults:
+        if len(normalized) >= 8:
+            break
+        if tag not in normalized:
+            normalized.append(tag)
+    return normalized[:8]
+
+
+def social_headline_from_title(title: str) -> str:
+    title = compact_plain_text(title)
+    title = polish_social_text(title)
+    title = title.split("：", 1)[0].split(":", 1)[0].strip() or title
+    title = re.sub(r"这次不是概念车|我查了.*$|我看了.*$", "", title).strip(" -，,。")
+    if len(title) <= XHS_TITLE_MAX_CHARS:
+        return title
+    return title[:XHS_TITLE_MAX_CHARS].rstrip(" ，,：:")
+
+
+def social_card_body(text: str, limit: int = 72) -> str:
+    text = polish_social_text(compact_plain_text(text))
+    if len(text) <= limit:
+        return text
+    cut = text[:limit]
+    for sep in ("。", "！", "？", "，", ",", " "):
+        pos = cut.rfind(sep)
+        if pos >= 28:
+            cut = cut[:pos]
+            break
+    return cut.rstrip(" ，,。") or text[:limit].rstrip()
+
+
+def polish_social_text(text: str) -> str:
+    text = clean_unicode_text(text)
+    text = text.replace("砍掉", "替换")
+    text = text.replace("砍到", "缩到")
+    text = text.replace("裁掉", "替换")
+    text = re.sub(r"(?<=[A-Za-z0-9])(?=[一-鿿])", " ", text)
+    text = re.sub(r"(?<=[一-鿿])(?=[A-Za-z0-9])", " ", text)
+    text = re.sub(r"\bAI\s+代理\b", "AI代理", text)
+    text = re.sub(r"\s+", " ", text)
+    return text.strip()
+
+
+def normalize_video_keywords(value: Any) -> str:
+    if isinstance(value, list):
+        raw_items = [clean_unicode_text(item) for item in value]
+    else:
+        raw_items = re.split(r"[,，;；\n]+", clean_unicode_text(value))
+    keywords: list[str] = []
+    for item in raw_items:
+        item = item.strip().lower()
+        item = re.sub(r"[^a-z0-9 -]+", "", item)
+        item = re.sub(r"\s+", " ", item).strip()
+        if item and item not in keywords:
+            keywords.append(item)
+    fallback = ["artificial intelligence", "technology", "startup", "software", "business"]
+    for item in fallback:
+        if len(keywords) >= 8:
+            break
+        if item not in keywords:
+            keywords.append(item)
+    return ", ".join(keywords[:8])
+
+
+def first_plain_paragraphs(content_md: str, limit: int = 5) -> list[str]:
+    lines: list[str] = []
+    for raw in clean_unicode_text(content_md).splitlines():
+        line = raw.strip()
+        if not line or line.startswith(("#", "---", "**来源**", "![", ">")):
+            continue
+        line = re.sub(r"^[-*+]\s+", "", line)
+        line = re.sub(r"^\d+[.)]\s+", "", line)
+        line = re.sub(r"\[([^\]]+)\]\([^)]+\)", r"\1", line)
+        line = re.sub(r"`([^`]+)`", r"\1", line)
+        line = compact_plain_text(line)
+        if line:
+            lines.append(line)
+        if len(lines) >= limit:
+            break
+    return lines
+
+
+def fallback_social_package(article: dict[str, Any]) -> dict[str, Any]:
+    title = compact_plain_text(str(article.get("title") or "今天这个 AI 信号值得看"))
+    summary = compact_plain_text(str(article.get("summary") or ""))
+    content_md = clean_unicode_text(article.get("content_md") or "")
+    details = first_plain_paragraphs(content_md, 4)
+    hook = summary or (details[0] if details else title)
+    headline = social_headline_from_title(title)
+    cards = [
+        {"title": headline, "body": social_card_body(hook, 62)},
+        {"title": "先看结论", "body": social_card_body(summary or hook, 78)},
+    ]
+    for idx, line in enumerate(details[:3], start=1):
+        cards.append({"title": f"关键点 {idx}", "body": social_card_body(line, 82)})
+    cards.append({"title": "我的判断", "body": "别急着跟风，先看入口、成本、失败条件，以及它和普通人的真实关系。"})
+    xhs_body_parts = [
+        f"今天追到一个信号：{title}",
+        hook,
+        "我更关心的不是它听起来多先进，而是它会不会改变工具、获客、成本或普通人的选择。",
+        "先把事实和风险看清楚，再决定要不要投入时间。",
+    ]
+    return {
+        "xhs_title": headline,
+        "xhs_body": truncate_by_chars("\n\n".join(part for part in xhs_body_parts if part), XHS_BODY_MAX_CHARS),
+        "xhs_tags": normalize_hashtags([article.get("topic", ""), "AI", "科技", "普通人副业"]),
+        "cards": cards[:XHS_CARD_COUNT_MAX],
+        "video_topic": headline,
+        "video_title": headline,
+        "video_description": social_card_body(summary or hook, 100),
+        "video_script": truncate_by_chars("\n".join(xhs_body_parts + details[:2]), VIDEO_SCRIPT_MAX_CHARS),
+        "video_keywords": normalize_video_keywords(article.get("topic", "")),
+    }
+
+
+def build_social_package(article: dict[str, Any], persona: str) -> dict[str, Any]:
+    fallback = fallback_social_package(article)
+    title = clean_unicode_text(article.get("title") or "")
+    summary = clean_unicode_text(article.get("summary") or "")
+    content_md = clean_unicode_text(article.get("content_md") or "")
+    site_url = clean_unicode_text(article.get("site_url") or "")
+    try:
+        result = llm_json(
+            system=(
+                "你是中文小红书图文编辑和短视频脚本策划。"
+                "任务是把一篇中文深度文章改成可手动发布的小红书图文素材，以及 MoneyPrinterTurbo 可用的视频素材。"
+                "你必须使用给定的小红书人设，不要沿用网站文章的作者口吻。"
+                "只输出 JSON，不要 markdown。"
+            ),
+            user=(
+                f"小红书人设：\n{persona[:900]}\n\n"
+                f"文章标题：{title}\n"
+                f"摘要：{summary}\n"
+                f"原文链接：{site_url}\n\n"
+                f"文章正文：\n{content_md[:6000]}\n\n"
+                "请输出 JSON object，字段如下：\n"
+                "- xhs_title: 小红书标题，24 字以内，像真实折腾日记，不要媒体腔，不要标题党。\n"
+                "- xhs_body: 小红书正文，350-850 字，适合复制发布；核心口吻是快 35 岁程序员给自己构建副业退路，不教别人，只展示自己怎么活下来。\n"
+                "- xhs_tags: 6-8 个中文标签，不带 #。\n"
+                "- cards: 4-7 张文字卡片，每张包含 title 和 body；这些文字会直接印在图片上，所以必须重新写成短、狠、清楚的卡片语言。"
+                "第一张必须是一眼能抓人的封面卡，后面讲清核心事实、我为什么在意、对副业退路有什么启发、风险和下一步观察。"
+                "每张 title 8-18 字，body 25-80 字，不要复制原文长句，不要出现省略号。\n"
+                "- video_topic: MoneyPrinterTurbo 视频主题，给一个中文关键词或短词组，8-20 字。\n"
+                "- video_title: 视频标题，适合封面和发布预览，12-24 字。\n"
+                "- video_description: 视频描述，适合放在发布文案或口播副标题里，1-2 句。\n"
+                "- video_script: 口播视频文案，适合 60-90 秒，第一人称，真实折腾日记风格，分镜感强但不要写镜头编号。\n"
+                "- video_keywords: 6-8 个英文关键词，用英文逗号分隔，只能英文。\n"
+            ),
+            max_tokens=3600,
+            model=FLASH_MODEL,
+            thinking_type="disabled",
+            reasoning_effort="low",
+        )
+    except Exception as exc:
+        print(f"   ⚠️ 社媒素材 LLM 生成失败，使用降级模板: {title[:40]} - {exc}")
+        return fallback
+
+    cards = result.get("cards") if isinstance(result.get("cards"), list) else fallback["cards"]
+    cleaned_cards: list[dict[str, str]] = []
+    for card in cards:
+        if not isinstance(card, dict):
+            continue
+        card_title = social_headline_from_title(str(card.get("title") or ""))
+        card_body = social_card_body(str(card.get("body") or ""), 96)
+        if card_title and card_body:
+            cleaned_cards.append({"title": card_title, "body": card_body})
+    if len(cleaned_cards) < XHS_CARD_COUNT_MIN:
+        cleaned_cards = fallback["cards"]
+    return {
+        "xhs_title": social_headline_from_title(str(result.get("xhs_title") or fallback["xhs_title"])),
+        "xhs_body": truncate_by_chars(polish_social_text(result.get("xhs_body") or fallback["xhs_body"]), XHS_BODY_MAX_CHARS),
+        "xhs_tags": normalize_hashtags(result.get("xhs_tags") if isinstance(result.get("xhs_tags"), list) else fallback["xhs_tags"]),
+        "cards": cleaned_cards[:XHS_CARD_COUNT_MAX],
+        "video_topic": truncate_by_chars(polish_social_text(result.get("video_topic") or fallback["video_topic"]), 42),
+        "video_title": social_headline_from_title(str(result.get("video_title") or fallback["video_topic"])),
+        "video_description": truncate_by_chars(polish_social_text(result.get("video_description") or fallback["video_script"]), 140),
+        "video_script": truncate_by_chars(polish_social_text(result.get("video_script") or fallback["video_script"]), VIDEO_SCRIPT_MAX_CHARS),
+        "video_keywords": normalize_video_keywords(result.get("video_keywords") or fallback["video_keywords"]),
+    }
+
+
+def build_social_art_prompt(article: dict[str, Any], persona: str, purpose: str) -> dict[str, str]:
+    title = clean_unicode_text(article.get("title") or "")
+    summary = clean_unicode_text(article.get("summary") or "")
+    content_md = clean_unicode_text(article.get("content_md") or "")
+    orientation = "vertical 3:4 portrait" if purpose == "video" else "horizontal editorial"
+    try:
+        result = llm_json(
+            system=(
+                "You are an art director generating image prompts for a Kolors diffusion model. "
+                "Write a prompt that produces a clean, visually striking background image with one concrete focal object "
+                "tied to the article theme. Rules: no text, no human faces, no logos, no watermarks. "
+                "Use a warm, slightly editorial colour palette. Prefer realistic objects, textures, or abstract patterns "
+                "over AI/tech clichés like glowing circuits or floating orbs. Output JSON only."
+            ),
+            user=(
+                f"Article title: {title}\n"
+                f"Summary: {summary[:300]}\n\n"
+                f"Generate a {orientation} background image prompt under 60 words. "
+                "Pick ONE concrete visual metaphor from the article theme (e.g. a single object, texture, or scene). "
+                "Describe lighting, colour mood, and composition style. "
+                "Return JSON: {{\"prompt\": \"...\", \"negative_prompt\": \"...\"}}"
+            ),
+            max_tokens=300,
+            model=FLASH_MODEL,
+            thinking_type="disabled",
+            reasoning_effort="low",
+        )
+        prompt = clean_unicode_text(result.get("prompt") or "").strip()
+        negative = clean_unicode_text(result.get("negative_prompt") or "").strip()
+        if prompt:
+            return {
+                "prompt": prompt,
+                "negative_prompt": negative or "text, logo, watermark, human face, blurry, low quality, nsfw",
+            }
+    except Exception as exc:
+        print(f"   ⚠️ 社媒背景提示词生成失败: {exc}")
+    fallback = (
+        "Close-up of a worn wooden desk with a single open notebook, warm afternoon light, "
+        "shallow depth of field, clean editorial style, no text, no people"
+    )
+    if purpose == "video":
+        fallback = (
+            "Vertical close-up of a mechanical keyboard with soft bokeh background, "
+            "cool blue and amber tones, cinematic lighting, no text, no people"
+        )
+    return {
+        "prompt": fallback,
+        "negative_prompt": "text, logo, watermark, human face, blurry, low quality, nsfw, extra limbs",
+    }
+
+
+def wrap_text_by_chars(text: str, limit: int) -> list[str]:
+    text = re.sub(r"\s+", " ", clean_unicode_text(text).strip())
+    if not text:
+        return []
+    lines: list[str] = []
+    current = ""
+    for ch in text:
+        width = 1.8 if re.match(r"[A-Za-z0-9]", ch) else 1
+        current_width = sum(1.8 if re.match(r"[A-Za-z0-9]", c) else 1 for c in current)
+        if current and current_width + width > limit:
+            lines.append(current.strip())
+            current = ch
+        else:
+            current += ch
+    if current.strip():
+        lines.append(current.strip())
+    return lines
+
+
+def wrap_text_by_pixels(draw: Any, text: str, font: Any, max_width: int, max_lines: int) -> list[str]:
+    text = re.sub(r"\s+", " ", clean_unicode_text(text).strip())
+    if not text:
+        return []
+    raw_tokens = re.findall(r"[A-Za-z0-9._%+-]+|[^\sA-Za-z0-9]", text)
+    tokens: list[str] = []
+    idx = 0
+    while idx < len(raw_tokens):
+        token = raw_tokens[idx]
+        while (
+            idx + 1 < len(raw_tokens)
+            and re.fullmatch(r"[A-Za-z0-9._%+-]+|[A-Za-z0-9._%+-]*[一-鿿]+[A-Za-z0-9._%+-]*", token)
+            and raw_tokens[idx + 1] in {"人", "周", "个", "天", "年", "月", "小时", "%"}
+        ):
+            token += raw_tokens[idx + 1]
+            idx += 1
+        tokens.append(token)
+        idx += 1
+    lines: list[str] = []
+    current = ""
+
+    def text_width(value: str) -> int:
+        bbox = draw.textbbox((0, 0), value, font=font)
+        return int(bbox[2] - bbox[0])
+
+    for token in tokens:
+        candidate = f"{current}{token}" if current else token
+        if current and text_width(candidate) > max_width:
+            lines.append(current)
+            current = token
+            if len(lines) >= max_lines:
+                break
+        else:
+            current = candidate
+    if current and len(lines) < max_lines:
+        lines.append(current)
+    if len(lines) == max_lines and len("".join(lines)) < len(text):
+        last = lines[-1]
+        while last and text_width(last + "...") > max_width:
+            last = last[:-1]
+        lines[-1] = last.rstrip(" ，,。") + "..."
+    return lines
+
+
+def extract_stat_chips(title: str, body: str, limit: int = 3) -> list[str]:
+    text = f"{title} {body}"
+    chips: list[str] = []
+    for pattern in (r"\d+%", r"\d+\s*-\s*\d+\s*小时", r"\d+人", r"\d+周", r"\d+个", r"\d+天"):
+        for match in re.findall(pattern, text):
+            chip = re.sub(r"\s+", "", match)
+            if chip not in chips:
+                chips.append(chip)
+            if len(chips) >= limit:
+                return chips
+    return chips
+
+
+def find_cjk_font() -> str | None:
+    candidates = [
+        "/usr/share/fonts/opentype/noto/NotoSansCJK-Regular.ttc",
+        "/usr/share/fonts/opentype/noto/NotoSansCJK-Bold.ttc",
+        "/usr/share/fonts/truetype/noto/NotoSansCJK-Regular.ttc",
+        "/usr/share/fonts/truetype/wqy/wqy-microhei.ttc",
+        "/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf",
+    ]
+    for path in candidates:
+        if Path(path).exists():
+            return path
+    return None
+
+
+def fit_background_image(background: Any, size: tuple[int, int]) -> Any:
+    try:
+        from PIL import ImageOps
+    except Exception:
+        return background.resize(size)
+    return ImageOps.fit(background, size, method=ImageOps.LANCZOS)
+
+
+def write_text_card_png(
+    path: Path,
+    title: str,
+    body: str,
+    size: tuple[int, int],
+    eyebrow: str = "Easton Radar",
+    background_path: Path | None = None,
+) -> bool:
+    try:
+        from PIL import Image, ImageDraw, ImageFont
+    except Exception:
+        return False
+    width, height = size
+    font_path = find_cjk_font()
+    if font_path:
+        title_font = ImageFont.truetype(font_path, max(44, width // 14))
+        body_font = ImageFont.truetype(font_path, max(28, width // 26))
+        meta_font = ImageFont.truetype(font_path, max(22, width // 34))
+    else:
+        title_font = body_font = meta_font = ImageFont.load_default()
+    if background_path and background_path.exists():
+        try:
+            bg = Image.open(background_path).convert("RGB")
+            img = fit_background_image(bg, size)
+        except Exception:
+            img = Image.new("RGB", size, "#f7f3ea")
+    else:
+        img = Image.new("RGB", size, "#f7f3ea")
+    draw = ImageDraw.Draw(img)
+    accent = "#e75b36"
+    ink = "#202124"
+    muted = "#6b6258"
+    soft = "#fff1e8"
+    pad = int(width * 0.075)
+    if background_path and background_path.exists():
+        overlay = Image.new("RGBA", size, (247, 243, 234, 70))
+        img = img.convert("RGBA")
+        img.alpha_composite(overlay)
+        draw = ImageDraw.Draw(img)
+        panel_fill = (255, 253, 248, 205)
+        panel_outline = (231, 218, 200, 255)
+        accent_fill = (231, 91, 54, 255)
+        muted_text = (107, 98, 88, 255)
+        panel_left = pad
+        panel_top = pad + 56
+        panel_right = width - pad - int(width * 0.08)
+        panel_height = int(height * 0.42 if height >= 1800 else height * 0.48)
+        panel_bottom = min(height - pad - 150, panel_top + panel_height)
+        draw.rounded_rectangle((panel_left, panel_top, panel_right, panel_bottom), radius=36, fill=panel_fill, outline=panel_outline, width=3)
+        draw.rounded_rectangle((panel_left + 28, panel_top + 24, panel_left + 168, panel_top + 38), radius=7, fill=accent_fill)
+        draw.text((panel_left + 28, panel_top + 54), eyebrow, fill=muted_text, font=meta_font)
+        accent = "#e75b36"
+        ink = "#202124"
+        muted = "#6b6258"
+        soft = "#fff1e8"
+    else:
+        draw.rounded_rectangle((pad, pad, width - pad, height - pad), radius=28, fill="#fffdf8", outline="#e7dac8", width=3)
+        draw.rounded_rectangle((pad + 28, pad + 28, pad + 138, pad + 42), radius=7, fill=accent)
+        draw.text((pad + 28, pad + 58), eyebrow, fill=muted, font=meta_font)
+    content_width = (panel_right - panel_left - 68) if background_path and background_path.exists() else width - (pad + 34) * 2
+    y = (panel_top + 90) if background_path and background_path.exists() else pad + (150 if height <= 1500 else 180)
+    text_x = (panel_left + 34) if background_path and background_path.exists() else pad + 34
+    for line in wrap_text_by_pixels(draw, title, title_font, content_width, 3):
+        draw.text((text_x, y), line, fill=ink, font=title_font)
+        y += int(title_font.size * 1.22)
+
+    chips = extract_stat_chips(title, body)
+    if chips:
+        y += 22
+        x = (panel_left + 34) if background_path and background_path.exists() else pad + 36
+        for chip in chips:
+            chip_text = f" {chip} "
+            bbox = draw.textbbox((0, 0), chip_text, font=meta_font)
+            chip_w = bbox[2] - bbox[0] + 28
+            draw.rounded_rectangle((x, y, x + chip_w, y + 42), radius=18, fill=soft, outline=accent, width=2)
+            draw.text((x + 14, y + 7), chip_text, fill=accent, font=meta_font)
+            x += chip_w + 14
+        y += 70
+    else:
+        y += 28
+
+    for line in wrap_text_by_pixels(draw, body, body_font, content_width, 7):
+        draw.text((text_x + 2, y), line, fill=ink, font=body_font)
+        y += int(body_font.size * 1.5)
+    footer = "快35岁程序员 · AI副业退路日记"
+    footer_bbox = draw.textbbox((0, 0), footer, font=meta_font)
+    footer_w = footer_bbox[2] - footer_bbox[0] + 34
+    footer_y = height - pad - 78
+    draw.rounded_rectangle((pad + 34, footer_y, pad + 34 + footer_w, footer_y + 46), radius=20, fill="#f3ede3")
+    draw.text((pad + 51, footer_y + 9), footer, fill=muted, font=meta_font)
+    path.parent.mkdir(parents=True, exist_ok=True)
+    if img.mode != "RGB":
+        img = img.convert("RGB")
+    img.save(path, "PNG", optimize=True)
+    return True
+
+
+def write_text_card_svg(path: Path, title: str, body: str, size: tuple[int, int], eyebrow: str = "Easton Radar") -> None:
+    width, height = size
+    title_lines = wrap_text_by_chars(title, 12)[:3]
+    body_lines = wrap_text_by_chars(body, 22)[:8]
+    title_svg = "\n".join(
+        f'<text x="{width * 0.12:.0f}" y="{height * 0.20 + idx * 74:.0f}" class="title">{html.escape(line)}</text>'
+        for idx, line in enumerate(title_lines)
+    )
+    body_start = height * 0.20 + len(title_lines) * 74 + 46
+    body_svg = "\n".join(
+        f'<text x="{width * 0.12:.0f}" y="{body_start + idx * 48:.0f}" class="body">{html.escape(line)}</text>'
+        for idx, line in enumerate(body_lines)
+    )
+    svg = f'''<svg xmlns="http://www.w3.org/2000/svg" width="{width}" height="{height}" viewBox="0 0 {width} {height}">
+  <style>
+    .title {{ font: 700 58px -apple-system, BlinkMacSystemFont, "PingFang SC", "Noto Sans CJK SC", sans-serif; fill: #202124; }}
+    .body {{ font: 400 34px -apple-system, BlinkMacSystemFont, "PingFang SC", "Noto Sans CJK SC", sans-serif; fill: #202124; }}
+    .meta {{ font: 500 24px -apple-system, BlinkMacSystemFont, "PingFang SC", sans-serif; fill: #6b6258; }}
+  </style>
+  <rect width="100%" height="100%" fill="#f7f3ea"/>
+  <rect x="64" y="64" width="{width - 128}" height="{height - 128}" rx="28" fill="#fffdf8" stroke="#e7dac8" stroke-width="3"/>
+  <rect x="96" y="96" width="110" height="16" rx="8" fill="#e75b36"/>
+  <text x="96" y="154" class="meta">{html.escape(eyebrow)}</text>
+  {title_svg}
+  {body_svg}
+  <text x="96" y="{height - 110}" class="meta">老花 / Easton Hua</text>
+</svg>
+'''
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(svg, encoding="utf-8")
+
+
+def write_text_card(
+    path_stem: Path,
+    title: str,
+    body: str,
+    size: tuple[int, int],
+    eyebrow: str = "Easton Radar",
+    background_path: Path | None = None,
+) -> Path:
+    png_path = path_stem.with_suffix(".png")
+    if write_text_card_png(png_path, title, body, size, eyebrow, background_path=background_path):
+        return png_path
+    svg_path = path_stem.with_suffix(".svg")
+    write_text_card_svg(svg_path, title, body, size, eyebrow)
+    return svg_path
+
+
+def save_social_visuals(package: dict[str, Any], article_dir: Path, stem: str, persona: str) -> tuple[list[Path], dict[str, str]]:
+    cards_dir = article_dir / "xhs-cards"
+    cards: list[Path] = []
+    art_prompt = build_social_art_prompt(package, persona, "xhs")
+    cover_prompt = build_social_art_prompt(package, persona, "video")
+    lead_bg_rel = generate_siliconflow_image(art_prompt["prompt"], f"{stem}-lead-bg", (1140, 1472))
+    cover_916_rel = generate_siliconflow_image(cover_prompt["prompt"], f"{stem}-cover-916-bg", (928, 1664))
+    cover_34_rel = generate_siliconflow_image(cover_prompt["prompt"], f"{stem}-cover-34-bg", (1140, 1472))
+    lead_bg = ROOT / lead_bg_rel.lstrip("/") if lead_bg_rel else None
+    cover_916_bg = ROOT / cover_916_rel.lstrip("/") if cover_916_rel else None
+    cover_34_bg = ROOT / cover_34_rel.lstrip("/") if cover_34_rel else None
+    for index, card in enumerate(package.get("cards") or [], start=1):
+        card_path = write_text_card(
+            cards_dir / f"{index:02d}",
+            str(card.get("title") or ""),
+            str(card.get("body") or ""),
+            (1080, 1440),
+            eyebrow=f"Easton Radar · {index:02d}",
+            background_path=lead_bg if index == 1 else None,
+        )
+        cards.append(card_path)
+    covers_dir = article_dir / "video-covers"
+    cover_916 = write_text_card(
+        covers_dir / f"{stem}-9x16",
+        package["video_topic"],
+        package["video_title"],
+        (1080, 1920),
+        "MoneyPrinterTurbo",
+        background_path=cover_916_bg,
+    )
+    cover_34 = write_text_card(
+        covers_dir / f"{stem}-3x4",
+        package["video_topic"],
+        package["video_title"],
+        (1080, 1440),
+        "MoneyPrinterTurbo",
+        background_path=cover_34_bg,
+    )
+    return cards, {"9:16": str(cover_916.relative_to(ROOT)), "3:4": str(cover_34.relative_to(ROOT))}
+
+
+def format_social_asset_text(asset: dict[str, Any]) -> str:
+    tags = " ".join(f"#{tag}" for tag in asset.get("xhs_tags") or [])
+    lines = [
+        "小红书标题",
+        str(asset.get("xhs_title") or ""),
+        "",
+        "小红书正文",
+        str(asset.get("xhs_body") or ""),
+        "",
+        "小红书标签",
+        tags,
+        "",
+        "小红书图文卡片",
+    ]
+    for index, card in enumerate(asset.get("cards") or [], start=1):
+        lines.extend([f"{index}. {card.get('title', '')}", str(card.get("body") or ""), f"图片: {card.get('image_path', '')}", ""])
+    lines.extend(
+        [
+            "MoneyPrinterTurbo 视频标题",
+            str(asset.get("video_title") or ""),
+            "",
+            "MoneyPrinterTurbo 视频描述",
+            str(asset.get("video_description") or ""),
+            "",
+            "MoneyPrinterTurbo 视频主题",
+            str(asset.get("video_topic") or ""),
+            "",
+            "MoneyPrinterTurbo 视频文案",
+            str(asset.get("video_script") or ""),
+            "",
+            "MoneyPrinterTurbo 视频关键词",
+            str(asset.get("video_keywords") or ""),
+            "",
+            "视频封面",
+            f"9:16: {asset.get('video_covers', {}).get('9:16', '')}",
+            f"3:4: {asset.get('video_covers', {}).get('3:4', '')}",
+        ]
+    )
+    if asset.get("site_url"):
+        lines.extend(["", f"网站原文: {asset.get('site_url')}"])
+    return "\n".join(lines).rstrip() + "\n"
+
+
+def write_social_archive_record(email_articles: list[dict[str, str]], slot: str) -> None:
+    if not email_articles:
+        return
+    date_slug = batch_date_slug()
+    record = {
+        "date": date_slug,
+        "slot": slot,
+        "created_at": bj_now().isoformat(timespec="seconds"),
+        "email_to": EMAIL_TO,
+        "assets": [
+            {
+                "title": article.get("title", ""),
+                "card_count": article.get("card_count", ""),
+                "site_url": article.get("site_url", ""),
+            }
+            for article in email_articles
+        ],
+    }
+    path = SOCIAL_OUTPUT_DIR / f"{date_slug}-{slot}-archive.json"
+    path.write_text(json.dumps(record, ensure_ascii=False, indent=2), encoding="utf-8")
+    print(f"   🗂️ 社媒素材归档记录: {path.relative_to(ROOT)}")
+
+
+def save_social_outputs(
+    articles: list[dict[str, Any]],
+    slot: str,
+    persona: str,
+) -> list[Path]:
+    print("📱 写入小红书图文和视频素材并发送邮件...")
+    paths: list[Path] = []
+    email_articles: list[dict[str, str]] = []
+    date_slug = batch_date_slug()
+
+    for index, article in enumerate(articles[:3], start=1):
+        title = clean_unicode_text(article.get("title", "社媒素材"))
+        stem = f"{date_slug}-{slot}-{index}-{slugify(title)}"
+        article_dir = SOCIAL_OUTPUT_DIR / stem
+        article_dir.mkdir(parents=True, exist_ok=True)
+        package = build_social_package(article, persona)
+        card_paths, video_covers = save_social_visuals(package, article_dir, stem, persona)
+        cards_with_paths = []
+        for card, card_path in zip(package.get("cards") or [], card_paths):
+            item = dict(card)
+            item["image_path"] = str(card_path.relative_to(ROOT))
+            cards_with_paths.append(item)
+
+        asset = {
+            "source_title": title,
+            "summary": clean_unicode_text(article.get("summary") or ""),
+            "site_url": clean_unicode_text(article.get("site_url") or ""),
+            "xhs_title": package["xhs_title"],
+            "xhs_body": package["xhs_body"],
+            "xhs_tags": package["xhs_tags"],
+            "cards": cards_with_paths,
+            "video_topic": package["video_topic"],
+            "video_script": package["video_script"],
+            "video_keywords": package["video_keywords"],
+            "video_covers": video_covers,
+        }
+        text_content = format_social_asset_text(asset)
+        md_path = article_dir / "social-assets.md"
+        json_path = article_dir / "social-assets.json"
+        md_path.write_text(text_content, encoding="utf-8")
+        json_path.write_text(json.dumps(clean_json_value(asset), ensure_ascii=False, indent=2), encoding="utf-8")
+        paths.extend([md_path, json_path, *card_paths])
+        image_attachment_paths = [*card_paths]
+        for cover_rel in video_covers.values():
+            cover_path = ROOT / cover_rel
+            paths.append(cover_path)
+            image_attachment_paths.append(cover_path)
+        email_articles.append(
+            {
+                "title": title,
+                "site_url": asset["site_url"],
+                "card_count": str(len(cards_with_paths)),
+                "xhs_title": asset["xhs_title"],
+                "xhs_body": asset["xhs_body"],
+                "xhs_tags": " ".join(f"#{tag}" for tag in asset["xhs_tags"]),
+                "video_title": asset["video_topic"],
+                "video_description": asset["video_script"],
+                "video_topic": asset["video_topic"],
+                "video_script": asset["video_script"],
+                "video_keywords": asset["video_keywords"],
+                "attachment_paths": "\n".join(str(path.relative_to(ROOT)) for path in image_attachment_paths),
+            }
+        )
+
+    for path in paths:
+        try:
+            display_path = path.relative_to(ROOT)
+        except ValueError:
+            display_path = path
+        print(f"   ✅ {display_path}")
+
+    send_email_articles(email_articles, slot)
+    write_social_archive_record(email_articles, slot)
+    return paths
+
+
 # ─── 搜索引擎主动推送 ─────────────────────────────────────────────────────────
 
 # ─── X manual posting drafts ─────────────────────────────────────────────────
@@ -3057,7 +3971,7 @@ def send_telegram_message(lines: list[str], thread_id: str | None = None) -> boo
 def send_telegram(
     briefing: dict[str, Any],
     investigation_reports: list[dict[str, Any]],
-    wechat_articles: list[dict[str, Any]],
+    social_articles: list[dict[str, Any]],
     slot: str,
 ) -> None:
     if not TG_BOT_TOKEN or not TG_CHAT_ID:
@@ -3111,8 +4025,8 @@ def send_telegram(
 
         if briefing.get("site_url"):
             lines.extend(["", f"本批简讯：{tg_escape(briefing.get('site_url', ''))}"])
-        if wechat_articles and reports:
-            lines.append("公众号源文件已发邮件。")
+        if social_articles and reports:
+            lines.append("小红书图文和视频素材已发邮件。")
         if send_telegram_message(lines, TG_THREAD_BY_TOPIC.get(topic) or TG_THREAD_BRIEFING):
             sent += 1
 
@@ -3162,23 +4076,38 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--slot", choices=["auto", "morning", "evening"], default="auto", help="日报批次")
     parser.add_argument("--max-age-hours", type=int, default=36, help="RSS 信息最大年龄")
     parser.add_argument("--no-telegram", action="store_true", help="跳过 Telegram 通知")
+    parser.add_argument("--social-from-latest", type=int, default=0, help="只从站内最新 N 篇文章生成小红书/视频素材，不跑采集和写作")
+    parser.add_argument("--include-briefing", action="store_true", help="配合 --social-from-latest，把每日简讯也纳入测试")
     return parser.parse_args()
 
 
 def main() -> None:
     args = parse_args()
-    ensure_runtime()
     now = bj_now()
     set_batch_now(now)
     slot = detect_slot(now, args.slot)
     persona = load_text_config("PERSONA_PATH", ROOT / "config" / "persona.md", PERSONA_DEFAULT)
+    xhs_persona = load_xhs_persona()
+    if args.social_from_latest:
+        ensure_output_dirs()
+        articles = latest_site_articles(args.social_from_latest, include_briefing=args.include_briefing)
+        if not articles:
+            raise SystemExit("❌ 没有找到可用于生成社媒素材的站内文章。")
+        print(f"🧪 从站内最新文章生成社媒素材: {len(articles)} 篇")
+        for article in articles:
+            print(f"   • {article.get('published_at', '')} {article.get('title', '')}")
+        save_social_outputs(articles, slot, xhs_persona)
+        print("🏁 完成")
+        return
+
+    ensure_runtime()
     research_method = load_text_config("RESEARCH_SKILL_PATH", ROOT / "config" / "research_skill.md", RESEARCH_METHOD_DEFAULT)
     writing_method = load_text_config("WRITING_SKILL_PATH", ROOT / "config" / "writing_skill.md", WRITING_METHOD_DEFAULT)
 
     print("🚀 Easton Radar v4")
     print(
         f"   批次: {slot} | 初筛/简讯: {FLASH_MODEL} | "
-        f"调查/公众号: {PRO_MODEL}({PRO_THINKING}/{PRO_REASONING_EFFORT}) | 主题: {len(TOPICS)}"
+        f"调查/社媒素材: {PRO_MODEL}({PRO_THINKING}/{PRO_REASONING_EFFORT}) | 主题: {len(TOPICS)}"
     )
 
     # 防重复
@@ -3212,26 +4141,25 @@ def main() -> None:
             )
         investigation_reports = inv_result.get("investigation_reports", [])
     else:
-        print("📋 没有深度候选通过证据门槛，本批次跳过调查报告和公众号长文")
+        print("📋 没有深度候选通过证据门槛，本批次跳过调查报告和深度社媒素材")
         investigation_reports = []
     briefing = briefing_report.get("briefing", {})
     save_website_outputs(briefing, investigation_reports, slot)
     x_drafts = save_x_drafts(briefing, investigation_reports, slot)
 
-    # 阶段二：公众号源文件直接复用网站文章 + 发邮件
+    # 阶段二：小红书图文 + MoneyPrinterTurbo 视频素材，直接复用网站文章 + 发邮件
     if investigation_reports:
-        wechat_articles = build_wechat_articles_from_reports(investigation_reports)
+        social_articles = build_wechat_articles_from_reports(investigation_reports)
     else:
-        wechat_articles = build_wechat_articles_from_briefing(briefing)
-    if wechat_articles:
-        save_wechat_outputs(wechat_articles, slot, persona)
-        publish_wechat_drafts(wechat_articles, slot)
+        social_articles = build_wechat_articles_from_briefing(briefing)
+    if social_articles:
+        save_social_outputs(social_articles, slot, xhs_persona)
     else:
-        print("📭 没有可用于公众号草稿的文章，跳过公众号输出")
+        print("📭 没有可用于社媒素材的文章，跳过社媒输出")
 
     # Telegram 通知
     if not args.no_telegram:
-        send_telegram(briefing, investigation_reports, wechat_articles, slot)
+        send_telegram(briefing, investigation_reports, social_articles, slot)
         send_x_drafts_to_telegram(x_drafts, slot)
 
     print("🏁 完成")

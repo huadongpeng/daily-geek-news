@@ -8,7 +8,6 @@
       "https://github.blog/changelog/feed/",
       "https://github.blog/ai-and-ml/feed/",
       "https://github.blog/engineering/feed/",
-      "https://hnrss.org/frontpage?q=AI+OR+LLM+OR+agent+OR+Copilot+OR+Claude+OR+ChatGPT",
       "https://hnrss.org/show?q=AI+OR+LLM+OR+agent",
       "https://dev.to/feed/tag/ai",
       "https://venturebeat.com/category/ai/feed/",
@@ -34,14 +33,14 @@
       "open source LLM coding agent benchmark GitHub"
     ],
     "api_sources": [
-      "https://aihot.virxact.com/api/public/items?mode=selected&take=50"
+      "https://aihot.virxact.com/api/public/items?mode=selected&take=50",
+      "https://hn.algolia.com/api/v1/search_by_date?query=AI+LLM+agent+Claude+ChatGPT+Copilot&tags=story&hitsPerPage=30"
     ]
   },
   "side-hustle": {
     "feeds": [
       "https://hnrss.org/show",
       "https://hnrss.org/launches",
-      "https://hnrss.org/newest?q=Show+HN+OR+side+project+OR+SaaS+OR+microSaaS",
       "https://news.ycombinator.com/rss",
       "https://www.producthunt.com/feed",
       "https://v2ex.com/feed/create.xml",
@@ -57,6 +56,9 @@
       "https://changelog.com/feed",
       "https://www.saastr.com/feed/",
       "https://www.indiehackers.com/feed"
+    ],
+    "api_sources": [
+      "https://hn.algolia.com/api/v1/search_by_date?query=Show+HN+SaaS+side+project+microSaaS&tags=story&hitsPerPage=30"
     ],
     "search_seeds": [
       "side project revenue case study MRR AI tool",
@@ -115,8 +117,10 @@
       "https://www.bleepingcomputer.com/feed/",
       "https://www.ftc.gov/news-events/news/press-releases/rss",
       "https://hnrss.org/whoishiring/jobs",
-      "https://hnrss.org/newest?q=layoff+OR+salary+OR+hiring+OR+remote+work",
       "https://www.reddit.com/r/cscareerquestions/top/.rss?t=day"
+    ],
+    "api_sources": [
+      "https://hn.algolia.com/api/v1/search_by_date?query=layoff+hiring+salary+remote+work+tech&tags=story&hitsPerPage=30"
     ],
     "search_seeds": [
       "tech layoffs hiring salary remote work 2026",

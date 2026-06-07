@@ -49,6 +49,7 @@ jobs:
           REDDIT_CLIENT_ID:                ${{ secrets.REDDIT_CLIENT_ID }}
           REDDIT_CLIENT_SECRET:            ${{ secrets.REDDIT_CLIENT_SECRET }}
           REDDIT_USER_AGENT:               ${{ vars.REDDIT_USER_AGENT || 'script:easton-radar:4.0 (by /u/easton-radar)' }}
+          TAVILY_API_KEY:                  ${{ secrets.TAVILY_API_KEY }}
           ALLOW_POLLINATIONS_COVER:        ${{ vars.ALLOW_POLLINATIONS_COVER || 'true' }}
           DEEPSEEK_FLASH_MODEL:            ${{ vars.DEEPSEEK_FLASH_MODEL    || 'deepseek-v4-flash' }}
           DEEPSEEK_FLASH_THINKING:         ${{ vars.DEEPSEEK_FLASH_THINKING || 'disabled' }}
@@ -68,8 +69,6 @@ jobs:
           EMAIL_FROM:                      ${{ secrets.EMAIL_FROM }}
           EMAIL_PASSWORD:                  ${{ secrets.EMAIL_PASSWORD }}
           EMAIL_TO:                        ${{ secrets.EMAIL_TO }}
-          WECHAT_AUTHOR:                   ${{ vars.WECHAT_AUTHOR || '老花' }}
-          WECHAT_DRAFT_ENABLED:            "false"
           INDEXNOW_KEY:                    ${{ secrets.INDEXNOW_KEY || 'hdop-indexnow-key' }}
           BAIDU_PUSH_TOKEN:                ${{ secrets.BAIDU_PUSH_TOKEN }}
           PYTHONIOENCODING:                "utf-8"
@@ -84,8 +83,7 @@ jobs:
             .cache/radar/new_push_urls.json
             .cache/radar/pending_push_urls_*.json
             .cache/radar/source_health.json
-            outputs/wechat_articles/*.md
-            outputs/wechat_articles/*.json
+            outputs/social_assets/**/*
             outputs/x_drafts/*.md
             outputs/x_drafts/*.json
           if-no-files-found: ignore
@@ -167,16 +165,6 @@ jobs:
           name: radar-runtime-artifacts
           path: radar-runtime-artifacts
 
-      - name: Detect WeChat draft payloads
-        id: wechat_drafts
-        run: |
-          if [ -d radar-runtime-artifacts ] && find radar-runtime-artifacts -name '*-draft.json' -print -quit | grep -q .; then
-            echo "found=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "found=false" >> "$GITHUB_OUTPUT"
-            echo "No WeChat draft payloads found; skip draft push."
-          fi
-
       - name: Setup SSH for VPS deploy
         run: |
           mkdir -p ~/.ssh
@@ -222,52 +210,6 @@ jobs:
               ssh -i ~/.ssh/deploy_key "${{ secrets.VPS_USER }}@${{ secrets.VPS_IP }}" "rm -f \"$SEARCH_PUSH_STATE_DIR/pending_push_urls_${service}.json\""
             fi
           done
-
-      - name: Sync WeChat draft helper to VPS
-        if: steps.wechat_drafts.outputs.found == 'true'
-        env:
-          DRAFT_SCRIPT_PATH: ${{ vars.WECHAT_DRAFT_SCRIPT_PATH || '/ws/scripts/easton_wechat_draft_push.py' }}
-        run: |
-          DRAFT_SCRIPT_DIR="${DRAFT_SCRIPT_PATH%/*}"
-          ssh -i ~/.ssh/deploy_key "${{ secrets.VPS_USER }}@${{ secrets.VPS_IP }}" "mkdir -p \"$DRAFT_SCRIPT_DIR\""
-          rsync -avz \
-            -e "ssh -i ~/.ssh/deploy_key" \
-            deploy/wechat_draft_push.py \
-            "${{ secrets.VPS_USER }}@${{ secrets.VPS_IP }}:$DRAFT_SCRIPT_PATH"
-
-      - name: Push WeChat drafts from VPS
-        if: steps.wechat_drafts.outputs.found == 'true'
-        env:
-          DRAFT_REMOTE_DIR: ${{ vars.WECHAT_DRAFT_REMOTE_DIR || '/tmp/easton-radar-wechat' }}
-          DRAFT_SCRIPT_PATH: ${{ vars.WECHAT_DRAFT_SCRIPT_PATH || '/ws/scripts/easton_wechat_draft_push.py' }}
-        run: |
-          rm -rf wechat-drafts
-          mkdir -p wechat-drafts
-          find radar-runtime-artifacts -name '*-draft.json' -exec cp {} wechat-drafts/ \;
-          ssh -i ~/.ssh/deploy_key "${{ secrets.VPS_USER }}@${{ secrets.VPS_IP }}" "rm -rf \"$DRAFT_REMOTE_DIR\" && mkdir -p \"$DRAFT_REMOTE_DIR\""
-          rsync -avz \
-            -e "ssh -i ~/.ssh/deploy_key" \
-            wechat-drafts/ \
-            "${{ secrets.VPS_USER }}@${{ secrets.VPS_IP }}:$DRAFT_REMOTE_DIR/"
-          ssh -i ~/.ssh/deploy_key "${{ secrets.VPS_USER }}@${{ secrets.VPS_IP }}" "python3 -c 'import requests' || python3 -m pip install --user requests"
-          set +e
-          ssh -i ~/.ssh/deploy_key "${{ secrets.VPS_USER }}@${{ secrets.VPS_IP }}" "PYTHONIOENCODING=utf-8 python3 \"$DRAFT_SCRIPT_PATH\" \"$DRAFT_REMOTE_DIR\""
-          DRAFT_STATUS=$?
-          set -e
-          rsync -avz \
-            -e "ssh -i ~/.ssh/deploy_key" \
-            "${{ secrets.VPS_USER }}@${{ secrets.VPS_IP }}:$DRAFT_REMOTE_DIR/wechat_draft_results.json" \
-            ./wechat_draft_results.json || true
-          exit "$DRAFT_STATUS"
-
-      - name: Upload WeChat draft results
-        if: always()
-        uses: actions/upload-artifact@v6
-        with:
-          name: wechat-draft-results
-          path: wechat_draft_results.json
-          if-no-files-found: ignore
-          retention-days: 14
 
       - name: Upload search push results
         if: always()
