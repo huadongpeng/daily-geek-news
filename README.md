@@ -1,4 +1,7 @@
-# Easton Radar
+# Easton Radar · [hdop家](https://www.huadongpeng.com)
+
+> 驱动 [www.huadongpeng.com](https://www.huadongpeng.com) 的个人情报系统  
+> The pipeline powering [www.huadongpeng.com](https://www.huadongpeng.com) — daily briefings on AI tools, side projects, overseas signals & life trends.
 
 给一个中年小公司技术经理用的个人情报系统：早晚抓取尽量接近源头的信息，按人设初筛，生成每日简讯，并从候选里深挖 1-3 篇值得写的深度文章。输出到 Astro 静态网站，并通过 Telegram 通知。
 
