@@ -8,7 +8,6 @@
       "https://github.blog/changelog/feed/",
       "https://github.blog/ai-and-ml/feed/",
       "https://github.blog/engineering/feed/",
-      "https://hnrss.org/show?q=AI+OR+LLM+OR+agent",
       "https://dev.to/feed/tag/ai",
       "https://dev.to/feed/tag/llm",
       "https://venturebeat.com/category/ai/feed/",
@@ -19,13 +18,11 @@
       "https://feeds.arstechnica.com/arstechnica/technology-lab",
       "https://developers.cloudflare.com/changelog/rss/developer-platform.xml",
       "https://aws.amazon.com/blogs/machine-learning/feed/",
-      "https://blog.langchain.dev/rss/",
       "https://bair.berkeley.edu/blog/feed.xml",
       "https://arxiv.org/rss/cs.AI",
       "https://arxiv.org/rss/cs.CL",
       "https://arxiv.org/rss/cs.LG",
-      "https://sebastianraschka.com/rss_feed.xml",
-      "https://www.deeplearning.ai/the-batch/rss/"
+      "https://sebastianraschka.com/rss_feed.xml"
     ],
     "search_seeds": [
       "site:openai.com/news model API Codex ChatGPT release",
@@ -43,20 +40,13 @@
   "side-hustle": {
     "feeds": [
       "https://hnrss.org/show",
-      "https://hnrss.org/launches",
       "https://news.ycombinator.com/rss",
       "https://www.producthunt.com/feed",
-      "https://betalist.com/rss",
-      "https://www.failory.com/rss",
-      "https://starterstory.com/rss",
-      "https://levels.io/feed.xml",
       "https://thebootstrappedfounder.com/feed/",
       "https://www.nichepursuits.com/feed/",
       "https://www.sidehustlenation.com/feed/",
-      "https://explodingtopics.com/blog/feed",
       "https://v2ex.com/feed/create.xml",
       "https://v2ex.com/feed/tab/jobs.xml",
-      "https://sspai.com/feed",
       "https://www.ruanyifeng.com/blog/atom.xml",
       "https://www.reddit.com/r/SaaS/top/.rss?t=day",
       "https://www.reddit.com/r/microsaas/top/.rss?t=day",
@@ -68,15 +58,12 @@
       "https://lemmy.world/feeds/c/entrepreneur.xml?sort=Active",
       "https://lemmy.world/feeds/c/selfhosted.xml?sort=Active",
       "https://changelog.com/feed",
-      "https://www.saastr.com/feed/",
-      "https://www.indiehackers.com/feed"
+      "https://www.saastr.com/feed/"
     ],
     "api_sources": [
       "https://hn.algolia.com/api/v1/search_by_date?query=Show+HN+SaaS+side+project+microSaaS&tags=story&hitsPerPage=30",
-      "https://hn.algolia.com/api/v1/search_by_date?query=revenue+MRR+bootstrap+indie+maker+passive+income&tags=story&hitsPerPage=30",
-      "https://hn.algolia.com/api/v1/search_by_date?query=I+quit+job+side+project+profitable+solopreneur&tags=story&hitsPerPage=20",
-      "https://hn.algolia.com/api/v1/search_by_date?query=market+gap+niche+opportunity+underserved+business&tags=story&hitsPerPage=20",
-      "https://hn.algolia.com/api/v1/search_by_date?query=Ask+HN+making+money+online+freelance+consulting+2026&tags=story&hitsPerPage=20"
+      "https://hn.algolia.com/api/v1/search_by_date?query=indie+maker+project+revenue&tags=story&hitsPerPage=30",
+      "https://hn.algolia.com/api/v1/search_by_date?query=freelance+consulting+income+client&tags=story&hitsPerPage=20"
     ],
     "search_seeds": [
       "side project revenue case study MRR actual earnings 2025 2026",
@@ -85,7 +72,7 @@
       "micro SaaS failed stopped \"not worth it\" lessons learned",
       "site:starterstory.com revenue business case study",
       "site:indiehackers.com \"monthly revenue\" OR \"MRR\" 2025 2026",
-      "niche site affiliate income report 2025 2026 real earnings",
+      "niche site affiliate income report real earnings",
       "boring business profitable overlooked niche opportunity",
       "副业 真实收入 普通人 月入 实测 不是卖课",
       "国内副业 接单平台 收款 实操 成功案例"
@@ -97,16 +84,12 @@
       "https://restofworld.org/feed/all/",
       "https://www.wired.com/feed/rss",
       "https://www.semafor.com/rss.xml",
-      "https://technode.com/feed/",
-      "https://e27.co/feed/",
-      "https://www.techinasia.com/feed",
-      "https://kr-asia.com/feed",
+      "https://thechinaproject.com/feed/",
       "https://pandaily.com/feed/",
-      "https://www.medianama.com/feed/",
+      "https://www.techinasia.com/feed",
       "https://asia.nikkei.com/rss/feed/nar",
-      "https://supchina.com/feed/",
-      "https://www.chinainternetwatch.com/feed/",
-      "https://www.huxiu.com/rss/0.rss",
+      "https://www.medianama.com/feed/",
+      "https://www.techpoint.africa/feed/",
       "https://36kr.com/feed",
       "https://www.woshipm.com/feed",
       "https://www.practicalecommerce.com/feed",
@@ -116,8 +99,8 @@
       "https://www.reddit.com/r/AmazonSeller/top/.rss?t=day"
     ],
     "api_sources": [
-      "https://hn.algolia.com/api/v1/search_by_date?query=cross-border+ecommerce+overseas+opportunity+arbitrage+China&tags=story&hitsPerPage=20",
-      "https://hn.algolia.com/api/v1/search_by_date?query=digital+nomad+remote+income+visa+freelance+global&tags=story&hitsPerPage=20"
+      "https://hn.algolia.com/api/v1/search_by_date?query=ecommerce+seller+amazon+shopify&tags=story&hitsPerPage=20",
+      "https://hn.algolia.com/api/v1/search_by_date?query=digital+nomad+remote+work+income&tags=story&hitsPerPage=20"
     ],
     "search_seeds": [
       "Chinese founders overseas SaaS global launch English market 2026",
@@ -125,9 +108,8 @@
       "cross-border ecommerce platform policy change seller opportunity 2026",
       "TikTok Shop Amazon Shopify new market opportunity seller guide",
       "information asymmetry China overseas tech arbitrage opportunity",
-      "digital nomad freelance income platform Upwork Toptal Fiverr developer 2026",
+      "digital nomad freelance income platform Upwork Fiverr developer 2026",
       "Stripe Atlas foreign founders payment overseas company setup",
-      "emerging market AI startup gap unserved India Southeast Asia Africa",
       "出海工具 平台政策 Amazon TikTok 独立站 选品 跨境支付",
       "海外用户 付费意愿 信息差 普通中国开发者 英文市场"
     ]
@@ -136,7 +118,6 @@
     "feeds": [
       "https://www.federalreserve.gov/feeds/press_all.xml",
       "https://www.sec.gov/news/pressreleases.rss",
-      "https://www.ecb.europa.eu/rss/press.html",
       "https://feeds.bbci.co.uk/news/business/rss.xml",
       "https://feeds.bbci.co.uk/news/technology/rss.xml",
       "https://www.theguardian.com/world/rss",
@@ -151,10 +132,8 @@
       "https://spectrum.ieee.org/rss/fulltext",
       "https://krebsonsecurity.com/feed/",
       "https://www.bleepingcomputer.com/feed/",
-      "https://www.ftc.gov/news-events/news/press-releases/rss",
       "https://hnrss.org/whoishiring/jobs",
       "https://www.reddit.com/r/cscareerquestions/top/.rss?t=day",
-      "https://lemmy.world/feeds/c/cscareerquestions.xml?sort=Active",
       "https://queue.acm.org/rss/feeds/queuecontent.xml",
       "https://news.crunchbase.com/feed/"
     ],
