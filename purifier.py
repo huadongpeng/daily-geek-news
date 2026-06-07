@@ -1850,7 +1850,7 @@ def compose_investigation_reports(
 分类决策规则（按优先级）：
 1. side-hustle：有明确副业路径，普通人能在一周内验证
 2. ai-tools：主角是 AI 工具/能力，今天就能试用
-3. overseas：有跨语言/跨地区信息差价值
+3. overseas：有跨语言/跨地区信息差价值——即中文读者大概率没看到过的海外信息、政策、平台、文化差异。**国内产品（微信、飞书、钉钉、百度、腾讯等）、国内市场分析、国内政策，一律不得归入 overseas，即使该产品有海外版本。**
 4. life-signal：影响普通人生活/工作决策（兜底）
 
 文章结构（根据对象类型自适应，禁止套用固定模板）：
@@ -2003,7 +2003,9 @@ def compose_investigation_reports_per_candidate(
 - 标题优先写具体矛盾、关键数字、隐藏成本、门槛变化或普通人关系，不要把查资料动作当标题钩子。
 - 不要写固定栏目："我会盯哪 3 个信号"、"行动建议如下"、"老花我现在怎么做"、"我不是建议你立刻冲"。
 - 行动建议不是必选。先把发生了什么、为什么发生、和咱们有什么关系、哪里值得警醒讲清楚；只有选题天然适合低成本验证时，才自然并入一两句动作。没有新信息量就不写。
-- sources 只收录正文实际引用的高/中可信来源，2-8 个。
+- sources 只收录正文实际引用的高/中可信来源，2-8 个；url 字段只能使用 research_notes 中实际出现的原始 URL，严禁构造或猜测 URL（含任何 -jun2026、/12345 等占位路径）；找不到真实 URL 就删掉该条来源。
+- 文章正文是纯 Markdown 文字；禁止在正文任何位置写"图片，说明……"这样的图片占位符文字。
+- overseas 分类仅限于有真实跨语言/跨地区信息差价值的选题；国内产品、国内政策、国内市场分析不得归入 overseas。
 """,
                 max_tokens=min(PRO_ARTICLE_MAX_TOKENS, 18000),
                 model=PRO_MODEL,
@@ -2649,6 +2651,20 @@ def warn_if_action_advice_unbounded(md: str, title: str) -> None:
         print(f"   ⚠️ 文章包含行动建议但边界偏弱: {title[:40]} 缺少 {', '.join(missing)}")
 
 
+_IMAGE_PLACEHOLDER_RE = re.compile(
+    r"^(?:图片[，,，]?\s*说明[：:：]?.*|!\[.*?\]\(\)|!\[图片\]\(.*?\))\s*$",
+    re.MULTILINE,
+)
+
+
+def _strip_image_placeholders(md: str) -> str:
+    """Remove lines the model emits as image placeholders despite prompt prohibition."""
+    cleaned = _IMAGE_PLACEHOLDER_RE.sub("", md)
+    # Collapse runs of 3+ blank lines down to 2
+    cleaned = re.sub(r"\n{3,}", "\n\n", cleaned)
+    return cleaned
+
+
 def save_website_outputs(
     briefing: dict[str, Any],
     investigation_reports: list[dict[str, Any]],
@@ -2681,10 +2697,38 @@ def save_website_outputs(
             body = soften_report_template_headings(body)
         body = ensure_personal_footer(body)
         body = improve_markdown_readability(body)
+        # Strip image placeholder lines the model sometimes emits despite the prompt prohibition
+        body = _strip_image_placeholders(body)
         title_patterns = detect_forbidden_title_patterns(title)
         if title_patterns:
             print(f"   ⚠️ 文章标题撞到套话，建议重生成: {title[:40]} -> {', '.join(title_patterns)}")
         warn_if_action_advice_unbounded(body, title)
+        # Validate overseas category — must have a genuine cross-border angle
+        if topic == "overseas":
+            overseas_signals = ["海外", "跨境", "跨地区", "境外", "信息差", "国际", "全球", "海外版", "出海",
+                                "海外市场", "overseas", "cross-border", "global", "international"]
+            body_lower = body.lower()
+            if not any(s in body or s in body_lower for s in overseas_signals):
+                print(f"   ⚠️ 文章归类为 overseas 但正文未见跨境信号，已回退到 ai-tools")
+                topic = "ai-tools"
+        # Strip fabricated source URLs (patterns: -junYYYY, /12345, placeholder paths)
+        import re as _re
+        _fake_url_pat = _re.compile(
+            r"([-/]\d{4,}(?:[^/\s]*)$|[-]\w{3}\d{4}(?:[^/\s]*)?$)", _re.IGNORECASE
+        )
+        raw_sources = article.get("sources") or []
+        clean_sources = []
+        for s in raw_sources:
+            url = str(s.get("url") or "")
+            if not url.startswith("http"):
+                continue
+            path_part = url.split("?")[0].split("#")[0]
+            last_segment = path_part.rstrip("/").rsplit("/", 1)[-1]
+            if _fake_url_pat.search(last_segment):
+                print(f"   ⚠️ 移除疑似伪造来源 URL: {url[:80]}")
+                continue
+            clean_sources.append(s)
+        article["sources"] = clean_sources
         article["content_md"] = body
         article["topic"] = topic
         stem = f"investigation-{date_slug}-{slot}-{slugify(title)}"

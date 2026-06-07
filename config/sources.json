@@ -10,6 +10,7 @@
       "https://github.blog/engineering/feed/",
       "https://hnrss.org/show?q=AI+OR+LLM+OR+agent",
       "https://dev.to/feed/tag/ai",
+      "https://dev.to/feed/tag/llm",
       "https://venturebeat.com/category/ai/feed/",
       "https://simonwillison.net/atom/everything/",
       "https://lobste.rs/t/ai.rss",
@@ -18,11 +19,13 @@
       "https://feeds.arstechnica.com/arstechnica/technology-lab",
       "https://developers.cloudflare.com/changelog/rss/developer-platform.xml",
       "https://aws.amazon.com/blogs/machine-learning/feed/",
+      "https://blog.langchain.dev/rss/",
       "https://bair.berkeley.edu/blog/feed.xml",
       "https://arxiv.org/rss/cs.AI",
       "https://arxiv.org/rss/cs.CL",
       "https://arxiv.org/rss/cs.LG",
-      "https://sebastianraschka.com/rss_feed.xml"
+      "https://sebastianraschka.com/rss_feed.xml",
+      "https://www.deeplearning.ai/the-batch/rss/"
     ],
     "search_seeds": [
       "site:openai.com/news model API Codex ChatGPT release",
@@ -43,16 +46,20 @@
       "https://hnrss.org/launches",
       "https://news.ycombinator.com/rss",
       "https://www.producthunt.com/feed",
+      "https://betalist.com/rss",
+      "https://www.failory.com/rss",
       "https://v2ex.com/feed/create.xml",
+      "https://v2ex.com/feed/tab/jobs.xml",
+      "https://sspai.com/feed",
+      "https://www.ruanyifeng.com/blog/atom.xml",
       "https://www.reddit.com/r/SaaS/top/.rss?t=day",
       "https://www.reddit.com/r/microsaas/top/.rss?t=day",
       "https://www.reddit.com/r/SideProject/top/.rss?t=day",
       "https://www.reddit.com/r/indiehackers/top/.rss?t=day",
       "https://www.reddit.com/r/Entrepreneur/top/.rss?t=day",
       "https://www.reddit.com/r/freelance/top/.rss?t=day",
-      "https://www.reddit.com/r/SomebodyMakeThis/top/.rss?t=day",
-      "https://www.reddit.com/r/passive_income/top/.rss?t=day",
-      "https://www.reddit.com/r/EntrepreneurRideAlong/top/.rss?t=day",
+      "https://lemmy.world/feeds/c/entrepreneur.xml?sort=Active",
+      "https://lemmy.world/feeds/c/selfhosted.xml?sort=Active",
       "https://changelog.com/feed",
       "https://www.saastr.com/feed/",
       "https://www.indiehackers.com/feed"
@@ -117,7 +124,9 @@
       "https://www.bleepingcomputer.com/feed/",
       "https://www.ftc.gov/news-events/news/press-releases/rss",
       "https://hnrss.org/whoishiring/jobs",
-      "https://www.reddit.com/r/cscareerquestions/top/.rss?t=day"
+      "https://www.reddit.com/r/cscareerquestions/top/.rss?t=day",
+      "https://lemmy.world/feeds/c/cscareerquestions.xml?sort=Active",
+      "https://queue.acm.org/rss/feeds/queuecontent.xml"
     ],
     "api_sources": [
       "https://hn.algolia.com/api/v1/search_by_date?query=layoff+hiring+salary+remote+work+tech&tags=story&hitsPerPage=30"
