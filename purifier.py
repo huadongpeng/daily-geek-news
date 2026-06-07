@@ -383,10 +383,22 @@ WRITING_METHOD_DEFAULT = """
 """
 
 XHS_PERSONA_DEFAULT = """
-快35岁的程序员，用AI系统化构建副业退路。
-真实经历：失业330天→法院起诉→重新就业。
-不教你用AI，只展示AI怎么帮我活下去。
-关注我看真实折腾日记，不打鸡血。
+账号定位：快 35 岁的程序员，用 AI 系统化构建副业退路。
+真实背景：失业 330 天 → 被起诉 → 重新就业，债还在还。
+核心内容：副业探索日记，每个案例亲自验证成本和风险，不推销成功学。
+
+口吻原则：
+- 第一人称，口语化，像给朋友发微信，不用书面腔
+- 不打鸡血，不贩卖焦虑，不假装知道答案
+- 有时自嘲，有时直接，但不戾气
+- 遇到不确定的事直说"我不知道"或"还没验证"
+
+小红书写法规范：
+- 开头第一句必须能让人停住手指，2 秒内触发"我也是"或"这啥情况"
+- 段落短，每 2-3 行换一次，手机屏幕友好，不要写大段连续文字
+- 禁止词：朋友们、小伙伴、走起来、冲冲冲、希望对你有帮助、私信我、关注我
+- 不用装饰性 emoji，最多 1-2 个功能性标记
+- 结尾是观察点或问题，不是号召转发或自我推销
 """
 
 
@@ -3120,6 +3132,28 @@ def polish_social_text(text: str) -> str:
     return text.strip()
 
 
+def polish_xhs_body(text: str) -> str:
+    """Like polish_social_text but preserves paragraph breaks for XHS mobile readability."""
+    text = clean_unicode_text(text)
+    text = text.replace("砍掉", "替换")
+    text = text.replace("砍到", "缩到")
+    text = text.replace("裁掉", "替换")
+    text = re.sub(r"(?<=[A-Za-z0-9])(?=[一-鿿])", " ", text)
+    text = re.sub(r"(?<=[一-鿿])(?=[A-Za-z0-9])", " ", text)
+    text = re.sub(r"\bAI\s+代理\b", "AI代理", text)
+    # Preserve paragraph breaks: collapse 3+ newlines → 2, then tidy each line
+    text = re.sub(r"\n{3,}", "\n\n", text)
+    lines = [re.sub(r"[ \t]+", " ", ln).strip() for ln in text.split("\n")]
+    text = "\n".join(lines)
+    # Strip trailing call-to-action phrases
+    for pattern in (r"\s*觉得有用[^\n]*$", r"\s*点个赞[^\n]*$", r"\s*关注我[^\n]*$",
+                    r"\s*转发给[^\n]*$", r"\s*希望对你[^\n]*$"):
+        text = re.sub(pattern, "", text, flags=re.DOTALL)
+    # Strip trailing hashtag lines (they belong in xhs_tags, not body)
+    text = re.sub(r"\n+#\S.*$", "", text, flags=re.DOTALL)
+    return text.strip()
+
+
 def normalize_video_keywords(value: Any) -> str:
     if isinstance(value, list):
         raw_items = [clean_unicode_text(item) for item in value]
@@ -3198,32 +3232,45 @@ def build_social_package(article: dict[str, Any], persona: str) -> dict[str, Any
     summary = clean_unicode_text(article.get("summary") or "")
     content_md = clean_unicode_text(article.get("content_md") or "")
     site_url = clean_unicode_text(article.get("site_url") or "")
+    topic = article.get("topic", "")
+    topic_tag_hints = {
+        "side-hustle": "副业、程序员副业、变现路径、普通人创业、独立开发、折腾日记、副业真实收入",
+        "ai-tools": "AI工具、AI效率、AI实测、工具评测、AI应用、效率提升",
+        "overseas": "出海、跨境电商、信息差、独立站、海外平台、跨境副业",
+        "life-signal": "互联网职场、程序员、就业形势、工作危机、职场观察",
+    }
+    tag_hint = topic_tag_hints.get(topic, "程序员、副业、AI工具")
     try:
         result = llm_json(
             system=(
                 "你是中文小红书图文编辑和短视频脚本策划。"
                 "任务是把一篇中文深度文章改成可手动发布的小红书图文素材，以及 MoneyPrinterTurbo 可用的视频素材。"
                 "你必须使用给定的小红书人设，不要沿用网站文章的作者口吻。"
-                "只输出 JSON，不要 markdown。"
+                "只输出 JSON，不要 markdown 代码块，不要 ```json。"
             ),
             user=(
-                f"小红书人设：\n{persona[:900]}\n\n"
+                f"小红书人设：\n{persona[:1200]}\n\n"
                 f"文章标题：{title}\n"
+                f"文章分类：{topic}\n"
                 f"摘要：{summary}\n"
                 f"原文链接：{site_url}\n\n"
                 f"文章正文：\n{content_md[:6000]}\n\n"
-                "请输出 JSON object，字段如下：\n"
-                "- xhs_title: 小红书标题，24 字以内，像真实折腾日记，不要媒体腔，不要标题党。\n"
-                "- xhs_body: 小红书正文，350-850 字，适合复制发布；核心口吻是快 35 岁程序员给自己构建副业退路，不教别人，只展示自己怎么活下来。\n"
-                "- xhs_tags: 6-8 个中文标签，不带 #。\n"
-                "- cards: 4-7 张文字卡片，每张包含 title 和 body；这些文字会直接印在图片上，所以必须重新写成短、狠、清楚的卡片语言。"
-                "第一张必须是一眼能抓人的封面卡，后面讲清核心事实、我为什么在意、对副业退路有什么启发、风险和下一步观察。"
-                "每张 title 8-18 字，body 25-80 字，不要复制原文长句，不要出现省略号。\n"
-                "- video_topic: MoneyPrinterTurbo 视频主题，给一个中文关键词或短词组，8-20 字。\n"
-                "- video_title: 视频标题，适合封面和发布预览，12-24 字。\n"
-                "- video_description: 视频描述，适合放在发布文案或口播副标题里，1-2 句。\n"
-                "- video_script: 口播视频文案，适合 60-90 秒，第一人称，真实折腾日记风格，分镜感强但不要写镜头编号。\n"
-                "- video_keywords: 6-8 个英文关键词，用英文逗号分隔，只能英文。\n"
+                "请输出 JSON object，所有字段必须有值，字段如下：\n"
+                "- xhs_title: 小红书标题，20 字以内，像真实折腾日记，不要媒体腔，不要标题党，不要感叹号堆砌。\n"
+                "- xhs_body: 小红书正文，350-700 字，适合复制发布。"
+                "格式要求：每段最多 3 行，段落间空一行，手机屏幕友好；"
+                "开头第一句必须是能让人停住手指的一句话（触发'我也是'或'这啥情况'）；"
+                "口吻是快 35 岁程序员给自己构建副业退路，不教别人，只展示自己怎么活下来；"
+                f"禁止词：朋友们、小伙伴、走起来、冲冲冲、希望对你有帮助。\n"
+                f"- xhs_tags: 6-8 个中文标签，不带 #，从这些方向挑选最相关的：{tag_hint}，不要堆泛类标签。\n"
+                "- cards: 4-7 张文字卡片，每张包含 title 和 body；文字直接印在图片上，必须写成短、狠、清楚的卡片语言。"
+                "第一张是封面卡（一眼抓人）；后续讲核心事实、为什么在意、对副业退路的启发、风险和下一步观察。"
+                "每张 title 6-16 字，body 20-70 字，不要复制原文长句，不要省略号。\n"
+                "- video_topic: 视频主题，8-18 字中文关键词。（必填）\n"
+                "- video_title: 视频封面标题，12-22 字，吸引人但不标题党。（必填）\n"
+                "- video_description: 视频发布文案副标题，1-2 句，简洁有力。（必填）\n"
+                "- video_script: 口播文案，适合 60-90 秒，第一人称，真实折腾日记风格，有分镜节奏但不写镜头编号。\n"
+                "- video_keywords: 6-8 个英文关键词，英文逗号分隔，只能英文。\n"
             ),
             max_tokens=3600,
             model=FLASH_MODEL,
@@ -3247,7 +3294,7 @@ def build_social_package(article: dict[str, Any], persona: str) -> dict[str, Any
         cleaned_cards = fallback["cards"]
     return {
         "xhs_title": social_headline_from_title(str(result.get("xhs_title") or fallback["xhs_title"])),
-        "xhs_body": truncate_by_chars(polish_social_text(result.get("xhs_body") or fallback["xhs_body"]), XHS_BODY_MAX_CHARS),
+        "xhs_body": truncate_by_chars(polish_xhs_body(result.get("xhs_body") or fallback["xhs_body"]), XHS_BODY_MAX_CHARS),
         "xhs_tags": normalize_hashtags(result.get("xhs_tags") if isinstance(result.get("xhs_tags"), list) else fallback["xhs_tags"]),
         "cards": cleaned_cards[:XHS_CARD_COUNT_MAX],
         "video_topic": truncate_by_chars(polish_social_text(result.get("video_topic") or fallback["video_topic"]), 42),
@@ -3262,23 +3309,24 @@ def build_social_art_prompt(article: dict[str, Any], persona: str, purpose: str)
     title = clean_unicode_text(article.get("title") or "")
     summary = clean_unicode_text(article.get("summary") or "")
     content_md = clean_unicode_text(article.get("content_md") or "")
-    orientation = "vertical 3:4 portrait" if purpose == "video" else "horizontal editorial"
+    orientation = "vertical 9:16 portrait" if purpose == "video" else "vertical 3:4 portrait"
     try:
         result = llm_json(
             system=(
-                "You are an art director generating image prompts for a Kolors diffusion model. "
-                "Write a prompt that produces a clean, visually striking background image with one concrete focal object "
-                "tied to the article theme. Rules: no text, no human faces, no logos, no watermarks. "
-                "Use a warm, slightly editorial colour palette. Prefer realistic objects, textures, or abstract patterns "
-                "over AI/tech clichés like glowing circuits or floating orbs. Output JSON only."
+                "You are an art director creating POSTER-QUALITY background image prompts for the Kolors diffusion model. "
+                "Goal: a visually striking, magazine-cover-grade background with strong composition and a limited colour palette. "
+                "Hard rules: NO text, NO human faces, NO logos, NO watermarks, NO AI tech clichés (circuits, orbs, holograms, neon glow). "
+                "Preferred subjects: concrete everyday objects, natural textures, architectural details, tight product shots, abstract colour fields. "
+                "Use 2-3 colours max with high contrast or complementary harmony. Output JSON only."
             ),
             user=(
                 f"Article title: {title}\n"
                 f"Summary: {summary[:300]}\n\n"
-                f"Generate a {orientation} background image prompt under 60 words. "
-                "Pick ONE concrete visual metaphor from the article theme (e.g. a single object, texture, or scene). "
-                "Describe lighting, colour mood, and composition style. "
-                "Return JSON: {{\"prompt\": \"...\", \"negative_prompt\": \"...\"}}"
+                f"Generate a {orientation} POSTER background image prompt under 70 words. "
+                "Specify: main subject + placement (rule of thirds or centred), lighting direction, colour palette (name the 2-3 colours), "
+                "composition style, and overall mood (e.g. quiet determination, tense, hopeful). "
+                "The image must feel like a premium editorial poster background, not a generic stock photo. "
+                "Return JSON: {{\"prompt\": \"...\", \"negative_prompt\": \"text, logo, watermark, face, hands, AI circuits, hologram, neon glow, blur, overexposed, low quality, nsfw\"}}"
             ),
             max_tokens=300,
             model=FLASH_MODEL,
@@ -3295,13 +3343,14 @@ def build_social_art_prompt(article: dict[str, Any], persona: str, purpose: str)
     except Exception as exc:
         print(f"   ⚠️ 社媒背景提示词生成失败: {exc}")
     fallback = (
-        "Close-up of a worn wooden desk with a single open notebook, warm afternoon light, "
-        "shallow depth of field, clean editorial style, no text, no people"
+        "Close-up of a worn wooden desk with single open notebook, warm amber and cream tones, "
+        "soft side lighting, shallow depth of field, rule of thirds composition, poster-grade editorial style, "
+        "no text, no people, no logos"
     )
     if purpose == "video":
         fallback = (
-            "Vertical close-up of a mechanical keyboard with soft bokeh background, "
-            "cool blue and amber tones, cinematic lighting, no text, no people"
+            "Vertical close-up of a mechanical keyboard on dark surface, cool slate-blue and warm amber contrast, "
+            "cinematic side lighting, centred composition, deep shadows, poster aesthetic, no text, no people"
         )
     return {
         "prompt": fallback,
@@ -3421,82 +3470,156 @@ def write_text_card_png(
         return False
     width, height = size
     font_path = find_cjk_font()
+    title_sz = max(52, width // 13)
+    body_sz = max(30, width // 28)
+    meta_sz = max(22, width // 38)
     if font_path:
-        title_font = ImageFont.truetype(font_path, max(44, width // 14))
-        body_font = ImageFont.truetype(font_path, max(28, width // 26))
-        meta_font = ImageFont.truetype(font_path, max(22, width // 34))
+        title_font = ImageFont.truetype(font_path, title_sz)
+        body_font = ImageFont.truetype(font_path, body_sz)
+        meta_font = ImageFont.truetype(font_path, meta_sz)
     else:
         title_font = body_font = meta_font = ImageFont.load_default()
-    if background_path and background_path.exists():
+
+    has_bg = bool(background_path and background_path.exists())
+
+    if has_bg:
+        # ── POSTER MODE: full-bleed background + gradient text zone ──────────
         try:
-            bg = Image.open(background_path).convert("RGB")
+            bg = Image.open(background_path).convert("RGBA")
             img = fit_background_image(bg, size)
         except Exception:
-            img = Image.new("RGB", size, "#f7f3ea")
-    else:
-        img = Image.new("RGB", size, "#f7f3ea")
-    draw = ImageDraw.Draw(img)
-    accent = "#e75b36"
-    ink = "#202124"
-    muted = "#6b6258"
-    soft = "#fff1e8"
-    pad = int(width * 0.075)
-    if background_path and background_path.exists():
-        overlay = Image.new("RGBA", size, (247, 243, 234, 70))
-        img = img.convert("RGBA")
-        img.alpha_composite(overlay)
+            img = Image.new("RGBA", size, (26, 24, 20, 255))
+
+        # Dark gradient overlay rising from bottom
+        overlay = Image.new("RGBA", size, (0, 0, 0, 0))
+        ov_draw = ImageDraw.Draw(overlay)
+        grad_start = int(height * 0.30)
+        for y_px in range(grad_start, height):
+            t = (y_px - grad_start) / (height - grad_start)
+            alpha = int(210 * min(t * 1.5, 1.0))
+            ov_draw.line([(0, y_px), (width, y_px)], fill=(12, 10, 7, alpha))
+        img = Image.alpha_composite(img.convert("RGBA"), overlay)
         draw = ImageDraw.Draw(img)
-        panel_fill = (255, 253, 248, 205)
-        panel_outline = (231, 218, 200, 255)
-        accent_fill = (231, 91, 54, 255)
-        muted_text = (107, 98, 88, 255)
-        panel_left = pad
-        panel_top = pad + 56
-        panel_right = width - pad - int(width * 0.08)
-        panel_height = int(height * 0.42 if height >= 1800 else height * 0.48)
-        panel_bottom = min(height - pad - 150, panel_top + panel_height)
-        draw.rounded_rectangle((panel_left, panel_top, panel_right, panel_bottom), radius=36, fill=panel_fill, outline=panel_outline, width=3)
-        draw.rounded_rectangle((panel_left + 28, panel_top + 24, panel_left + 168, panel_top + 38), radius=7, fill=accent_fill)
-        draw.text((panel_left + 28, panel_top + 54), eyebrow, fill=muted_text, font=meta_font)
-        accent = "#e75b36"
-        ink = "#202124"
-        muted = "#6b6258"
-        soft = "#fff1e8"
-    else:
-        draw.rounded_rectangle((pad, pad, width - pad, height - pad), radius=28, fill="#fffdf8", outline="#e7dac8", width=3)
-        draw.rounded_rectangle((pad + 28, pad + 28, pad + 138, pad + 42), radius=7, fill=accent)
-        draw.text((pad + 28, pad + 58), eyebrow, fill=muted, font=meta_font)
-    content_width = (panel_right - panel_left - 68) if background_path and background_path.exists() else width - (pad + 34) * 2
-    y = (panel_top + 90) if background_path and background_path.exists() else pad + (150 if height <= 1500 else 180)
-    text_x = (panel_left + 34) if background_path and background_path.exists() else pad + 34
-    for line in wrap_text_by_pixels(draw, title, title_font, content_width, 3):
-        draw.text((text_x, y), line, fill=ink, font=title_font)
-        y += int(title_font.size * 1.22)
 
-    chips = extract_stat_chips(title, body)
-    if chips:
-        y += 22
-        x = (panel_left + 34) if background_path and background_path.exists() else pad + 36
-        for chip in chips:
-            chip_text = f" {chip} "
-            bbox = draw.textbbox((0, 0), chip_text, font=meta_font)
-            chip_w = bbox[2] - bbox[0] + 28
-            draw.rounded_rectangle((x, y, x + chip_w, y + 42), radius=18, fill=soft, outline=accent, width=2)
-            draw.text((x + 14, y + 7), chip_text, fill=accent, font=meta_font)
-            x += chip_w + 14
-        y += 70
-    else:
-        y += 28
+        pad = int(width * 0.07)
 
-    for line in wrap_text_by_pixels(draw, body, body_font, content_width, 7):
-        draw.text((text_x + 2, y), line, fill=ink, font=body_font)
-        y += int(body_font.size * 1.5)
-    footer = "快35岁程序员 · AI副业退路日记"
-    footer_bbox = draw.textbbox((0, 0), footer, font=meta_font)
-    footer_w = footer_bbox[2] - footer_bbox[0] + 34
-    footer_y = height - pad - 78
-    draw.rounded_rectangle((pad + 34, footer_y, pad + 34 + footer_w, footer_y + 46), radius=20, fill="#f3ede3")
-    draw.text((pad + 51, footer_y + 9), footer, fill=muted, font=meta_font)
+        # Top accent bar (full width)
+        draw.rectangle([(0, 0), (width, 7)], fill=(231, 91, 54, 255))
+        # Eyebrow pill
+        meta_bbox = draw.textbbox((0, 0), eyebrow, font=meta_font)
+        pill_w = meta_bbox[2] - meta_bbox[0] + 44
+        pill_h = meta_sz + 22
+        draw.rounded_rectangle((pad, pad + 24, pad + pill_w, pad + 24 + pill_h), radius=pill_h // 2,
+                                fill=(20, 16, 12, 185))
+        draw.text((pad + 22, pad + 34), eyebrow, fill=(195, 178, 155, 255), font=meta_font)
+
+        # Text zone starts at ~46% down
+        text_x = pad
+        content_w = width - pad * 2
+        y = int(height * 0.46)
+
+        title_lines = wrap_text_by_pixels(draw, title, title_font, content_w, 3)
+        for line in title_lines:
+            draw.text((text_x + 3, y + 3), line, fill=(0, 0, 0, 130), font=title_font)  # shadow
+            draw.text((text_x, y), line, fill=(255, 252, 244, 255), font=title_font)
+            y += int(title_sz * 1.22)
+
+        # Short accent line under title
+        y += 18
+        draw.rectangle([(text_x, y), (text_x + 64, y + 5)], fill=(231, 91, 54, 255))
+        y += 30
+
+        # Stat chips
+        chips = extract_stat_chips(title, body)
+        if chips:
+            cx = text_x
+            for chip in chips:
+                ct = f" {chip} "
+                cb = draw.textbbox((0, 0), ct, font=meta_font)
+                cw = cb[2] - cb[0] + 26
+                ch = cb[3] - cb[1] + 18
+                draw.rounded_rectangle((cx, y, cx + cw, y + ch), radius=ch // 2, fill=(231, 91, 54, 210))
+                draw.text((cx + 13, y + 8), ct, fill=(255, 252, 244, 255), font=meta_font)
+                cx += cw + 14
+            y += int(meta_sz * 2.4)
+        else:
+            y += 6
+
+        for line in wrap_text_by_pixels(draw, body, body_font, content_w, 5):
+            draw.text((text_x + 2, y + 2), line, fill=(0, 0, 0, 110), font=body_font)  # shadow
+            draw.text((text_x, y), line, fill=(215, 202, 183, 255), font=body_font)
+            y += int(body_sz * 1.55)
+
+        # Footer
+        footer = "老花 / Easton Hua"
+        footer_y = height - pad - 54
+        draw.rectangle([(text_x, footer_y), (text_x + 5, footer_y + meta_sz + 10)], fill=(231, 91, 54, 220))
+        draw.text((text_x + 20, footer_y + 2), footer, fill=(155, 140, 120, 255), font=meta_font)
+
+    else:
+        # ── EDITORIAL MODE: warm gradient background ──────────────────────────
+        img = Image.new("RGB", size, (253, 250, 244))
+        draw_bg = ImageDraw.Draw(img)
+        for y_px in range(height):
+            t = y_px / height
+            draw_bg.line([(0, y_px), (width, y_px)],
+                         fill=(int(253 - t * 20), int(250 - t * 24), int(244 - t * 30)))
+        draw = ImageDraw.Draw(img)
+
+        pad = int(width * 0.075)
+        # Left accent stripe
+        draw.rectangle([(pad, pad + 20), (pad + 8, height - pad - 20)], fill="#e75b36")
+        # Inner border
+        draw.rounded_rectangle((pad, pad, width - pad, height - pad), radius=28, outline="#ddd0bc", width=2)
+
+        text_x = pad + 36
+        content_w = width - text_x - pad
+
+        # Eyebrow
+        y = pad + 48
+        draw.text((text_x, y), eyebrow, fill="#c0895a", font=meta_font)
+        y += meta_sz + 30
+
+        # Title
+        for line in wrap_text_by_pixels(draw, title, title_font, content_w, 3):
+            draw.text((text_x, y), line, fill="#1a1814", font=title_font)
+            y += int(title_sz * 1.22)
+
+        # Separator
+        y += 24
+        draw.rectangle([(text_x, y), (text_x + 72, y + 4)], fill="#e75b36")
+        y += 30
+
+        # Stat chips
+        chips = extract_stat_chips(title, body)
+        if chips:
+            cx = text_x
+            for chip in chips:
+                ct = f" {chip} "
+                cb = draw.textbbox((0, 0), ct, font=meta_font)
+                cw = cb[2] - cb[0] + 26
+                ch = cb[3] - cb[1] + 18
+                draw.rounded_rectangle((cx, y, cx + cw, y + ch), radius=ch // 2,
+                                       fill="#fff1e8", outline="#e75b36", width=2)
+                draw.text((cx + 13, y + 8), ct, fill="#e75b36", font=meta_font)
+                cx += cw + 14
+            y += int(meta_sz * 2.4)
+        else:
+            y += 8
+
+        for line in wrap_text_by_pixels(draw, body, body_font, content_w, 7):
+            draw.text((text_x, y), line, fill="#2a2620", font=body_font)
+            y += int(body_sz * 1.55)
+
+        # Footer pill
+        footer = "老花 / Easton Hua"
+        footer_y = height - pad - 62
+        fb = draw.textbbox((0, 0), footer, font=meta_font)
+        fw = fb[2] - fb[0] + 44
+        fh = meta_sz + 24
+        draw.rounded_rectangle((text_x, footer_y, text_x + fw, footer_y + fh), radius=fh // 2, fill="#ede4d6")
+        draw.text((text_x + 22, footer_y + 10), footer, fill="#9c8472", font=meta_font)
+
     path.parent.mkdir(parents=True, exist_ok=True)
     if img.mode != "RGB":
         img = img.convert("RGB")
