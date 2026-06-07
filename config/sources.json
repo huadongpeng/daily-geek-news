@@ -50,6 +50,10 @@
       "https://www.failory.com/rss",
       "https://starterstory.com/rss",
       "https://levels.io/feed.xml",
+      "https://thebootstrappedfounder.com/feed/",
+      "https://www.nichepursuits.com/feed/",
+      "https://www.sidehustlenation.com/feed/",
+      "https://explodingtopics.com/blog/feed",
       "https://v2ex.com/feed/create.xml",
       "https://v2ex.com/feed/tab/jobs.xml",
       "https://sspai.com/feed",
@@ -70,7 +74,9 @@
     "api_sources": [
       "https://hn.algolia.com/api/v1/search_by_date?query=Show+HN+SaaS+side+project+microSaaS&tags=story&hitsPerPage=30",
       "https://hn.algolia.com/api/v1/search_by_date?query=revenue+MRR+bootstrap+indie+maker+passive+income&tags=story&hitsPerPage=30",
-      "https://hn.algolia.com/api/v1/search_by_date?query=I+quit+job+side+project+profitable+solopreneur&tags=story&hitsPerPage=20"
+      "https://hn.algolia.com/api/v1/search_by_date?query=I+quit+job+side+project+profitable+solopreneur&tags=story&hitsPerPage=20",
+      "https://hn.algolia.com/api/v1/search_by_date?query=market+gap+niche+opportunity+underserved+business&tags=story&hitsPerPage=20",
+      "https://hn.algolia.com/api/v1/search_by_date?query=Ask+HN+making+money+online+freelance+consulting+2026&tags=story&hitsPerPage=20"
     ],
     "search_seeds": [
       "side project revenue case study MRR actual earnings 2025 2026",
@@ -79,6 +85,8 @@
       "micro SaaS failed stopped \"not worth it\" lessons learned",
       "site:starterstory.com revenue business case study",
       "site:indiehackers.com \"monthly revenue\" OR \"MRR\" 2025 2026",
+      "niche site affiliate income report 2025 2026 real earnings",
+      "boring business profitable overlooked niche opportunity",
       "副业 真实收入 普通人 月入 实测 不是卖课",
       "国内副业 接单平台 收款 实操 成功案例"
     ]
@@ -89,25 +97,39 @@
       "https://restofworld.org/feed/all/",
       "https://www.wired.com/feed/rss",
       "https://www.semafor.com/rss.xml",
-      "https://feeds.bbci.co.uk/news/world/rss.xml",
       "https://technode.com/feed/",
       "https://e27.co/feed/",
       "https://www.techinasia.com/feed",
       "https://kr-asia.com/feed",
       "https://pandaily.com/feed/",
-      "https://www.techpoint.africa/feed/",
       "https://www.medianama.com/feed/",
       "https://asia.nikkei.com/rss/feed/nar",
+      "https://supchina.com/feed/",
+      "https://www.chinainternetwatch.com/feed/",
+      "https://www.huxiu.com/rss/0.rss",
+      "https://36kr.com/feed",
+      "https://www.woshipm.com/feed",
+      "https://www.practicalecommerce.com/feed",
       "https://www.reddit.com/r/digitalnomad/top/.rss?t=day",
-      "https://www.reddit.com/r/ExpatFinance/top/.rss?t=day"
+      "https://www.reddit.com/r/Entrepreneur/top/.rss?t=week",
+      "https://www.reddit.com/r/shopify/top/.rss?t=day",
+      "https://www.reddit.com/r/AmazonSeller/top/.rss?t=day"
+    ],
+    "api_sources": [
+      "https://hn.algolia.com/api/v1/search_by_date?query=cross-border+ecommerce+overseas+opportunity+arbitrage+China&tags=story&hitsPerPage=20",
+      "https://hn.algolia.com/api/v1/search_by_date?query=digital+nomad+remote+income+visa+freelance+global&tags=story&hitsPerPage=20"
     ],
     "search_seeds": [
-      "emerging market AI startup regulation opportunity ordinary developer",
-      "cross-border SaaS payment policy platform change",
-      "India Southeast Asia AI cloud developer market",
-      "remote work digital nomad tax visa policy update",
-      "Chinese founders overseas SaaS AI product launch",
-      "information asymmetry China overseas tech market 2026"
+      "Chinese founders overseas SaaS global launch English market 2026",
+      "出海 跨境 副业 机会 普通人 海外平台 收入",
+      "cross-border ecommerce platform policy change seller opportunity 2026",
+      "TikTok Shop Amazon Shopify new market opportunity seller guide",
+      "information asymmetry China overseas tech arbitrage opportunity",
+      "digital nomad freelance income platform Upwork Toptal Fiverr developer 2026",
+      "Stripe Atlas foreign founders payment overseas company setup",
+      "emerging market AI startup gap unserved India Southeast Asia Africa",
+      "出海工具 平台政策 Amazon TikTok 独立站 选品 跨境支付",
+      "海外用户 付费意愿 信息差 普通中国开发者 英文市场"
     ]
   },
   "life-signal": {
@@ -133,7 +155,8 @@
       "https://hnrss.org/whoishiring/jobs",
       "https://www.reddit.com/r/cscareerquestions/top/.rss?t=day",
       "https://lemmy.world/feeds/c/cscareerquestions.xml?sort=Active",
-      "https://queue.acm.org/rss/feeds/queuecontent.xml"
+      "https://queue.acm.org/rss/feeds/queuecontent.xml",
+      "https://news.crunchbase.com/feed/"
     ],
     "api_sources": [
       "https://hn.algolia.com/api/v1/search_by_date?query=layoff+hiring+salary+remote+work+tech&tags=story&hitsPerPage=30"
