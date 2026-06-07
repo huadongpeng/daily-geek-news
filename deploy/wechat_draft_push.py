@@ -263,14 +263,18 @@ def iter_payloads(input_dir: Path) -> List[Path]:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Push Easton Radar articles to WeChat draft box from VPS.")
-    parser.add_argument("input_dir", type=Path)
+    parser.add_argument("input_dir", nargs="?", type=Path)
+    parser.add_argument("--input-dir", dest="input_dir_option", type=Path)
     args = parser.parse_args()
+    input_dir = args.input_dir_option or args.input_dir
+    if input_dir is None:
+        parser.error("input_dir is required")
 
     load_server_config()
-    payload_paths = iter_payloads(args.input_dir)
-    results_path = args.input_dir / "wechat_draft_results.json"
+    payload_paths = iter_payloads(input_dir)
+    results_path = input_dir / "wechat_draft_results.json"
     if not payload_paths:
-        print(f"No draft payloads found in {args.input_dir}")
+        print(f"No draft payloads found in {input_dir}")
         write_json(results_path, {"results": []})
         return
 

@@ -2007,10 +2007,14 @@ def absolute_site_url(path_or_url: str) -> str:
 
 def slugify(text: str) -> str:
     text = clean_unicode_text(text)
-    base = re.sub(r"[^a-zA-Z0-9一-鿿]+", "-", text).strip("-").lower()
+    # Keep generated URLs portable for sharing: ASCII letters, numbers and dashes only.
+    base = re.sub(r"[^a-zA-Z0-9]+", "-", text).strip("-").lower()
+    base = re.sub(r"-{2,}", "-", base)
     if not base:
         base = hashlib.sha1(text.encode("utf-8")).hexdigest()[:8]
     digest = hashlib.sha1(text.encode("utf-8")).hexdigest()[:6]
+    if len(base) < 12:
+        return f"{base}-{digest}" if base else digest
     if len(base) <= 42:
         return base
     return f"{base[:36].strip('-')}-{digest}"
