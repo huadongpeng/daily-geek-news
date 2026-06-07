@@ -48,6 +48,8 @@
       "https://www.producthunt.com/feed",
       "https://betalist.com/rss",
       "https://www.failory.com/rss",
+      "https://starterstory.com/rss",
+      "https://levels.io/feed.xml",
       "https://v2ex.com/feed/create.xml",
       "https://v2ex.com/feed/tab/jobs.xml",
       "https://sspai.com/feed",
@@ -58,6 +60,7 @@
       "https://www.reddit.com/r/indiehackers/top/.rss?t=day",
       "https://www.reddit.com/r/Entrepreneur/top/.rss?t=day",
       "https://www.reddit.com/r/freelance/top/.rss?t=day",
+      "https://www.reddit.com/r/passive_income/top/.rss?t=day",
       "https://lemmy.world/feeds/c/entrepreneur.xml?sort=Active",
       "https://lemmy.world/feeds/c/selfhosted.xml?sort=Active",
       "https://changelog.com/feed",
@@ -65,15 +68,19 @@
       "https://www.indiehackers.com/feed"
     ],
     "api_sources": [
-      "https://hn.algolia.com/api/v1/search_by_date?query=Show+HN+SaaS+side+project+microSaaS&tags=story&hitsPerPage=30"
+      "https://hn.algolia.com/api/v1/search_by_date?query=Show+HN+SaaS+side+project+microSaaS&tags=story&hitsPerPage=30",
+      "https://hn.algolia.com/api/v1/search_by_date?query=revenue+MRR+bootstrap+indie+maker+passive+income&tags=story&hitsPerPage=30",
+      "https://hn.algolia.com/api/v1/search_by_date?query=I+quit+job+side+project+profitable+solopreneur&tags=story&hitsPerPage=20"
     ],
     "search_seeds": [
-      "side project revenue case study MRR AI tool",
-      "indie hacker failed launch lessons Product Hunt Hacker News",
-      "micro SaaS market gap low cost validation",
-      "site:reddit.com/r/SaaS MRR AI \"launched\" \"users\"",
-      "site:reddit.com/r/SideProject \"I built\" \"AI\" \"revenue\"",
-      "site:news.ycombinator.com/item \"Show HN\" \"AI\" \"SaaS\""
+      "side project revenue case study MRR actual earnings 2025 2026",
+      "indie maker bootstrap SaaS \"first dollar\" \"time to revenue\"",
+      "\"I make\" OR \"I earn\" per month side project passive income real numbers",
+      "micro SaaS failed stopped \"not worth it\" lessons learned",
+      "site:starterstory.com revenue business case study",
+      "site:indiehackers.com \"monthly revenue\" OR \"MRR\" 2025 2026",
+      "副业 真实收入 普通人 月入 实测 不是卖课",
+      "国内副业 接单平台 收款 实操 成功案例"
     ]
   },
   "overseas": {
