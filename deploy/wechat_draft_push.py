@@ -265,7 +265,12 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Push Easton Radar articles to WeChat draft box from VPS.")
     parser.add_argument("input_dir", nargs="?", type=Path)
     parser.add_argument("--input-dir", dest="input_dir_option", type=Path)
-    args = parser.parse_args()
+    # Use parse_known_args so that unexpected flags (e.g. from stale env / wrapper) don't
+    # crash the script — they are logged and ignored.  The positional or --input-dir value
+    # is still extracted normally.
+    args, unknown = parser.parse_known_args()
+    if unknown:
+        print(f"Ignoring unrecognized arguments: {unknown}", file=sys.stderr)
     input_dir = args.input_dir_option or args.input_dir
     if input_dir is None:
         parser.error("input_dir is required")

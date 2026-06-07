@@ -185,6 +185,7 @@ jobs:
           WECHAT_DRAFT_SCRIPT_PATH: ${{ vars.WECHAT_DRAFT_SCRIPT_PATH || '/ws/scripts/easton_wechat_draft_push.py' }}
           WECHAT_DRAFT_REMOTE_DIR:  ${{ vars.WECHAT_DRAFT_REMOTE_DIR || '/tmp/easton-radar-wechat' }}
         run: |
+          set -euo pipefail
           DRAFT_SRC="$(find radar-runtime-artifacts -path '*/outputs/wechat_articles' -type d -print -quit 2>/dev/null || true)"
           if [ -z "$DRAFT_SRC" ]; then
             echo "No WeChat draft artifact directory found; skip WeChat draft push."
@@ -201,6 +202,17 @@ jobs:
           rsync -avz -e "ssh -i ~/.ssh/deploy_key" \
             deploy/wechat_draft_push.py \
             "${{ secrets.VPS_USER }}@${{ secrets.VPS_IP }}:$WECHAT_DRAFT_SCRIPT_PATH"
+
+          # Verify the new script landed (must contain the parse_known_args / --input-dir support)
+          if ! ssh -i ~/.ssh/deploy_key "${{ secrets.VPS_USER }}@${{ secrets.VPS_IP }}" \
+              "grep -q 'input_dir_option' \"$WECHAT_DRAFT_SCRIPT_PATH\" 2>/dev/null"; then
+            echo "::warning:: VPS script at $WECHAT_DRAFT_SCRIPT_PATH appears to be the old version — rsync may have failed"
+          fi
+
+          # Clear stale Python bytecode cache so the updated script is guaranteed to run
+          ssh -i ~/.ssh/deploy_key "${{ secrets.VPS_USER }}@${{ secrets.VPS_IP }}" \
+            "find \"$REMOTE_SCRIPT_DIR\" -type d -name __pycache__ -exec rm -rf {} + 2>/dev/null; echo 'Cleared __pycache__ under' \"$REMOTE_SCRIPT_DIR\""
+
           rsync -avz --delete -e "ssh -i ~/.ssh/deploy_key" \
             "$DRAFT_SRC/" \
             "${{ secrets.VPS_USER }}@${{ secrets.VPS_IP }}:$WECHAT_DRAFT_REMOTE_DIR/"
