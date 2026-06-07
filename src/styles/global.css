@@ -184,6 +184,24 @@ img { max-width: 100%; height: auto; display: block; border-radius: var(--r); }
   border-radius: var(--r); margin-bottom: 2rem; background: var(--border);
 }
 .article-cover img { width: 100%; height: 100%; object-fit: cover; border-radius: var(--r); }
+.article-actions {
+  display: flex; align-items: center; gap: .75rem; flex-wrap: wrap;
+  margin: 0 0 1.4rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border);
+}
+.copy-md-button {
+  appearance: none; border: 1px solid var(--border); border-radius: 6px;
+  background: var(--bg-card); color: var(--text); cursor: pointer;
+  font: inherit; font-size: .9rem; font-weight: 600;
+  line-height: 1.2; padding: .55rem .8rem;
+  transition: border-color .15s, color .15s, background .15s;
+}
+.copy-md-button:hover {
+  border-color: var(--accent); color: var(--accent); background: var(--tag-bg);
+}
+.copy-md-button:focus-visible {
+  outline: 2px solid var(--accent); outline-offset: 2px;
+}
+.copy-md-status { font-size: .86rem; color: var(--muted); min-height: 1.4em; }
 
 /* ── Prose ───────────────────────────────────────────────────── */
 .prose { font-size: 1.05rem; line-height: 1.86; }

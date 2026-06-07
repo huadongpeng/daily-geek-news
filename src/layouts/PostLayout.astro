@@ -5,11 +5,12 @@ import type { CollectionEntry } from 'astro:content';
 interface Props {
   frontmatter: CollectionEntry<'blog'>['data'];
   postId: string;        // Astro 5 post.id, e.g. "ai-tools/investigation-xxx"
+  markdownBody?: string;
   prevPost?: CollectionEntry<'blog'> | null;
   nextPost?: CollectionEntry<'blog'> | null;
 }
 
-const { frontmatter, postId, prevPost, nextPost } = Astro.props;
+const { frontmatter, postId, markdownBody = '', prevPost, nextPost } = Astro.props;
 const { title, date, description, cover, categories, tags, sources = [], wordCount = 0 } = frontmatter;
 const updated = frontmatter.updated ?? date;
 
@@ -85,6 +86,24 @@ const jsonLd: Record<string, unknown> = {
 
 // 300 CJK chars/min is a typical Chinese reading speed benchmark
 const readMins = wordCount > 0 ? Math.max(1, Math.round(wordCount / 300)) : null;
+const sourceLines = sources.length > 0
+  ? sources.map((source) => `- ${source.name}: ${source.url}`)
+  : ['- 正文内已标注来源'];
+const copyMarkdownText = [
+  `# ${title}`,
+  '',
+  markdownBody.trim(),
+  '',
+  '---',
+  '',
+  `原文链接：${canonURL}`,
+  '',
+  '信息来源：',
+  ...sourceLines,
+  '',
+  '转载说明：本文由 hdop家 · 老花（Easton Hua）发布。转载请保留作者署名、原文链接和信息来源；商业转载或改编请先联系作者。',
+].join('\n').trim() + '\n';
+const copyMarkdownJson = JSON.stringify(copyMarkdownText).replace(/</g, '\\u003c');
 ---
 
 <BaseLayout
@@ -131,6 +150,14 @@ const readMins = wordCount > 0 ? Math.max(1, Math.round(wordCount / 300)) : null
          data-full-width-responsive="true"></ins>
     <script>(adsbygoogle = window.adsbygoogle || []).push({});</script> */}
 
+    <div class="article-actions">
+      <button class="copy-md-button" type="button" data-copy-markdown>
+        复制 Markdown 正文
+      </button>
+      <span class="copy-md-status" data-copy-status role="status" aria-live="polite"></span>
+    </div>
+    <script type="application/json" id="copy-markdown-payload" set:html={copyMarkdownJson}></script>
+
     <article class="prose">
       <slot />
     </article>
@@ -166,6 +193,58 @@ const readMins = wordCount > 0 ? Math.max(1, Math.round(wordCount / 300)) : null
           });
           paragraph.replaceWith(...replacements);
         }
+      })();
+    </script>
+
+    <script is:inline>
+      (() => {
+        const button = document.querySelector('[data-copy-markdown]');
+        const status = document.querySelector('[data-copy-status]');
+        const payload = document.getElementById('copy-markdown-payload');
+        if (!button || !payload) return;
+
+        let text = '';
+        try {
+          text = JSON.parse(payload.textContent || '""');
+        } catch {
+          text = payload.textContent || '';
+        }
+
+        let statusTimer = 0;
+        const setStatus = (message) => {
+          if (!status) return;
+          status.textContent = message;
+          window.clearTimeout(statusTimer);
+          statusTimer = window.setTimeout(() => {
+            status.textContent = '';
+          }, 2200);
+        };
+
+        const fallbackCopy = () => {
+          const textarea = document.createElement('textarea');
+          textarea.value = text;
+          textarea.setAttribute('readonly', '');
+          textarea.style.position = 'fixed';
+          textarea.style.left = '-9999px';
+          document.body.appendChild(textarea);
+          textarea.select();
+          const ok = document.execCommand('copy');
+          textarea.remove();
+          if (!ok) throw new Error('copy command failed');
+        };
+
+        button.addEventListener('click', async () => {
+          try {
+            if (navigator.clipboard && window.isSecureContext) {
+              await navigator.clipboard.writeText(text);
+            } else {
+              fallbackCopy();
+            }
+            setStatus('已复制');
+          } catch {
+            setStatus('复制失败，请手动选择正文');
+          }
+        });
       })();
     </script>
 

@@ -20,6 +20,12 @@ const { post, prevPost, nextPost } = Astro.props;
 const { Content } = await render(post);
 ---
 
-<PostLayout frontmatter={post.data} postId={post.id} prevPost={prevPost} nextPost={nextPost}>
+<PostLayout
+  frontmatter={post.data}
+  postId={post.id}
+  markdownBody={post.body}
+  prevPost={prevPost}
+  nextPost={nextPost}
+>
   <Content />
 </PostLayout>
