@@ -3,24 +3,28 @@
 > 驱动 [www.huadongpeng.com](https://www.huadongpeng.com) 的个人情报系统  
 > The pipeline powering [www.huadongpeng.com](https://www.huadongpeng.com) — daily briefings on AI tools, side projects, overseas signals & life trends.
 
-给一个中年小公司技术经理用的个人情报系统：早晚抓取尽量接近源头的信息，按人设初筛，生成每日简讯，并从候选里深挖 1-3 篇值得写的深度文章。输出到 Astro 静态网站，并通过 Telegram 通知。
+给一个还在一线打工的程序员用的个人情报系统：早晚抓取尽量接近源头的信息，优先筛出 AI 工具、开发、副业、独立产品、跨境、套利、自动化和普通技术人的搞钱路径，再从候选里深挖 1-3 篇值得写的深度文章。输出到 Astro 静态网站、微信公众号草稿，并通过 Telegram 通知。
 
 ## 新流程
 
 ```text
-一手/近源 RSS
+一手/近源 RSS、API、社区案例、开发者实操源
         ↓
-按人设与关注主题初筛
+源头质量分层（官方/文档、开发者实操、社区案例、普通来源、宏观二手源）
         ↓
-整理每日简讯合集
+按程序员人设与技术搞钱主线初筛
         ↓
-对深度候选二次检索与溯源
+整理每日简讯合集（弱源和泛热点只进简讯）
+        ↓
+对深度候选二次检索与溯源（价格页、文档、仓库、原始帖、真实案例优先）
         ↓
 证据去重与门槛检查（不足则跳过长文）
         ↓
+检查程序员可拆价值（开发成本、工具链、API、部署、获客、收款、岗位风险、副业路径）
+        ↓
 优中择优生成深度好文
         ↓
-写成兼具调查严谨性和老花个人判断的网站深度文章
+写成兼具调查严谨性、老花个人判断和公众号传播价值的深度文章
         ↓
 复用同一篇文章生成公众号文章源文件并推送公众号草稿 + Telegram 通知 + VPS 部署
 ```
@@ -29,10 +33,24 @@
 
 | 主题 | 关注点 |
 | --- | --- |
-| AI 技术雷达 | AI 最新技术资讯、模型能力变化、论文、官方发布、开发者可试用工具 |
-| 赚钱副业实验室 | 个人赚钱渠道、副业、独立产品、低成本验证机会 |
-| 社会热点与生活信号 | 不限 AI，只要可能影响职业、收入、生活和风险决策 |
-| 信息差雷达 | 跨语言、跨地区、跨平台的信息差和可迁移机会 |
+| AI 工具前线 | AI 工具、模型、编码代理、开发者平台、价格/额度/API/工作流变化 |
+| 副业实验室 | 程序员可验证的工具站、自动化、接单、SEO、联盟营销、开源变现、独立产品 |
+| 出海信号 | 海外平台、跨境收款、英文市场、SaaS 出海、TikTok/Amazon/Shopify 等可迁移机会 |
+| 生活信号 | 技术人就业、薪资、远程、外包、平台规则、安全风险和现金流相关变化 |
+
+公众号主线不是泛科技资讯，而是：**一个还在一线打工的程序员，用技术视角拆 AI 工具、开发、副业、独立产品、跨境、套利、自动化和普通技术人的搞钱路径。** 热点和宏观趋势可以写，但必须回到开发成本、工具链、接单方式、副业路径、岗位风险、出海机会或信息差套利空间。
+
+## 源头优先级
+
+深度文章优先使用以下源头：
+
+1. **一手/官方/文档源**：官方公告、价格页、API/SDK 文档、产品 changelog、GitHub 仓库、监管文件。
+2. **开发者实操源**：Hacker News、Lobsters、Simon Willison、DEV、GitHub issue/PR、真实部署教程、开发者复盘。
+3. **真实案例/社区线索**：V2EX、Reddit、Indie Hackers、独立开发者帖子、收入复盘、失败复盘。
+4. **中可信媒体源**：行业媒体、主流媒体、有信誉的独立博主，只能做背景或补证。
+5. **低优先级背景源**：泛宏观媒体、商业报告、投融资新闻、趋势评论。没有一手材料承接时，不写深度。
+
+源头质量不够时，宁可只进简讯或跳过，不用泛概念和热点凑公众号长文。
 
 ## 配置
 
@@ -84,7 +102,7 @@ npm.cmd run dev
 npm.cmd run build
 ```
 
-公众号文章会额外输出到 `outputs/wechat_articles/`。正文直接复用网站深度文章，不再单独调用 DeepSeek 二次改写；封面图已由主流程生成。每篇文章会生成一个 Markdown 源文件和一个 `*-draft.json` 草稿载荷：
+公众号文章会额外输出到 `outputs/wechat_articles/`。正文直接复用网站深度文章，不再单独调用 DeepSeek 二次改写；封面图已由主流程生成。默认只有通过证据门槛并生成调查报告的候选会进入公众号输出，简讯不会兜底生成公众号草稿。每篇文章会生成一个 Markdown 源文件和一个 `*-draft.json` 草稿载荷：
 
 ```text
 标题
@@ -124,7 +142,9 @@ npm.cmd run build
 默认轻量步骤使用 `deepseek-v4-flash`，包括初筛和简讯整理；深度长文使用 `deepseek-v4-pro`，并默认启用 Thinking Mode + `max`。
 如需临时切换，可在 GitHub Variables 里设置 `DEEPSEEK_FLASH_MODEL` 或 `DEEPSEEK_PRO_MODEL`。
 
-深度检索不会使用 DeepSeek tool-calling。当前流程是 Flash 生成查询，程序抓取 seed URL、DDGS 搜索结果和可访问正文，去重并检查最小证据量；证据不足的候选只保留在简讯，不进入调查报告和公众号文章输出。
+深度检索不会使用 DeepSeek tool-calling。当前流程是 Flash 生成查询，程序抓取 seed URL、DDGS/Tavily 搜索结果和可访问正文，去重并检查最小证据量；证据不足或缺少程序员可拆价值的候选只保留在简讯或直接跳过，不进入调查报告和公众号文章输出。
+
+多轮 LLM 流程里，深度候选会在去重后绑定 `candidate_id`。研究阶段可以并发执行，但回流顺序会按初筛优先级复原；成文阶段只能围绕已通过证据门槛的候选输出，并且每篇文章必须带回匹配的 `candidate_id`。程序会在写网站和公众号前过滤掉没有绑定已研究候选的文章，避免模型从初筛简讯或未研究材料里补写深度文。
 
 GitHub Actions 每天北京时间 06:00 和 18:00 自动运行，也可以手动触发并选择 `morning/evening`。定时/手动运行会先执行内容管线，同时写入网站 Markdown、生成公众号文章源文件；随后按 Telegram 分类推送，提交新 Markdown 和封面图，再用本次生成后的 commit 构建 Astro 并通过 rsync 部署到 VPS，最后由 VPS 推送公众号草稿。
 
@@ -143,6 +163,7 @@ WECHAT_AUTHOR = "老花"
 | --- | --- |
 | `WECHAT_DRAFT_SCRIPT_PATH` | VPS 上的草稿推送脚本路径，默认 `/ws/scripts/easton_wechat_draft_push.py` |
 | `WECHAT_DRAFT_REMOTE_DIR` | VPS 上本批次草稿载荷临时目录，默认 `/tmp/easton-radar-wechat` |
+| `WECHAT_ALLOW_BRIEFING_FALLBACK` | 默认 `false`；只有设为 `true` 时，才会在没有深度文章时用简讯兜底生成公众号草稿 |
 | `SEARCH_PUSH_STATE_DIR` | VPS 上的搜索引擎补推状态目录，默认 `/ws/state/easton-radar-search-push` |
 
 公众号草稿默认按多图文合并创建：VPS 脚本会把本批次最多 8 篇 `*-draft.json` 合并到同一个草稿的 `articles` 数组里。可在 VPS 环境或 `wechat_draft_config.json` 中配置：
