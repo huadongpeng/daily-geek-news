@@ -2086,6 +2086,7 @@ def compose_investigation_reports(
 - 产出 1-3 篇，优中择优，不要凑数。每篇必须带 candidate_id，且 candidate_id 必须来自【已通过证据门槛的深度候选】。
 - 如果本批候选都只剩泛热点、宏观判断、媒体转述或缺少程序员可拆价值，返回空数组；不要为了更新频率硬写。
 - 只能围绕【已通过证据门槛的深度候选】写调查报告；如果 researched 为空或证据不足，返回空数组，不要根据初筛结果硬写。
+- 证据缺口不等于必须跳过。只要候选有明确程序员可拆价值，且核心事实不是完全站不住，就可以写成"我查到这里，哪些能确认，哪些只能当线索，哪些结论现在不能下"的谨慎调查文章。不要因为不能证明赚钱、不能证明可复制、不能证明平台规则稳定，就直接空输出；这些恰恰可以成为文章的核心判断。
 - 【初筛上下文】只能帮助理解当天信息流，不得据此补写未研究候选，不得把 briefing item 改造成深度文章。
 - 【事件时效性强制检查】写每篇文章前，先读 research_notes 里的【事件时效性】节。若该节标注了"⚠️ 核心事件已超60天"，则：(a) 如果文章的核心价值是"这件事现在才发生/值得现在追"，直接跳过，不要输出这篇；(b) 如果核心价值是"这件事虽然发生在过去，但今天依然有新的判断/新的数据/新的影响需要说"，则在文章开头明确交代时间背景（例如"这是 N 个月前的事，但我最近重新追了一遍，因为……"），不能把旧事包装成当期新闻。
 - 直接使用 research_notes 里的已确认事实作为核心论据，不要基于训练知识编造来源。
@@ -2187,6 +2188,7 @@ def compose_investigation_reports_per_candidate(
 硬性要求：
 - 只围绕这个候选写 0 或 1 篇；证据不足或主题重复就返回空数组。输出文章时必须带 candidate_id，且 candidate_id 必须原样复制单个深度候选里的值。
 - 老花首先是程序员，不是泛科技资讯号。文章必须能用程序员视角拆出开发成本、工具链、API/文档、部署、获客、收款、自动化、开源、岗位风险或副业路径中的至少一项；如果 research_notes 显示缺少程序员可拆价值，返回空数组。
+- 证据缺口不等于必须跳过。只要核心线索有价值，就可以写成谨慎调查文章：哪些确认了，哪些只是线索，哪些结论现在不能下，为什么普通人别急着冲。只有核心事实站不住、主题重复、没有程序员可拆价值时才返回空数组。
 - 直接使用 research_notes 里的已确认事实作为核心论据，不要基于训练知识编造来源。
 - 严格区分已确认事实、高概率推断、待验证线索。
 - 写正文前必须先读 evidence_plan 和 research_notes 的【证据缺口处理】。evidence_plan.must_not_claim 中仍未被补证支持的说法，正文禁止写成结论。
@@ -3267,6 +3269,15 @@ def main() -> None:
             inv_result.get("investigation_reports", []),
             researched,
         )
+        if not investigation_reports:
+            print("   ⚠️ 批量成文返回空结果，启动逐候选降级")
+            inv_result = compose_investigation_reports_per_candidate(
+                researched, research_method, writing_method, slot, recent_index,
+            )
+            investigation_reports = filter_reports_to_researched(
+                inv_result.get("investigation_reports", []),
+                researched,
+            )
     else:
         print("📋 没有深度候选通过证据门槛，本批次跳过调查报告")
         investigation_reports = []
