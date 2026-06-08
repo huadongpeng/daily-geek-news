@@ -7,6 +7,7 @@ tags: ["深度调查", "evening"]
 wordCount: 2033
 draft: false
 description: "V2EX上一个5000粉AI虚拟人物带货案例，评论区有真实购买意向，但自动化搭配仍是瓶颈，平台风险悬而未决，普通人跟风之前需要先看清卡脖子环节。"
+cover: "/images/covers/briefing-2026-06-08-evening.jpg"
 sources:
   - name: "V2EX 帖子"
     url: "https://www.v2ex.com/t/1218884#reply0"

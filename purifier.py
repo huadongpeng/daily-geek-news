@@ -2021,6 +2021,9 @@ def compose_investigation_reports(
 - 直接使用 research_notes 里的已确认事实作为核心论据，不要基于训练知识编造来源。
 - 每篇正文必须自然出现至少一个程序员视角的硬拆解：价格/额度/API/文档/仓库/部署/获客/收款/自动化/技术门槛/岗位现金流/停止信号。不是每项都写，但不能一项都没有。
 - 【基础概念审查】写作前必须先根据 research_notes 的【基础概念风险/懂行人挑刺】做内部自检；正文不能把基础概念写错来换取爽感。技术/AI Agent/自动化类必须区分确定性工程和 AI 能力：证书日期、HTTP 状态码、DNS/WHOIS 字段、接口返回值等由代码/协议/SDK 处理，AI 只负责摘要、解释、归因、报告、告警文案。支付/稳定币/跨境收款类必须区分链上费、平台费、点差、汇率、出入金、账户风控、税务凭证和合规路径；必须区分雇员、承包商、B2B、个人转账、国内主体和海外主体。SEO/工具站类必须区分收录、曝光、点击、转化和订阅，不得用一周自然搜索点击直接判定关键词价值。
+- 【来源闭环】正文里点名引用的第三方来源（报告、博客、媒体、法规、平台规则、文档）必须出现在 sources 数组中；如果没有 research_notes 里的真实 URL，就不要点名当证据写进正文。sources 不是装饰字段，必须覆盖正文核心证据。
+- 【免费/0成本边界】"0 成本""免费""一晚上能搞定""代码量少一半"这类判断必须有来源、公式或明确前提。DALL·E、付费 API、需要账号额度或地区限制的工具，不得写成无条件免费。没有证据时改成"低成本试一小步"或说明主要成本是时间。
+- 【口吻禁用】禁止写"我这种输不起的人""我卡住了""我不敢上头了"这类 AI 模拟口吻。可以写"我试错空间小""我没本钱乱试""我现在不适合冲"，但不要像套出来的自嘲台词。
 - 【经验模拟试跑】如果选题属于工具站、副业、开源项目变现、SaaS、AI 工作流或接单外包，正文必须自然写出一段"如果是我，我会怎么低成本跑一遍"的打样：先做什么最小版本、看什么反馈、什么结果继续、什么结果停止。没有亲测就明确写成经验方案，禁止伪装成实操战报。
 - 【经验模拟试跑对象绑定】经验试跑必须只围绕当前候选的对象、用户、关键词、技术栈和来源材料展开。禁止把提示词示例或其他文章里的 PDF 转图片、健康助手、简历优化、公众号选题助手等无关项目搬进正文。当前候选是 SSL/域名/WHOIS，就只能围绕 SSL/域名/WHOIS 做最小验证；当前候选是接单，就只能围绕接单需求做最小验证。
 - 【工具账本/成本类】如果文章主题是模型价格、API 成本、工具订阅、云服务账单，不要写"我今晚打算去算"或"如果让我来查"；必须直接给一个普通场景的粗算过程和结论，例如日请求量、单次 token、月 tokens、不同模型价格差、隐藏成本。省钱办法必须写接入代价，不要只列名词。
@@ -2118,6 +2121,9 @@ def compose_investigation_reports_per_candidate(
 - 来源可信度嵌入正文，不要在文末单独列参考来源。
 - 普通段落 40-120 个中文字符为主，一个段落只讲一个意思；长短句交替，不要靠程序后处理拆段。
 - 写作前必须根据 research_notes 的【基础概念风险/懂行人挑刺】做内部自检；正文不能把基础概念写错来换取爽感。技术/AI Agent/自动化类必须区分确定性工程和 AI 能力；支付/稳定币/跨境收款类必须区分链上费、平台费、点差、汇率、出入金、账户风控、税务凭证、雇员/承包商/B2B/个人转账和地区主体；SEO/工具站类必须区分收录、曝光、点击、转化和订阅。
+- 正文里点名引用的第三方来源必须出现在 sources 数组中；没有 research_notes 里的真实 URL 就不要点名当证据写进正文。
+- "0 成本""免费""一晚上能搞定"等判断必须有来源、公式或明确前提；没有证据时降级。
+- 禁止写"我这种输不起的人""我卡住了""我不敢上头了"这类 AI 模拟口吻。
 - 如果选题属于工具站、副业、开源项目变现、SaaS、AI 工作流或接单外包，正文必须自然写出一段经验模拟试跑：先做什么最小版本、看什么反馈、什么结果继续、什么结果停止。没有亲测就明确写成经验方案，禁止伪装成实操战报。
 - 经验模拟试跑必须绑定当前候选对象，禁止把提示词示例或其他文章里的 PDF 转图片、健康助手、简历优化、公众号选题助手等无关项目搬进正文。
 - 如果选题属于工具账本/成本类，必须直接给一个普通场景的粗算过程和结论，不要写未来打算去算；省钱办法必须写接入代价。
@@ -2782,6 +2788,7 @@ def save_website_outputs(
                 cover_map[stem_key] = (prompt, cpath)
 
     # Write briefing
+    briefing_cover = ""
     if briefing.get("items"):
         body = render_briefing_md(briefing, slot)
         _, briefing_cover = cover_map.get(briefing_stem, ("", ""))
@@ -2811,6 +2818,9 @@ def save_website_outputs(
         summary = article.get("summary", "")
         sources = article.get("sources") or []
         cover_prompt, cover_path = cover_map.get(stem, ("", ""))
+        if not cover_path and briefing_cover:
+            print(f"   ⚠️ 文章封面生成失败，复用本批简讯封面: {title[:40]}")
+            cover_path = briefing_cover
         article["cover_prompt_en"] = cover_prompt
         article["cover_prompt_zh"] = article.get("cover_prompt_zh") or ""
         article["cover"] = cover_path
@@ -2860,7 +2870,15 @@ def save_wechat_outputs(
     for index, article in enumerate(wechat_articles[:3]):
         title = clean_unicode_text(article.get("title", "公众号文章"))
         summary = clean_unicode_text(article.get("summary") or "")
-        cover_url = absolute_site_url(clean_unicode_text(article.get("cover") or ""))
+        cover = clean_unicode_text(article.get("cover") or "")
+        if not cover:
+            fallback_cover = f"/images/covers/briefing-{date_slug}-{slot}.jpg"
+            fallback_path = ROOT / "public" / fallback_cover.lstrip("/")
+            if fallback_path.exists():
+                print(f"   ⚠️ 公众号文章缺少封面，复用本批简讯封面: {title[:40]}")
+                cover = fallback_cover
+                article["cover"] = cover
+        cover_url = absolute_site_url(cover)
         site_url = clean_unicode_text(article.get("site_url") or "")
         body_md = improve_markdown_readability(clean_unicode_text(article.get("content_md", "")))
         article["content_md"] = body_md
