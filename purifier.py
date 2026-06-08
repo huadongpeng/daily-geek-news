@@ -1006,6 +1006,7 @@ def llm_json(
     model: str | None = None,
     thinking_type: str | None = None,
     reasoning_effort: str | None = None,
+    raise_on_length: bool = False,
 ) -> dict[str, Any]:
     def parse_json_object(raw: str) -> dict[str, Any]:
         raw = raw.strip()
@@ -1114,6 +1115,8 @@ def llm_json(
         text = choice.get("message", {}).get("content") or ""
         if finish_reason == "length":
             last_error = ValueError("DeepSeek response was truncated because finish_reason=length")
+            if raise_on_length:
+                raise last_error
             print(f"   ⚠️ DeepSeek JSON 第 {attempt + 1}/{max_attempts} 次被截断，准备重试")
             continue
         if not text.strip():
@@ -1708,7 +1711,7 @@ def _generate_search_queries(candidate: dict[str, Any]) -> list[str]:
     return _normalize_queries(result.get("queries"))
 
 
-def _analyze_evidence(
+def _analyze_evidence_full(
     candidate: dict[str, Any],
     evidence: list[dict[str, Any]],
     evidence_plan: dict[str, Any] | None = None,
@@ -1774,8 +1777,90 @@ def _analyze_evidence(
         model=PRO_MODEL,
         thinking_type=PRO_THINKING,
         reasoning_effort=PRO_REASONING_EFFORT,
+        raise_on_length=True,
     )
     return result.get("research_notes", "")
+
+
+def _compact_evidence_for_notes(evidence: list[dict[str, Any]], limit: int = 12) -> list[dict[str, Any]]:
+    compact: list[dict[str, Any]] = []
+    for item in evidence[:limit]:
+        compact.append(
+            {
+                "source_type": item.get("source_type", ""),
+                "title": str(item.get("title") or "")[:160],
+                "url": item.get("url", ""),
+                "domain": item.get("domain") or hostname(str(item.get("url") or "")),
+                "query": str(item.get("query") or "")[:120],
+                "body": str(item.get("body") or "")[:900],
+                "body_type": item.get("body_type", ""),
+            }
+        )
+    return compact
+
+
+def _analyze_evidence_compact(
+    candidate: dict[str, Any],
+    evidence: list[dict[str, Any]],
+    evidence_plan: dict[str, Any] | None = None,
+) -> str:
+    """Fallback only when full research-note JSON overflows or repeatedly fails parsing."""
+    compact_evidence = _compact_evidence_for_notes(evidence)
+    result = llm_json(
+        system=(
+            "你是审稿型研究编辑。上一次完整研究笔记因为输出过长或 JSON 解析失败，"
+            "现在改为输出短研究卡片。只使用输入证据，不得补充训练知识。必须输出合法 JSON。"
+        ),
+        user=(
+            f"当前日期：{batch_now().strftime('%Y-%m-%d')}\n"
+            f"新闻线索：{candidate.get('title', '')}\n"
+            f"核心问题：{candidate.get('core_question', '')}\n"
+            f"价值线：{candidate.get('value_lane', '')}\n"
+            f"程序员拆解角度：{candidate.get('developer_angle', '')}\n\n"
+            f"【压缩证据（共 {len(compact_evidence)} 条）】\n"
+            f"{json.dumps(compact_evidence, ensure_ascii=False)[:26000]}\n\n"
+            f"【成文前证据缺口审查】\n"
+            f"{json.dumps(evidence_plan or {}, ensure_ascii=False)[:8000]}\n\n"
+            "输出 JSON：\n"
+            "{\n"
+            '  "research_notes": "短研究卡片，必须包含：【事件时效性】【已确认事实】最多5条；'
+            '【高概率推断】最多4条；【待验证线索】最多4条；【证据缺口处理】逐条回应 must_not_claim；'
+            '【基础概念风险/懂行人挑刺】最多5条；【程序员视角的可拆价值】1-3条；'
+            '【主要风险与写作约束】最多5条；【来源分层】列出高可信/中可信/线索级来源。'
+            '所有条目都要短句，不要展开成长文。"\n'
+            "}\n"
+        ),
+        max_tokens=3500,
+        model=PRO_MODEL,
+        thinking_type=PRO_THINKING,
+        reasoning_effort="high" if PRO_REASONING_EFFORT == "max" else PRO_REASONING_EFFORT,
+    )
+    return result.get("research_notes", "")
+
+
+def _should_fallback_compact_notes(exc: Exception) -> bool:
+    text = str(exc)
+    return (
+        "finish_reason=length" in text
+        or "response was truncated" in text
+        or "JSON parse failed after" in text
+        or "Unterminated string" in text
+        or "Expecting" in text
+    )
+
+
+def _analyze_evidence(
+    candidate: dict[str, Any],
+    evidence: list[dict[str, Any]],
+    evidence_plan: dict[str, Any] | None = None,
+) -> str:
+    try:
+        return _analyze_evidence_full(candidate, evidence, evidence_plan)
+    except Exception as exc:
+        if not _should_fallback_compact_notes(exc):
+            raise
+        print(f"      ⚠️ 完整研究笔记生成失败，降级为短研究卡片: {exc}")
+        return _analyze_evidence_compact(candidate, evidence, evidence_plan)
 
 
 def _research_candidate(cand: dict[str, Any]) -> dict[str, Any] | None:
@@ -2063,7 +2148,7 @@ def compose_investigation_reports(
 - 正文主体可以自然使用"我""老花我""咱""咱们""我感觉""我觉得""咱就是说""我就说呢""我真 tama""也是牛掰呀""so tama what"等口语，但不要机械堆词。它们只在判断、破防、转场、号召处出现。
 - 不要写"对普通技术经理的现实影响"、"对于多数像 Easton 这样的普通技术经理来说"这种不明觉厉的话。这里要换成更像账号本人会说的话：咱们这些快毕业/刚毕业的 IT 打工人、35 岁门槛前后的程序员、大龄程序员、被裁过或怕失业的人、一个人扛技术方向的小公司 IT 人。
 - 如果需要谈读者关系，可以自然写这事和咱们这些 IT 打工人、35 岁门槛前后的程序员、小公司 IT 人有什么关系；不要为了显得完整硬开"启示"或"建议"小节。如果文章更适合吃瓜或事实拆解，就把瓜和逻辑讲好。
-- 个人判断里可以使用"我"和"咱们"，但不要自我煽情。要把事实拉回现实处境：负债逾期过、输不起、时间少、本金少、怕踩坑、怕失业、怕被新工具甩开、想找一点能验证的方向。负债经历只作为判断力来源，不连续卖惨。
+- 个人判断里可以使用"我"和"咱们"，但不要自我煽情。要把事实拉回现实处境：负债逾期过、时间少、本金少、试错空间小、怕踩坑、怕失业、怕被新工具甩开、想找一点能验证的方向。负债经历只作为判断力来源，不连续卖惨。
 - 行动建议降级。只有选题天然适合低成本验证时，才给真实可行的小方案，说明适合谁、第一步、成本边界、主要风险、停止信号。多数新闻、争议、融资、监管、行业风向、政策变化、证据不足的线索，不写行动步骤也完全可以。
 - "怎么做"不是必选栏目，也不是好文章的标准。先把事情分析好、讲好、逻辑讲清、情绪讲自然；如果到这里已经够了，就直接收住，不要为了完整感硬加操作建议。
 - 不要把个人动作写成 H2/H3 小标题，例如"老花我现在怎么做""我不是建议你立刻冲""换成我会怎么做"。真有必要写，就并进自然段里，像聊天时顺手补一句。
@@ -2095,7 +2180,7 @@ def compose_investigation_reports(
 - 【基础概念审查】写作前必须先根据 research_notes 的【基础概念风险/懂行人挑刺】做内部自检；正文不能把基础概念写错来换取爽感。技术/AI Agent/自动化类必须区分确定性工程和 AI 能力：证书日期、HTTP 状态码、DNS/WHOIS 字段、接口返回值等由代码/协议/SDK 处理，AI 只负责摘要、解释、归因、报告、告警文案。支付/稳定币/跨境收款类必须区分链上费、平台费、点差、汇率、出入金、账户风控、税务凭证和合规路径；必须区分雇员、承包商、B2B、个人转账、国内主体和海外主体。SEO/工具站类必须区分收录、曝光、点击、转化和订阅，不得用一周自然搜索点击直接判定关键词价值。
 - 【来源闭环】正文里点名引用的第三方来源（报告、博客、媒体、法规、平台规则、文档）必须出现在 sources 数组中；如果没有 research_notes 里的真实 URL，就不要点名当证据写进正文。sources 不是装饰字段，必须覆盖正文核心证据。
 - 【免费/0成本边界】"0 成本""免费""一晚上能搞定""代码量少一半"这类判断必须有来源、公式或明确前提。DALL·E、付费 API、需要账号额度或地区限制的工具，不得写成无条件免费。没有证据时改成"低成本试一小步"或说明主要成本是时间。
-- 【口吻禁用】禁止写"我这种输不起的人""我卡住了""我不敢上头了"这类 AI 模拟口吻。可以写"我试错空间小""我没本钱乱试""我现在不适合冲"，但不要像套出来的自嘲台词。
+- 【口吻禁用】禁止写"输不起""我这种输不起的人""我卡住了""我不敢上头了"这类 AI 模拟口吻。可以写"我试错空间小""我没本钱乱试""我现在不适合冲"，但不要像套出来的自嘲台词。
 - 【经验模拟试跑】如果选题属于工具站、副业、开源项目变现、SaaS、AI 工作流或接单外包，正文必须自然写出一段"如果是我，我会怎么低成本跑一遍"的打样：先做什么最小版本、看什么反馈、什么结果继续、什么结果停止。没有亲测就明确写成经验方案，禁止伪装成实操战报。
 - 【经验模拟试跑对象绑定】经验试跑必须只围绕当前候选的对象、用户、关键词、技术栈和来源材料展开。禁止把提示词示例或其他文章里的 PDF 转图片、健康助手、简历优化、公众号选题助手等无关项目搬进正文。当前候选是 SSL/域名/WHOIS，就只能围绕 SSL/域名/WHOIS 做最小验证；当前候选是接单，就只能围绕接单需求做最小验证。
 - 【工具账本/成本类】如果文章主题是模型价格、API 成本、工具订阅、云服务账单，不要写"我今晚打算去算"或"如果让我来查"；必须直接给一个普通场景的粗算过程和结论，例如日请求量、单次 token、月 tokens、不同模型价格差、隐藏成本。省钱办法必须写接入代价，不要只列名词。
@@ -2197,7 +2282,7 @@ def compose_investigation_reports_per_candidate(
 - 写作前必须根据 research_notes 的【基础概念风险/懂行人挑刺】做内部自检；正文不能把基础概念写错来换取爽感。技术/AI Agent/自动化类必须区分确定性工程和 AI 能力；支付/稳定币/跨境收款类必须区分链上费、平台费、点差、汇率、出入金、账户风控、税务凭证、雇员/承包商/B2B/个人转账和地区主体；SEO/工具站类必须区分收录、曝光、点击、转化和订阅。
 - 正文里点名引用的第三方来源必须出现在 sources 数组中；没有 research_notes 里的真实 URL 就不要点名当证据写进正文。
 - "0 成本""免费""一晚上能搞定"等判断必须有来源、公式或明确前提；没有证据时降级。
-- 禁止写"我这种输不起的人""我卡住了""我不敢上头了"这类 AI 模拟口吻。
+- 禁止写"输不起""我这种输不起的人""我卡住了""我不敢上头了"这类 AI 模拟口吻。
 - 如果选题属于工具站、副业、开源项目变现、SaaS、AI 工作流或接单外包，正文必须自然写出一段经验模拟试跑：先做什么最小版本、看什么反馈、什么结果继续、什么结果停止。没有亲测就明确写成经验方案，禁止伪装成实操战报。
 - 经验模拟试跑必须绑定当前候选对象，禁止把提示词示例或其他文章里的 PDF 转图片、健康助手、简历优化、公众号选题助手等无关项目搬进正文。
 - 如果选题属于工具账本/成本类，必须直接给一个普通场景的粗算过程和结论，不要写未来打算去算；省钱办法必须写接入代价。
