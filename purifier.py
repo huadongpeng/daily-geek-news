@@ -1609,6 +1609,56 @@ def _collect_evidence(candidate: dict[str, Any], queries: list[str]) -> list[dic
     return _dedupe_evidence(evidence)
 
 
+def _plan_missing_evidence(candidate: dict[str, Any], evidence: list[dict[str, Any]]) -> dict[str, Any]:
+    """Ask PRO to audit current evidence and request targeted follow-up searches before writing."""
+    result = llm_json(
+        system=(
+            "你是一名懂技术、懂商业风险的审稿型研究编辑。"
+            "你的任务不是写文章，而是在正文生成前检查证据够不够、基础概念会不会被懂行人挑刺，"
+            "并输出下一轮必须补充检索的查询。必须输出合法 JSON，不要代码块。"
+        ),
+        user=(
+            f"当前日期：{batch_now().strftime('%Y-%m-%d')}\n"
+            f"新闻线索：{candidate.get('title', '')}\n"
+            f"选题分类：{candidate.get('topic', 'unknown')}\n"
+            f"核心问题：{candidate.get('core_question', '')}\n"
+            f"价值线：{candidate.get('value_lane', '')}\n"
+            f"程序员拆解角度：{candidate.get('developer_angle', '')}\n"
+            f"原始来源：{', '.join(candidate.get('seed_urls', [])[:3])}\n\n"
+            f"【第一轮已收集证据（共 {len(evidence)} 条）】\n"
+            f"{json.dumps(evidence, ensure_ascii=False)[:80000]}\n\n"
+            "请先判断：如果现在直接写深度文章，最容易在哪些地方翻车？\n"
+            "重点检查：事实真伪、来源闭环、基础概念、技术实现、成本估算、平台规则、法律/税务/合规、国内适用性、普通人可复制性。\n\n"
+            "输出 JSON：\n"
+            "{\n"
+            '  "quality_risks": ["最容易被懂行人挑刺的问题"],\n'
+            '  "required_evidence": ["成文前必须补的证据类型"],\n'
+            '  "followup_queries": ["用于补证的搜索查询，4-8条，尽量具体"],\n'
+            '  "must_not_claim": ["当前证据不足，正文禁止写成结论的说法"],\n'
+            '  "can_write_if_missing": false\n'
+            "}\n\n"
+            "要求：\n"
+            "- followup_queries 必须能直接交给搜索引擎执行，不要写抽象任务。\n"
+            "- 如果某些证据不补就不适合写深度文章，can_write_if_missing=false。\n"
+            "- 如果是副业/变现选题，必须优先补真实收入、失败案例、平台规则、启动成本、普通人可复制性。\n"
+            "- 如果是技术选题，必须优先补官方文档、API/SDK、GitHub/真实实现、限制条款和反驳视角。\n"
+            "- 如果是支付/金融/合规选题，必须优先补权威规则、地区差异、主体差异和完整成本链路。\n"
+            "- 不要为了凑数生成泛查询。"
+        ),
+        max_tokens=3000,
+        model=PRO_MODEL,
+        thinking_type=PRO_THINKING,
+        reasoning_effort="high" if PRO_REASONING_EFFORT == "max" else PRO_REASONING_EFFORT,
+    )
+    return {
+        "quality_risks": [str(v).strip() for v in result.get("quality_risks", []) if str(v).strip()][:8],
+        "required_evidence": [str(v).strip() for v in result.get("required_evidence", []) if str(v).strip()][:8],
+        "followup_queries": _normalize_queries(result.get("followup_queries"))[:8],
+        "must_not_claim": [str(v).strip() for v in result.get("must_not_claim", []) if str(v).strip()][:8],
+        "can_write_if_missing": bool(result.get("can_write_if_missing", False)),
+    }
+
+
 def _generate_search_queries(candidate: dict[str, Any]) -> list[str]:
     """Ask FLASH to generate targeted search queries for verifying a candidate's claims."""
     result = llm_json(
@@ -1658,7 +1708,11 @@ def _generate_search_queries(candidate: dict[str, Any]) -> list[str]:
     return _normalize_queries(result.get("queries"))
 
 
-def _analyze_evidence(candidate: dict[str, Any], evidence: list[dict[str, Any]]) -> str:
+def _analyze_evidence(
+    candidate: dict[str, Any],
+    evidence: list[dict[str, Any]],
+    evidence_plan: dict[str, Any] | None = None,
+) -> str:
     """Use PRO to synthesize search evidence into structured research notes."""
     result = llm_json(
         system=(
@@ -1675,6 +1729,8 @@ def _analyze_evidence(candidate: dict[str, Any], evidence: list[dict[str, Any]])
             f"程序员拆解角度：{candidate.get('developer_angle', '')}\n\n"
             f"【检索证据（共 {len(evidence)} 条）】\n"
             f"{json.dumps(evidence, ensure_ascii=False)[:120000]}\n\n"
+            f"【成文前证据缺口审查】\n"
+            f"{json.dumps(evidence_plan or {}, ensure_ascii=False)[:20000]}\n\n"
             "请根据以上证据输出结构化研究笔记。\n"
             '输出 JSON：{"research_notes": "完整研究笔记（中文）"}\n\n'
             "研究笔记必须包含以下几块：\n"
@@ -1684,6 +1740,7 @@ def _analyze_evidence(candidate: dict[str, Any], evidence: list[dict[str, Any]])
             "【已确认事实】只写输入证据中有多来源印证的事实，标注来源名称和可信级别（高可信/中可信）；没有就写'暂无足够证据'\n"
             "【高概率推断】单来源或间接证据支持，标注来源\n"
             "【待验证线索】无法核实的说法，标注来源\n"
+            "【证据缺口处理】逐条回应【成文前证据缺口审查】中的 required_evidence 和 must_not_claim：哪些已经被补证支持，哪些仍然缺证据，正文必须如何降级表达或跳过。\n"
             "【竞品/同类横向对比】这件事/产品/现象，同类还有谁在做？领先者是谁？差距在哪里？"
             "如果线索声称'唯一''首创''行业第一'，必须主动核查：证据支持吗？还是营销话术？"
             "如果是产品类选题（工具/平台/功能），必须对比国内外主要竞品的功能深度、开放程度、用户规模、生态成熟度。"
@@ -1726,14 +1783,26 @@ def _research_candidate(cand: dict[str, Any]) -> dict[str, Any] | None:
     title = cand.get("title", "")
     print(f"   📌 {title[:50]}")
     queries = _generate_search_queries(cand)
-    print(f"      📝 生成 {len(queries)} 个检索查询")
+    print(f"      📝 第一轮生成 {len(queries)} 个检索查询")
     if not queries:
         print("      ⚠️ 未生成有效查询，跳过该候选")
         return None
     evidence = _collect_evidence(cand, queries)
+    print(f"      🧪 Pro 质检第一轮证据并提出补证需求")
+    evidence_plan = _plan_missing_evidence(cand, evidence)
+    followup_queries = [
+        query for query in evidence_plan.get("followup_queries", [])
+        if query not in queries
+    ]
+    if followup_queries:
+        print(f"      🧭 追加 {len(followup_queries)} 个补证查询")
+        extra_evidence = _collect_evidence({**cand, "seed_urls": []}, followup_queries)
+        evidence = _dedupe_evidence(evidence + extra_evidence)
+    else:
+        print("      🧭 Pro 未要求追加查询")
     domains = {d for d in _evidence_domains(evidence) if d}
     page_count = len([item for item in evidence if item.get("body_type") == "page_text"])
-    print(f"      📚 证据 {len(evidence)} 条，正文 {page_count} 条，独立域名 {len(domains)} 个")
+    print(f"      📚 补证后证据 {len(evidence)} 条，正文 {page_count} 条，独立域名 {len(domains)} 个")
     if not _has_minimum_evidence(evidence):
         reasons = "；".join(_evidence_failure_reasons(evidence))
         print(
@@ -1742,7 +1811,7 @@ def _research_candidate(cand: dict[str, Any]) -> dict[str, Any] | None:
             f"≥{MIN_EVIDENCE_DOMAINS}个域名、至少1条正文）"
         )
         return None
-    notes = _analyze_evidence(cand, evidence)
+    notes = _analyze_evidence(cand, evidence, evidence_plan)
     if not notes.strip():
         print("      ⚠️ 研究笔记为空，跳过该候选")
         return None
@@ -1752,6 +1821,7 @@ def _research_candidate(cand: dict[str, Any]) -> dict[str, Any] | None:
         "research_method": "ai-guided-search",
         "evidence_count": len(evidence),
         "evidence_domains": sorted(domains),
+        "evidence_plan": evidence_plan,
         "research_notes": notes,
     }
 
@@ -1932,7 +2002,7 @@ def compose_investigation_reports(
 {json.dumps({"briefing_items": filtered.get("briefing_items", [])[:12]}, ensure_ascii=False)[:20000]}
 
 【已通过证据门槛的深度候选与 AI 引导检索研究笔记】
-（每个候选包含 research_notes / evidence_count / evidence_domains 字段：基于 seed URL、DDGS 搜索结果和可抓取正文生成，含已确认事实/推断/来源分层）
+（每个候选包含 research_notes / evidence_plan / evidence_count / evidence_domains 字段：基于 seed URL、第一轮搜索、Pro 证据缺口审查、追加补证搜索和可抓取正文生成，含已确认事实/推断/来源分层）
 {json.dumps(researched, ensure_ascii=False)[:300000]}
 
 请输出 JSON：
@@ -2019,6 +2089,7 @@ def compose_investigation_reports(
 - 【初筛上下文】只能帮助理解当天信息流，不得据此补写未研究候选，不得把 briefing item 改造成深度文章。
 - 【事件时效性强制检查】写每篇文章前，先读 research_notes 里的【事件时效性】节。若该节标注了"⚠️ 核心事件已超60天"，则：(a) 如果文章的核心价值是"这件事现在才发生/值得现在追"，直接跳过，不要输出这篇；(b) 如果核心价值是"这件事虽然发生在过去，但今天依然有新的判断/新的数据/新的影响需要说"，则在文章开头明确交代时间背景（例如"这是 N 个月前的事，但我最近重新追了一遍，因为……"），不能把旧事包装成当期新闻。
 - 直接使用 research_notes 里的已确认事实作为核心论据，不要基于训练知识编造来源。
+- 写正文前必须先读 evidence_plan 和 research_notes 的【证据缺口处理】。evidence_plan.required_evidence 是成文前模型主动要求补的材料；evidence_plan.must_not_claim 是当前证据不足时禁止写成结论的说法。除非 research_notes 明确说明补证已经支持，否则正文必须降级表达或跳过该结论。
 - 每篇正文必须自然出现至少一个程序员视角的硬拆解：价格/额度/API/文档/仓库/部署/获客/收款/自动化/技术门槛/岗位现金流/停止信号。不是每项都写，但不能一项都没有。
 - 【基础概念审查】写作前必须先根据 research_notes 的【基础概念风险/懂行人挑刺】做内部自检；正文不能把基础概念写错来换取爽感。技术/AI Agent/自动化类必须区分确定性工程和 AI 能力：证书日期、HTTP 状态码、DNS/WHOIS 字段、接口返回值等由代码/协议/SDK 处理，AI 只负责摘要、解释、归因、报告、告警文案。支付/稳定币/跨境收款类必须区分链上费、平台费、点差、汇率、出入金、账户风控、税务凭证和合规路径；必须区分雇员、承包商、B2B、个人转账、国内主体和海外主体。SEO/工具站类必须区分收录、曝光、点击、转化和订阅，不得用一周自然搜索点击直接判定关键词价值。
 - 【来源闭环】正文里点名引用的第三方来源（报告、博客、媒体、法规、平台规则、文档）必须出现在 sources 数组中；如果没有 research_notes 里的真实 URL，就不要点名当证据写进正文。sources 不是装饰字段，必须覆盖正文核心证据。
@@ -2118,6 +2189,7 @@ def compose_investigation_reports_per_candidate(
 - 老花首先是程序员，不是泛科技资讯号。文章必须能用程序员视角拆出开发成本、工具链、API/文档、部署、获客、收款、自动化、开源、岗位风险或副业路径中的至少一项；如果 research_notes 显示缺少程序员可拆价值，返回空数组。
 - 直接使用 research_notes 里的已确认事实作为核心论据，不要基于训练知识编造来源。
 - 严格区分已确认事实、高概率推断、待验证线索。
+- 写正文前必须先读 evidence_plan 和 research_notes 的【证据缺口处理】。evidence_plan.must_not_claim 中仍未被补证支持的说法，正文禁止写成结论。
 - 来源可信度嵌入正文，不要在文末单独列参考来源。
 - 普通段落 40-120 个中文字符为主，一个段落只讲一个意思；长短句交替，不要靠程序后处理拆段。
 - 写作前必须根据 research_notes 的【基础概念风险/懂行人挑刺】做内部自检；正文不能把基础概念写错来换取爽感。技术/AI Agent/自动化类必须区分确定性工程和 AI 能力；支付/稳定币/跨境收款类必须区分链上费、平台费、点差、汇率、出入金、账户风控、税务凭证、雇员/承包商/B2B/个人转账和地区主体；SEO/工具站类必须区分收录、曝光、点击、转化和订阅。

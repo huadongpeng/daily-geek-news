@@ -142,7 +142,7 @@ npm.cmd run build
 默认轻量步骤使用 `deepseek-v4-flash`，包括初筛和简讯整理；深度长文使用 `deepseek-v4-pro`，并默认启用 Thinking Mode + `max`。
 如需临时切换，可在 GitHub Variables 里设置 `DEEPSEEK_FLASH_MODEL` 或 `DEEPSEEK_PRO_MODEL`。
 
-深度检索不会使用 DeepSeek tool-calling。当前流程是 Flash 生成查询，程序抓取 seed URL、DDGS/Tavily 搜索结果和可访问正文，去重并检查最小证据量；证据不足或缺少程序员可拆价值的候选只保留在简讯或直接跳过，不进入调查报告和公众号文章输出。
+深度检索不会使用 DeepSeek tool-calling。当前流程是多轮证据链：Flash 先生成第一轮查询，程序抓取 seed URL、DDGS/Tavily 搜索结果和可访问正文；随后 Pro 先做一次“成文前证据缺口审查”，主动列出还需要搜集哪些材料、哪些说法不能写成结论、下一轮要查什么；程序再执行追加查询，把补充证据和证据缺口一起交给 Pro 生成研究笔记。证据不足、缺少程序员可拆价值或证据缺口无法消解的候选，只保留在简讯或直接跳过，不进入调查报告和公众号文章输出。
 
 多轮 LLM 流程里，深度候选会在去重后绑定 `candidate_id`。研究阶段可以并发执行，但回流顺序会按初筛优先级复原；成文阶段只能围绕已通过证据门槛的候选输出，并且每篇文章必须带回匹配的 `candidate_id`。程序会在写网站和公众号前过滤掉没有绑定已研究候选的文章，避免模型从初筛简讯或未研究材料里补写深度文。
 
