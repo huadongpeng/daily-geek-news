@@ -106,7 +106,19 @@ jobs:
           git fetch origin main
           git rebase origin/main
           echo "build_ref=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
-          git push origin HEAD:main
+          for attempt in 1 2 3; do
+            if git push origin HEAD:main; then
+              exit 0
+            fi
+
+            echo "git push failed on attempt ${attempt}; refreshing main before retry..."
+            git fetch origin main
+            git rebase origin/main
+            sleep $((attempt * 5))
+          done
+
+          echo "git push failed after 3 attempts"
+          exit 1
 
   build:
     needs: [generate-content]
