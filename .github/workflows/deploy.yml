@@ -1,9 +1,6 @@
 name: Easton Radar — Build & Deploy
 
 on:
-  schedule:
-    - cron: "0 22 * * *"   # 06:00 BJT (UTC+8)
-    - cron: "0 10 * * *"   # 18:00 BJT
   workflow_dispatch:
     inputs:
       slot:
