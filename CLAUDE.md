@@ -123,3 +123,25 @@ The workflow runs `purifier.py`, commits generated Markdown and cover images, bu
 - Website investigation articles should be readable articles, not rigid reports. Avoid fixed headings like "导言 / 核心段 / 证据展开 / 反驳视角 / 影响与悬问"; keep evidence labels in the body where they matter.
 - Avoid stiff phrases like "对普通技术经理的现实影响" or "像 Easton 这样的普通技术经理". Use Easton's actual voice near the end: "咱们这些快毕业/刚毕业的 IT 打工人", "35 岁门槛前后的程序员", "大龄程序员", "怕失业的人", etc.
 - Runtime health files live under `.cache/radar/`: source health and pending search-engine push queues. These are diagnostics/artifacts, not source content.
+
+<!-- AGENT-MANAGED:START -->
+# Agent Project Guide
+
+## Environment
+
+- Windows + PowerShell. Use UTF-8 without BOM.
+- Content production/site project based on Node package scripts.
+- Use global `content-workflow-systems`; keep platform credentials and publish endpoints project-scoped.
+
+## Commands
+
+- Inspect `package.json` before running npm commands.
+- For article generation, read persona/writing config and source policy before drafting.
+- For site changes, run the available build/check command from `package.json`.
+
+## Agent Workflow
+
+- Avoid fake scenes and generic influencer copy; preserve the established skeptical persona.
+- Keep publishing and distribution workflow changes documented in `ROADMAP.md`.
+- Commit completed local work automatically; push/publish requires confirmation.
+<!-- AGENT-MANAGED:END -->

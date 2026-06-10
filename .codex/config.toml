@@ -1,0 +1,3 @@
+# Project-scoped Codex configuration.
+# Keep only project-specific MCP servers, approval tweaks, and local settings here.
+# Do not put unrelated databases or servers in the global Codex config.
